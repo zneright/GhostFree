@@ -1,16 +1,20 @@
 # GhostFree — Decentralized Privacy-First Calamity Aid & Counter Contract
 > Privacy-preserving zero-knowledge calamity aid distribution and counter contract built on the Midnight Network.
 
+## Live Demo
+- **Production Web Application:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
+- **Interactive Level 2 Circuit Demo:** `/demo` *(Direct Lace Wallet connect & browser ZK proof execution)*
+
 ## Contract Address
 | Network  | Address                                                            |
 |----------|--------------------------------------------------------------------|
-| Preview  | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` |
 | Preprod  | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` |
+| Preview  | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` |
 
-*(Verified and deployed on Midnight Preview and Preprod testnets)*
+*(Verified and deployed on Midnight Preprod and Preview testnets)*
 
 ## What This Does
-GhostFree prevents duplicate aid claims ("stopping the ghosts") and enables confidential counter operations using Zero-Knowledge proofs on the Midnight Network. Citizens and participants can prove their eligibility and submit updates without revealing their private identities or sensitive credentials to the public ledger.
+GhostFree is a decentralized civic-tech dApp that prevents duplicate aid claims ("stopping the ghosts") and enables confidential counter operations using Zero-Knowledge proofs on the Midnight Network. Disaster victims and participants can prove their eligibility and submit state updates without revealing their private identities, National IDs, or sensitive credentials to the public ledger.
 
 ## Privacy Model
 - **What is PUBLIC (on-chain, visible to anyone):**
@@ -26,15 +30,24 @@ GhostFree prevents duplicate aid claims ("stopping the ghosts") and enables conf
   - Proves knowledge of an authorized private key/witness without revealing identity.
   - Generates a deterministic nullifier verifying eligibility while preserving full anonymity.
 
+## Privacy Claim
+> **Specific Privacy Guarantee:**  
+> An on-chain observer, node operator, or indexer sees that a valid zero-knowledge state transition was committed, the public counter was incremented by an authorized participant, and a unique cryptographic nullifier was registered.  
+> **An on-chain observer CANNOT see:**  
+> 1. The caller's personal identity or National ID.  
+> 2. The secret operational witness amount (`incrementBy`).  
+> 3. The private voucher authorization PIN (`userSecretKey`).  
+> All sensitive witness computations occur strictly on the user's client device via local WebAssembly proving logic before any transaction envelope is submitted to the network.
+
 ## Tech Stack
-- Midnight Network, Compact Language, Node.js v22, Docker, React 18, TypeScript, Tailwind CSS, Vitest
+- Midnight Network, Compact Language, Midnight.js SDK, DApp Connector API, React 18, Vite, TypeScript, Tailwind CSS v4, Lace Wallet
 
 ## Prerequisites
-- **Node.js**: v22.14.0 or higher
-- **Docker Desktop**: Required to run the Midnight proof server (`midnightntwrk/proof-server:8.1.0`) on port 6300
-- **Lace Wallet**: Browser extension for Midnight Network interaction
+- **Lace Wallet Extension**: Installed in browser and connected to Midnight Preprod.
+- **Node.js**: v22.14.0 or higher.
+- **Docker Desktop**: Required to run the Midnight proof server (`midnightnetwork/proof-server`) on port 6300.
 
-## Setup
+## Run Locally
 ```bash
 # 1. Clone the repository
 git clone https://github.com/zneright/GhostFree.git
@@ -45,6 +58,7 @@ npm install
 
 # 3. Start local development server
 npm run dev
+# App will run at http://localhost:5173 (Visit http://localhost:5173/demo for Level 2 circuit runner)
 
 # 4. Start Midnight Proof Server (requires Docker)
 docker run -d -p 6300:6300 midnightnetwork/proof-server
@@ -55,6 +69,9 @@ npm run compile
 # 6. Deploy contract
 npm run deploy
 ```
+
+## Demo Video
+- **Level 2 Interactive Walkthrough:** `[DEMO VIDEO LINK: https://youtu.be/... (Record under 2 mins following Step 7 checklist)]`
 
 ## Run Tests
 Run the comprehensive Vitest suite covering circuit logic, state transitions, and zero-knowledge privacy:
