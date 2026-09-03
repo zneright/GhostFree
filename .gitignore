@@ -12,6 +12,23 @@ dist
 dist-ssr
 *.local
 
+# Environment & Credentials (DO NOT UPLOAD)
+.env
+.env.*
+!.env.example
+
+# Midnight Network & ZK Sensitive State
+*.seed
+*-state/
+.midnight-state.json
+.midnight-wallet-state/
+*.wallet
+
+# Firebase & Deployment Debug Logs
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -22,3 +39,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
