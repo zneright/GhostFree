@@ -47,7 +47,13 @@ npm install
 npm run dev
 
 # 4. Start Midnight Proof Server (requires Docker)
-docker run -d -p 6300:6300 midnightntwrk/proof-server:8.1.0
+docker run -d -p 6300:6300 midnightnetwork/proof-server
+
+# 5. Compile Compact contract
+npm run compile
+
+# 6. Deploy contract
+npm run deploy
 ```
 
 ## Run Tests
