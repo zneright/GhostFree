@@ -138,6 +138,14 @@ export const LandingPage: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <button
+            onClick={() => navigate("/demo")}
+            className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-trust/40 text-civic-trust hover:bg-civic-trust/10"
+            id="nav-level2-demo"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Level 2 Demo
+          </button>
+          <button
             onClick={() => navigate("/claim")}
             className="btn-civic btn-primary text-xs sm:text-sm flex items-center gap-1.5 py-2 px-4 rounded-xl"
           >

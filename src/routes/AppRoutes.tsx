@@ -12,6 +12,7 @@ const LandingPage = lazy(() => import("../views/LandingPage"));
 const AdminLoginPage = lazy(() => import("../views/admin/AdminLoginPage"));
 const AdminDashboard = lazy(() => import("../views/admin/AdminDashboard"));
 const CitizenClaimPortal = lazy(() => import("../views/claim/CitizenClaimPortal"));
+const Level2DemoPage = lazy(() => import("../views/Level2DemoPage"));
 
 const PageLoader: React.FC = () => (
   <div className="min-h-dvh flex items-center justify-center bg-civic-navy">
@@ -31,7 +32,11 @@ const AppRoutes: React.FC = () => {
         {/* 1. PUBLIC LANDING PAGE */}
         <Route path="/" element={<LandingPage />} />
 
-        {/* 2. LGU ADMIN PORTAL (Web2 Fortress) */}
+        {/* 2. LEVEL 2 INTERACTIVE CIRCUIT DEMO */}
+        <Route path="/demo" element={<Level2DemoPage />} />
+        <Route path="/level2" element={<Level2DemoPage />} />
+
+        {/* 3. LGU ADMIN PORTAL (Web2 Fortress) */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route
           path="/admin/dashboard"
@@ -42,7 +47,7 @@ const AppRoutes: React.FC = () => {
           }
         />
 
-        {/* 3. CITIZEN CLAIM PORTAL (Web3 Public — NO Auth) */}
+        {/* 4. CITIZEN CLAIM PORTAL (Web3 Public — NO Auth) */}
         <Route path="/claim" element={<CitizenClaimPortal />} />
 
         {/* 4. CATCH-ALL REDIRECT */}
