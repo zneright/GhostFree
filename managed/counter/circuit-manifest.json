@@ -1,0 +1,24 @@
+{
+  "contract": "counter.compact",
+  "version": "0.16.0",
+  "circuits": [
+    {
+      "name": "initialize",
+      "publicInputs": 0,
+      "privateInputs": 0,
+      "disclosures": 2
+    },
+    {
+      "name": "increment",
+      "publicInputs": 0,
+      "privateInputs": 2,
+      "disclosures": 2
+    },
+    {
+      "name": "reset",
+      "publicInputs": 0,
+      "privateInputs": 1,
+      "disclosures": 1
+    }
+  ]
+}
