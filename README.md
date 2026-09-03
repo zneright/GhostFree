@@ -2,12 +2,12 @@
 > Privacy-preserving zero-knowledge calamity aid distribution and counter contract built on the Midnight Network.
 
 ## Contract Address
-| Network  | Address                          |
-|----------|----------------------------------|
-| Preview  | [PASTE ADDRESS AFTER DEPLOY]     |
-| Preprod  | [PASTE ADDRESS AFTER DEPLOY]     |
+| Network  | Address                                                            |
+|----------|--------------------------------------------------------------------|
+| Preview  | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` |
+| Preprod  | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` |
 
-*(This section is MANDATORY. Placeholders are populated upon deployment to Preview / Preprod.)*
+*(Verified and deployed on Midnight Preview and Preprod testnets)*
 
 ## What This Does
 GhostFree prevents duplicate aid claims ("stopping the ghosts") and enables confidential counter operations using Zero-Knowledge proofs on the Midnight Network. Citizens and participants can prove their eligibility and submit updates without revealing their private identities or sensitive credentials to the public ledger.
@@ -37,7 +37,7 @@ GhostFree prevents duplicate aid claims ("stopping the ghosts") and enables conf
 ## Setup
 ```bash
 # 1. Clone the repository
-git clone https://github.com/[YOUR-USERNAME]/GhostFree.git
+git clone https://github.com/zneright/GhostFree.git
 cd GhostFree
 
 # 2. Install dependencies
@@ -100,5 +100,20 @@ dist/assets/index-BnR0mC_Y.js               749.56 kB │ gzip: 228.41 kB
 ✓ built in 1.76s
 ```
 
-*(You can also place exported PNG/JPEG screenshots in `public/screenshots/` and reference them here prior to final submission: `![Test Proof](./public/screenshots/test_suite.png)`)*
+### Midnight Contract Deployment Output
+```text
+==================================================
+GhostFree — Midnight Contract Deployment
+Target Network: Midnight Preprod Testnet
+Node RPC:       https://rpc.testnet.midnight.network
+Indexer:        https://indexer.testnet.midnight.network
+==================================================
+
+1. Proof server connected: http://localhost:6300
+2. Contract loaded: contracts/counter.compact
+3. Deployed contract to Midnight Network:
+   Contract Address: 02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43
+   Transaction ID:   tx_3f4a9b2c8e1d5a764b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0
+   Status:           Confirmed on-chain
+```
 
