@@ -1,0 +1,150 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================================
+    // GHOSTFREE FIRESTORE SECURITY RULES
+    // Project: kapitbahay-33c2b
+    // Architecture: Hybrid Web 2.5 (Web2 Admin Fortress + Web3 Public Citizen)
+    // =========================================================================
+
+    // -------------------------------------------------------------------------
+    // HELPER FUNCTIONS
+    // -------------------------------------------------------------------------
+
+    // Check if request is from an authenticated Firebase Auth session
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    // Check if the caller matches the document owner
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Check if the user has an active admin profile document in admin_profiles
+    function isAdmin() {
+      return isAuthenticated() && (
+        exists(/databases/$(database)/documents/admin_profiles/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/admin_profiles/$(request.auth.uid)).data.status == 'active'
+      );
+    }
+
+    // Check if the caller is an active LGU Admin
+    function isLGUAdmin() {
+      return isAdmin() && (
+        get(/databases/$(database)/documents/admin_profiles/$(request.auth.uid)).data.role in ['lgu_admin', 'system_admin']
+      );
+    }
+
+    // Check if caller is a System Administrator
+    function isSystemAdmin() {
+      return isAdmin() && (
+        get(/databases/$(database)/documents/admin_profiles/$(request.auth.uid)).data.role == 'system_admin'
+      );
+    }
+
+    // Enforce Zero-Knowledge Privacy Invariance:
+    // Prevent accidental storage of raw citizen private witnesses
+    function containsNoCitizenPrivateWitnesses(data) {
+      return !('nationalId' in data) &&
+             !('secretPin' in data) &&
+             !('residentSecret' in data) &&
+             !('privateKey' in data);
+    }
+
+    // =========================================================================
+    // 1. ADMIN PROFILES COLLECTION
+    // Collection: admin_profiles/{adminUid}
+    // Web2 Security Fortress for Local Government Unit officials
+    // =========================================================================
+    match /admin_profiles/{adminUid} {
+      // Admins can read their own profile; System Admins can read all profiles
+      allow read: if isOwner(adminUid) || isSystemAdmin();
+
+      // Account Registration: User can create their initial profile upon signing up
+      allow create: if isOwner(adminUid)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.role in ['lgu_admin', 'system_admin']
+        && request.resource.data.status == 'active'
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0;
+
+      // Profile Updates: Admins can update their display name, municipality, and lastLoginAt.
+      // Cannot elevate their own role or un-suspend their own account.
+      allow update: if isOwner(adminUid)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.email == resource.data.email
+        && (isSystemAdmin() || request.resource.data.role == resource.data.role)
+        && (isSystemAdmin() || request.resource.data.status == resource.data.status);
+
+      // Deletions: System Administrator only
+      allow delete: if isSystemAdmin();
+    }
+
+    // =========================================================================
+    // 2. RELIEF OPERATIONS COLLECTION
+    // Collection: relief_operations/{operationId}
+    // Public transparency ledger + Admin operation management
+    // =========================================================================
+    match /relief_operations/{operationId} {
+      // PUBLIC READ: Anyone (including unauthenticated disaster victims and public auditors)
+      // can inspect active calamity operations, verify Merkle roots, and view fund tallies.
+      allow read: if true;
+
+      // CREATE: Authorized LGU Admins can deploy new calamity relief operations
+      allow create: if isAuthenticated() && isLGUAdmin()
+        && request.resource.data.adminUid == request.auth.uid
+        && request.resource.data.merkleRoot is string
+        && request.resource.data.merkleRoot.size() >= 16
+        && request.resource.data.leafCount is int
+        && request.resource.data.leafCount > 0
+        && request.resource.data.totalFund is number
+        && request.resource.data.totalFund > 0
+        && request.resource.data.perClaimAmount is number
+        && request.resource.data.perClaimAmount > 0
+        && request.resource.data.status in ['draft', 'deploying', 'active', 'paused', 'completed', 'failed']
+        && containsNoCitizenPrivateWitnesses(request.resource.data);
+
+      // UPDATE:
+      // Case A: The deploying LGU Admin (or System Admin) can update operation metadata (status, contract address, name)
+      // Case B: Public atomic increment of claimedCount when a valid on-chain claim occurs
+      allow update: if (
+        // Case A: LGU Admin owner updates operation status or contract address
+        (isAuthenticated() && (resource.data.adminUid == request.auth.uid || isSystemAdmin())
+          && request.resource.data.adminUid == resource.data.adminUid
+          && request.resource.data.merkleRoot == resource.data.merkleRoot
+          && containsNoCitizenPrivateWitnesses(request.resource.data))
+        ||
+        // Case B: Increment claimedCount by 1 (preserving all other fields strictly)
+        (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['claimedCount', '_updatedAt'])
+          && request.resource.data.claimedCount == resource.data.claimedCount + 1
+        )
+      );
+
+      // DELETE: Prohibited to maintain permanent disaster audit integrity
+      allow delete: if false;
+    }
+
+    // =========================================================================
+    // 3. AUDIT LOGS COLLECTION
+    // Collection: audit_logs/{logId}
+    // Immutable traceability for government actions
+    // =========================================================================
+    match /audit_logs/{logId} {
+      allow read: if isLGUAdmin();
+      allow create: if isAuthenticated() && isLGUAdmin()
+        && request.resource.data.actorUid == request.auth.uid;
+      allow update, delete: if false; // Immutable logs
+    }
+
+    // =========================================================================
+    // 4. DEFAULT DENY ALL OTHER COLLECTIONS
+    // =========================================================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

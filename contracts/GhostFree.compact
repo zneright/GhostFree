@@ -1,0 +1,176 @@
+// ============================================
+// GhostFree — Compact Smart Contract
+// Midnight Network ZK-verified calamity aid distribution
+// ============================================
+//
+// Language: Compact (Midnight Network DSL)
+// Compiler: compactc
+//
+// Architecture:
+//   - Public Ledger: merkleRoot, spentNullifiers, fundBalance, perClaimAmount
+//   - Private Witnesses: residentID, residentSecret, merkleProof
+//   - ZK Circuit: claimAid() verifies Merkle proof, computes nullifier,
+//     prevents double-claiming, and transfers funds
+//
+// Anti-Ghost Mechanism:
+//   Each citizen's claim produces a unique nullifier = H(leafHash, contractAddress).
+//   The nullifier is recorded in the public spentNullifiers map.
+//   If the same citizen tries to claim again, the nullifier collision is detected
+//   and the transaction is rejected — "stopping the ghosts."
+//
+
+// =====================
+// PUBLIC LEDGER STATE
+// =====================
+
+// The Merkle root committing to the set of eligible resident ID hashes.
+// Set once during initialization by the LGU admin.
+export ledger merkleRoot: Bytes(32);
+
+// The total tNIGHT funds locked in escrow for this relief operation.
+export ledger fundBalance: Uint64;
+
+// The amount of tNIGHT each eligible citizen can claim.
+export ledger perClaimAmount: Uint64;
+
+// A human-readable name for this relief operation.
+export ledger operationName: Opaque;
+
+// The address of the LGU admin who deployed the contract.
+export ledger adminAddress: Opaque;
+
+// Map of spent nullifiers. If a nullifier exists in this map,
+// the corresponding citizen has already claimed their aid.
+export ledger spentNullifiers: Map<Bytes(32), Boolean>;
+
+// Total number of successful claims made against this contract.
+export ledger claimCount: Uint64;
+
+
+// =====================
+// INITIALIZATION
+// =====================
+
+// Deploy the contract with the Merkle root and funding parameters.
+// Called once by the LGU admin. Deposits tNIGHT into escrow.
+export circuit initialize(
+  root: Bytes(32),
+  claimAmount: Uint64,
+  name: Opaque
+): Void {
+  // Store the eligibility commitment
+  merkleRoot = root;
+
+  // Set the per-claim disbursement amount
+  perClaimAmount = claimAmount;
+
+  // Record the operation name
+  operationName = name;
+
+  // Record the deploying admin
+  adminAddress = pad(context.caller);
+
+  // The deposited tNIGHT becomes the fund balance
+  fundBalance = context.value;
+
+  // Initialize claim counter
+  claimCount = 0;
+}
+
+
+// =====================
+// CITIZEN CLAIM CIRCUIT
+// =====================
+
+// Claim calamity aid using a zero-knowledge proof of eligibility.
+//
+// The citizen provides their National ID and secret PIN as private witnesses.
+// These values NEVER appear on-chain or leave the citizen's device.
+//
+// The circuit:
+//   1. Computes leafHash = persistentHash(residentID, residentSecret)
+//   2. Verifies the leaf is in the Merkle tree (inclusion proof)
+//   3. Computes nullifier = persistentHash(leafHash, self.address)
+//   4. Asserts the nullifier has not been spent (anti-double-claim)
+//   5. Marks the nullifier as spent via disclose()
+//   6. Transfers perClaimAmount tNIGHT to the caller's address
+
+export circuit claimAid(
+  // === Private Witnesses (never leave the device) ===
+  witness residentID: Bytes(32),
+  witness residentSecret: Bytes(32),
+  witness merkleProof: Vector<Bytes(32)>,
+  witness merkleDirections: Vector<Boolean>,
+
+  // === Public Input (disclosed to chain) ===
+  nullifier: Bytes(32)
+): Void {
+
+  // Step 1: Compute the leaf hash from the citizen's private credentials
+  const leaf: Bytes(32) = persistentHash(residentID, residentSecret);
+
+  // Step 2: Verify the leaf is included in the Merkle tree
+  // Walk from the leaf up to the root using the sibling hashes
+  var current: Bytes(32) = leaf;
+  for (var i: Uint64 = 0; i < merkleProof.length; i = i + 1) {
+    const sibling: Bytes(32) = merkleProof[i];
+    const isLeft: Boolean = merkleDirections[i];
+
+    if (isLeft) {
+      current = persistentHash(sibling, current);
+    } else {
+      current = persistentHash(current, sibling);
+    }
+  }
+
+  // The computed root must match the stored Merkle root
+  assert(current == merkleRoot,
+    "MERKLE_PROOF_INVALID: Your identity is not in the eligibility list.");
+
+  // Step 3: Compute the nullifier deterministically
+  // nullifier = H(leafHash, contractAddress) — unique per citizen per contract
+  const expectedNullifier: Bytes(32) = persistentHash(leaf, pad(context.self));
+  assert(nullifier == expectedNullifier,
+    "NULLIFIER_MISMATCH: Computed nullifier does not match.");
+
+  // Step 4: Anti-Ghost Check — ensure this nullifier has NOT been spent
+  assert(!spentNullifiers[nullifier],
+    "ALREADY_CLAIMED: This identity has already received aid for this relief operation.");
+
+  // Step 5: Disclose the nullifier as spent (public state update)
+  disclose(spentNullifiers[nullifier] = true);
+
+  // Step 6: Verify sufficient funds remain in escrow
+  assert(fundBalance >= perClaimAmount,
+    "INSUFFICIENT_FUNDS: The relief fund has been fully distributed.");
+
+  // Step 7: Update the fund balance
+  fundBalance = fundBalance - perClaimAmount;
+  claimCount = claimCount + 1;
+
+  // Step 8: Transfer tNIGHT to the citizen's wallet
+  transfer(context.caller, perClaimAmount);
+}
+
+
+// =====================
+// ADMIN FUNCTIONS
+// =====================
+
+// Allow the admin to pause/close the relief operation
+// and withdraw remaining funds if needed.
+export circuit withdrawRemaining(): Void {
+  assert(pad(context.caller) == adminAddress,
+    "UNAUTHORIZED: Only the deploying admin can withdraw.");
+
+  const remaining: Uint64 = fundBalance;
+  fundBalance = 0;
+
+  transfer(context.caller, remaining);
+}
+
+// Allow the admin to query the current fund status.
+// This is a read-only circuit (no state changes).
+export circuit getStatus(): (Uint64, Uint64, Uint64) {
+  return (fundBalance, perClaimAmount, claimCount);
+}
