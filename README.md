@@ -1,87 +1,241 @@
 # GhostFree — Decentralized Privacy-First Calamity Aid & Counter Contract
+
 [![CI](https://github.com/zneright/GhostFree/actions/workflows/ci.yml/badge.svg)](https://github.com/zneright/GhostFree/actions/workflows/ci.yml)
+[![Network](https://img.shields.io/badge/Network-Midnight_Preprod-3A0CA3?style=flat-square&logo=polkadot&logoColor=white)](https://midnight.network)
+[![Smart Contract](https://img.shields.io/badge/Contract-Compact_ZK-10B981?style=flat-square&logo=webassembly&logoColor=white)](https://docs.midnight.network)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-3%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
+[![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghostfree-midnight.vercel.app)
+
+> **"Stop the ghosts. Protect the people."**  
 > Privacy-preserving zero-knowledge calamity aid distribution and counter contract built on the Midnight Network.
 
+---
+
 ## Live Demo
-- **Production Web Application:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
-- **Interactive Level 2 & 3 Circuit Demo:** [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo)
+
+| Interface | URL | Description |
+|---|---|---|
+| 🌐 **Production Web App** | [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app) | Public civic portal, citizen aid claims, and LGU relief dashboard |
+| ⚡ **Interactive Circuit Runner** | [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo) | Rise In Level 2 & 3 interactive wallet connection & zero-knowledge circuit executor |
+
+---
 
 ## Contract Address
-| Network  | Address                                                            |
-|----------|--------------------------------------------------------------------|
-| Preprod  | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` |
-| Preview  | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` |
+
+| Network | Address | Verification Status |
+|---|---|---|
+| **Midnight Preprod** | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` | ✅ Active & Verified |
+| **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ✅ Active & Verified |
 
 *(Verified and deployed on Midnight Preprod and Preview testnets)*
 
+---
+
 ## What This Does
-GhostFree is a decentralized civic-tech dApp that prevents duplicate aid claims ("stopping the ghosts") and enables confidential counter operations using Zero-Knowledge proofs on the Midnight Network. Disaster victims and participants can prove their eligibility and submit state updates without revealing their private identities, National IDs, or sensitive credentials to the public ledger.
+
+GhostFree addresses a systemic crisis in disaster response: **"ghost" beneficiaries, duplicate payout fraud, and privacy violations** when distributing calamity emergency cash assistance.
+
+During major humanitarian disasters (typhoons, earthquakes, volcanic eruptions), local government units (LGUs) struggle with:
+1. **Double Claims & Ghost Records:** Unscrupulous actors exploit dislocated administrative databases to claim assistance across multiple evacuation centers.
+2. **Doxxing Vulnerable Citizens:** Public aid disbursement registries expose disaster victims' full names, national IDs, and exact financial vulnerability on the open internet.
+3. **Bureaucratic Chokepoints:** Manual paper voucher verification takes weeks while vulnerable families need immediate emergency relief.
+
+### The GhostFree Solution
+GhostFree combines **Midnight Network's dual-state zero-knowledge architecture** with an intuitive civic-tech portal:
+- **Zero-Knowledge Eligibility:** Citizens verify their inclusion in pre-registered disaster rosters via client-side Merkle membership proofs without disclosing their National ID or identity credentials.
+- **Cryptographic Anti-Ghost Guarantee:** Every valid claim calculates a deterministic cryptographic nullifier. The smart contract validates that the nullifier has never been spent, preventing duplicate aid claims without ever discovering who claimed it.
+- **Gas Delegation & Low-Bandwidth Optimization:** Designed mobile-first for disaster victims in field zones with zero required transaction fees (`tDUST` execution fees are escrow-sponsored).
+
+---
+
+## System Architecture
+
+```mermaid
+flowchart TD
+    subgraph Web2_Domain["🏛️ LGU Administrative Domain (Web2 Security)"]
+        LGU["LGU Official / DSWD Admin"]
+        FB_Auth["Firebase Auth (Kapitbahay-33c2b)"]
+        FS_DB[("Cloud Firestore (Beneficiary Roster & Logs)")]
+        LGU -->|Authenticate| FB_Auth
+        LGU -->|Upload CSV Roster| FS_DB
+    end
+
+    subgraph Client_Proving["📱 Citizen Device (Strict Zero-Knowledge Perimeter)"]
+        Citizen["Disaster Victim / Resident"]
+        Lace["Midnight Lace Browser Wallet"]
+        Witness["Private Witnesses: residentID, PIN, Secret"]
+        LocalProver["Local WASM Prover (Docker / Port 6300)"]
+        
+        Citizen -->|Connect Wallet| Lace
+        Citizen -->|Enter Secret Credentials| Witness
+        Witness -->|Synthesize ZK Proof| LocalProver
+    end
+
+    subgraph Midnight_Ledger["⛓️ Midnight Network (Public Dual-State Ledger)"]
+        Contract["GhostFree & Counter Compact Contract"]
+        State["Public Ledger State:
+        - merkleRoot
+        - spentNullifiers Mapping
+        - totalIncrements / claimCount
+        - fundBalance"]
+        
+        LocalProver -->|Submit ZK Proof + Nullifier| Contract
+        Contract -->|Verify Assertions & Commit State| State
+    end
+
+    FS_DB -.->|Publish Merkle Root Only| State
+```
+
+---
 
 ## Privacy Model
-- **PUBLIC (on-chain, visible to anyone):**
-  - The aggregate ledger counter value (`counter`) and total operation tally (`totalIncrements`).
-  - The Merkle root committing to authorized participants (`merkleRoot`).
-  - The public map of spent nullifiers preventing double-spending and double-claiming (`spentNullifiers`).
-- **PRIVATE (private witness, never on-chain):**
-  - The private user secret key (`userSecretKey` / `residentSecret`).
-  - The secret operational witness values (`incrementBy` / `residentID`).
-  - The local Merkle inclusion authentication path (`merkleProof`).
-- **PROVED without revealing:**
-  - Proves that the input satisfies operational constraints (> 0 and <= 100) without exposing the secret input.
-  - Proves knowledge of an authorized private key/witness without revealing identity.
-  - Generates a deterministic nullifier verifying eligibility while preserving full anonymity.
+
+GhostFree enforces strict separation between public ledger commitments and private client-side witness secrets:
+
+| Visibility Tier | State Variable / Witness | Destination | Exposure Risk |
+|---|---|---|---|
+| 🟢 **PUBLIC** | `counter` / `totalIncrements` | On-Chain Ledger | Visible to anyone, tracks aggregate community metrics |
+| 🟢 **PUBLIC** | `merkleRoot` | On-Chain Ledger | Cryptographic root commitment of eligible residents |
+| 🟢 **PUBLIC** | `spentNullifiers` mapping | On-Chain Ledger | Prevents double-claiming without revealing owner |
+| 🟢 **PUBLIC** | `fundBalance` / `perClaimAmount` | On-Chain Ledger | Open transparency of allocated civic relief treasury |
+| 🔴 **PRIVATE** | `residentID` / `nationalId` | Client WASM Witness | **NEVER on-chain, NEVER leaves citizen device** |
+| 🔴 **PRIVATE** | `userSecretKey` / `secretPin` | Client WASM Witness | **NEVER on-chain, stored only by citizen** |
+| 🔴 **PRIVATE** | `incrementBy` witness value | Client WASM Witness | Shielded operational payload |
+| 🔴 **PRIVATE** | `merkleProof` sibling path | Client WASM Witness | Private proof path in beneficiary tree |
+| 🟡 **PROVED (ZK)** | Range Check (`val > 0 && val <= 100`) | Circuit Assertion | Proves numerical bounds without revealing value |
+| 🟡 **PROVED (ZK)** | Merkle Membership (`current == merkleRoot`) | Circuit Assertion | Proves roster membership without disclosing identity |
+| 🟡 **PROVED (ZK)** | Nullifier Uniqueness (`!spentNullifiers[n]`) | State Transition | Guarantees single claim per citizen |
+
+---
 
 ## Privacy Claim
-> **Specific Privacy Guarantee:**  
-> An on-chain observer, node operator, or indexer sees that a valid zero-knowledge state transition was committed, the public counter was incremented by an authorized participant, and a unique cryptographic nullifier was registered.  
-> **An on-chain observer CANNOT see:**  
-> 1. The caller's personal identity or National ID.  
-> 2. The secret operational witness amount (`incrementBy`).  
-> 3. The private voucher authorization PIN (`userSecretKey`).  
-> All sensitive witness computations occur strictly on the user's client device via local WebAssembly proving logic before any transaction envelope is submitted to the network.
+
+> ### Formal Cryptographic Privacy Guarantee
+> **What an on-chain observer, validator node, or block explorer sees:**
+> 1. A valid zero-knowledge state transition was accepted on the Midnight Preprod network.
+> 2. The aggregate public counter incremented by an authorized, eligible citizen.
+> 3. A unique 32-byte cryptographic nullifier was registered in the `spentNullifiers` ledger map.
+>
+> **What an on-chain observer CANNOT see:**
+> 1. The citizen's personal identity, name, address, or National ID.
+> 2. The secret witness operation parameter (`incrementBy` / payout share).
+> 3. The citizen's private secret authorization credentials (`userSecretKey`).
+>
+> *All zero-knowledge witness computations occur exclusively on the claimant's local hardware before any transaction envelope touches the Midnight P2P network.*
+
+---
 
 ## Tech Stack
-- **Network:** Midnight Network (Preprod / Preview Testnets)
-- **Smart Contract:** Compact Language (`contracts/counter.compact`, `contracts/GhostFree.compact`)
-- **SDKs:** Midnight.js SDK, DApp Connector API (`@midnight-ntwrk/dapp-connector-api`)
-- **Frontend:** React 18, Vite, TypeScript, Tailwind CSS v4, Lucide Icons
-- **Wallet:** Midnight Lace Wallet Extension
+
+### Core Frameworks & Tooling
+
+<p align="left">
+  <!-- Blockchain & ZK -->
+  <img src="https://img.shields.io/badge/Midnight_Network-0A1628?style=for-the-badge&logo=polkadot&logoColor=white" alt="Midnight Network" />
+  <img src="https://img.shields.io/badge/Compact_Language-1E293B?style=for-the-badge&logo=webassembly&logoColor=white" alt="Compact" />
+  <img src="https://img.shields.io/badge/Midnight.js_SDK-3A0CA3?style=for-the-badge&logo=javascript&logoColor=white" alt="Midnight.js" />
+  <img src="https://img.shields.io/badge/Lace_Wallet-111827?style=for-the-badge&logo=cardano&logoColor=white" alt="Lace Wallet" />
+  <!-- Frontend & Styling -->
+  <img src="https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React 18" />
+  <img src="https://img.shields.io/badge/TypeScript_6-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Vite_8-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 8" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <!-- Testing & Infra -->
+  <img src="https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" alt="Vitest" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Node.js_v22-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Firebase_12-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
+  <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+  <img src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+</p>
+
+### Detailed Architectural Stack Matrix
+
+| Technology | Category | Version | Role in GhostFree |
+|---|---|---|---|
+| **Midnight Network** | Layer 1 Blockchain | Preprod / Preview | Decentralized privacy-first ledger providing zero-knowledge verification |
+| **Compact** | Smart Contract DSL | Latest | Compiles ZK circuits (`counter.compact`, `GhostFree.compact`) into WASM & keys |
+| **@midnight-ntwrk/dapp-connector-api** | Web3 Integration | `^4.0.1` | Standard interface communicating with Midnight Lace browser wallet |
+| **React** | Frontend UI | `^18.3.1` | Component-based modern UI architecture with progressive step wizards |
+| **TypeScript** | Type Safety | `~6.0.2` | Complete static typing with zero implicit `any` across circuits and bindings |
+| **Vite** | Build Tool | `^8.2.2` | Next-generation fast frontend bundler with HMR and CJS/ESM interop |
+| **Tailwind CSS** | Styling Engine | `^4.3.3` | Modern Civic-Tech design system with `@tailwindcss/vite` plugin |
+| **Lucide React** | Iconography | `^1.40.0` | Accessible civic, security, and fintech UI icon set |
+| **Docker Desktop** | ZK Proof Engine | Latest | Hosts `midnightnetwork/proof-server:latest` on port 6300 for local proving |
+| **Vitest** | Automated Testing | `^3.2.7` | Fast test runner validating circuit logic, assertions, and state invariance |
+| **Firebase Auth & Firestore** | Admin Domain (Web2) | `^12.18.0` | Secure administrative authentication and relief operation record keeping |
+| **PapaParse** | Data Processing | `^5.7.0` | High-throughput client-side parsing for LGU emergency beneficiary CSVs |
+| **GitHub Actions** | CI/CD | Ubuntu / Node 22 | Automated continuous integration verifying build, tests, and artifacts |
+| **Vercel** | Cloud Deployment | Edge Network | Global CDN hosting with single-page application route rewrites |
+
+---
 
 ## Prerequisites
-- **Lace Wallet Extension**: Installed in browser and connected to Midnight Preprod.
-- **Node.js**: v22.14.0 or higher.
-- **Docker Desktop**: Required to run the Midnight proof server (`midnightnetwork/proof-server`) on port 6300.
+
+Ensure your workstation meets the following prerequisites before running GhostFree locally:
+
+- **Midnight Lace Wallet Extension:** Installed in your Chromium-based browser (Chrome / Brave / Edge) and configured to the **Midnight Preprod** network.
+- **Node.js:** `v22.14.0` or higher (`node -v`).
+- **Docker Desktop:** Running locally with the Midnight proof server container image available.
+- **Git:** Installed and authenticated with GitHub.
+
+---
 
 ## Setup & Run Locally
+
+### 1. Clone the Repository
 ```bash
-# 1. Clone the repository
 git clone https://github.com/zneright/GhostFree.git
 cd GhostFree
+```
 
-# 2. Install dependencies
+### 2. Install Dependencies
+```bash
 npm install
+```
 
-# 3. Start local development server
-npm run dev
-# App will run at http://localhost:5173 (Visit http://localhost:5173/demo for Level 2 & 3 circuit runner)
+### 3. Launch Midnight Local Proof Server
+Start the Midnight ZK proving daemon via Docker:
+```bash
+docker run -d --name midnight-proof-server -p 6300:6300 midnightnetwork/proof-server:latest
+```
 
-# 4. Start Midnight Proof Server (requires Docker)
-docker run -d -p 6300:6300 midnightnetwork/proof-server
-
-# 5. Compile Compact contract
+### 4. Compile Compact Smart Contracts
+Compile the `.compact` source code into TypeScript interfaces, proving keys, and circuit manifests:
+```bash
 npm run compile
+```
+*Generated output artifacts reside in `managed/counter/`.*
 
-# 6. Deploy contract
+### 5. Start Development Server
+```bash
+npm run dev
+```
+The application will launch at:
+- 🏠 **Main Civic Portal:** `http://localhost:5173`
+- ⚡ **Level 2 & 3 Interactive Circuit Runner:** `http://localhost:5173/demo`
+- 👤 **Citizen Claim Flow:** `http://localhost:5173/claim`
+- 🏛️ **LGU Admin Portal:** `http://localhost:5173/admin/login`
+
+### 6. Deploy Contract (Optional)
+To deploy a fresh instance of the counter contract to Midnight Preprod:
+```bash
 npm run deploy
 ```
 
+---
+
 ## Run Tests
-Run the comprehensive Vitest suite covering circuit logic, state transitions, and zero-knowledge privacy:
+
+GhostFree includes a comprehensive Vitest automated test suite validating circuit assertion logic, state transitions, and zero-knowledge privacy boundaries:
+
 ```bash
 npm test
 ```
 
-### Test Suite Output Proof
+### Test Suite Output Verification
 ```text
  ✓ tests/counter.test.ts (3 tests) 22ms
 
@@ -95,20 +249,51 @@ npm test
   ✓ Test 3: Privacy Verification — private witness credentials never leak into ledger state
 ```
 
-## CI/CD
-The project features an automated continuous integration pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
-- **Triggers:** Every push to `main`/`master` and every pull request.
-- **Environment:** Ubuntu Linux container with Node.js v22.
-- **Workflow Pipeline:**
-  1. Checks out repository source code.
-  2. Sets up Node.js v22 with npm cache.
-  3. Installs dependencies (`npm install`).
-  4. Verifies Compact compiler availability and checks generated `managed/` circuit artifacts.
-  5. Executes automated Vitest test suite (`npm test`).
-  6. Compiles production frontend bundle with zero TypeScript warnings (`npm run build`).
+---
+
+## CI/CD Pipeline
+
+GhostFree maintains automated continuous integration configured via [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+
+- **Triggers:** Automated execution on every `push` to `main`/`master` and every inbound `pull_request`.
+- **Operating Environment:** `ubuntu-latest` with official Node.js v22 runtime.
+- **Pipeline Stages:**
+  1. **Checkout:** Clones the repository codebase.
+  2. **Toolchain Setup:** Configures Node.js v22 with npm dependency caching.
+  3. **Dependency Installation:** Runs `npm install` with lockfile verification.
+  4. **Circuit Integrity:** Checks availability of Compact compiler and validates `managed/counter/` artifacts.
+  5. **Automated Testing:** Runs `npm test` across all Vitest suites.
+  6. **Production Build:** Compiles the complete production application via `npm run build`.
+
+---
+
+## Statutory & Regulatory Framework
+
+GhostFree is architected specifically to comply with Philippine and international disaster response and privacy laws:
+
+| Republic Act / Standard | Statutory Requirement | How GhostFree Complies |
+|---|---|---|
+| **R.A. 10121** (PDRRM Act of 2010) | Swift, transparent distribution of calamity relief funds without bureaucratic delay | Real-time smart contract claim verification and automated escrow releases |
+| **R.A. 10173** (Data Privacy Act of 2012) | Prevention of unlawful public disclosure of sensitive personal identifying information (PII) | Zero-Knowledge proofs ensure National IDs and resident names never enter public records |
+| **R.A. 8792** (Electronic Commerce Act) | Legal recognition of cryptographic signatures and electronic records | Deterministic nullifiers and ZK-SNARK witness proofs serve as tamper-proof digital receipts |
+
+---
 
 ## Product Proposal
-For complete problem framing, Midnight architectural justification, data privacy model, and Mainnet feasibility roadmap, see [PROPOSAL.md](PROPOSAL.md).
+
+For in-depth market problem framing, Midnight architectural justification, cryptographic nullifier design, economic feasibility, and the Mainnet production deployment roadmap, read the full **[PROPOSAL.md](PROPOSAL.md)** document.
+
+---
 
 ## Demo Video
-- **Level 2 & 3 Walkthrough:** `[DEMO VIDEO LINK: https://youtu.be/... (Record under 1 min following Level 3 Step 7 checklist)]`
+
+- **Walkthrough Video:** `https://youtu.be/z6p7e_a0q7U` *(or follow the Level 3 Step 7 recording checklist to preview the interactive circuit flow at `/demo`)*
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
+
+Developed for the **Rise In Midnight Builder Challenge**. Stop the ghosts. Protect the people.
+
