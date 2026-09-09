@@ -1,0 +1,30 @@
+{
+  "contract": "GhostFree.compact",
+  "version": "0.16.0",
+  "circuits": [
+    {
+      "name": "initialize",
+      "publicInputs": 3,
+      "privateInputs": 0,
+      "disclosures": 6
+    },
+    {
+      "name": "claimAid",
+      "publicInputs": 1,
+      "privateInputs": 4,
+      "disclosures": 4
+    },
+    {
+      "name": "withdrawRemaining",
+      "publicInputs": 0,
+      "privateInputs": 0,
+      "disclosures": 2
+    },
+    {
+      "name": "getStatus",
+      "publicInputs": 0,
+      "privateInputs": 0,
+      "disclosures": 0
+    }
+  ]
+}

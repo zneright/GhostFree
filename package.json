@@ -7,9 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "compile": "compact compile contracts/counter.compact managed/counter",
+    "compile": "compact compile contracts/counter.compact managed/counter && compact compile contracts/GhostFree.compact managed/GhostFree",
     "deploy": "npx tsx scripts/deploy-counter.ts",
-    "test": "vitest run"
+    "test": "vitest run --pool=threads"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
