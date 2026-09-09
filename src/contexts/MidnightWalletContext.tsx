@@ -4,12 +4,14 @@
 // ============================================
 
 
-import React, { createContext, useContext, useState, useCallback } from "react";
-import { connectLaceWallet, getWalletAddress, disconnectLaceWallet } from "../wallet/midnight-wallet";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
+import { connectLaceWallet, getWalletAddress, disconnectLaceWallet, detectLaceWallet } from "../wallet/midnight-wallet";
 import type { MidnightWalletAPI, WalletState } from "../types";
 
 interface MidnightWalletContextType extends WalletState {
-  walletApi: MidnightWalletAPI | null;
+  walletApi: MidnightWalletAPI | ConnectedAPI | null;
+  isLaceInstalled: boolean;
   connect: (networkId?: string) => Promise<void>;
   disconnect: () => void;
 }
@@ -26,9 +28,15 @@ export const MidnightWalletProvider: React.FC<{ children: React.ReactNode }> = (
   const [networkId, setNetworkId] = useState<string | null>(
     () => localStorage.getItem(NETWORK_KEY)
   );
-  const [walletApi, setWalletApi] = useState<MidnightWalletAPI | null>(null);
+  const [walletApi, setWalletApi] = useState<MidnightWalletAPI | ConnectedAPI | null>(null);
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [isLaceInstalled, setIsLaceInstalled] = useState<boolean>(false);
+
+  useEffect(() => {
+    detectLaceWallet().then((detected) => setIsLaceInstalled(detected));
+  }, []);
 
   const connect = useCallback(async (network: string = "preprod") => {
     setConnecting(true);
@@ -41,6 +49,7 @@ export const MidnightWalletProvider: React.FC<{ children: React.ReactNode }> = (
       setWalletApi(api);
       setAddress(addr);
       setNetworkId(network);
+      setIsLaceInstalled(true);
 
       localStorage.setItem(STORAGE_KEY, addr);
       localStorage.setItem(NETWORK_KEY, network);
@@ -72,6 +81,7 @@ export const MidnightWalletProvider: React.FC<{ children: React.ReactNode }> = (
         networkId,
         error,
         walletApi,
+        isLaceInstalled,
         connect,
         disconnect,
       }}

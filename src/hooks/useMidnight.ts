@@ -5,6 +5,7 @@
 // ==============================================================================
 
 import { useState, useEffect, useCallback } from "react";
+import type { ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
 import { useMidnightWallet } from "../contexts/MidnightWalletContext";
 
@@ -45,13 +46,24 @@ export function useMidnight(contractAddressOverride?: string) {
     setError(null);
 
     try {
-      // Query Midnight indexer if available; otherwise use synchronized reactive state
-      if (MIDNIGHT_CONFIG.indexerUrl) {
-        // Attempt indexer read
+      // Query Midnight indexer if available
+      const response = await fetch(`${MIDNIGHT_CONFIG.indexerUrl}/contracts/${activeAddress}/state`, {
+        headers: { Accept: "application/json" },
+      }).catch(() => null);
+
+      if (response && response.ok) {
+        const data = await response.json();
+        if (data?.counter !== undefined) {
+          setContractState({
+            counter: BigInt(data.counter),
+            totalIncrements: BigInt(data.totalIncrements || 0),
+            lastUpdated: new Date().toISOString(),
+          });
+        }
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to fetch contract state.";
-      console.warn("Indexer fetch notice:", msg);
+      console.warn("Midnight indexer query notice:", msg);
     } finally {
       setLoading(false);
     }

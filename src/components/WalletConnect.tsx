@@ -4,7 +4,7 @@
 // ==============================================================================
 
 import React from "react";
-import { Wallet, LogOut, CheckCircle2, AlertTriangle, ShieldCheck, Loader2 } from "lucide-react";
+import { Wallet, LogOut, CheckCircle2, AlertTriangle, ShieldCheck, Loader2, Download, ExternalLink } from "lucide-react";
 import { useMidnightWallet } from "../contexts/MidnightWalletContext";
 
 interface WalletConnectProps {
@@ -16,7 +16,7 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
   className = "",
   showDetails = true,
 }) => {
-  const { address, connected, connecting, error, connect, disconnect, networkId } =
+  const { address, connected, connecting, error, connect, disconnect, networkId, isLaceInstalled } =
     useMidnightWallet();
 
   const formattedAddress = address
@@ -129,6 +129,30 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
               Ensure Midnight Lace extension is installed, active in your browser, and set to Preprod network.
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Explicit Wallet Not Installed Fallback UI */}
+      {!connected && !isLaceInstalled && !connecting && (
+        <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-amber-300">
+          <div className="flex items-center gap-2.5">
+            <Download className="w-4 h-4 flex-shrink-0 text-amber-400" />
+            <div>
+              <span className="font-bold text-amber-200">Midnight Lace Extension Not Detected</span>
+              <p className="text-[0.7rem] text-amber-400/90 mt-0.5">
+                Install the official Lace wallet browser extension configured for Midnight Preprod testnet.
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://chromewebstore.google.com/detail/lace/gaidhhbmfljhhdeipdbhbhieiihaglgg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-200 text-xs font-semibold transition-colors"
+          >
+            <span>Get Lace Wallet</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       )}
     </div>

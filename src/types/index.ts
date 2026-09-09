@@ -52,9 +52,9 @@ export interface WalletState {
 
 /** Lace wallet API interface */
 export interface MidnightWalletAPI {
-  getUnshieldedAddress(): Promise<string>;
-  getShieldedAddress?(): Promise<string>;
-  signTransaction(tx: unknown): Promise<unknown>;
+  getUnshieldedAddress(): Promise<string | { unshieldedAddress: string }>;
+  getShieldedAddress?(): Promise<string | { shieldedAddress: string }>;
+  signTransaction?(tx: unknown): Promise<unknown>;
   getBalance?(): Promise<{ unshielded: string; shielded: string }>;
 }
 

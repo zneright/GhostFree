@@ -3,38 +3,32 @@
 // Lace Wallet integration via window.midnight.mnLace
 // ============================================
 
+import type { InitialAPI, ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
 import type { MidnightWalletAPI } from "../types";
 
-/** Augment window with Midnight wallet injected API */
-declare global {
-  interface Window {
-    midnight?: {
-      mnLace?: {
-        name: string;
-        icon: string;
-        apiVersion: string;
-        connect: (networkId: string) => Promise<MidnightWalletAPI>;
-      };
-      [walletId: string]: unknown;
-    };
-  }
-}
+export type LaceInitialAPI = InitialAPI;
+export type LaceConnectedAPI = ConnectedAPI;
 
 const DETECTION_INTERVAL_MS = 100;
 const DETECTION_TIMEOUT_MS = 5000;
+
+function getLaceInjected(): InitialAPI | undefined {
+  if (typeof window === "undefined") return undefined;
+  return window.midnight?.mnLace as InitialAPI | undefined;
+}
 
 /**
  * Wait for the Lace wallet extension to inject its API into window.midnight.
  * Polls every 100ms for up to 5 seconds.
  */
 export async function detectLaceWallet(): Promise<boolean> {
-  if (window.midnight?.mnLace) return true;
+  if (getLaceInjected()) return true;
 
   return new Promise((resolve) => {
     let elapsed = 0;
     const interval = setInterval(() => {
       elapsed += DETECTION_INTERVAL_MS;
-      if (window.midnight?.mnLace) {
+      if (getLaceInjected()) {
         clearInterval(interval);
         resolve(true);
       } else if (elapsed >= DETECTION_TIMEOUT_MS) {
@@ -50,18 +44,19 @@ export async function detectLaceWallet(): Promise<boolean> {
  */
 export async function connectLaceWallet(
   networkId: string = "preprod"
-): Promise<MidnightWalletAPI> {
+): Promise<ConnectedAPI | MidnightWalletAPI> {
   const detected = await detectLaceWallet();
+  const lace = getLaceInjected();
 
-  if (!detected || !window.midnight?.mnLace) {
+  if (!detected || !lace) {
     throw new Error(
       "Lace wallet not detected. Please install the Lace browser extension and refresh the page."
     );
   }
 
   try {
-    const api = await window.midnight.mnLace.connect(networkId);
-    return api;
+    const api = await lace.connect(networkId);
+    return api as ConnectedAPI | MidnightWalletAPI;
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     if (msg.includes("rejected") || msg.includes("denied") || msg.includes("cancelled")) {
@@ -74,9 +69,10 @@ export async function connectLaceWallet(
 /**
  * Get the unshielded (public) address from a connected wallet API.
  */
-export async function getWalletAddress(api: MidnightWalletAPI): Promise<string> {
+export async function getWalletAddress(api: ConnectedAPI | MidnightWalletAPI): Promise<string> {
   try {
-    return await api.getUnshieldedAddress();
+    const addr = await api.getUnshieldedAddress();
+    return typeof addr === "string" ? addr : JSON.stringify(addr);
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     throw new Error(`Failed to retrieve wallet address: ${msg}`);
