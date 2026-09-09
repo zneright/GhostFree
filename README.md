@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-3%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghostfree-midnight.vercel.app)
+[![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
 
 > **"Stop the ghosts. Protect the people."**  
 > Privacy-preserving zero-knowledge calamity aid distribution and counter contract built on the Midnight Network.
@@ -15,13 +15,12 @@
 
 ## Live Demo
 
+- **Live Demo:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **Vercel Deployment:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
-- **Interactive Circuit Runner (Level 2 & 3):** [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo)
 
 | Interface | URL | Description |
 |---|---|---|
-| 🌐 **Production Web App** | [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app) | Public civic portal, citizen aid claims, and LGU relief dashboard |
-| ⚡ **Interactive Circuit Runner** | [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo) | Rise In Level 2 & 3 interactive wallet connection & zero-knowledge circuit executor |
+| 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
 
 ---
 
@@ -385,7 +384,6 @@ npm run dev
 ```
 The application will launch at:
 - 🏠 **Main Civic Portal:** `http://localhost:5173`
-- ⚡ **Level 2 & 3 Interactive Circuit Runner:** `http://localhost:5173/demo`
 - 👤 **Citizen Claim Flow:** `http://localhost:5173/claim`
 - 🏛️ **LGU Admin Portal:** `http://localhost:5173/admin/login`
 
@@ -457,7 +455,7 @@ For in-depth market problem framing, Midnight architectural justification, crypt
 
 ## Demo Video
 
-- **Walkthrough Video:** `https://youtu.be/z6p7e_a0q7U` *(or follow the Level 3 Step 7 recording checklist to preview the interactive circuit flow at `/demo`)*
+- **Walkthrough Video:** `https://youtu.be/z6p7e_a0q7U`
 
 ---
 
