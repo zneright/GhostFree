@@ -15,8 +15,7 @@
 
 ## Live Demo
 
-- **Live Demo:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
-- **Vercel Deployment:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
+- **Vercel Deployment:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **Interactive Circuit Runner (Level 2 & 3):** [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo)
 
 | Interface | URL | Description |
