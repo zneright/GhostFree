@@ -15,6 +15,10 @@
 
 ## Live Demo
 
+- **Live Demo:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
+- **Vercel Deployment:** [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app)
+- **Interactive Circuit Runner (Level 2 & 3):** [https://ghostfree-midnight.vercel.app/demo](https://ghostfree-midnight.vercel.app/demo)
+
 | Interface | URL | Description |
 |---|---|---|
 | 🌐 **Production Web App** | [https://ghostfree-midnight.vercel.app](https://ghostfree-midnight.vercel.app) | Public civic portal, citizen aid claims, and LGU relief dashboard |
@@ -29,7 +33,7 @@
 | **Midnight Preprod** | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` | ✅ Active & Verified |
 | **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ✅ Active & Verified |
 
-*(Verified and deployed on Midnight Preprod and Preview testnets)*
+*(Verified and deployed on Midnight Preprod and Preview testnets. Configured in `midnight.config.ts` and `src/configuration/midnight.config.ts`)*
 
 ---
 
@@ -124,6 +128,173 @@ GhostFree enforces strict separation between public ledger commitments and priva
 > 3. The citizen's private secret authorization credentials (`userSecretKey`).
 >
 > *All zero-knowledge witness computations occur exclusively on the claimant's local hardware before any transaction envelope touches the Midnight P2P network.*
+
+---
+
+## Smart Contract Source & Circuit Architecture
+
+Both Midnight Compact contracts are tracked in [`contracts/`](contracts/) and compiled to [`managed/`](managed/):
+
+### 1. `contracts/counter.compact` (Midnight Builder Challenge Contract)
+
+```compact
+// Public ledger state
+export ledger counter: Uint64;
+export ledger totalIncrements: Uint64;
+
+// Initialization circuit
+export circuit initialize(): Void {
+  counter = 0;
+  totalIncrements = 0;
+}
+
+// Private increment circuit with zero-knowledge verification
+export circuit increment(
+  // Private witness inputs: kept strictly on the caller's local machine
+  witness incrementBy: Uint64,
+  witness userSecretKey: Bytes(32)
+): Void {
+  // 1. Circuit assertion: Validate private witness constraint in ZK
+  assert(incrementBy > 0, "INCREMENT_MUST_BE_POSITIVE: Increment amount must be greater than zero.");
+  assert(incrementBy <= 100, "INCREMENT_LIMIT_EXCEEDED: Cannot increment by more than 100 per step.");
+
+  // 2. Circuit assertion: Validate private secret key length / entropy
+  assert(userSecretKey != pad(0x00), "INVALID_SECRET_KEY: User secret cannot be empty.");
+
+  // 3. Deliberate disclosure: Commit state changes to the public ledger
+  disclose(counter = counter + incrementBy);
+  disclose(totalIncrements = totalIncrements + 1);
+}
+
+// Reset circuit (resets tally while requiring private authorization)
+export circuit reset(
+  witness adminSecret: Bytes(32)
+): Void {
+  assert(adminSecret != pad(0x00), "UNAUTHORIZED: Admin secret required.");
+  disclose(counter = 0);
+}
+```
+
+- 🟢 **Public Ledger Declarations:**
+  - `export ledger counter: Uint64;` — Cumulative public counter.
+  - `export ledger totalIncrements: Uint64;` — Total validated ZK operations executed.
+- 🔴 **Private Witnesses:**
+  - `witness incrementBy: Uint64;` — Caller's secret increment amount. Never exposed on-chain.
+  - `witness userSecretKey: Bytes(32);` — Caller's private authorization entropy.
+- 🟡 **Deliberate Disclosure & State Commits:**
+  - `disclose(counter = counter + incrementBy);` — Discloses only the aggregated outcome.
+  - `disclose(totalIncrements = totalIncrements + 1);` — Discloses operation counter step.
+- ⚖️ **Circuit Assertions:**
+  - Range constraint: `assert(incrementBy > 0 && incrementBy <= 100)`
+  - Entropy constraint: `assert(userSecretKey != pad(0x00))`
+
+---
+
+### 2. `contracts/GhostFree.compact` (Decentralized Calamity Aid Distribution)
+
+```compact
+// PUBLIC LEDGER STATE
+export ledger merkleRoot: Bytes(32);
+export ledger fundBalance: Uint64;
+export ledger perClaimAmount: Uint64;
+export ledger operationName: Opaque;
+export ledger adminAddress: Opaque;
+export ledger spentNullifiers: Map<Bytes(32), Boolean>;
+export ledger claimCount: Uint64;
+
+// INITIALIZATION
+export circuit initialize(
+  root: Bytes(32),
+  claimAmount: Uint64,
+  name: Opaque
+): Void {
+  merkleRoot = root;
+  perClaimAmount = claimAmount;
+  operationName = name;
+  adminAddress = pad(context.caller);
+  fundBalance = context.value;
+  claimCount = 0;
+}
+
+// CITIZEN CLAIM CIRCUIT
+export circuit claimAid(
+  // Private Witnesses (stay on claimant's device)
+  witness residentID: Bytes(32),
+  witness residentSecret: Bytes(32),
+  witness merkleProof: Vector<Bytes(32)>,
+  witness merkleDirections: Vector<Boolean>,
+
+  // Public Input (disclosed to chain)
+  nullifier: Bytes(32)
+): Void {
+  // Step 1: Compute leaf hash from private credentials
+  const leaf: Bytes(32) = persistentHash(residentID, residentSecret);
+
+  // Step 2: Verify Merkle tree inclusion
+  var current: Bytes(32) = leaf;
+  for (var i: Uint64 = 0; i < merkleProof.length; i = i + 1) {
+    const sibling: Bytes(32) = merkleProof[i];
+    const isLeft: Boolean = merkleDirections[i];
+    if (isLeft) {
+      current = persistentHash(sibling, current);
+    } else {
+      current = persistentHash(current, sibling);
+    }
+  }
+  assert(current == merkleRoot, "MERKLE_PROOF_INVALID");
+
+  // Step 3: Compute deterministic nullifier
+  const expectedNullifier: Bytes(32) = persistentHash(leaf, pad(context.self));
+  assert(nullifier == expectedNullifier, "NULLIFIER_MISMATCH");
+
+  // Step 4: Anti-Ghost Check — ensure nullifier has NOT been spent
+  assert(!spentNullifiers[nullifier], "ALREADY_CLAIMED");
+
+  // Step 5: Disclose nullifier as spent (public state update)
+  disclose(spentNullifiers[nullifier] = true);
+
+  // Step 6: Escrow solvency check
+  assert(fundBalance >= perClaimAmount, "INSUFFICIENT_FUNDS");
+
+  // Step 7: Update fund balance
+  fundBalance = fundBalance - perClaimAmount;
+  claimCount = claimCount + 1;
+
+  // Step 8: Transfer aid to citizen's wallet
+  transfer(context.caller, perClaimAmount);
+}
+```
+
+- 🟢 **Public Ledger Declarations:**
+  - `merkleRoot: Bytes(32)` — Cryptographic root of pre-registered eligible victims.
+  - `spentNullifiers: Map<Bytes(32), Boolean>` — On-chain spent nullifier registry.
+  - `fundBalance: Uint64` & `perClaimAmount: Uint64` — Treasury balance.
+  - `claimCount: Uint64` — Aggregate count of disbursed relief payouts.
+- 🔴 **Private Witnesses:**
+  - `witness residentID: Bytes(32)` — National ID hash. **NEVER disclosed.**
+  - `witness residentSecret: Bytes(32)` — Resident secret PIN. **NEVER disclosed.**
+  - `witness merkleProof: Vector<Bytes(32)>` — Sibling tree path.
+  - `witness merkleDirections: Vector<Boolean>` — Branch directions.
+- 🛡️ **The Anti-Ghost Nullifier Guarantee:**
+  - `nullifier = persistentHash(leaf, pad(context.self))`
+  - Ensures exactly one claim per citizen per relief contract without revealing citizen identity.
+  - Smart contract verifies `!spentNullifiers[nullifier]` and commits `disclose(spentNullifiers[nullifier] = true)`.
+
+---
+
+### 3. Managed Compilation Artifacts (`managed/`)
+
+The Compact compilation pipeline generates TypeScript bindings, runtime adapters, and circuit manifests:
+
+| Contract | Manifest | Bindings | Verifying Artifacts |
+|---|---|---|---|
+| `counter.compact` | [`managed/counter/circuit-manifest.json`](managed/counter/circuit-manifest.json) | `contract/index.d.ts`, `contract/index.cjs` | Public ledger reader, initialize/increment/reset circuits |
+| `GhostFree.compact` | [`managed/GhostFree/circuit-manifest.json`](managed/GhostFree/circuit-manifest.json) | `contract/index.d.ts`, `contract/index.cjs` | Merkle membership, nullifier tracking, aid disbursement |
+
+Compile contracts locally at any time:
+```bash
+npm run compile
+```
 
 ---
 
