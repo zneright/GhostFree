@@ -453,6 +453,19 @@ For in-depth market problem framing, Midnight architectural justification, crypt
 
 ---
 
+## Usage Guide
+
+For a complete, non-technical walkthrough of how to use GhostFree — including step-by-step instructions for citizens claiming aid and LGU administrators managing relief operations — see **[docs/USAGE.md](docs/USAGE.md)**.
+
+---
+
+## Product X Profile
+
+<!-- PLACEHOLDER — Add your GhostFree X (Twitter) product account link here after creating it -->
+*[To be added after creating the product X account]*
+
+---
+
 ## Demo Video
 
 - **Walkthrough Video:** `https://youtu.be/z6p7e_a0q7U`
