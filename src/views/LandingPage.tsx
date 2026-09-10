@@ -25,12 +25,15 @@ import {
   Server,
   Key,
 } from "lucide-react";
+import TransparencyCard from "../components/TransparencyCard";
+import OnboardingModal from "../components/OnboardingModal";
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -137,6 +140,13 @@ export const LandingPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowOnboarding(true)}
+            className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-sky/30 text-civic-sky hover:bg-civic-sky/10"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Tour
+          </button>
           <button
             onClick={() => navigate("/demo")}
             className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-trust/40 text-civic-trust hover:bg-civic-trust/10"
@@ -253,6 +263,11 @@ export const LandingPage: React.FC = () => {
               <div className="text-[0.7rem] text-slate-400 mt-1">{stat.sub}</div>
             </div>
           ))}
+        </div>
+
+        {/* Live Network Transparency Card */}
+        <div className="w-full max-w-5xl mb-12">
+          <TransparencyCard />
         </div>
 
         {/* Dual Primary CTA Cards */}
@@ -483,6 +498,12 @@ export const LandingPage: React.FC = () => {
           <span className="text-civic-trust font-medium">Lace Wallet & Compact ZK</span>
         </p>
       </footer>
+
+      {/* Onboarding Tour Modal */}
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </div>
   );
 };

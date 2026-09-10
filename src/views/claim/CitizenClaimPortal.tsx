@@ -10,7 +10,10 @@ import { useMidnightContract } from "../../hooks/useMidnightContract";
 import { MIDNIGHT_CONFIG } from "../../configuration/midnight.config";
 import { validateClaimInputs } from "../../services/proof.service";
 import { computeLeafHash, computeNullifier } from "../../services/merkle.service";
-import type { ClaimStep, ClaimResult } from "../../types";
+import { generateReliefReceipt, submitFeedback } from "../../services/feedback.service";
+import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
+import ReliefReceiptModal from "../../components/ReliefReceiptModal";
+import OnboardingModal from "../../components/OnboardingModal";
 import {
   Shield,
   Wallet,
@@ -29,6 +32,9 @@ import {
   ExternalLink,
   RefreshCw,
   Smartphone,
+  FileCheck2,
+  Sparkles,
+  Star,
 } from "lucide-react";
 
 const CitizenClaimPortal: React.FC = () => {
@@ -43,6 +49,11 @@ const CitizenClaimPortal: React.FC = () => {
   const [inputError, setInputError] = useState<string | null>(null);
   const [provingProgress, setProvingProgress] = useState(0);
   const [result, setResult] = useState<ClaimResult | null>(null);
+  const [receipt, setReceipt] = useState<ReliefReceipt | null>(null);
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -108,11 +119,20 @@ const CitizenClaimPortal: React.FC = () => {
         MIDNIGHT_CONFIG.contractAddress
       );
 
+      const claimAmount = contractState.perClaimAmount || 5000;
       setResult({
         success: true,
         transactionHash: claimResult.txHash,
-        amount: contractState.perClaimAmount || 5000,
+        amount: claimAmount,
       });
+
+      // Automatically generate a zero-knowledge verifiable receipt
+      const generatedReceipt = generateReliefReceipt(
+        claimResult.txHash,
+        claimAmount,
+        "Typhoon Calamity Emergency Relief"
+      );
+      setReceipt(generatedReceipt);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Proof generation failed. Please try again.";
       setResult({
@@ -125,6 +145,17 @@ const CitizenClaimPortal: React.FC = () => {
     setStep("result");
   };
 
+  const handleQuickFeedback = (selectedRating: number) => {
+    setFeedbackRating(selectedRating);
+    setFeedbackSubmitted(true);
+    submitFeedback({
+      rating: selectedRating,
+      category: "usability",
+      role: "citizen",
+      comment: `Post-claim 1-click survey: ${selectedRating}/5 stars after successful aid distribution.`,
+    });
+  };
+
   const handleReset = () => {
     setStep(connected ? "credentials" : "connect");
     setNationalId("");
@@ -132,6 +163,10 @@ const CitizenClaimPortal: React.FC = () => {
     setInputError(null);
     setProvingProgress(0);
     setResult(null);
+    setReceipt(null);
+    setShowReceiptModal(false);
+    setFeedbackRating(null);
+    setFeedbackSubmitted(false);
   };
 
   return (
@@ -153,6 +188,13 @@ const CitizenClaimPortal: React.FC = () => {
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-civic-sky" />
           <span className="text-white text-sm font-semibold">GhostFree</span>
+          <button
+            onClick={() => setShowOnboarding(true)}
+            className="ml-1 px-2 py-0.5 rounded text-[0.65rem] font-medium bg-civic-sky/10 text-civic-sky border border-civic-sky/20 hover:bg-civic-sky/20 transition-colors flex items-center gap-1"
+          >
+            <Sparkles className="w-3 h-3" />
+            <span>Tour</span>
+          </button>
         </div>
 
         {connected && (
@@ -466,7 +508,7 @@ const CitizenClaimPortal: React.FC = () => {
                   </p>
 
                   {result.transactionHash && (
-                    <div className="w-full p-4 rounded-xl bg-shield-dark/80 border border-shield-glass/20 mb-6">
+                    <div className="w-full p-4 rounded-xl bg-shield-dark/80 border border-shield-glass/20 mb-4">
                       <p className="text-shield-muted text-xs mb-1">Transaction Hash</p>
                       <p className="text-civic-sky text-xs font-mono break-all">
                         {result.transactionHash}
@@ -479,6 +521,45 @@ const CitizenClaimPortal: React.FC = () => {
                       </a>
                     </div>
                   )}
+
+                  {/* Verifiable Relief Receipt Trigger */}
+                  {receipt && (
+                    <button
+                      onClick={() => setShowReceiptModal(true)}
+                      className="w-full mb-4 py-2.5 px-4 rounded-xl bg-accent-success/15 hover:bg-accent-success/25 border border-accent-success/30 text-accent-success font-semibold text-xs transition-all flex items-center justify-center gap-2"
+                    >
+                      <FileCheck2 className="w-4 h-4" />
+                      <span>View & Download Proof Receipt</span>
+                    </button>
+                  )}
+
+                  {/* Post-Claim Satisfaction Micro-Survey */}
+                  <div className="w-full p-3.5 rounded-xl bg-white/[0.03] border border-white/10 mb-6 text-center">
+                    <p className="text-[0.7rem] text-white/70 mb-2">
+                      {feedbackSubmitted
+                        ? "Thank you! Your feedback helps protect more calamity victims."
+                        : "How was your claim experience today?"}
+                    </p>
+                    {!feedbackSubmitted ? (
+                      <div className="flex items-center justify-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            onClick={() => handleQuickFeedback(star)}
+                            className="p-1 text-white/30 hover:text-accent-gold transition-all hover:scale-125"
+                            aria-label={`Rate ${star} stars`}
+                          >
+                            <Star className="w-5 h-5 hover:fill-accent-gold" />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-1.5 text-accent-gold text-xs font-medium">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-accent-success" />
+                        <span>Rating recorded: {feedbackRating} / 5 stars</span>
+                      </div>
+                    )}
+                  </div>
 
                   <div className="trust-badge">
                     <ShieldCheck className="w-3.5 h-3.5" />
@@ -532,6 +613,17 @@ const CitizenClaimPortal: React.FC = () => {
           </p>
         </div>
       </main>
+      {/* Modals */}
+      <ReliefReceiptModal
+        receipt={receipt}
+        isOpen={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+      />
+
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </div>
   );
 };

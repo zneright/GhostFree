@@ -10,7 +10,13 @@ import { useMidnightWallet } from "../../contexts/MidnightWalletContext";
 import { parseEligibilityCSV, getCSVSummary } from "../../services/csv.service";
 import { buildMerkleTree } from "../../services/merkle.service";
 import { createReliefOperation, getAdminOperations } from "../../repositories/relief.repository";
-import type { EligibilityEntry, ReliefOperation } from "../../types";
+import {
+  getFeedbackList,
+  updateFeedbackStatus,
+  computeFeedbackAnalytics,
+} from "../../services/feedback.service";
+import type { EligibilityEntry, ReliefOperation, UserFeedback } from "../../types";
+import TransparencyCard from "../../components/TransparencyCard";
 import {
   Upload,
   FileSpreadsheet,
@@ -31,6 +37,10 @@ import {
   Landmark,
   History,
   RefreshCw,
+  MessageSquarePlus,
+  Star,
+  CheckCircle,
+  Filter,
 } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
@@ -63,6 +73,22 @@ const AdminDashboard: React.FC = () => {
   const [operations, setOperations] = useState<ReliefOperation[]>([]);
   const [loadingOps, setLoadingOps] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+
+  // Feedback & Insights State
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackList, setFeedbackList] = useState<UserFeedback[]>(() => getFeedbackList());
+  const [feedbackFilter, setFeedbackFilter] = useState<string>("all");
+
+  const handleStatusChange = (id: string, newStatus: UserFeedback["status"]) => {
+    updateFeedbackStatus(id, newStatus);
+    setFeedbackList(getFeedbackList());
+  };
+
+  const feedbackAnalytics = computeFeedbackAnalytics(feedbackList);
+  const filteredFeedbacks =
+    feedbackFilter === "all"
+      ? feedbackList
+      : feedbackList.filter((f) => f.category === feedbackFilter);
 
   // CSV Upload Handler
   const handleCSVUpload = useCallback(async (file: File) => {
@@ -239,16 +265,35 @@ const AdminDashboard: React.FC = () => {
               Upload eligibility lists, compute Merkle roots, and deploy funds on Midnight
             </p>
           </div>
-          <button
-            onClick={() => {
-              setShowHistory(!showHistory);
-              if (!showHistory) loadHistory();
-            }}
-            className="btn-civic btn-secondary text-sm"
-          >
-            <History className="w-4 h-4" />
-            {showHistory ? "Hide History" : "View History"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowFeedback(!showFeedback)}
+              className={`btn-civic text-sm flex items-center gap-1.5 ${
+                showFeedback ? "btn-primary" : "btn-secondary"
+              }`}
+            >
+              <MessageSquarePlus className="w-4 h-4 text-accent-gold" />
+              <span>Feedback & Insights</span>
+              <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-accent-gold/20 text-accent-gold font-bold">
+                {feedbackList.length}
+              </span>
+            </button>
+            <button
+              onClick={() => {
+                setShowHistory(!showHistory);
+                if (!showHistory) loadHistory();
+              }}
+              className="btn-civic btn-secondary text-sm"
+            >
+              <History className="w-4 h-4" />
+              {showHistory ? "Hide History" : "View History"}
+            </button>
+          </div>
+        </div>
+
+        {/* Network Transparency Card */}
+        <div className="mb-6">
+          <TransparencyCard />
         </div>
 
         {/* Operation History Panel */}
@@ -300,6 +345,167 @@ const AdminDashboard: React.FC = () => {
                 ))}
               </div>
             )}
+          </div>
+        )}
+
+        {/* Citizen Feedback & Insights Hub */}
+        {showFeedback && (
+          <div className="glass-card p-6 mb-8 animate-fade-in-down border border-civic-trust/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+              <div>
+                <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                  <MessageSquarePlus className="w-5 h-5 text-accent-gold" />
+                  Citizen Feedback & Living Triage Center
+                </h3>
+                <p className="text-shield-muted text-xs mt-0.5">
+                  Real-time sentiment and suggestions from field claimants and responders
+                </p>
+              </div>
+
+              {/* Filter Tabs */}
+              <div className="flex flex-wrap items-center gap-1.5 bg-black/40 p-1 rounded-xl border border-white/5 text-xs">
+                {["all", "usability", "wallet", "privacy", "speed", "feature_request"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setFeedbackFilter(tab)}
+                    className={`px-2.5 py-1 rounded-lg text-[0.7rem] font-medium transition-colors ${
+                      feedbackFilter === tab
+                        ? "bg-civic-blue text-white"
+                        : "text-white/50 hover:text-white"
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1).replace("_", " ")}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Metrics Overview */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+                <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
+                  Citizen CSAT Score
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xl font-bold text-accent-gold">
+                    {feedbackAnalytics.averageRating}
+                  </span>
+                  <div className="flex text-accent-gold">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={`w-3 h-3 ${
+                          s <= Math.round(feedbackAnalytics.averageRating)
+                            ? "fill-accent-gold"
+                            : "opacity-30"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+                <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
+                  Total Submissions
+                </span>
+                <span className="text-xl font-bold text-white">
+                  {feedbackAnalytics.totalCount}
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+                <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
+                  Actioned / Resolved
+                </span>
+                <span className="text-xl font-bold text-accent-success">
+                  {feedbackAnalytics.statusDistribution["resolved"] || 0}
+                </span>
+              </div>
+
+              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+                <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
+                  Under Triage
+                </span>
+                <span className="text-xl font-bold text-accent-warning">
+                  {(feedbackAnalytics.statusDistribution["new"] || 0) +
+                    (feedbackAnalytics.statusDistribution["reviewed"] || 0)}
+                </span>
+              </div>
+            </div>
+
+            {/* Feedback Triage List */}
+            <div className="space-y-2.5 max-h-80 overflow-y-auto hide-scrollbar">
+              {filteredFeedbacks.length === 0 ? (
+                <p className="text-shield-muted text-xs py-4 text-center">
+                  No feedback matching the selected filter.
+                </p>
+              ) : (
+                filteredFeedbacks.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 rounded-xl bg-black/30 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
+                    <div className="space-y-1 max-w-xl">
+                      <div className="flex items-center gap-2">
+                        <div className="flex text-accent-gold">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <Star
+                              key={s}
+                              className={`w-3 h-3 ${
+                                s <= item.rating ? "fill-accent-gold" : "text-white/20"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="px-2 py-0.5 rounded text-[0.65rem] font-semibold bg-white/10 text-white/80">
+                          {item.role.replace("_", " ")}
+                        </span>
+                        <span className="px-2 py-0.5 rounded text-[0.65rem] font-medium bg-civic-blue/20 text-civic-sky border border-civic-sky/30">
+                          {item.category}
+                        </span>
+                        <span className="text-[0.65rem] text-white/30">
+                          {new Date(item.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-xs text-white/80 leading-relaxed">
+                        "{item.comment}"
+                      </p>
+                    </div>
+
+                    {/* Admin Status Triage */}
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span
+                        className={`text-[0.65rem] px-2 py-0.5 rounded font-bold uppercase ${
+                          item.priority === "high"
+                            ? "bg-accent-danger/20 text-accent-danger"
+                            : item.priority === "medium"
+                            ? "bg-accent-warning/20 text-accent-warning"
+                            : "bg-white/10 text-white/50"
+                        }`}
+                      >
+                        {item.priority}
+                      </span>
+                      <select
+                        value={item.status}
+                        onChange={(e) =>
+                          handleStatusChange(
+                            item.id,
+                            e.target.value as UserFeedback["status"]
+                          )
+                        }
+                        className="px-2 py-1 rounded-lg text-xs bg-white/5 border border-white/10 text-white focus:border-civic-sky focus:outline-none"
+                      >
+                        <option value="new" className="bg-[#0A1628]">New</option>
+                        <option value="reviewed" className="bg-[#0A1628]">Under Review</option>
+                        <option value="planned" className="bg-[#0A1628]">Planned</option>
+                        <option value="resolved" className="bg-[#0A1628]">Resolved</option>
+                      </select>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         )}
 

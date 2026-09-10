@@ -4,9 +4,13 @@
 //
 // Shared page layout wrapper providing consistent structure
 // across all GhostFree portal views. Renders a minimal
-// navigation header and footer with dynamic content area.
+// navigation header and footer with dynamic content area,
+// quick onboarding tour access, and feedback actions.
 
-import React from "react";
+import React, { useState } from "react";
+import { Sparkles, MessageSquarePlus } from "lucide-react";
+import OnboardingModal from "./OnboardingModal";
+import FeedbackWidget from "./FeedbackWidget";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,6 +33,8 @@ const Layout: React.FC<LayoutProps> = ({
   showFooter = true,
   className = "",
 }) => {
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#0A1628] text-white">
       {/* Header */}
@@ -47,8 +53,18 @@ const Layout: React.FC<LayoutProps> = ({
               </span>
             )}
           </div>
-          <div className="text-xs text-white/40 hidden sm:block">
-            Midnight Network · Privacy-First Civic Aid
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowOnboarding(true)}
+              className="px-2.5 py-1 rounded-lg text-xs text-civic-sky hover:bg-civic-sky/10 border border-civic-sky/20 transition-colors flex items-center gap-1.5 font-medium"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Tour</span>
+            </button>
+            <div className="text-xs text-white/40 hidden sm:block">
+              Midnight Network · Privacy-First Civic Aid
+            </div>
           </div>
         </div>
       </header>
@@ -65,12 +81,25 @@ const Layout: React.FC<LayoutProps> = ({
             <span>
               © {new Date().getFullYear()} GhostFree — Stop the ghosts. Protect the people.
             </span>
-            <span>
-              Built on Midnight Network · Zero-Knowledge Privacy
-            </span>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setShowOnboarding(true)}
+                className="hover:text-white transition-colors"
+              >
+                How It Works
+              </button>
+              <span>·</span>
+              <span>Built on Midnight Network · Zero-Knowledge Privacy</span>
+            </div>
           </div>
         </footer>
       )}
+
+      {/* Onboarding Tour Modal */}
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </div>
   );
 };
