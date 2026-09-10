@@ -41,10 +41,15 @@ Visit the GhostFree Citizen Claim Portal:
 - The portal privately checks whether your identity is included in the approved disaster relief roster using a cryptographic proof.
 - You will see **"Verifying your eligibility privately..."** while the proof is being generated on your device.
 
-#### Step 5: Receive Your Aid
+#### Step 5: Receive Your Aid & Download Proof Receipt
 - If eligible and you haven't already claimed, the smart contract will automatically transfer your aid allocation to your wallet.
 - You will see a confirmation with a transaction reference.
+- Click **"View & Download Proof Receipt"** to open your **Confidential Calamity Relief Receipt**. You can copy the proof text or download the JSON receipt to present to evacuation marshals at local relief checkpoints.
+- Rate your claim experience using the **1-click satisfaction stars** to provide immediate feedback to the response team.
 - If you've already claimed, you will see: **"This identity has already received aid."**
+
+#### Quick Tip: Interactive Onboarding Tour
+- If you are new to zero-knowledge privacy, click the **"Tour"** button in the header at any time to view the 3-step interactive onboarding walkthrough.
 
 ---
 
@@ -63,6 +68,16 @@ Visit the GhostFree Citizen Claim Portal:
 - Deploy the relief operation smart contract to Midnight Preprod.
 - Monitor claim activity in real time from the admin dashboard.
 - All claims are anonymous — you can see how many people claimed, but not who.
+
+#### Step 4: Triage Citizen Feedback
+- Click the **"Feedback & Insights"** button in the dashboard action bar.
+- View real-time Citizen CSAT metrics, filter feedback by topic (Usability, Wallet, Speed, Privacy), and update triage statuses (`New` → `Under Review` → `Planned` → `Resolved`).
+
+---
+
+### Submitting General Feedback
+- On any page, click the floating **"Give Feedback"** button in the bottom right corner.
+- Rate your experience (1–5 stars), choose your role, select a feedback topic, and write your suggestions. Zero personal identity data is ever tracked or required.
 
 ---
 

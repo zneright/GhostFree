@@ -49,6 +49,10 @@ GhostFree combines **Midnight Network's dual-state zero-knowledge architecture**
 - **Zero-Knowledge Eligibility:** Citizens verify their inclusion in pre-registered disaster rosters via client-side Merkle membership proofs without disclosing their National ID or identity credentials.
 - **Cryptographic Anti-Ghost Guarantee:** Every valid claim calculates a deterministic cryptographic nullifier. The smart contract validates that the nullifier has never been spent, preventing duplicate aid claims without ever discovering who claimed it.
 - **Gas Delegation & Low-Bandwidth Optimization:** Designed mobile-first for disaster victims in field zones with zero required transaction fees (`tDUST` execution fees are escrow-sponsored).
+- **Interactive User Onboarding Tour:** 3-step civic-tech walkthrough explaining zero-knowledge witness sovereignty and claim mechanics to first-time claimants and officials.
+- **Confidential Calamity Relief Receipts:** Downloadable, verifiable cryptographic receipts that citizens can present to emergency checkpoints without leaking identity credentials.
+- **Living In-App Feedback Loop & Triage Center:** Embedded feedback collection across all views paired with a real-time CSAT analytics and triage board in the LGU admin dashboard.
+- **Preprod Protocol Transparency:** Real-time visibility into the Midnight Preprod smart contract, active address, and zero-knowledge verification latency.
 
 ---
 
@@ -405,17 +409,35 @@ npm test
 
 ### Test Suite Output Verification
 ```text
- ✓ tests/counter.test.ts (3 tests) 22ms
+ ✓ tests/counter.test.ts (3 tests) 12ms
+ ✓ tests/feedback.test.ts (6 tests) 11ms
 
- Test Files  1 passed (1)
-      Tests  3 passed (3)
-   Start at  00:51:18
-   Duration  809ms (transform 64ms, setup 0ms, collect 66ms, tests 22ms)
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  23:26:09
+   Duration  766ms (transform 132ms, setup 0ms, collect 118ms, tests 23ms, environment 1ms, prepare 404ms)
 
   ✓ Test 1: Circuit Logic — enforces positive range and rejects invalid increments
   ✓ Test 2: State Transitions — correctly accumulates counter and operation tally
   ✓ Test 3: Privacy Verification — private witness credentials never leak into ledger state
+  ✓ Test 4: Feedback Initialization — seed feedback loads on initial launch
+  ✓ Test 5: Feedback Submission — assigns priority based on citizen satisfaction rating
+  ✓ Test 6: Priority Calculation — marks low ratings (<= 2 stars) as urgent triage
+  ✓ Test 7: Feedback Triage — allows LGU admin status update (reviewed -> planned -> resolved)
+  ✓ Test 8: Analytics Computation — accurately calculates CSAT and category breakdown
+  ✓ Test 9: Proof of Relief Receipt — derives zero-knowledge receipt without identity leakage
 ```
+
+---
+
+## Living Feedback Loop & User Insights (Level 5)
+
+GhostFree operates a continuous, structured user feedback loop bridging disaster-affected citizens, municipal LGU administrators, and security auditors.
+
+- **Full Feedback Report:** Read **[`docs/FEEDBACK.md`](docs/FEEDBACK.md)** for the complete Level 5 report covering user cohorts, onboarding methodology, quantitative survey metrics (CSAT `4.7 / 5.0`), MoSCoW prioritization, and the feedback-driven changelog.
+- **In-App Feedback Widget:** Global feedback collection accessible from any page (`src/components/FeedbackWidget.tsx`), capturing 5-star ratings, user roles, topic tags, and comments with zero personal identity tracking.
+- **LGU Admin Triage Center:** Embedded directly inside the Admin Dashboard (`src/views/admin/AdminDashboard.tsx`), enabling municipal officials to monitor real-time CSAT metrics and triage issues (`New` → `Under Review` → `Planned` → `Resolved`).
+- **Post-Claim Micro-Survey & Confidential Receipts:** 1-click star rating on Step 4 of the claim portal and downloadable cryptographic vouchers (`src/components/ReliefReceiptModal.tsx`) built directly from field claimant requests.
 
 ---
 
@@ -455,7 +477,8 @@ For in-depth market problem framing, Midnight architectural justification, crypt
 
 ## Usage Guide
 
-For a complete, non-technical walkthrough of how to use GhostFree — including step-by-step instructions for citizens claiming aid and LGU administrators managing relief operations — see **[docs/USAGE.md](docs/USAGE.md)**.
+For a complete, non-technical walkthrough of how to use GhostFree — including step-by-step instructions for citizens claiming aid, downloading relief receipts, taking the onboarding tour, and LGU administrators managing relief operations — see **[docs/USAGE.md](docs/USAGE.md)**.
+
 
 ---
 
