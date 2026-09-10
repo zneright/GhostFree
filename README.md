@@ -459,19 +459,6 @@ For a complete, non-technical walkthrough of how to use GhostFree — including 
 
 ---
 
-## Product X Profile
-
-<!-- PLACEHOLDER — Add your GhostFree X (Twitter) product account link here after creating it -->
-*[To be added after creating the product X account]*
-
----
-
-## Demo Video
-
-- **Walkthrough Video:** `https://youtu.be/z6p7e_a0q7U`
-
----
-
 ## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for full details.
