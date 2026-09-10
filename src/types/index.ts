@@ -93,3 +93,28 @@ export interface ContractState {
   operationName: string;
   totalClaimed: number;
 }
+
+/** User feedback record for continuous feedback loop */
+export interface UserFeedback {
+  id: string;
+  rating: number; // 1 to 5
+  category: 'usability' | 'wallet' | 'speed' | 'privacy' | 'feature_request' | 'general';
+  role: 'citizen' | 'lgu_officer' | 'volunteer' | 'security_researcher' | 'other';
+  comment: string;
+  createdAt: string;
+  status: 'new' | 'reviewed' | 'planned' | 'resolved';
+  priority: 'low' | 'medium' | 'high';
+}
+
+/** Confidential Calamity Relief Receipt */
+export interface ReliefReceipt {
+  receiptId: string;
+  transactionHash: string;
+  timestamp: string;
+  nullifierSnippet: string;
+  operationName: string;
+  amount: number;
+  network: string;
+  status: 'confirmed';
+}
+
