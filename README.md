@@ -52,6 +52,8 @@ GhostFree combines **Midnight Network's dual-state zero-knowledge architecture**
 - **Interactive User Onboarding Tour:** 3-step civic-tech walkthrough explaining zero-knowledge witness sovereignty and claim mechanics to first-time claimants and officials.
 - **Confidential Calamity Relief Receipts:** Downloadable, verifiable cryptographic receipts that citizens can present to emergency checkpoints without leaking identity credentials.
 - **Living In-App Feedback Loop & Triage Center:** Embedded feedback collection across all views paired with a real-time CSAT analytics and triage board in the LGU admin dashboard.
+- **Dual-Key Municipal Quorum Workflow:** Enforces statutory joint authorizations under R.A. 10121 requiring cryptographic approval seals from both the Local DRRM Officer and Municipal Treasurer before funds can be released on Midnight.
+- **Public Calamity Treasury & Audit Explorer (`/transparency`):** Public governance portal tracking real-time relief fund allocations, anonymous nullifier commitments, and one-click Commission on Audit (COA) compliance CSV statements.
 - **Preprod Protocol Transparency:** Real-time visibility into the Midnight Preprod smart contract, active address, and zero-knowledge verification latency.
 
 ---
@@ -409,13 +411,13 @@ npm test
 
 ### Test Suite Output Verification
 ```text
- ✓ tests/counter.test.ts (3 tests) 12ms
- ✓ tests/feedback.test.ts (6 tests) 11ms
+ ✓ tests/counter.test.ts (3 tests) 11ms
+ ✓ tests/feedback.test.ts (6 tests) 9ms
+ ✓ tests/governance.test.ts (6 tests) 19ms
 
- Test Files  2 passed (2)
-      Tests  9 passed (9)
-   Start at  23:26:09
-   Duration  766ms (transform 132ms, setup 0ms, collect 118ms, tests 23ms, environment 1ms, prepare 404ms)
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Duration  864ms (transform 227ms, setup 0ms, collect 266ms, tests 40ms)
 
   ✓ Test 1: Circuit Logic — enforces positive range and rejects invalid increments
   ✓ Test 2: State Transitions — correctly accumulates counter and operation tally
@@ -426,7 +428,23 @@ npm test
   ✓ Test 7: Feedback Triage — allows LGU admin status update (reviewed -> planned -> resolved)
   ✓ Test 8: Analytics Computation — accurately calculates CSAT and category breakdown
   ✓ Test 9: Proof of Relief Receipt — derives zero-knowledge receipt without identity leakage
+  ✓ Test 10: Governance Initialization — baseline QRF operations load with valid quorum
+  ✓ Test 11: Cryptographic Seal — derives deterministic authorization hash for officials
+  ✓ Test 12: Dual-Key Quorum — satisfies quorum when DRRM officer and Treasurer sign
+  ✓ Test 13: Single Role Restriction — rejects duplicate sign-offs from identical roles
+  ✓ Test 14: Treasury Metrics — accurately computes allocated, disbursed, and escrowed funds
+  ✓ Test 15: COA Compliance CSV — generates valid audit report matching COA standards
 ```
+
+---
+
+## Public Calamity Treasury & Dual-Key Quorum Governance
+
+GhostFree is architected for institutional compliance with the Philippine Disaster Risk Reduction & Management Act (R.A. 10121), the Data Privacy Act (R.A. 10173), and Commission on Audit (COA) Circulars:
+
+- **Public Calamity Treasury Explorer (`/transparency`):** A public governance portal allowing citizens, watchdog NGOs, and oversight agencies to audit relief fund velocities, remaining escrow reserves, and anonymous nullifier registries in real time with 0% citizen identity exposure.
+- **One-Click COA Compliance Report (.CSV):** Generates an audit statement compliant with the Government Accounting Manual (GAM) for disaster emergency funds, including operation IDs, Merkle commitments, disbursed amounts, and digital authority seals.
+- **Dual-Key Municipal Quorum:** Enforces statutory joint authorizations in the LGU Admin Portal. Emergency relief operations require cryptographic sign-off from both the **Local DRRM Officer** and the **Municipal Treasurer** before relief funds can be activated on the Midnight smart contract.
 
 ---
 

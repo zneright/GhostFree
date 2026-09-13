@@ -73,6 +73,23 @@ Visit the GhostFree Citizen Claim Portal:
 - Click the **"Feedback & Insights"** button in the dashboard action bar.
 - View real-time Citizen CSAT metrics, filter feedback by topic (Usability, Wallet, Speed, Privacy), and update triage statuses (`New` → `Under Review` → `Planned` → `Resolved`).
 
+#### Step 5: Dual-Key Municipal Quorum Sign-off (R.A. 10121 Joint Clearance)
+- Click the **"Dual-Key Quorum"** button in the action bar.
+- Select any operation with pending authorizations and click **"Sign Operation Quorum"**.
+- Select your official role (**Municipal Treasurer** or **Local DRRM Officer**), enter your Full Name and Government Agency ID / PRC License number.
+- Click **"Seal & Authorize Quorum"** to generate your cryptographic digital authorization seal.
+- Smart contract fund releases are locked until both the DRRM Officer and Municipal Treasurer have applied their digital seals.
+
+---
+
+### For Citizens, Journalists & Watchdog Auditors (Open Transparency)
+
+#### Exploring the Public Calamity Treasury (`/transparency`)
+- Navigate to the **[Public Calamity Treasury & Audit Explorer](https://ghost-free-eight.vercel.app/transparency)** (or click **"Treasury"** in the top navigation).
+- Review aggregate financial indicators: Total Quick Response Funds allocated, amounts disbursed, and remaining escrow balances.
+- Inspect the **Anonymous Nullifier Registry** to observe settled claims in real time without doxxing victims.
+- Click **"Download COA Audit (.CSV)"** to instantly export an official compliance spreadsheet for Commission on Audit reporting.
+
 ---
 
 ### Submitting General Feedback
