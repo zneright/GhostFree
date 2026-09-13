@@ -8,7 +8,7 @@
 // quick onboarding tour access, and feedback actions.
 
 import React, { useState } from "react";
-import { Sparkles, MessageSquarePlus } from "lucide-react";
+import { Sparkles, MessageSquarePlus, Landmark } from "lucide-react";
 import OnboardingModal from "./OnboardingModal";
 import FeedbackWidget from "./FeedbackWidget";
 
@@ -55,6 +55,13 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
 
           <div className="flex items-center gap-3">
+            <a
+              href="/transparency"
+              className="px-2.5 py-1 rounded-lg text-xs text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
+            >
+              <Landmark className="w-3.5 h-3.5 text-accent-gold" />
+              <span>Treasury</span>
+            </a>
             <button
               onClick={() => setShowOnboarding(true)}
               className="px-2.5 py-1 rounded-lg text-xs text-civic-sky hover:bg-civic-sky/10 border border-civic-sky/20 transition-colors flex items-center gap-1.5 font-medium"
@@ -82,6 +89,10 @@ const Layout: React.FC<LayoutProps> = ({
               © {new Date().getFullYear()} GhostFree — Stop the ghosts. Protect the people.
             </span>
             <div className="flex items-center gap-4">
+              <a href="/transparency" className="hover:text-white transition-colors">
+                Public Treasury
+              </a>
+              <span>·</span>
               <button
                 onClick={() => setShowOnboarding(true)}
                 className="hover:text-white transition-colors"

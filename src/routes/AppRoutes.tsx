@@ -13,6 +13,7 @@ const AdminLoginPage = lazy(() => import("../views/admin/AdminLoginPage"));
 const AdminDashboard = lazy(() => import("../views/admin/AdminDashboard"));
 const CitizenClaimPortal = lazy(() => import("../views/claim/CitizenClaimPortal"));
 const Level2DemoPage = lazy(() => import("../views/Level2DemoPage"));
+const TreasuryExplorerPage = lazy(() => import("../views/transparency/TreasuryExplorerPage"));
 
 const PageLoader: React.FC = () => (
   <div className="min-h-dvh flex items-center justify-center bg-civic-navy">
@@ -50,7 +51,12 @@ const AppRoutes: React.FC = () => {
         {/* 4. CITIZEN CLAIM PORTAL (Web3 Public — NO Auth) */}
         <Route path="/claim" element={<CitizenClaimPortal />} />
 
-        {/* 4. CATCH-ALL REDIRECT */}
+        {/* 5. PUBLIC CALAMITY TREASURY & AUDIT EXPLORER (R.A. 10121 & COA) */}
+        <Route path="/transparency" element={<TreasuryExplorerPage />} />
+        <Route path="/treasury" element={<TreasuryExplorerPage />} />
+        <Route path="/audit" element={<TreasuryExplorerPage />} />
+
+        {/* 6. CATCH-ALL REDIRECT */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>

@@ -15,7 +15,11 @@ import {
   updateFeedbackStatus,
   computeFeedbackAnalytics,
 } from "../../services/feedback.service";
-import type { EligibilityEntry, ReliefOperation, UserFeedback } from "../../types";
+import {
+  getGovernanceOperations,
+  signOperationQuorum,
+} from "../../services/governance.service";
+import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } from "../../types";
 import TransparencyCard from "../../components/TransparencyCard";
 import {
   Upload,
@@ -41,6 +45,11 @@ import {
   Star,
   CheckCircle,
   Filter,
+  Key,
+  FileSignature,
+  Stamp,
+  ExternalLink,
+  Lock,
 } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
@@ -78,6 +87,55 @@ const AdminDashboard: React.FC = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackList, setFeedbackList] = useState<UserFeedback[]>(() => getFeedbackList());
   const [feedbackFilter, setFeedbackFilter] = useState<string>("all");
+
+  // Dual-Key Quorum State
+  const [showQuorum, setShowQuorum] = useState(false);
+  const [govOperations, setGovOperations] = useState<ReliefOperation[]>(() => getGovernanceOperations());
+  const [selectedOpToSign, setSelectedOpToSign] = useState<ReliefOperation | null>(null);
+  const [signingRole, setSigningRole] = useState<OfficerRole>("municipal_treasurer");
+  const [signingName, setSigningName] = useState("");
+  const [signingAgencyId, setSigningAgencyId] = useState("");
+  const [signingError, setSigningError] = useState<string | null>(null);
+  const [signingSuccess, setSigningSuccess] = useState<string | null>(null);
+
+  const pendingQuorumCount = govOperations.filter(
+    (op) => op.quorumStatus !== "fully_authorized"
+  ).length;
+
+  const handleSignOperation = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedOpToSign) return;
+    if (!signingName.trim() || !signingAgencyId.trim()) {
+      setSigningError("Please provide your official name and Agency ID.");
+      return;
+    }
+
+    const res = signOperationQuorum(
+      selectedOpToSign.id,
+      signingRole,
+      signingName.trim(),
+      signingAgencyId.trim()
+    );
+
+    if (!res.success) {
+      setSigningError(res.error || "Failed to sign operation.");
+      return;
+    }
+
+    setGovOperations(getGovernanceOperations());
+    setSigningSuccess(
+      `Successfully signed by ${signingName} as ${
+        signingRole === "drrm_officer" ? "DRRM Officer" : "Municipal Treasurer"
+      }!`
+    );
+    setSigningError(null);
+    setTimeout(() => {
+      setSelectedOpToSign(null);
+      setSigningSuccess(null);
+      setSigningName("");
+      setSigningAgencyId("");
+    }, 1500);
+  };
 
   const handleStatusChange = (id: string, newStatus: UserFeedback["status"]) => {
     updateFeedbackStatus(id, newStatus);
@@ -265,10 +323,24 @@ const AdminDashboard: React.FC = () => {
               Upload eligibility lists, compute Merkle roots, and deploy funds on Midnight
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setShowQuorum(!showQuorum)}
+              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
+                showQuorum ? "btn-primary" : "btn-secondary"
+              }`}
+            >
+              <Key className="w-4 h-4 text-accent-success" />
+              <span>Dual-Key Quorum</span>
+              {pendingQuorumCount > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-accent-warning text-black font-bold">
+                  {pendingQuorumCount}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setShowFeedback(!showFeedback)}
-              className={`btn-civic text-sm flex items-center gap-1.5 ${
+              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
                 showFeedback ? "btn-primary" : "btn-secondary"
               }`}
             >
@@ -279,11 +351,19 @@ const AdminDashboard: React.FC = () => {
               </span>
             </button>
             <button
+              onClick={() => navigate("/transparency")}
+              className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 border border-white/10"
+            >
+              <Landmark className="w-4 h-4 text-civic-sky" />
+              <span>Public Treasury</span>
+              <ExternalLink className="w-3 h-3 text-white/40" />
+            </button>
+            <button
               onClick={() => {
                 setShowHistory(!showHistory);
                 if (!showHistory) loadHistory();
               }}
-              className="btn-civic btn-secondary text-sm"
+              className="btn-civic btn-secondary text-xs sm:text-sm"
             >
               <History className="w-4 h-4" />
               {showHistory ? "Hide History" : "View History"}
@@ -504,6 +584,215 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
                 ))
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Dual-Key Municipal Quorum Panel */}
+        {showQuorum && (
+          <div className="glass-card p-6 mb-8 animate-fade-in-down border border-accent-success/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+              <div>
+                <h3 className="text-white font-bold text-lg flex items-center gap-2">
+                  <Key className="w-5 h-5 text-accent-success" />
+                  Dual-Key Municipal Quorum (R.A. 10121 Joint Authorization)
+                </h3>
+                <p className="text-shield-muted text-xs mt-0.5">
+                  Both the Local DRRM Officer and Municipal Treasurer must apply digital authorization seals before funds are released on Midnight.
+                </p>
+              </div>
+              <span className="px-3 py-1 rounded-xl text-xs font-semibold bg-accent-success/15 text-accent-success border border-accent-success/30">
+                Statutory Joint Approval Required
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {govOperations.map((op) => {
+                const drrm = op.approvals?.find((a) => a.officerRole === "drrm_officer");
+                const treas = op.approvals?.find((a) => a.officerRole === "municipal_treasurer");
+                const isFullyAuthorized = op.quorumStatus === "fully_authorized";
+
+                return (
+                  <div
+                    key={op.id}
+                    className={`p-4 rounded-2xl border transition-all ${
+                      isFullyAuthorized
+                        ? "bg-black/30 border-accent-success/30"
+                        : "bg-black/40 border-accent-warning/30"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h4 className="font-bold text-white text-sm leading-snug">
+                        {op.name}
+                      </h4>
+                      <span
+                        className={`text-[0.65rem] px-2 py-0.5 rounded font-bold uppercase shrink-0 ${
+                          isFullyAuthorized
+                            ? "bg-accent-success/20 text-accent-success"
+                            : "bg-accent-warning/20 text-accent-warning"
+                        }`}
+                      >
+                        {isFullyAuthorized ? "Authorized" : "Pending Key"}
+                      </span>
+                    </div>
+
+                    <p className="text-[0.7rem] text-white/50 font-mono mb-3">
+                      Pool: {op.totalFund.toLocaleString()} tNIGHT · Root: {op.merkleRoot.slice(0, 10)}...
+                    </p>
+
+                    <div className="space-y-2 mb-4 text-xs">
+                      {/* Key 1: DRRM Officer */}
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-white/5">
+                        <span className="text-white/60 text-[0.7rem]">1. DRRM Officer:</span>
+                        {drrm ? (
+                          <span className="text-accent-success font-medium text-[0.7rem] flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" />
+                            {drrm.officerName}
+                          </span>
+                        ) : (
+                          <span className="text-accent-warning text-[0.7rem]">Missing Seal</span>
+                        )}
+                      </div>
+
+                      {/* Key 2: Municipal Treasurer */}
+                      <div className="flex items-center justify-between p-2 rounded-xl bg-white/5">
+                        <span className="text-white/60 text-[0.7rem]">2. Treasurer:</span>
+                        {treas ? (
+                          <span className="text-accent-success font-medium text-[0.7rem] flex items-center gap-1">
+                            <CheckCircle2 className="w-3 h-3" />
+                            {treas.officerName}
+                          </span>
+                        ) : (
+                          <span className="text-accent-warning text-[0.7rem]">Missing Seal</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {!isFullyAuthorized ? (
+                      <button
+                        onClick={() => {
+                          setSelectedOpToSign(op);
+                          setSigningRole(drrm ? "municipal_treasurer" : "drrm_officer");
+                          setSigningError(null);
+                        }}
+                        className="w-full py-2 rounded-xl text-xs font-semibold bg-civic-trust hover:bg-civic-trust/80 text-white transition-all flex items-center justify-center gap-1.5 shadow-md shadow-civic-trust/20"
+                      >
+                        <FileSignature className="w-3.5 h-3.5" />
+                        <span>Sign Operation Quorum</span>
+                      </button>
+                    ) : (
+                      <div className="text-center py-1.5 text-accent-success text-[0.7rem] font-medium flex items-center justify-center gap-1 bg-accent-success/10 rounded-xl border border-accent-success/20">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Quorum Satisfied · Ready for Dispatch</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Signing Seal Modal */}
+        {selectedOpToSign && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0A1628] shadow-2xl p-6">
+              <button
+                onClick={() => setSelectedOpToSign(null)}
+                className="absolute top-4 right-4 p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/5 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-2 mb-2">
+                <Stamp className="w-5 h-5 text-accent-gold" />
+                <h3 className="text-base font-bold text-white">
+                  Apply Municipal Authorization Seal
+                </h3>
+              </div>
+              <p className="text-xs text-white/60 mb-5">
+                Certifying: <span className="text-white font-medium">{selectedOpToSign.name}</span>
+              </p>
+
+              {signingSuccess ? (
+                <div className="py-6 text-center animate-scale-in">
+                  <div className="w-14 h-14 rounded-full bg-accent-success/20 border border-accent-success/40 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="w-8 h-8 text-accent-success" />
+                  </div>
+                  <p className="text-sm font-bold text-white mb-1">Authorization Sealed!</p>
+                  <p className="text-xs text-accent-success">{signingSuccess}</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSignOperation} className="space-y-4 text-xs">
+                  <div>
+                    <label className="block text-white/80 font-semibold mb-1">
+                      Authorizing Authority Role:
+                    </label>
+                    <select
+                      value={signingRole}
+                      onChange={(e) => setSigningRole(e.target.value as OfficerRole)}
+                      className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:border-civic-sky focus:outline-none"
+                    >
+                      <option value="municipal_treasurer" className="bg-[#0A1628]">
+                        Municipal Treasurer (Disbursement Officer)
+                      </option>
+                      <option value="drrm_officer" className="bg-[#0A1628]">
+                        Local DRRM Officer (Disaster Management Chief)
+                      </option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-white/80 font-semibold mb-1">
+                      Official Full Name:
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Atty. Corazon Reyes, CPA"
+                      value={signingName}
+                      onChange={(e) => setSigningName(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:border-civic-sky focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-white/80 font-semibold mb-1">
+                      Government Agency ID / PRC License:
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. MTO-TREAS-2024-019"
+                      value={signingAgencyId}
+                      onChange={(e) => setSigningAgencyId(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white focus:border-civic-sky focus:outline-none"
+                    />
+                  </div>
+
+                  {signingError && (
+                    <div className="flex items-center gap-1.5 text-accent-danger text-xs">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      <span>{signingError}</span>
+                    </div>
+                  )}
+
+                  <div className="pt-2 flex items-center justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedOpToSign(null)}
+                      className="px-3 py-2 rounded-xl text-white/60 hover:text-white"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded-xl font-semibold bg-accent-gold text-slate-900 hover:brightness-110 flex items-center gap-1.5"
+                    >
+                      <FileSignature className="w-3.5 h-3.5" />
+                      <span>Seal & Authorize Quorum</span>
+                    </button>
+                  </div>
+                </form>
               )}
             </div>
           </div>

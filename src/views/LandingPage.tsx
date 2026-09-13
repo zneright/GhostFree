@@ -139,7 +139,7 @@ export const LandingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={() => setShowOnboarding(true)}
             className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-sky/30 text-civic-sky hover:bg-civic-sky/10"
@@ -148,12 +148,19 @@ export const LandingPage: React.FC = () => {
             Tour
           </button>
           <button
+            onClick={() => navigate("/transparency")}
+            className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-accent-gold/30 text-accent-gold hover:bg-accent-gold/10"
+          >
+            <Landmark className="w-3.5 h-3.5" />
+            Treasury
+          </button>
+          <button
             onClick={() => navigate("/demo")}
-            className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-trust/40 text-civic-trust hover:bg-civic-trust/10"
+            className="btn-civic btn-ghost text-xs sm:text-sm hidden md:flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-trust/40 text-civic-trust hover:bg-civic-trust/10"
             id="nav-level2-demo"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Level 2 Demo
+            Demo
           </button>
           <button
             onClick={() => navigate("/claim")}
@@ -321,6 +328,37 @@ export const LandingPage: React.FC = () => {
               relief funds, and sponsor tDUST execution fees with Web2 admin security.
             </p>
           </button>
+        </div>
+
+        {/* Public Treasury & Audit Explorer Banner */}
+        <div
+          onClick={() => navigate("/transparency")}
+          className="w-full max-w-4xl p-5 sm:p-6 rounded-3xl border border-accent-gold/30 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-accent-gold/10 hover:border-accent-gold/60 text-left transition-all duration-300 shadow-xl shadow-accent-gold/5 cursor-pointer relative overflow-hidden mb-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+        >
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center shrink-0">
+              <Landmark className="w-6 h-6 text-accent-gold" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-[0.65rem] font-bold uppercase tracking-widest text-accent-gold px-2 py-0.5 rounded bg-accent-gold/10">
+                  Open Governance · R.A. 10121 & COA
+                </span>
+                <span className="text-xs text-white/40">Public Ledger Telemetry</span>
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-white">
+                Public Calamity Treasury & Audit Explorer
+              </h3>
+              <p className="text-slate-300 text-xs mt-1 max-w-2xl leading-relaxed">
+                Review real-time relief allocations, monitor anonymous nullifier commitments, and download official Commission on Audit (COA) compliance CSV statements.
+              </p>
+            </div>
+          </div>
+
+          <div className="shrink-0 flex items-center gap-1.5 text-xs font-semibold text-accent-gold group-hover:translate-x-1 transition-transform">
+            <span>Explore Treasury</span>
+            <ChevronRight className="w-4 h-4" />
+          </div>
         </div>
 
         {/* Interactive Protocol Engine Simulator */}

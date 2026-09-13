@@ -33,7 +33,10 @@ export interface ReliefOperation {
   createdAt: string;
   deployedAt?: string;
   completedAt?: string;
+  approvals?: DualKeyApproval[];
+  quorumStatus?: QuorumStatus;
 }
+
 
 /** Citizen eligibility entry from CSV */
 export interface EligibilityEntry {
@@ -117,4 +120,44 @@ export interface ReliefReceipt {
   network: string;
   status: 'confirmed';
 }
+
+/** Dual-key municipal quorum authorization for emergency funds release */
+export type OfficerRole = 'drrm_officer' | 'municipal_treasurer';
+export type QuorumStatus = 'pending_drrm' | 'pending_treasurer' | 'fully_authorized';
+
+export interface DualKeyApproval {
+  officerRole: OfficerRole;
+  officerName: string;
+  agencyId: string;
+  signedAt: string;
+  signatureHash: string;
+}
+
+/** Public Calamity Treasury metrics */
+export interface TreasuryMetrics {
+  totalAllocatedFund: number;
+  totalDisbursedFund: number;
+  remainingEscrowFund: number;
+  totalVerifiedClaims: number;
+  duplicateAttemptsBlocked: number;
+  activeOperationsCount: number;
+  averageProvingTimeSeconds: number;
+  networkFeeSponsored: number;
+}
+
+/** Commission on Audit (COA) compliance entry */
+export interface AuditReportEntry {
+  operationId: string;
+  operationName: string;
+  merkleRoot: string;
+  allocatedAmount: number;
+  disbursedAmount: number;
+  claimCount: number;
+  drrmSigner: string;
+  treasurerSigner: string;
+  status: string;
+  contractAddress: string;
+  timestamp: string;
+}
+
 
