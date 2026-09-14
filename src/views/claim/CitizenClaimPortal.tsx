@@ -15,6 +15,8 @@ import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
 import ReliefReceiptModal from "../../components/ReliefReceiptModal";
 import OnboardingModal from "../../components/OnboardingModal";
 import LanguageSelector from "../../components/LanguageSelector";
+import DisasterConnectivityBanner from "../../components/DisasterConnectivityBanner";
+import { networkResilience } from "../../services/networkResilience.service";
 import {
   t,
   getStoredLanguage,
@@ -185,6 +187,9 @@ const CitizenClaimPortal: React.FC = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-20" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent-success/5 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Disaster Zone Offline & Low-Bandwidth Status Banner */}
+      <DisasterConnectivityBanner className="relative z-20" />
 
       {/* Compact Header */}
       <nav className="relative z-10 flex items-center justify-between px-4 py-3 sm:px-6">
