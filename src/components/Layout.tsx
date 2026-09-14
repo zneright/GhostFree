@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import { Sparkles, MessageSquarePlus, Landmark } from "lucide-react";
 import OnboardingModal from "./OnboardingModal";
 import FeedbackWidget from "./FeedbackWidget";
+import LanguageSelector from "./LanguageSelector";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -54,7 +55,7 @@ const Layout: React.FC<LayoutProps> = ({
             )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <a
               href="/transparency"
               className="px-2.5 py-1 rounded-lg text-xs text-white/70 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
@@ -69,7 +70,8 @@ const Layout: React.FC<LayoutProps> = ({
               <Sparkles className="w-3.5 h-3.5" />
               <span>Tour</span>
             </button>
-            <div className="text-xs text-white/40 hidden sm:block">
+            <LanguageSelector />
+            <div className="text-xs text-white/40 hidden md:block">
               Midnight Network · Privacy-First Civic Aid
             </div>
           </div>

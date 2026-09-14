@@ -14,6 +14,13 @@ import { generateReliefReceipt, submitFeedback } from "../../services/feedback.s
 import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
 import ReliefReceiptModal from "../../components/ReliefReceiptModal";
 import OnboardingModal from "../../components/OnboardingModal";
+import LanguageSelector from "../../components/LanguageSelector";
+import {
+  t,
+  getStoredLanguage,
+  subscribeLanguageChange,
+  type SupportedLanguage,
+} from "../../services/i18n.service";
 import {
   Shield,
   Wallet,
@@ -55,9 +62,13 @@ const CitizenClaimPortal: React.FC = () => {
   const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
 
   useEffect(() => {
     setMounted(true);
+    return subscribeLanguageChange((newLang) => {
+      setLang(newLang);
+    });
   }, []);
 
   // Auto-advance when wallet connects
@@ -68,10 +79,10 @@ const CitizenClaimPortal: React.FC = () => {
   }, [connected, step]);
 
   const steps: { key: ClaimStep; label: string; icon: React.ReactNode }[] = [
-    { key: "connect", label: "Connect", icon: <Wallet className="w-4 h-4" /> },
-    { key: "credentials", label: "Verify", icon: <KeyRound className="w-4 h-4" /> },
-    { key: "proving", label: "Prove", icon: <Fingerprint className="w-4 h-4" /> },
-    { key: "result", label: "Result", icon: <CheckCircle2 className="w-4 h-4" /> },
+    { key: "connect", label: t("stepConnect", lang), icon: <Wallet className="w-4 h-4" /> },
+    { key: "credentials", label: t("stepVerify", lang), icon: <KeyRound className="w-4 h-4" /> },
+    { key: "proving", label: t("stepProve", lang), icon: <Fingerprint className="w-4 h-4" /> },
+    { key: "result", label: t("stepResult", lang), icon: <CheckCircle2 className="w-4 h-4" /> },
   ];
 
   const currentStepIndex = steps.findIndex((s) => s.key === step);
@@ -195,6 +206,7 @@ const CitizenClaimPortal: React.FC = () => {
             <Sparkles className="w-3 h-3" />
             <span>Tour</span>
           </button>
+          <LanguageSelector compact />
         </div>
 
         {connected && (
@@ -269,11 +281,10 @@ const CitizenClaimPortal: React.FC = () => {
                   <Wallet className="w-8 h-8 text-civic-sky" />
                 </div>
                 <h2 className="text-xl font-bold text-white mb-2">
-                  Connect Your Wallet
+                  {t("connectTitle", lang)}
                 </h2>
                 <p className="text-shield-muted text-sm leading-relaxed">
-                  Connect your Lace wallet to claim your calamity relief aid.
-                  No account registration needed.
+                  {t("connectDesc", lang)}
                 </p>
               </div>
 
@@ -286,12 +297,12 @@ const CitizenClaimPortal: React.FC = () => {
                 {connecting ? (
                   <div className="flex items-center gap-2">
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Connecting to Lace...
+                    {t("connecting", lang)}
                   </div>
                 ) : (
                   <>
                     <Wallet className="w-5 h-5" />
-                    Connect Lace Wallet
+                    {t("connectButton", lang)}
                   </>
                 )}
               </button>
@@ -332,11 +343,10 @@ const CitizenClaimPortal: React.FC = () => {
                   <KeyRound className="w-7 h-7 text-accent-purple" />
                 </div>
                 <h2 className="text-xl font-bold text-white mb-2">
-                  Verify Your Identity
+                  {t("credentialsTitle", lang)}
                 </h2>
                 <p className="text-shield-muted text-sm leading-relaxed">
-                  Enter your National ID and secret PIN. This data stays on your
-                  device — it is never sent anywhere.
+                  {t("credentialsDesc", lang)}
                 </p>
               </div>
 
@@ -344,8 +354,7 @@ const CitizenClaimPortal: React.FC = () => {
               <div className="flex items-center gap-2 p-3 rounded-xl bg-accent-success/5 border border-accent-success/15 mb-6">
                 <ShieldCheck className="w-4 h-4 text-accent-success shrink-0" />
                 <p className="text-xs text-green-300">
-                  <strong>Privacy Protected:</strong> Your ID and PIN never leave this device.
-                  Only a mathematical proof is sent to the blockchain.
+                  {t("privacyNotice", lang)}
                 </p>
               </div>
 
@@ -353,13 +362,13 @@ const CitizenClaimPortal: React.FC = () => {
                 <div>
                   <label htmlFor="national-id" className="label-civic">
                     <KeyRound className="w-3.5 h-3.5 text-accent-purple" />
-                    National ID Number
+                    {t("residentIdLabel", lang)}
                   </label>
                   <input
                     id="national-id"
                     type="text"
                     className="input-civic"
-                    placeholder="e.g., 1234-5678-9012"
+                    placeholder={t("residentIdPlaceholder", lang)}
                     value={nationalId}
                     onChange={(e) => setNationalId(e.target.value)}
                     autoComplete="off"
@@ -369,7 +378,7 @@ const CitizenClaimPortal: React.FC = () => {
                 <div>
                   <label htmlFor="secret-pin" className="label-civic">
                     <Lock className="w-3.5 h-3.5 text-accent-purple" />
-                    Secret PIN
+                    {t("pinLabel", lang)}
                   </label>
                   <div className="relative">
                     <input
@@ -377,7 +386,7 @@ const CitizenClaimPortal: React.FC = () => {
                       type={showPin ? "text" : "password"}
                       inputMode="numeric"
                       className="input-civic pr-12"
-                      placeholder="4-8 digit PIN"
+                      placeholder={t("pinPlaceholder", lang)}
                       value={secretPin}
                       onChange={(e) => setSecretPin(e.target.value)}
                       autoComplete="off"
@@ -406,7 +415,7 @@ const CitizenClaimPortal: React.FC = () => {
                   id="verify-btn"
                 >
                   <Fingerprint className="w-5 h-5" />
-                  Generate Proof & Claim
+                  {t("proceedToProof", lang)}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
