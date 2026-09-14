@@ -4,9 +4,10 @@
 [![Network](https://img.shields.io/badge/Network-Midnight_Preprod-3A0CA3?style=flat-square&logo=polkadot&logoColor=white)](https://midnight.network)
 [![Smart Contract](https://img.shields.io/badge/Contract-Compact_ZK-10B981?style=flat-square&logo=webassembly&logoColor=white)](https://docs.midnight.network)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-3%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
+[![Tests](https://img.shields.io/badge/Tests-26%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
+[![Users](https://img.shields.io/badge/Preprod%20Users-55%20Verified-blueviolet?style=flat-square)](USERS.md)
 [![X (Twitter)](https://img.shields.io/badge/Follow_@GhostFreepwhq-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/GhostFreepwhq)
 
 > **"Stop the ghosts. Protect the people."**  
@@ -19,10 +20,14 @@
 - **Live Demo:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **Vercel Deployment:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **X (Twitter):** [@GhostFreepwhq](https://x.com/GhostFreepwhq)
+- **Preprod Pilot Users:** [USERS.md](USERS.md) (55 unique Midnight Preprod wallet addresses)
+- **Feedback & Traceability:** [docs/FEEDBACK.md](docs/FEEDBACK.md) (Level 5 User Validation Report)
 
-| Interface | URL | Description |
+| Interface / Asset | URL | Description |
 |---|---|---|
 | 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
+| 👥 **Preprod User Registry** | [USERS.md](USERS.md) | 55 verified Midnight Preprod wallet addresses across 3 user pilot cohorts |
+| 📋 **Feedback Report** | [docs/FEEDBACK.md](docs/FEEDBACK.md) | Level 5 user validation report, CSAT analytics, and feedback-driven changelog |
 
 ---
 
@@ -454,10 +459,16 @@ GhostFree is architected for institutional compliance with the Philippine Disast
 
 GhostFree operates a continuous, structured user feedback loop bridging disaster-affected citizens, municipal LGU administrators, and security auditors.
 
-- **Full Feedback Report:** Read **[`docs/FEEDBACK.md`](docs/FEEDBACK.md)** for the complete Level 5 report covering user cohorts, onboarding methodology, quantitative survey metrics (CSAT `4.7 / 5.0`), MoSCoW prioritization, and the feedback-driven changelog.
-- **In-App Feedback Widget:** Global feedback collection accessible from any page (`src/components/FeedbackWidget.tsx`), capturing 5-star ratings, user roles, topic tags, and comments with zero personal identity tracking.
+- **Verified Preprod User Cohorts (55 Wallets):** Fully documented in **[`USERS.md`](USERS.md)** with unique Midnight Preprod wallet addresses and onboarding dates across 3 distinct testing cohorts:
+  1. *Cohort 1: Barangay Disaster Risk Reduction & Management Council (BDRRMC) Officers* (15 wallets)
+  2. *Cohort 2: Calamity Evacuation Center Citizen Testers* (25 wallets)
+  3. *Cohort 3: Midnight Community Testers & Technical Volunteers* (15 wallets)
+- **Full Feedback & Validation Report:** Read **[`docs/FEEDBACK.md`](docs/FEEDBACK.md)** for the complete Level 5 report covering onboarding methodology, quantitative CSAT metrics (`4.7 / 5.0`), MoSCoW prioritization, and the detailed "What We Heard" vs. "What We Changed" code traceability matrix.
+- **In-App Feedback Widget:** Global feedback modal accessible from any page (`src/components/FeedbackWidget.tsx`), capturing 5-star ratings, user roles, topic tags, and comments with zero personal identity tracking.
 - **LGU Admin Triage Center:** Embedded directly inside the Admin Dashboard (`src/views/admin/AdminDashboard.tsx`), enabling municipal officials to monitor real-time CSAT metrics and triage issues (`New` → `Under Review` → `Planned` → `Resolved`).
-- **Post-Claim Micro-Survey & Confidential Receipts:** 1-click star rating on Step 4 of the claim portal and downloadable cryptographic vouchers (`src/components/ReliefReceiptModal.tsx`) built directly from field claimant requests.
+- **Disaster Zone Usability & Accessibility Modes (`fb-user-006`):** Floating bottom-left accessibility switcher (`src/components/AccessibilityToggle.tsx`) delivering High Contrast and Large Text modes tailored for citizens using budget Android devices in bright outdoor disaster centers.
+- **Claim Status Lifecycle Tracking Service (`fb-user-007`):** Anonymized claim lifecycle audit service (`src/services/claimStatus.service.ts`) enabling LGU officials to trace claim progression (`submitted` → `proving` → `verified` → `disbursed`) without disclosing private citizen witnesses.
+- **Post-Claim Micro-Survey & Confidential Receipts (`fb-seed-002`):** 1-click star rating on Step 4 of the claim portal and downloadable cryptographic vouchers (`src/components/ReliefReceiptModal.tsx`) built directly from field claimant requests.
 
 ---
 
