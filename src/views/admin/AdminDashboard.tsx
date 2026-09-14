@@ -21,6 +21,7 @@ import {
 } from "../../services/governance.service";
 import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } from "../../types";
 import TransparencyCard from "../../components/TransparencyCard";
+import TrancheQuorumModal from "../../components/TrancheQuorumModal";
 import {
   Upload,
   FileSpreadsheet,
@@ -50,6 +51,7 @@ import {
   Stamp,
   ExternalLink,
   Lock,
+  Sparkles,
 } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
@@ -90,6 +92,7 @@ const AdminDashboard: React.FC = () => {
 
   // Dual-Key Quorum State
   const [showQuorum, setShowQuorum] = useState(false);
+  const [showTrancheSimulator, setShowTrancheSimulator] = useState(false);
   const [govOperations, setGovOperations] = useState<ReliefOperation[]>(() => getGovernanceOperations());
   const [selectedOpToSign, setSelectedOpToSign] = useState<ReliefOperation | null>(null);
   const [signingRole, setSigningRole] = useState<OfficerRole>("municipal_treasurer");
@@ -349,6 +352,13 @@ const AdminDashboard: React.FC = () => {
               <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-accent-gold/20 text-accent-gold font-bold">
                 {feedbackList.length}
               </span>
+            </button>
+            <button
+              onClick={() => setShowTrancheSimulator(true)}
+              className="btn-civic btn-secondary text-xs sm:text-sm flex items-center gap-1.5 hover:border-accent-gold/40 text-accent-gold"
+            >
+              <Sparkles className="w-4 h-4 text-accent-gold" />
+              <span>Tranche Quorum</span>
             </button>
             <button
               onClick={() => navigate("/transparency")}
@@ -1084,6 +1094,12 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Emergency Tranche Quorum Simulator Modal */}
+      <TrancheQuorumModal
+        isOpen={showTrancheSimulator}
+        onClose={() => setShowTrancheSimulator(false)}
+      />
     </div>
   );
 };

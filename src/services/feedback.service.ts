@@ -88,7 +88,51 @@ export const INITIAL_SEED_FEEDBACK: UserFeedback[] = [
     comment:
       "I want to see the lifecycle of each claim — when it was submitted, proved, and disbursed — for my own audit trail.",
     createdAt: "2026-09-11T14:15:00Z",
-    status: "planned",
+    status: "resolved",
+    priority: "medium",
+  },
+  {
+    id: "fb-user-008",
+    rating: 5,
+    category: "usability",
+    role: "citizen",
+    comment:
+      "In rural evacuation centers, elderly victims need Tagalog or Cebuano options rather than pure English technical terms.",
+    createdAt: "2026-09-14T11:00:00Z",
+    status: "resolved",
+    priority: "high",
+  },
+  {
+    id: "fb-user-009",
+    rating: 4,
+    category: "feature_request",
+    role: "volunteer",
+    comment:
+      "Cell reception drops to 2G/EDGE during typhoons. The app should save draft state offline without losing progress.",
+    createdAt: "2026-09-14T15:30:00Z",
+    status: "resolved",
+    priority: "high",
+  },
+  {
+    id: "fb-user-010",
+    rating: 5,
+    category: "feature_request",
+    role: "volunteer",
+    comment:
+      "Barangay checkpoints and evacuation marshals need a 1-second way to verify a citizen's relief receipt voucher without touching their phone or seeing their private resident identity.",
+    createdAt: "2026-09-15T08:20:00Z",
+    status: "resolved",
+    priority: "high",
+  },
+  {
+    id: "fb-user-011",
+    rating: 5,
+    category: "feature_request",
+    role: "lgu_officer",
+    comment:
+      "Municipal auditors wanted an interactive simulator in the Admin Dashboard to test emergency tranche top-ups and dual-officer threshold approvals before dispatching live tDUST to the Midnight contract.",
+    createdAt: "2026-09-15T09:45:00Z",
+    status: "resolved",
     priority: "medium",
   },
 ];

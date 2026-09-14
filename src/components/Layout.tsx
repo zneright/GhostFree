@@ -8,10 +8,11 @@
 // quick onboarding tour access, and feedback actions.
 
 import React, { useState } from "react";
-import { Sparkles, MessageSquarePlus, Landmark } from "lucide-react";
+import { Sparkles, MessageSquarePlus, Landmark, ShieldCheck } from "lucide-react";
 import OnboardingModal from "./OnboardingModal";
 import FeedbackWidget from "./FeedbackWidget";
 import LanguageSelector from "./LanguageSelector";
+import ReceiptVerifierModal from "./ReceiptVerifierModal";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -35,6 +36,7 @@ const Layout: React.FC<LayoutProps> = ({
   className = "",
 }) => {
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showVerifier, setShowVerifier] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0A1628] text-white">
@@ -63,6 +65,13 @@ const Layout: React.FC<LayoutProps> = ({
               <Landmark className="w-3.5 h-3.5 text-accent-gold" />
               <span>Treasury</span>
             </a>
+            <button
+              onClick={() => setShowVerifier(true)}
+              className="px-2.5 py-1 rounded-lg text-xs text-emerald-400 hover:bg-emerald-400/10 border border-emerald-400/20 transition-colors flex items-center gap-1.5 font-medium"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Verify Voucher</span>
+            </button>
             <button
               onClick={() => setShowOnboarding(true)}
               className="px-2.5 py-1 rounded-lg text-xs text-civic-sky hover:bg-civic-sky/10 border border-civic-sky/20 transition-colors flex items-center gap-1.5 font-medium"
@@ -96,6 +105,13 @@ const Layout: React.FC<LayoutProps> = ({
               </a>
               <span>·</span>
               <button
+                onClick={() => setShowVerifier(true)}
+                className="hover:text-emerald-400 transition-colors"
+              >
+                Marshal Verifier
+              </button>
+              <span>·</span>
+              <button
                 onClick={() => setShowOnboarding(true)}
                 className="hover:text-white transition-colors"
               >
@@ -112,6 +128,12 @@ const Layout: React.FC<LayoutProps> = ({
       <OnboardingModal
         isOpen={showOnboarding}
         onClose={() => setShowOnboarding(false)}
+      />
+
+      {/* Checkpoint Marshal Verifier Modal */}
+      <ReceiptVerifierModal
+        isOpen={showVerifier}
+        onClose={() => setShowVerifier(false)}
       />
     </div>
   );
