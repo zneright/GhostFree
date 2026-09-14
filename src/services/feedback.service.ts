@@ -3,7 +3,7 @@
 // Living feedback loop state management & analytics
 // ============================================
 
-import type { UserFeedback, ReliefReceipt } from "../types";
+import type { UserFeedback, ReliefReceipt, AccessibilityPreferences } from "../types";
 
 const FEEDBACK_STORAGE_KEY = "ghostfree_user_feedback_v1";
 
@@ -68,6 +68,28 @@ export const INITIAL_SEED_FEEDBACK: UserFeedback[] = [
     createdAt: "2026-09-09T16:00:00Z",
     status: "reviewed",
     priority: "low",
+  },
+  {
+    id: "fb-user-006",
+    rating: 3,
+    category: "accessibility",
+    role: "citizen",
+    comment:
+      "Text is too small on my budget Android phone in bright sunlight at the evacuation center. Need larger fonts and higher contrast.",
+    createdAt: "2026-09-10T09:30:00Z",
+    status: "planned",
+    priority: "high",
+  },
+  {
+    id: "fb-user-007",
+    rating: 4,
+    category: "feature_request",
+    role: "lgu_officer",
+    comment:
+      "I want to see the lifecycle of each claim — when it was submitted, proved, and disbursed — for my own audit trail.",
+    createdAt: "2026-09-11T14:15:00Z",
+    status: "planned",
+    priority: "medium",
   },
 ];
 
@@ -235,4 +257,31 @@ export function generateReliefReceipt(
     network: "Midnight Testnet (Preprod)",
     status: "confirmed",
   };
+}
+
+const A11Y_STORAGE_KEY = "ghostfree_accessibility_prefs_v1";
+
+const DEFAULT_A11Y_PREFS: AccessibilityPreferences = {
+  highContrast: false,
+  largeText: false,
+};
+
+/**
+ * Retrieve accessibility preferences (feedback-driven: fb-user-006)
+ */
+export function getAccessibilityPreferences(): AccessibilityPreferences {
+  const raw = getStorageItem(A11Y_STORAGE_KEY);
+  if (!raw) return { ...DEFAULT_A11Y_PREFS };
+  try {
+    return JSON.parse(raw) as AccessibilityPreferences;
+  } catch {
+    return { ...DEFAULT_A11Y_PREFS };
+  }
+}
+
+/**
+ * Save accessibility preferences (feedback-driven: fb-user-006)
+ */
+export function setAccessibilityPreferences(prefs: AccessibilityPreferences): void {
+  setStorageItem(A11Y_STORAGE_KEY, JSON.stringify(prefs));
 }

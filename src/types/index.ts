@@ -101,7 +101,7 @@ export interface ContractState {
 export interface UserFeedback {
   id: string;
   rating: number; // 1 to 5
-  category: 'usability' | 'wallet' | 'speed' | 'privacy' | 'feature_request' | 'general';
+  category: 'usability' | 'wallet' | 'speed' | 'privacy' | 'feature_request' | 'accessibility' | 'general';
   role: 'citizen' | 'lgu_officer' | 'volunteer' | 'security_researcher' | 'other';
   comment: string;
   createdAt: string;
@@ -160,4 +160,21 @@ export interface AuditReportEntry {
   timestamp: string;
 }
 
+/** Accessibility preferences for disaster zone mobile optimization (feedback-driven: fb-user-006) */
+export interface AccessibilityPreferences {
+  highContrast: boolean;
+  largeText: boolean;
+}
 
+/** Claim lifecycle stage for status tracking (feedback-driven: fb-user-007) */
+export type ClaimLifecycleStage = 'submitted' | 'proving' | 'verified' | 'disbursed' | 'receipt_downloaded';
+
+/** Anonymized claim status event for LGU audit trail */
+export interface ClaimStatusEvent {
+  id: string;
+  nullifierSnippet: string;
+  stage: ClaimLifecycleStage;
+  timestamp: string;
+  operationName: string;
+  amount?: number;
+}
