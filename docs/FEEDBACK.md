@@ -157,8 +157,8 @@ Every shipped feature below was directly motivated by specific user feedback ide
 | `fb-seed-001` | **In-App Feedback Widget & Post-Claim Micro-Survey** — Persistent feedback collection channel accessible from every page with zero PII tracking. | `src/components/FeedbackWidget.tsx` | `7601e07` |
 | `fb-seed-003` | **LGU Admin Feedback & Triage Hub** — Real-time CSAT dashboard with status triage (New → Under Review → Planned → Resolved). | `src/views/admin/AdminDashboard.tsx` | `f8355e9` |
 | `fb-seed-003` | **Preprod Network Transparency Card** — Live contract address, gas sponsorship status, and nullifier lock verification widget. | `src/components/TransparencyCard.tsx` | `f8355e9` |
-| `fb-user-006` | **Accessibility Toggle (High-Contrast + Large Text)** — Floating accessibility button for disaster zone mobile users needing larger fonts and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx`, `src/index.css` | *(Phase 4–5 commits)* |
-| `fb-user-007` | **Claim Status Tracker Service** — Lifecycle tracking of claim events (submitted → proving → verified → disbursed) for LGU audit trails. | `src/services/claimStatus.service.ts` | *(Phase 6 commit)* |
+| `fb-user-006` | **Accessibility Toggle (High-Contrast + Large Text)** — Floating accessibility button for disaster zone mobile users needing larger fonts and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx`, `src/App.tsx`, `src/index.css`, `tests/accessibility.test.ts` | `29bbbc2`, `3410da8`, `117f6e7` |
+| `fb-user-007` | **Claim Status Tracker Service** — Lifecycle tracking of claim events (submitted → proving → verified → disbursed) for LGU audit trails without PII disclosure. | `src/services/claimStatus.service.ts`, `tests/claimStatus.test.ts` | `5e1dd5a`, `691ca53` |
 
 ---
 
