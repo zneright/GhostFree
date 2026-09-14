@@ -12,7 +12,7 @@ const CLAIM_EVENTS_STORAGE_KEY = "ghostfree_claim_status_events";
  * Anonymized seed events reflecting real disaster relief operations.
  * ZERO PII: Only truncated nullifier snippets, operation names, and timestamps.
  */
-const SEED_CLAIM_EVENTS: ClaimStatusEvent[] = [
+export const SEED_CLAIM_EVENTS: ClaimStatusEvent[] = [
   {
     id: "evt-001",
     nullifierSnippet: "0x4a7f...e31b",
@@ -63,23 +63,59 @@ const SEED_CLAIM_EVENTS: ClaimStatusEvent[] = [
   },
 ];
 
+let inMemoryStore: Record<string, string> = {};
+
+function getStorageItem(key: string): string | null {
+  try {
+    if (typeof window !== "undefined" && window.localStorage) {
+      return window.localStorage.getItem(key);
+    }
+  } catch {
+    // Fallback to memory
+  }
+  return inMemoryStore[key] ?? null;
+}
+
+function setStorageItem(key: string, value: string): void {
+  try {
+    if (typeof window !== "undefined" && window.localStorage) {
+      window.localStorage.setItem(key, value);
+      return;
+    }
+  } catch {
+    // Fallback to memory
+  }
+  inMemoryStore[key] = value;
+}
+
+function removeStorageItem(key: string): void {
+  try {
+    if (typeof window !== "undefined" && window.localStorage) {
+      window.localStorage.removeItem(key);
+    }
+  } catch {
+    // Fallback to memory
+  }
+  delete inMemoryStore[key];
+}
+
 /**
- * Retrieves all tracked claim events from localStorage, initializing with seeds if empty.
+ * Retrieves all tracked claim events from localStorage/memory, initializing with seeds if empty.
  */
 export function getClaimEvents(): ClaimStatusEvent[] {
   try {
-    const raw = localStorage.getItem(CLAIM_EVENTS_STORAGE_KEY);
+    const raw = getStorageItem(CLAIM_EVENTS_STORAGE_KEY);
     if (!raw) {
-      localStorage.setItem(
+      setStorageItem(
         CLAIM_EVENTS_STORAGE_KEY,
         JSON.stringify(SEED_CLAIM_EVENTS)
       );
-      return SEED_CLAIM_EVENTS;
+      return [...SEED_CLAIM_EVENTS];
     }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : SEED_CLAIM_EVENTS;
+    return Array.isArray(parsed) ? parsed : [...SEED_CLAIM_EVENTS];
   } catch {
-    return SEED_CLAIM_EVENTS;
+    return [...SEED_CLAIM_EVENTS];
   }
 }
 
@@ -98,9 +134,9 @@ export function recordClaimEvent(
 
   const updated = [newEvent, ...events];
   try {
-    localStorage.setItem(CLAIM_EVENTS_STORAGE_KEY, JSON.stringify(updated));
+    setStorageItem(CLAIM_EVENTS_STORAGE_KEY, JSON.stringify(updated));
   } catch (err) {
-    console.warn("Failed to persist claim event to localStorage:", err);
+    console.warn("Failed to persist claim event:", err);
   }
 
   return newEvent;
@@ -136,27 +172,19 @@ export function getLifecycleStats(): Record<ClaimLifecycleStage, number> {
 }
 
 /**
- * Clears tracked claim history (useful for testing or cache refresh).
+ * Clears tracked claim history.
  */
 export function clearClaimEvents(): void {
-  try {
-    localStorage.removeItem(CLAIM_EVENTS_STORAGE_KEY);
-  } catch (err) {
-    console.warn("Failed to clear claim events:", err);
-  }
+  removeStorageItem(CLAIM_EVENTS_STORAGE_KEY);
 }
 
 /**
  * Resets storage to default seed events.
  */
 export function resetToDefaultEvents(): ClaimStatusEvent[] {
-  try {
-    localStorage.setItem(
-      CLAIM_EVENTS_STORAGE_KEY,
-      JSON.stringify(SEED_CLAIM_EVENTS)
-    );
-  } catch (err) {
-    console.warn("Failed to reset claim events:", err);
-  }
-  return SEED_CLAIM_EVENTS;
+  setStorageItem(
+    CLAIM_EVENTS_STORAGE_KEY,
+    JSON.stringify(SEED_CLAIM_EVENTS)
+  );
+  return [...SEED_CLAIM_EVENTS];
 }
