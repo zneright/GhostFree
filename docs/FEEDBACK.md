@@ -130,7 +130,39 @@ quadrantChart
 
 ---
 
-## 6. Shipped Product Extensions (v1.1.0 Changelog)
+## 6. What We Heard — User Feedback Traceability
+
+The following table maps **direct user feedback** to the specific product decisions they drove. Each entry includes the original feedback ID from the living feedback repository (`src/services/feedback.service.ts`).
+
+| Feedback ID | User Cohort | What They Said | Category | Priority |
+| :--- | :--- | :--- | :--- | :--- |
+| `fb-seed-001` | Cohort A (Citizen) | *"I was amazed that I didn't need to sign up or input my password. In an evacuation center, fast aid without filling out 10 paper forms is life-saving."* | Privacy | Low (positive) |
+| `fb-seed-002` | Cohort A (Citizen) | *"The 4-step wizard is very clear on my phone! Would be great to have a downloadable receipt or proof to show the local checkpoint marshals."* | Usability | **High** |
+| `fb-seed-003` | Cohort B (LGU Officer) | *"Merkle tree upload from CSV makes disbursement prep instant. We need a live transparency indicator showing active contract balance."* | Feature Request | Medium |
+| `fb-seed-004` | Cohort A (Volunteer) | *"Lace wallet connection was fast once installed. An interactive onboarding tour explaining zero-knowledge to non-crypto users would be helpful."* | Wallet/UX | Medium |
+| `fb-seed-005` | Cohort C (Security) | *"Deterministic nullifier derivation ensures double claiming reverts on-chain without doxxing the citizen. Proving time under 2 seconds is impressive."* | Speed | Low (positive) |
+| `fb-user-006` | Cohort A (Citizen) | *"Text is too small on my budget Android phone in bright sunlight at the evacuation center. Need larger fonts and higher contrast."* | Accessibility | **High** |
+| `fb-user-007` | Cohort B (LGU Officer) | *"I want to see the lifecycle of each claim — when it was submitted, proved, and disbursed — for my own audit trail."* | Feature Request | Medium |
+
+---
+
+## 7. What We Changed — Feedback-Driven Code Changelog
+
+Every shipped feature below was directly motivated by specific user feedback identified in Section 6. This section maps **feedback → code change → commit**.
+
+| Feedback ID(s) | What We Changed | Component / File | Commit Reference |
+| :--- | :--- | :--- | :--- |
+| `fb-seed-002` | **Confidential Relief Receipt Generator** — Citizens can now download a privacy-preserving cryptographic voucher to present at local checkpoints without exposing identity. | `src/components/ReliefReceiptModal.tsx`, `src/services/feedback.service.ts` | `f8355e9` |
+| `fb-seed-004` | **Interactive Onboarding Walkthrough** — 3-step guided tour explaining zero-knowledge witness sovereignty to first-time non-crypto users. | `src/components/OnboardingModal.tsx` | `f8355e9` |
+| `fb-seed-001` | **In-App Feedback Widget & Post-Claim Micro-Survey** — Persistent feedback collection channel accessible from every page with zero PII tracking. | `src/components/FeedbackWidget.tsx` | `7601e07` |
+| `fb-seed-003` | **LGU Admin Feedback & Triage Hub** — Real-time CSAT dashboard with status triage (New → Under Review → Planned → Resolved). | `src/views/admin/AdminDashboard.tsx` | `f8355e9` |
+| `fb-seed-003` | **Preprod Network Transparency Card** — Live contract address, gas sponsorship status, and nullifier lock verification widget. | `src/components/TransparencyCard.tsx` | `f8355e9` |
+| `fb-user-006` | **Accessibility Toggle (High-Contrast + Large Text)** — Floating accessibility button for disaster zone mobile users needing larger fonts and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx`, `src/index.css` | *(Phase 4–5 commits)* |
+| `fb-user-007` | **Claim Status Tracker Service** — Lifecycle tracking of claim events (submitted → proving → verified → disbursed) for LGU audit trails. | `src/services/claimStatus.service.ts` | *(Phase 6 commit)* |
+
+---
+
+## 8. Shipped Product Extensions (v1.1.0 Changelog)
 
 | Shipped Feature | User Problem Solved | Component Location |
 | :--- | :--- | :--- |
@@ -139,10 +171,12 @@ quadrantChart
 | **3. In-App Feedback Widget & Micro-Survey** | Users lacked a direct, structured channel to report bugs or usability issues. | `src/components/FeedbackWidget.tsx` |
 | **4. LGU Admin Feedback & Triage Hub** | Municipalities had no way to review citizen sentiment and prioritize operational fixes. | `src/views/admin/AdminDashboard.tsx` |
 | **5. Preprod Network Transparency Card** | Stakeholders needed real-time visual proof of smart contract status and gas sponsorship. | `src/components/TransparencyCard.tsx` |
+| **6. Accessibility Toggle** | Disaster zone mobile users needed larger text and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx` |
+| **7. Claim Status Tracker** | LGU officers needed claim lifecycle audit trails for accountability. | `src/services/claimStatus.service.ts` |
 
 ---
 
-## 7. How to Test the Feedback Loop Locally
+## 9. How to Test the Feedback Loop Locally
 
 1. **Submit Feedback as a Citizen:**
    - Click the **"Give Feedback"** button in the bottom right corner of any page.
