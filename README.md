@@ -7,6 +7,7 @@
 [![Tests](https://img.shields.io/badge/Tests-3%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
+[![X (Twitter)](https://img.shields.io/badge/Follow_@GhostFreepwhq-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/GhostFreepwhq)
 
 > **"Stop the ghosts. Protect the people."**  
 > Privacy-preserving zero-knowledge calamity aid distribution and counter contract built on the Midnight Network.
@@ -17,6 +18,7 @@
 
 - **Live Demo:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **Vercel Deployment:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
+- **X (Twitter):** [@GhostFreepwhq](https://x.com/GhostFreepwhq)
 
 | Interface | URL | Description |
 |---|---|---|
