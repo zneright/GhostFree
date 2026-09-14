@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { MidnightWalletProvider } from "./contexts/MidnightWalletContext";
 import AppRoutes from "./routes/AppRoutes";
 import FeedbackWidget from "./components/FeedbackWidget";
+import AccessibilityToggle from "./components/AccessibilityToggle";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <MidnightWalletProvider>
           <AppRoutes />
           <FeedbackWidget />
+          <AccessibilityToggle />
         </MidnightWalletProvider>
       </AuthProvider>
     </BrowserRouter>

@@ -349,4 +349,32 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* ---- Accessibility Modes (fb-user-006) ---- */
+  body.high-contrast {
+    background-color: #030712 !important;
+    color: #FFFFFF !important;
+  }
+  body.high-contrast .glass-card {
+    background: #0f172a !important;
+    border: 2px solid #38BDF8 !important;
+    box-shadow: 0 0 0 1px #38BDF8 !important;
+  }
+  body.high-contrast .text-shield-muted {
+    color: #CBD5E1 !important;
+  }
+  body.high-contrast .btn-civic {
+    border-width: 2px !important;
+  }
+
+  body.large-text {
+    font-size: 112.5%;
+  }
+  body.large-text p,
+  body.large-text span,
+  body.large-text label,
+  body.large-text button {
+    font-size: 1.05em;
+  }
 }
+
