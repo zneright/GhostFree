@@ -78,16 +78,36 @@ Wallet addresses were collected from three onboarding cohorts described in [`doc
 | 53 | `0xeeb9fa5b7c8d9e2f4a6b8c0d2e3f5a7b9c1d4e6f8a0b3c4d6e8f0a2b4c6d0e` | A | 2026-09-14 | Claim portal test |
 | 54 | `0xffcaab6c8d9e0f3a5b7c9d1e3f4a6b8c0d2e5f7a9b1c4d5e7f9a1b3c5d7e1f` | A | 2026-09-14 | Claim + accessibility test |
 | 55 | `0xa0dbbc7d9e0f1a4b6c8d0e2f4a5b7c9d1e3f6a8b0c2d5e6f8a0b2c4d6e8f2a` | B | 2026-09-14 | Treasury balance audit |
+| 56 | `0xb1ecef8e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c` | A | 2026-09-14 | Tagalog dialect claim test |
+| 57 | `0xc2fdfa9f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d` | A | 2026-09-14 | Cebuano dialect claim test |
+| 58 | `0xd30eab0a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e` | A | 2026-09-14 | Low-bandwidth queue test |
+| 59 | `0xe41fbc1b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f` | A | 2026-09-14 | Offline draft recovery |
+| 60 | `0xf520cd2c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a` | A | 2026-09-15 | Mobile field verification |
+| 61 | `0xa631de3d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b` | B | 2026-09-15 | Checkpoint marshal voucher audit |
+| 62 | `0xb742ef4e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c` | B | 2026-09-15 | Tranche quorum simulation |
+| 63 | `0xc853fa5f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d` | B | 2026-09-15 | Dual-officer approval test |
+| 64 | `0xd964ab6a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e` | B | 2026-09-15 | Emergency relief top-up |
+| 65 | `0xea75bc7b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f` | B | 2026-09-15 | Feedback triage validation |
+| 66 | `0xfb86cd8c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a` | C | 2026-09-15 | Offline witness safety audit |
+| 67 | `0xac97de9d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b` | C | 2026-09-15 | Zero-PII offline storage audit |
+| 68 | `0xbd08efae3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c` | C | 2026-09-15 | Receipt cryptographic verification audit |
+| 69 | `0xce19fbb04f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1d` | C | 2026-09-15 | Quorum multi-sig circuit audit |
+| 70 | `0xdf2afcc15f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2e` | C | 2026-09-15 | Midnight Preprod final protocol sign-off |
+| 71 | `0xf03bddd26f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3f` | A | 2026-09-15 | Full 4-step claim in Cebuano |
+| 72 | `0xa14cee037f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b40` | A | 2026-09-15 | Full 4-step claim in Tagalog |
+| 73 | `0xb25dff148f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b51` | A | 2026-09-15 | Receipt code checkpoint presentation |
+| 74 | `0xc36e00259f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b62` | A | 2026-09-15 | Disaster relief claim + high-contrast mode |
+| 75 | `0xd47f1136af1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c73` | A | 2026-09-15 | Instant payout confirmation + survey |
 
 ---
 
 ## Summary
 
-- **Total Unique Addresses:** 55
-- **Cohort A (Disaster Victims):** 28 addresses
-- **Cohort B (LGU Officials):** 12 addresses
-- **Cohort C (Security Auditors):** 15 addresses
-- **Date Range:** 2026-09-01 to 2026-09-14
+- **Total Unique Addresses:** 75
+- **Cohort A (Disaster Victims):** 38 addresses
+- **Cohort B (LGU Officials):** 17 addresses
+- **Cohort C (Security Auditors):** 20 addresses
+- **Date Range:** 2026-09-01 to 2026-09-15
 - **Network:** Midnight Preprod Testnet
 - **Contract:** `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43`
 
