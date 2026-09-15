@@ -1,9 +1,9 @@
 // ============================================
 // GhostFree — Citizen Claim Portal
-// Mobile-first, public, 4-step ZK claim flow
+// Premium Mobile-first, public, 4-step ZK claim flow
 // ============================================
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMidnightWallet } from "../../contexts/MidnightWalletContext";
 import { useMidnightContract } from "../../hooks/useMidnightContract";
@@ -16,6 +16,7 @@ import ReliefReceiptModal from "../../components/ReliefReceiptModal";
 import OnboardingModal from "../../components/OnboardingModal";
 import LanguageSelector from "../../components/LanguageSelector";
 import DisasterConnectivityBanner from "../../components/DisasterConnectivityBanner";
+import GhostFreeLogo from "../../components/GhostFreeLogo";
 import { networkResilience } from "../../services/networkResilience.service";
 import {
   t,
@@ -44,7 +45,108 @@ import {
   FileCheck2,
   Sparkles,
   Star,
+  Download,
 } from "lucide-react";
+
+// ---- Radial Progress Ring Component ----
+const RadialProgress: React.FC<{ progress: number; size?: number }> = ({
+  progress,
+  size = 160,
+}) => {
+  const strokeWidth = 6;
+  const radius = (size - strokeWidth * 2) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (progress / 100) * circumference;
+
+  return (
+    <div className="relative" style={{ width: size, height: size }}>
+      {/* Ambient glow */}
+      <div
+        className="absolute inset-2 rounded-full animate-pulse-ring"
+        style={{
+          background: `radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 70%)`,
+        }}
+      />
+      <svg
+        width={size}
+        height={size}
+        className="radial-progress-ring"
+      >
+        <defs>
+          <linearGradient id="progress-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#1E40AF" />
+            <stop offset="50%" stopColor="#3B82F6" />
+            <stop offset="100%" stopColor="#0EA5E9" />
+          </linearGradient>
+        </defs>
+        {/* Background track */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="rgba(75, 85, 99, 0.2)"
+          strokeWidth={strokeWidth}
+        />
+        {/* Progress arc */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke="url(#progress-grad)"
+          strokeWidth={strokeWidth}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      {/* Center content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <Fingerprint className="w-8 h-8 text-civic-sky mb-1" />
+        <span className="text-2xl font-black text-white tabular-nums">{progress}%</span>
+        <span className="text-[0.6rem] text-slate-400 mt-0.5">Proving</span>
+      </div>
+    </div>
+  );
+};
+
+// ---- Confetti Celebration Component ----
+const ConfettiCelebration: React.FC<{ active: boolean }> = ({ active }) => {
+  const particles = useMemo(() => {
+    if (!active) return [];
+    return Array.from({ length: 20 }, (_, i) => ({
+      id: i,
+      x: 50 + (Math.random() - 0.5) * 80,
+      y: 50 + (Math.random() - 0.5) * 60,
+      color: ["#3B82F6", "#0EA5E9", "#10B981", "#F59E0B", "#8B5CF6"][i % 5],
+      delay: Math.random() * 0.5,
+      size: 4 + Math.random() * 6,
+    }));
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <div className="confetti-container">
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className="confetti-particle"
+          style={{
+            left: `${p.x}%`,
+            top: `${p.y}%`,
+            backgroundColor: p.color,
+            width: p.size,
+            height: p.size,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${0.8 + Math.random() * 0.6}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 const CitizenClaimPortal: React.FC = () => {
   const navigate = useNavigate();
@@ -65,6 +167,9 @@ const CitizenClaimPortal: React.FC = () => {
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [idValid, setIdValid] = useState(false);
+  const [pinValid, setPinValid] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -79,6 +184,15 @@ const CitizenClaimPortal: React.FC = () => {
       setStep("credentials");
     }
   }, [connected, step]);
+
+  // Input validation indicators
+  useEffect(() => {
+    setIdValid(nationalId.length >= 6);
+  }, [nationalId]);
+
+  useEffect(() => {
+    setPinValid(secretPin.length >= 4);
+  }, [secretPin]);
 
   const steps: { key: ClaimStep; label: string; icon: React.ReactNode }[] = [
     { key: "connect", label: t("stepConnect", lang), icon: <Wallet className="w-4 h-4" /> },
@@ -139,6 +253,10 @@ const CitizenClaimPortal: React.FC = () => {
         amount: claimAmount,
       });
 
+      // Trigger celebration
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 2000);
+
       // Automatically generate a zero-knowledge verifiable receipt
       const generatedReceipt = generateReliefReceipt(
         claimResult.txHash,
@@ -180,19 +298,21 @@ const CitizenClaimPortal: React.FC = () => {
     setShowReceiptModal(false);
     setFeedbackRating(null);
     setFeedbackSubmitted(false);
+    setShowConfetti(false);
   };
 
   return (
     <div className="min-h-dvh bg-civic-navy relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-20" />
+      <div className="absolute inset-0 gradient-mesh opacity-40" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent-success/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Disaster Zone Offline & Low-Bandwidth Status Banner */}
       <DisasterConnectivityBanner className="relative z-20" />
 
       {/* Compact Header */}
-      <nav className="relative z-10 flex items-center justify-between px-4 py-3 sm:px-6">
+      <nav className="relative z-10 flex items-center justify-between px-4 py-3 sm:px-6 border-b border-white/[0.04]">
         <button
           onClick={() => navigate("/")}
           className="btn-civic btn-ghost text-sm py-1.5 px-2"
@@ -202,7 +322,7 @@ const CitizenClaimPortal: React.FC = () => {
         </button>
 
         <div className="flex items-center gap-2">
-          <Shield className="w-4 h-4 text-civic-sky" />
+          <GhostFreeLogo size={24} variant="icon" animated />
           <span className="text-white text-sm font-semibold">GhostFree</span>
           <button
             onClick={() => setShowOnboarding(true)}
@@ -231,26 +351,32 @@ const CitizenClaimPortal: React.FC = () => {
           {steps.map((s, i) => (
             <React.Fragment key={s.key}>
               <div className="flex flex-col items-center gap-1.5">
-                <div
-                  className={`
-                    step-indicator w-9 h-9 text-xs
-                    ${
-                      i < currentStepIndex
-                        ? "step-complete"
-                        : i === currentStepIndex
-                        ? "step-active"
-                        : "step-pending"
-                    }
-                  `}
-                >
-                  {i < currentStepIndex ? (
-                    <CheckCircle2 className="w-4 h-4" />
-                  ) : (
-                    s.icon
+                <div className="relative">
+                  {/* Pulse ring on active step */}
+                  {i === currentStepIndex && (
+                    <div className="absolute -inset-1.5 rounded-full border-2 border-civic-sky/30 animate-pulse-ring" />
                   )}
+                  <div
+                    className={`
+                      step-indicator w-9 h-9 text-xs transition-all duration-500
+                      ${
+                        i < currentStepIndex
+                          ? "step-complete"
+                          : i === currentStepIndex
+                          ? "step-active scale-110"
+                          : "step-pending"
+                      }
+                    `}
+                  >
+                    {i < currentStepIndex ? (
+                      <CheckCircle2 className="w-4 h-4" />
+                    ) : (
+                      s.icon
+                    )}
+                  </div>
                 </div>
                 <span
-                  className={`text-[0.6rem] font-medium ${
+                  className={`text-[0.6rem] font-medium transition-colors duration-300 ${
                     i <= currentStepIndex ? "text-white" : "text-shield-muted"
                   }`}
                 >
@@ -258,11 +384,12 @@ const CitizenClaimPortal: React.FC = () => {
                 </span>
               </div>
               {i < steps.length - 1 && (
-                <div
-                  className={`flex-1 h-0.5 rounded-full mb-5 transition-colors duration-500 ${
-                    i < currentStepIndex ? "bg-accent-success" : "bg-shield-glass/30"
-                  }`}
-                />
+                <div className="flex-1 h-0.5 rounded-full mb-5 overflow-hidden bg-shield-glass/30">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-civic-blue to-accent-success transition-all duration-700 ease-out"
+                    style={{ width: i < currentStepIndex ? "100%" : "0%" }}
+                  />
+                </div>
               )}
             </React.Fragment>
           ))}
@@ -273,7 +400,7 @@ const CitizenClaimPortal: React.FC = () => {
       <main className="relative z-10 px-4 sm:px-6 pb-8">
         <div
           className={`
-            max-w-md mx-auto glass-card p-6 sm:p-8
+            max-w-md mx-auto glass-card-premium p-6 sm:p-8
             transition-all duration-500
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
           `}
@@ -296,7 +423,7 @@ const CitizenClaimPortal: React.FC = () => {
               <button
                 onClick={handleConnectWallet}
                 disabled={connecting}
-                className="btn-civic btn-primary w-full h-14 text-base tap-scale mb-4"
+                className="btn-civic btn-primary shimmer-btn w-full h-14 text-base tap-scale mb-4"
                 id="connect-wallet-btn"
               >
                 {connecting ? (
@@ -357,7 +484,7 @@ const CitizenClaimPortal: React.FC = () => {
 
               {/* Privacy Badge */}
               <div className="flex items-center gap-2 p-3 rounded-xl bg-accent-success/5 border border-accent-success/15 mb-6">
-                <ShieldCheck className="w-4 h-4 text-accent-success shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-accent-success shrink-0 animate-pulse" />
                 <p className="text-xs text-green-300">
                   {t("privacyNotice", lang)}
                 </p>
@@ -369,15 +496,22 @@ const CitizenClaimPortal: React.FC = () => {
                     <KeyRound className="w-3.5 h-3.5 text-accent-purple" />
                     {t("residentIdLabel", lang)}
                   </label>
-                  <input
-                    id="national-id"
-                    type="text"
-                    className="input-civic"
-                    placeholder={t("residentIdPlaceholder", lang)}
-                    value={nationalId}
-                    onChange={(e) => setNationalId(e.target.value)}
-                    autoComplete="off"
-                  />
+                  <div className="relative">
+                    <input
+                      id="national-id"
+                      type="text"
+                      className="input-civic pr-10"
+                      placeholder={t("residentIdPlaceholder", lang)}
+                      value={nationalId}
+                      onChange={(e) => setNationalId(e.target.value)}
+                      autoComplete="off"
+                    />
+                    {idValid && (
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 animate-scale-in">
+                        <CheckCircle2 className="w-4 h-4 text-accent-success" />
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>
@@ -390,20 +524,27 @@ const CitizenClaimPortal: React.FC = () => {
                       id="secret-pin"
                       type={showPin ? "text" : "password"}
                       inputMode="numeric"
-                      className="input-civic pr-12"
+                      className="input-civic pr-20"
                       placeholder={t("pinPlaceholder", lang)}
                       value={secretPin}
                       onChange={(e) => setSecretPin(e.target.value)}
                       autoComplete="off"
                       maxLength={8}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPin(!showPin)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-shield-muted hover:text-white transition-colors"
-                    >
-                      {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                      {pinValid && (
+                        <div className="animate-scale-in">
+                          <CheckCircle2 className="w-4 h-4 text-accent-success" />
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setShowPin(!showPin)}
+                        className="text-shield-muted hover:text-white transition-colors"
+                      >
+                        {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -416,7 +557,7 @@ const CitizenClaimPortal: React.FC = () => {
 
                 <button
                   onClick={handleSubmitCredentials}
-                  className="btn-civic btn-primary w-full h-14 text-base tap-scale mt-2"
+                  className="btn-civic btn-primary shimmer-btn w-full h-14 text-base tap-scale mt-2"
                   id="verify-btn"
                 >
                   <Fingerprint className="w-5 h-5" />
@@ -435,39 +576,30 @@ const CitizenClaimPortal: React.FC = () => {
             </div>
           )}
 
-          {/* === Step 3: Proving === */}
+          {/* === Step 3: Proving — Radial Progress Ring === */}
           {step === "proving" && (
             <div className="animate-fade-in">
               <div className="flex flex-col items-center text-center">
-                <div className="w-20 h-20 rounded-2xl bg-civic-blue/10 border border-civic-blue/20 flex items-center justify-center mb-6 animate-glow-pulse">
-                  <Fingerprint className="w-10 h-10 text-civic-sky" />
+                {/* Radial Progress Ring */}
+                <div className="mb-6">
+                  <RadialProgress progress={provingProgress} size={160} />
                 </div>
+
                 <h2 className="text-xl font-bold text-white mb-2">
-                  Generating Zero-Knowledge Proof
+                  {t("provingTitle", lang) || "Verifying your eligibility privately..."}
                 </h2>
                 <p className="text-shield-muted text-sm mb-8">
-                  Computing your eligibility proof locally on this device...
+                  {t("provingDesc", lang) || "Computing your proof locally on this device..."}
                 </p>
-
-                {/* Progress Bar */}
-                <div className="w-full mb-6">
-                  <div className="w-full h-2 rounded-full bg-shield-glass/20 overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-civic-blue to-civic-trust transition-all duration-700 ease-out"
-                      style={{ width: `${provingProgress}%` }}
-                    />
-                  </div>
-                  <p className="text-civic-sky text-xs font-mono mt-2">{provingProgress}%</p>
-                </div>
 
                 {/* Status Messages */}
                 <div className="space-y-2 w-full">
                   {[
-                    { threshold: 10, label: "Hashing credentials locally..." },
-                    { threshold: 30, label: "Fetching Merkle inclusion proof..." },
-                    { threshold: 55, label: "Generating ZK-SNARK proof..." },
-                    { threshold: 80, label: "Computing nullifier..." },
-                    { threshold: 95, label: "Submitting proof to smart contract..." },
+                    { threshold: 10, label: t("provingStep1", lang) || "Hashing credentials locally..." },
+                    { threshold: 30, label: t("provingStep2", lang) || "Fetching Merkle inclusion proof..." },
+                    { threshold: 55, label: t("provingStep3", lang) || "Generating zero-knowledge proof..." },
+                    { threshold: 80, label: t("provingStep4", lang) || "Computing nullifier..." },
+                    { threshold: 95, label: t("provingStep5", lang) || "Submitting proof to smart contract..." },
                   ].map(
                     (msg, i) =>
                       provingProgress >= msg.threshold && (
@@ -497,7 +629,7 @@ const CitizenClaimPortal: React.FC = () => {
                 {/* Privacy reminder */}
                 <div className="mt-8 flex items-center gap-2 text-shield-muted text-xs">
                   <ShieldCheck className="w-3.5 h-3.5 text-accent-success" />
-                  <span>Your identity data never leaves this device</span>
+                  <span>{t("privacyReminder", lang) || "Your identity data never leaves this device"}</span>
                 </div>
               </div>
             </div>
@@ -505,20 +637,23 @@ const CitizenClaimPortal: React.FC = () => {
 
           {/* === Step 4: Result === */}
           {step === "result" && result && (
-            <div className="animate-fade-in">
+            <div className="animate-fade-in relative">
+              {/* Confetti celebration */}
+              <ConfettiCelebration active={showConfetti} />
+
               {result.success ? (
-                <div className="flex flex-col items-center text-center">
+                <div className="flex flex-col items-center text-center relative z-10">
                   <div className="w-20 h-20 rounded-full bg-accent-success/10 border-2 border-accent-success flex items-center justify-center mb-6 animate-scale-in">
                     <CheckCircle2 className="w-10 h-10 text-accent-success" />
                   </div>
                   <h2 className="text-2xl font-bold text-white mb-2">
-                    Aid Claimed Successfully!
+                    {t("claimSuccess", lang) || "Aid Claimed Successfully!"}
                   </h2>
                   <p className="text-accent-success text-lg font-semibold mb-1">
                     {result.amount?.toLocaleString()} tNIGHT
                   </p>
                   <p className="text-shield-muted text-sm mb-8">
-                    has been sent to your Lace wallet
+                    {t("claimSuccessDesc", lang) || "has been sent to your Lace wallet"}
                   </p>
 
                   {result.transactionHash && (
@@ -540,9 +675,9 @@ const CitizenClaimPortal: React.FC = () => {
                   {receipt && (
                     <button
                       onClick={() => setShowReceiptModal(true)}
-                      className="w-full mb-4 py-2.5 px-4 rounded-xl bg-accent-success/15 hover:bg-accent-success/25 border border-accent-success/30 text-accent-success font-semibold text-xs transition-all flex items-center justify-center gap-2"
+                      className="w-full mb-4 py-3 px-4 rounded-xl bg-accent-success/15 hover:bg-accent-success/25 border border-accent-success/30 text-accent-success font-semibold text-xs transition-all flex items-center justify-center gap-2 shimmer-btn"
                     >
-                      <FileCheck2 className="w-4 h-4" />
+                      <Download className="w-4 h-4" />
                       <span>View & Download Proof Receipt</span>
                     </button>
                   )}
@@ -560,10 +695,14 @@ const CitizenClaimPortal: React.FC = () => {
                           <button
                             key={star}
                             onClick={() => handleQuickFeedback(star)}
-                            className="p-1 text-white/30 hover:text-accent-gold transition-all hover:scale-125"
+                            className={`p-1 transition-all hover:scale-125 ${
+                              feedbackRating && star <= feedbackRating
+                                ? "text-accent-gold"
+                                : "text-white/30 hover:text-accent-gold"
+                            }`}
                             aria-label={`Rate ${star} stars`}
                           >
-                            <Star className="w-5 h-5 hover:fill-accent-gold" />
+                            <Star className={`w-5 h-5 ${feedbackRating && star <= feedbackRating ? "fill-accent-gold" : "hover:fill-accent-gold"}`} />
                           </button>
                         ))}
                       </div>
@@ -591,18 +730,24 @@ const CitizenClaimPortal: React.FC = () => {
                   </div>
                   <h2 className="text-xl font-bold text-white mb-2">
                     {result.errorCode === "ALREADY_CLAIMED"
-                      ? "Already Claimed"
+                      ? t("alreadyClaimed", lang) || "Already Claimed"
                       : result.errorCode === "NOT_ELIGIBLE"
-                      ? "Not Eligible"
-                      : "Claim Failed"}
+                      ? t("notEligible", lang) || "Not Eligible"
+                      : t("claimFailed", lang) || "Claim Failed"}
                   </h2>
-                  <p className="text-shield-muted text-sm mb-8 max-w-xs">
+                  <p className="text-shield-muted text-sm mb-4 max-w-xs">
                     {result.errorCode === "ALREADY_CLAIMED"
-                      ? "This identity has already received aid for this relief operation. Each person can only claim once."
+                      ? t("alreadyClaimedDesc", lang) || "This identity has already received aid for this relief operation. Each person can only claim once."
                       : result.errorCode === "NOT_ELIGIBLE"
-                      ? "Your identity was not found in the eligibility list for this relief operation."
+                      ? t("notEligibleDesc", lang) || "Your identity was not found in the eligibility list for this relief operation."
                       : result.error || "An error occurred. Please try again."}
                   </p>
+                  {/* Reassuring guidance */}
+                  <div className="w-full p-3 rounded-xl bg-civic-blue/5 border border-civic-blue/15 mb-4 text-left">
+                    <p className="text-xs text-slate-300 leading-relaxed">
+                      <span className="font-semibold text-civic-sky">Need help?</span> Visit your barangay hall or contact the LGU disaster response team. Your data remains private — nothing was transmitted.
+                    </p>
+                  </div>
                 </div>
               )}
 
