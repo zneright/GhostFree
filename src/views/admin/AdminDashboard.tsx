@@ -22,6 +22,7 @@ import {
 import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } from "../../types";
 import TransparencyCard from "../../components/TransparencyCard";
 import TrancheQuorumModal from "../../components/TrancheQuorumModal";
+import GhostFreeLogo from "../../components/GhostFreeLogo";
 import {
   Upload,
   FileSpreadsheet,
@@ -273,15 +274,19 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="min-h-dvh bg-civic-navy">
       {/* Header */}
-      <header className="border-b border-shield-glass/30 bg-shield-dark/50 backdrop-blur-xl sticky top-0 z-20">
+      <header className="border-b border-shield-glass/30 bg-shield-dark/50 backdrop-blur-xl sticky top-0 z-20 relative">
+        {/* Bottom glow line */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-civic-blue/20 to-transparent" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-civic-blue to-civic-trust flex items-center justify-center">
-              <Shield className="w-4 h-4 text-white" />
-            </div>
+            <GhostFreeLogo size={32} variant="icon" animated />
             <div>
               <h1 className="text-sm font-bold text-white leading-none">GhostFree Admin</h1>
-              <p className="text-[0.65rem] text-shield-muted">{profile?.name || profile?.email}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[0.6rem] text-shield-muted">{profile?.name || profile?.email}</span>
+                <span className="text-[0.55rem] px-1.5 py-0.5 rounded-full bg-civic-blue/15 text-civic-sky border border-civic-blue/20 font-semibold uppercase tracking-wider">LGU Officer</span>
+              </div>
             </div>
           </div>
 
@@ -440,7 +445,7 @@ const AdminDashboard: React.FC = () => {
 
         {/* Citizen Feedback & Insights Hub */}
         {showFeedback && (
-          <div className="glass-card p-6 mb-8 animate-fade-in-down border border-civic-trust/30">
+          <div className="glass-card-premium p-6 mb-8 animate-fade-in-down border border-civic-trust/30">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
               <div>
                 <h3 className="text-white font-bold text-lg flex items-center gap-2">
@@ -458,10 +463,10 @@ const AdminDashboard: React.FC = () => {
                   <button
                     key={tab}
                     onClick={() => setFeedbackFilter(tab)}
-                    className={`px-2.5 py-1 rounded-lg text-[0.7rem] font-medium transition-colors ${
+                    className={`px-2.5 py-1 rounded-lg text-[0.7rem] font-medium transition-all duration-200 ${
                       feedbackFilter === tab
-                        ? "bg-civic-blue text-white"
-                        : "text-white/50 hover:text-white"
+                        ? "bg-civic-blue text-white shadow-lg shadow-civic-blue/20"
+                        : "text-white/50 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {tab.charAt(0).toUpperCase() + tab.slice(1).replace("_", " ")}
@@ -472,7 +477,7 @@ const AdminDashboard: React.FC = () => {
 
             {/* Metrics Overview */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+              <div className="metric-card">
                 <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
                   Citizen CSAT Score
                 </span>
@@ -495,7 +500,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+              <div className="metric-card">
                 <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
                   Total Submissions
                 </span>
@@ -504,7 +509,7 @@ const AdminDashboard: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+              <div className="metric-card">
                 <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
                   Actioned / Resolved
                 </span>
@@ -513,7 +518,7 @@ const AdminDashboard: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-shield-dark/60 border border-shield-glass/20">
+              <div className="metric-card">
                 <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
                   Under Triage
                 </span>
@@ -601,7 +606,7 @@ const AdminDashboard: React.FC = () => {
 
         {/* Dual-Key Municipal Quorum Panel */}
         {showQuorum && (
-          <div className="glass-card p-6 mb-8 animate-fade-in-down border border-accent-success/30">
+          <div className="glass-card-premium p-6 mb-8 animate-fade-in-down border border-accent-success/30">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
               <div>
                 <h3 className="text-white font-bold text-lg flex items-center gap-2">
