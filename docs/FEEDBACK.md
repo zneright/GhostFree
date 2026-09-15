@@ -160,24 +160,29 @@ Every shipped feature below was directly motivated by specific user feedback ide
 | `fb-user-009` | **Disaster Zone Offline Detection & Low-Bandwidth Mode** — Auto-detects 2G/EDGE network loss, displays disaster status banner, and stages draft credentials in memory with zero PII exposure. | `src/components/DisasterConnectivityBanner.tsx`, `src/services/networkResilience.service.ts`, `src/views/claim/CitizenClaimPortal.tsx`, `tests/networkResilience.test.ts` | `9770a02` |
 | `fb-user-010` | **Checkpoint Marshal Relief Receipt Verifier** — 1-second on-field voucher validation tool for checkpoint marshals to verify disbursement authenticity without seeing private resident credentials. | `src/components/ReceiptVerifierModal.tsx`, `src/services/receiptVerifier.service.ts`, `src/components/Layout.tsx`, `tests/receiptVerifier.test.ts` | `6d56181` |
 | `fb-user-011` | **LGU Emergency Tranche Quorum Simulator** — Dual-officer threshold signature test tool for municipal DRRM officers and treasurers before executing live Midnight deposits. | `src/components/TrancheQuorumModal.tsx`, `src/views/admin/AdminDashboard.tsx` | `6d56181` |
+| `fb-user-012` | **Enterprise Brand Identity & Civic-Tech UI/UX (v1.3.0)** — Complete product-grade UI transformation: official GhostFree dual-wing shield & keyhole logo SVG, animated radial progress ring wizard, confetti disbursement celebration, glassmorphism cards, and interactive protocol simulator. | `src/components/GhostFreeLogo.tsx`, `src/views/LandingPage.tsx`, `src/views/claim/CitizenClaimPortal.tsx`, `src/views/admin/AdminDashboard.tsx`, `src/components/Layout.tsx` | `e3d3fe8`, `1c27a4d`, `4fa8f64`, `d0ee4af`, `f4619f3`, `53213df` |
 
 ---
 
-## 8. Shipped Product Extensions (v1.2.0 Changelog)
+## 8. Shipped Product Extensions (v1.3.0 Changelog)
 
 | Shipped Feature | User Problem Solved | Component Location |
 | :--- | :--- | :--- |
-| **1. Regional Dialect Localization** | Elderly evacuees struggled with English crypto jargon. | `src/components/LanguageSelector.tsx`, `src/services/i18n.service.ts` |
-| **2. Disaster Zone Low-Bandwidth Mode** | 2G/EDGE cellular signals drop during typhoons. | `src/components/DisasterConnectivityBanner.tsx`, `src/services/networkResilience.service.ts` |
-| **3. Checkpoint Marshal Receipt Verifier** | Marshals needed to verify relief vouchers on clipboards with zero PII disclosure. | `src/components/ReceiptVerifierModal.tsx`, `src/services/receiptVerifier.service.ts` |
-| **4. LGU Tranche Quorum Simulator** | Municipalities needed to verify dual-officer threshold sign-offs before depositing funds. | `src/components/TrancheQuorumModal.tsx`, `src/views/admin/AdminDashboard.tsx` |
-| **5. Confidential Relief Receipt Generator** | Citizens had no tangible proof of relief to present to disaster relief marshals. | `src/components/ReliefReceiptModal.tsx` |
-| **6. Interactive Onboarding Walkthrough** | First-time users were puzzled by the absence of a traditional login screen. | `src/components/OnboardingModal.tsx` |
-| **7. In-App Feedback Widget & Micro-Survey** | Users lacked a direct, structured channel to report bugs or usability issues. | `src/components/FeedbackWidget.tsx` |
-| **8. LGU Admin Feedback & Triage Hub** | Municipalities had no way to review citizen sentiment and prioritize operational fixes. | `src/views/admin/AdminDashboard.tsx` |
-| **9. Preprod Network Transparency Card** | Stakeholders needed real-time visual proof of smart contract status and gas sponsorship. | `src/components/TransparencyCard.tsx` |
-| **10. Accessibility Toggle** | Disaster zone mobile users needed larger text and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx` |
-| **11. Claim Status Tracker** | LGU officers needed claim lifecycle audit trails for accountability. | `src/services/claimStatus.service.ts` |
+| **1. Official GhostFree Brand Identity** | Users found generic shield icons lacked enterprise trust and official presence. | `src/components/GhostFreeLogo.tsx`, `public/favicon.svg` |
+| **2. Radial Progress Claim Wizard** | Evacuees on mobile needed instant visual orientation on their claim completion status. | `src/views/claim/CitizenClaimPortal.tsx` |
+| **3. Disbursement Confetti Celebration** | Relief recipients felt uncertain if payout concluded without visual celebration. | `src/views/claim/CitizenClaimPortal.tsx` |
+| **4. Animated Interactive Protocol Simulator** | Citizens and auditors struggled to visualize zero-knowledge nullifiers. | `src/views/LandingPage.tsx` |
+| **5. Regional Dialect Localization** | Elderly evacuees struggled with English crypto jargon. | `src/components/LanguageSelector.tsx`, `src/services/i18n.service.ts` |
+| **6. Disaster Zone Low-Bandwidth Mode** | 2G/EDGE cellular signals drop during typhoons. | `src/components/DisasterConnectivityBanner.tsx`, `src/services/networkResilience.service.ts` |
+| **7. Checkpoint Marshal Receipt Verifier** | Marshals needed to verify relief vouchers on clipboards with zero PII disclosure. | `src/components/ReceiptVerifierModal.tsx`, `src/services/receiptVerifier.service.ts` |
+| **8. LGU Tranche Quorum Simulator** | Municipalities needed to verify dual-officer threshold sign-offs before depositing funds. | `src/components/TrancheQuorumModal.tsx`, `src/views/admin/AdminDashboard.tsx` |
+| **9. Confidential Relief Receipt Generator** | Citizens had no tangible proof of relief to present to disaster relief marshals. | `src/components/ReliefReceiptModal.tsx` |
+| **10. Interactive Onboarding Walkthrough** | First-time users were puzzled by the absence of a traditional login screen. | `src/components/OnboardingModal.tsx` |
+| **11. In-App Feedback Widget & Micro-Survey** | Users lacked a direct, structured channel to report bugs or usability issues. | `src/components/FeedbackWidget.tsx` |
+| **12. LGU Admin Feedback & Triage Hub** | Municipalities had no way to review citizen sentiment and prioritize operational fixes. | `src/views/admin/AdminDashboard.tsx` |
+| **13. Preprod Network Transparency Card** | Stakeholders needed real-time visual proof of smart contract status and gas sponsorship. | `src/components/TransparencyCard.tsx` |
+| **14. Accessibility Toggle** | Disaster zone mobile users needed larger text and higher contrast in bright sunlight. | `src/components/AccessibilityToggle.tsx` |
+| **15. Claim Status Tracker** | LGU officers needed claim lifecycle audit trails for accountability. | `src/services/claimStatus.service.ts` |
 
 ---
 
