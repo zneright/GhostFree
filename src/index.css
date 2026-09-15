@@ -300,6 +300,175 @@
   }
 }
 
+/* Premium Component Additions */
+@layer components {
+  /* ---- Premium Glass Card with animated border glow ---- */
+  .glass-card-premium {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.9) 100%);
+    border: 1px solid rgba(75, 85, 99, 0.4);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card-premium:hover {
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 8px 40px rgba(10, 22, 40, 0.35), 0 0 40px rgba(59, 130, 246, 0.08);
+    transform: translateY(-3px);
+  }
+  .glass-card-premium::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--border-angle, 0deg),
+      transparent 40%,
+      rgba(59, 130, 246, 0.4) 50%,
+      transparent 60%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: borderRotate 4s linear infinite;
+  }
+  .glass-card-premium:hover::before {
+    opacity: 1;
+  }
+
+  /* ---- Section Header with gradient underline ---- */
+  .section-header {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+  }
+  .section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #1E40AF, #3B82F6, #0EA5E9);
+  }
+
+  /* ---- Metric / KPI Card ---- */
+  .metric-card {
+    background: linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.8) 100%);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+    border-radius: 1.25rem;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .metric-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
+  }
+  .metric-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3B82F6, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .metric-card:hover::after {
+    opacity: 1;
+  }
+
+  /* ---- Logo ambient glow ---- */
+  .logo-glow {
+    animation: logoAmbient 3s ease-in-out infinite;
+  }
+
+  /* ---- Shimmer button effect ---- */
+  .shimmer-btn {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    animation: shimmerSweep 3s ease-in-out infinite;
+  }
+
+  /* ---- Gradient Mesh Background ---- */
+  .gradient-mesh {
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(30, 64, 175, 0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease-in-out infinite;
+  }
+
+  /* ---- Radial Progress Ring ---- */
+  .radial-progress-ring {
+    transform: rotate(-90deg);
+  }
+  .radial-progress-ring circle {
+    transition: stroke-dashoffset 0.7s ease-out;
+  }
+
+  /* ---- Confetti / Celebration Particles ---- */
+  .confetti-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .confetti-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: confettiBurst 1.2s ease-out forwards;
+  }
+
+  /* ---- Live pulsing dot ---- */
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: relative;
+  }
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.4;
+    animation: pulseRing 2s ease-in-out infinite;
+  }
+
+  /* ---- Premium Footer ---- */
+  .footer-gradient-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #1E40AF, #3B82F6, #0EA5E9, transparent);
+  }
+}
+
 /* Utility Layer */
 @layer utilities {
   .tap-scale {

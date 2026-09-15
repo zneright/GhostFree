@@ -33,6 +33,8 @@ const config: Config = {
           'danger-soft': 'rgba(239, 68, 68, 0.12)',
           purple: '#8B5CF6',
           'purple-soft': 'rgba(139, 92, 246, 0.12)',
+          gold: '#F59E0B',
+          'gold-soft': 'rgba(245, 158, 11, 0.12)',
         },
       },
       borderRadius: {
@@ -56,7 +58,18 @@ const config: Config = {
         'pulse-slow': 'pulse 3s ease-in-out infinite',
         'shimmer': 'shimmer 2s linear infinite',
         'float': 'float 6s ease-in-out infinite',
+        'float-slow': 'float 8s ease-in-out infinite',
+        'float-fast': 'float 4s ease-in-out infinite',
         'glow-pulse': 'glowPulse 2s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 8s ease-in-out infinite',
+        'border-rotate': 'borderRotate 4s linear infinite',
+        'counter-tick': 'counterTick 0.4s ease-out',
+        'slide-in-left': 'slideInLeft 0.5s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.5s ease-out forwards',
+        'confetti': 'confettiBurst 0.8s ease-out forwards',
+        'pulse-ring': 'pulseRing 2s ease-in-out infinite',
+        'shimmer-sweep': 'shimmerSweep 2.5s ease-in-out infinite',
+        'logo-ambient': 'logoAmbient 3s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -90,6 +103,44 @@ const config: Config = {
         glowPulse: {
           '0%, 100%': { boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)' },
           '50%': { boxShadow: '0 0 40px rgba(59, 130, 246, 0.4)' },
+        },
+        gradientShift: {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
+        borderRotate: {
+          '0%': { '--border-angle': '0deg' },
+          '100%': { '--border-angle': '360deg' },
+        },
+        counterTick: {
+          '0%': { transform: 'translateY(8px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(-30px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(30px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        confettiBurst: {
+          '0%': { transform: 'scale(0)', opacity: '1' },
+          '50%': { transform: 'scale(1.2)', opacity: '0.8' },
+          '100%': { transform: 'scale(1.5)', opacity: '0' },
+        },
+        pulseRing: {
+          '0%': { transform: 'scale(1)', opacity: '0.6' },
+          '50%': { transform: 'scale(1.15)', opacity: '0.3' },
+          '100%': { transform: 'scale(1)', opacity: '0.6' },
+        },
+        shimmerSweep: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(200%)' },
+        },
+        logoAmbient: {
+          '0%, 100%': { filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.3))' },
+          '50%': { filter: 'drop-shadow(0 0 20px rgba(14, 165, 233, 0.5))' },
         },
       },
       backgroundImage: {
