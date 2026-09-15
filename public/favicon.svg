@@ -1,7 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#0A1628"/>
-  <path d="M16 6L8 11v10l8 5 8-5V11L16 6z" fill="#1E40AF" opacity="0.3"/>
-  <path d="M16 8L10 12v8l6 4 6-4v-8L16 8z" stroke="#3B82F6" stroke-width="1.5" fill="none"/>
-  <path d="M16 12v8M12 14l4 2 4-2" stroke="#0EA5E9" stroke-width="1.5" stroke-linecap="round"/>
-  <circle cx="16" cy="14" r="2" fill="#3B82F6"/>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E40AF"/>
+      <stop offset="50%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#0EA5E9"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="6" fill="#0A1628"/>
+  <!-- Outer hexagonal shield -->
+  <path d="M16 3L28 10V22L16 29L4 22V10L16 3Z" stroke="url(#g)" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+  <!-- Inner hexagonal shield -->
+  <path d="M16 6.5L25.5 11.5V21L16 26.5L6.5 21V11.5L16 6.5Z" stroke="url(#g)" stroke-width="1" stroke-linejoin="round" fill="none"/>
+  <!-- Root node -->
+  <circle cx="16" cy="10.5" r="2" fill="url(#g)"/>
+  <!-- Root stem -->
+  <line x1="16" y1="12.5" x2="16" y2="15" stroke="url(#g)" stroke-width="1" stroke-linecap="round"/>
+  <!-- Branch split -->
+  <circle cx="16" cy="15" r="1" fill="url(#g)"/>
+  <!-- Left branch -->
+  <line x1="16" y1="15" x2="11" y2="20" stroke="url(#g)" stroke-width="1" stroke-linecap="round"/>
+  <!-- Right branch -->
+  <line x1="16" y1="15" x2="21" y2="20" stroke="url(#g)" stroke-width="1" stroke-linecap="round"/>
+  <!-- Left child -->
+  <circle cx="11" cy="20" r="1.5" fill="url(#g)"/>
+  <!-- Right child -->
+  <circle cx="21" cy="20" r="1.5" fill="url(#g)"/>
+  <!-- Leaf branches -->
+  <line x1="11" y1="20" x2="8.5" y2="23.5" stroke="url(#g)" stroke-width="0.8" stroke-linecap="round"/>
+  <line x1="11" y1="20" x2="13.5" y2="23.5" stroke="url(#g)" stroke-width="0.8" stroke-linecap="round"/>
+  <line x1="21" y1="20" x2="18.5" y2="23.5" stroke="url(#g)" stroke-width="0.8" stroke-linecap="round"/>
+  <line x1="21" y1="20" x2="23.5" y2="23.5" stroke="url(#g)" stroke-width="0.8" stroke-linecap="round"/>
+  <!-- Leaf nodes -->
+  <circle cx="8.5" cy="23.5" r="1.2" fill="url(#g)"/>
+  <circle cx="13.5" cy="23.5" r="1.2" fill="url(#g)"/>
+  <circle cx="18.5" cy="23.5" r="1.2" fill="url(#g)"/>
+  <circle cx="23.5" cy="23.5" r="1.2" fill="url(#g)"/>
 </svg>
