@@ -1,10 +1,10 @@
-// ============================================
-// GhostFree — Premium Civic-Tech Landing Page
-// Official Logo + Animated Gradient Mesh + Counter HUD
-// Protocol Simulator + Statutory Framework + FAQ
-// ============================================
+// =======================================================
+// GhostFree — GitHub-Grade Civic-Tech Landing Page (v1.4.0)
+// 100% Plain English Copy · Product Showcase Window
+// Old Way vs GhostFree Comparison · Interactive Bento
+// =======================================================
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Shield,
@@ -18,15 +18,18 @@ import {
   EyeOff,
   Zap,
   CheckCircle2,
-  FileText,
+  XCircle,
   Activity,
   ChevronDown,
   Scale,
   Sparkles,
-  Server,
-  Key,
   ExternalLink,
   Globe,
+  ArrowRight,
+  Layers,
+  Clock,
+  FileCheck,
+  Download,
 } from "lucide-react";
 import TransparencyCard from "../components/TransparencyCard";
 import OnboardingModal from "../components/OnboardingModal";
@@ -40,7 +43,6 @@ function useCountUp(target: number, duration = 2000, trigger = false) {
 
   useEffect(() => {
     if (!trigger) return;
-    let start = 0;
     const startTime = performance.now();
 
     const tick = (now: number) => {
@@ -48,8 +50,7 @@ function useCountUp(target: number, duration = 2000, trigger = false) {
       const progress = Math.min(elapsed / duration, 1);
       // Ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
-      start = Math.round(eased * target);
-      setCount(start);
+      setCount(Math.round(eased * target));
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(tick);
       }
@@ -65,6 +66,7 @@ function useCountUp(target: number, duration = 2000, trigger = false) {
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState<"citizen" | "admin" | "treasury">("citizen");
   const [activeStep, setActiveStep] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -86,7 +88,7 @@ export const LandingPage: React.FC = () => {
           observer.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.25 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -97,93 +99,142 @@ export const LandingPage: React.FC = () => {
   const beneficiaryCount = useCountUp(2850, 2000, countersVisible);
   const leakCount = useCountUp(0, 500, countersVisible);
 
-  const protocolPhases = [
+  // Plain English 4-Step Process
+  const steps = [
     {
       id: 1,
-      name: "Phase 1: Local Credential Entry",
-      tag: "Client-Side Only",
-      icon: <Key className="w-5 h-5 text-civic-sky" />,
-      desc: "Citizen inputs their PhilSys / Resident ID and physical voucher Secret PIN on their mobile phone. Values remain strictly inside browser memory.",
-      tech: "0 bytes transmitted over HTTP or network",
+      title: "1. Enter Voucher PIN",
+      tag: "100% Private",
+      icon: <Smartphone className="w-5 h-5 text-civic-sky" />,
+      desc: "Type your ID number and the secret PIN printed on your relief voucher. These values stay in your phone's memory.",
+      note: "Nothing is sent over the internet.",
+      observerSees: "Zero data transmitted",
+      staysPrivate: "Your National ID and voucher PIN stay locked on your phone",
     },
     {
       id: 2,
-      name: "Phase 2: Local ZK Leaf Derivation",
-      tag: "WASM Proving",
+      title: "2. Create Digital Pass",
+      tag: "On-Phone Math",
       icon: <Fingerprint className="w-5 h-5 text-accent-purple" />,
-      desc: "Client-side WASM engine computes leafHash = Poseidon(residentID, secretPin). Generates zero-knowledge witness proof locally.",
-      tech: "Poseidon Merkle Leaf Hashing",
+      desc: "Your phone creates a tamper-proof digital pass proving you hold a valid voucher, without revealing your name.",
+      note: "Generated in 1 second on your device.",
+      observerSees: "Only a one-time mathematical proof",
+      staysPrivate: "Your identity remains completely hidden",
     },
     {
       id: 3,
-      name: "Phase 3: Merkle Inclusion Assertion",
-      tag: "Smart Contract Circuit",
+      title: "3. Check Approved List",
+      tag: "Anonymous Check",
       icon: <Shield className="w-5 h-5 text-accent-success" />,
-      desc: "Midnight circuit asserts current == merkleRoot. Proves citizen is an authorized calamity victim without identifying who they are.",
-      tech: "Zero-Knowledge Membership Circuit",
+      desc: "The secure contract checks whether your pass matches the town's disaster relief roster without discovering who you are.",
+      note: "Instant confirmation with zero delays.",
+      observerSees: "Eligibility confirmed: YES",
+      staysPrivate: "Nobody can link the check to your real name",
     },
     {
       id: 4,
-      name: "Phase 4: Nullifier Payout & Permanent Anti-Ghost Lock",
-      tag: "On-Chain Settlement",
+      title: "4. Receive Cash Aid",
+      tag: "Instant & Locked",
       icon: <Lock className="w-5 h-5 text-accent-gold" />,
-      desc: "Unique nullifier = Hash(leafHash + contractAddress) is committed to public ledger. Smart contract releases fund tranche to Lace wallet.",
-      tech: "Double-claim permanently rejected",
+      desc: "Emergency aid is deposited straight to your wallet. A one-time lock is saved so no one can ever claim your aid again.",
+      note: "Guaranteed one payout per family.",
+      observerSees: "Aid payout recorded + One-time lock code marked spent",
+      staysPrivate: "Your personal details are never stored on any ledger",
     },
   ];
 
+  // Plain English Comparison
+  const comparisons = [
+    {
+      feature: "Claiming Speed",
+      oldWay: "Hours waiting in long evacuation lines under the sun",
+      ghostFree: "30 seconds on your smartphone with instant digital delivery",
+      good: true,
+    },
+    {
+      feature: "Personal Privacy",
+      oldWay: "Names, addresses, and ID numbers printed on public paper clipboards",
+      ghostFree: "100% private. Your ID stays on your phone and is never uploaded",
+      good: true,
+    },
+    {
+      feature: "Ghost Beneficiaries",
+      oldWay: "Corrupt middlemen and duplicate claimants steal emergency relief",
+      ghostFree: "Impossible to claim twice. Digital lock blocks duplicates automatically",
+      good: true,
+    },
+    {
+      feature: "Public Accountability",
+      oldWay: "Paper receipts and locked spreadsheets that take months to audit",
+      ghostFree: "Real-time public dashboard tracking every single peso with zero data leaks",
+      good: true,
+    },
+    {
+      feature: "Transaction Costs",
+      oldWay: "Victims pay travel fares and documentation copying fees",
+      ghostFree: "₱0 cost. The town hall pays all digital network fees in advance",
+      good: true,
+    },
+  ];
+
+  // Plain English Philippine Disaster Laws
   const statutoryLaws = [
     {
       code: "R.A. 10121",
-      title: "Philippine Disaster Risk Reduction & Management Act",
-      impact: "Mandates transparent, auditable releases of Local Calamity Funds & Quick Response Funds (QRF) without diversion or bureaucratic theft.",
+      title: "Disaster Risk Reduction & Management Act",
+      impact: "Requires emergency disaster funds and Quick Response Funds (QRF) to reach affected families immediately with full public accounting.",
     },
     {
       code: "R.A. 10173",
       title: "Data Privacy Act of 2012",
-      impact: "Strictly enforces Zero-Knowledge witness sovereignty. Calamity victims never surrender unshielded IDs or biometric data to centralized servers.",
+      impact: "Guarantees your personal data cannot be published or leaked online. Your identity remains protected at all times.",
     },
     {
       code: "R.A. 8792",
-      title: "Electronic Commerce Act of 2000",
-      impact: "Recognizes cryptographic zero-knowledge nullifiers and on-chain Midnight transaction hashes as legally binding electronic disbursement vouchers.",
+      title: "Electronic Commerce Act",
+      impact: "Recognizes digital emergency vouchers and secure blockchain receipts as legally valid proof of disaster assistance.",
     },
   ];
 
+  // Plain English FAQs
   const faqs = [
     {
-      q: "How does a citizen create an account on GhostFree?",
-      a: "Citizens do NOT create accounts, usernames, or passwords. In emergency disaster zones, forced registration delays aid. Citizens simply open the claim portal, type their Resident ID and voucher PIN, and their phone generates a private cryptographic proof on the spot.",
+      q: "Do I need to register an account, username, or password?",
+      a: "No. When an emergency strikes, creating accounts and remembering passwords only slows down help. You simply open the claim page on your smartphone, type your voucher PIN, and receive your aid directly.",
     },
     {
-      q: "How does GhostFree prevent ghost beneficiaries and double-claiming?",
-      a: "Each citizen's secret identity produces exactly one deterministic nullifier: Hash(leafHash + contractAddress). When aid is claimed, the contract marks spentNullifiers[nullifier] = true. If a duplicate claim is attempted, the transaction immediately reverts, mathematically stopping ghosts.",
+      q: "How does GhostFree stop people from claiming aid twice?",
+      a: "Each disaster voucher contains a secret number that creates a unique digital lock code. The moment aid is claimed, that lock code is permanently marked as used. If someone tries to claim again with the same voucher, the system automatically rejects it.",
     },
     {
-      q: "How do LGU officials manage and deploy calamity operations?",
-      a: "Accredited municipal officials log into the LGU Admin Portal (/admin) using secure credentials. They upload an authorized beneficiary CSV roster, which compiles into an on-chain Merkle root, escrow relief funds, and monitor real-time disbursement telemetry.",
+      q: "Does the government or anyone else see my private identity?",
+      a: "Never. GhostFree proves that you are an authorized disaster victim without ever sharing your name, National ID, or private details with the government, the internet, or the blockchain.",
     },
     {
-      q: "Who pays the transaction gas fee during a calamity?",
-      a: "Disaster victims pay zero gas fees. The LGU official escrows funds and sponsors tDUST execution fees via gas delegation, allowing citizens in catastrophe zones to claim emergency aid with an empty wallet balance.",
+      q: "Do I have to pay any fees or buy cryptocurrency?",
+      a: "No, claiming aid is 100% free for all disaster victims. The local government sponsors all technical execution fees in advance, so you can claim even with an empty wallet balance.",
+    },
+    {
+      q: "How do town hall officials upload beneficiary lists and send funds?",
+      a: "Authorized government officials log in with secure municipal credentials. They upload an approved disaster roster spreadsheet, lock relief funds into the emergency treasury, and review live disbursement statistics on their command center dashboard.",
     },
   ];
 
   return (
     <div className="min-h-dvh bg-civic-navy relative overflow-hidden text-slate-100 selection:bg-civic-blue selection:text-white">
-      {/* === Animated Background === */}
-      <div className="absolute inset-0 bg-grid opacity-30" />
-      <div className="absolute inset-0 gradient-mesh opacity-60" />
+      {/* Background Ambience */}
+      <div className="absolute inset-0 bg-grid opacity-25 pointer-events-none" />
+      <div className="absolute inset-0 gradient-mesh opacity-60 pointer-events-none" />
 
-      {/* Floating hexagonal particle decorations */}
-      <div className="absolute top-[15%] left-[10%] w-16 h-16 border border-civic-blue/10 rotate-45 rounded-lg animate-float-slow pointer-events-none" />
-      <div className="absolute top-[30%] right-[8%] w-10 h-10 border border-civic-trust/10 rotate-12 rounded-lg animate-float pointer-events-none" />
-      <div className="absolute top-[60%] left-[5%] w-12 h-12 border border-accent-purple/10 -rotate-12 rounded-lg animate-float-fast pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[12%] w-14 h-14 border border-accent-success/8 rotate-[30deg] rounded-lg animate-float-slow pointer-events-none" />
-      <div className="absolute top-[45%] right-[25%] w-8 h-8 border border-civic-sky/8 rotate-[60deg] rounded-lg animate-float pointer-events-none" />
+      {/* Floating Accent Orbs */}
+      <div className="absolute top-[12%] left-[15%] w-72 h-72 bg-civic-blue/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-[35%] right-[10%] w-96 h-96 bg-civic-trust/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-[20%] left-[8%] w-80 h-80 bg-accent-gold/10 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Top Navigation Bar */}
-      <header className="relative z-20 flex items-center justify-between px-6 py-4 lg:px-12 lg:py-5 border-b border-white/[0.06] backdrop-blur-xl bg-civic-navy/60">
+      {/* ========================================================
+          1. HEADER & TOP NAVIGATION
+         ======================================================== */}
+      <header className="relative z-20 flex items-center justify-between px-6 py-4 lg:px-12 lg:py-4 border-b border-white/[0.08] backdrop-blur-2xl bg-civic-navy/70 sticky top-0">
         <div className="flex items-center gap-3">
           <GhostFreeLogo size={36} variant="icon" animated />
           <div>
@@ -192,11 +243,11 @@ export const LandingPage: React.FC = () => {
                 GhostFree
               </span>
               <span className="text-[0.65rem] font-bold px-2 py-0.5 rounded-full bg-civic-trust/20 text-civic-trust border border-civic-trust/30 uppercase tracking-wider">
-                Midnight ZK
+                Live Preprod
               </span>
             </div>
             <p className="text-[0.65rem] text-slate-400 font-medium tracking-wider uppercase mt-0.5">
-              Calamity Aid Governance
+              Zero Ghost Claims · Emergency Aid
             </p>
           </div>
         </div>
@@ -217,54 +268,52 @@ export const LandingPage: React.FC = () => {
             Treasury
           </button>
           <button
-            onClick={() => navigate("/demo")}
-            className="btn-civic btn-ghost text-xs sm:text-sm hidden md:flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-trust/40 text-civic-trust hover:bg-civic-trust/10"
-            id="nav-level2-demo"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            Demo
-          </button>
-          <button
             onClick={() => navigate("/claim")}
             className="btn-civic btn-primary shimmer-btn text-xs sm:text-sm flex items-center gap-1.5 py-2 px-4 rounded-xl"
           >
             <Smartphone className="w-4 h-4" />
-            Citizen Claim
+            Claim Aid
           </button>
           <button
             onClick={() => navigate("/admin/login")}
             className="btn-civic btn-ghost text-xs sm:text-sm hidden sm:flex items-center gap-1.5 py-2 px-4 rounded-xl"
           >
             <Landmark className="w-4 h-4" />
-            LGU Portal
+            Government Portal
           </button>
         </div>
       </header>
 
-      {/* === Hero Section === */}
-      <main className="relative z-10 flex flex-col items-center px-6 pt-12 pb-16 lg:pt-20 lg:pb-24 max-w-7xl mx-auto">
-        {/* Animated Logo Mark */}
+      {/* ========================================================
+          2. HERO SECTION
+         ======================================================== */}
+      <main className="relative z-10 flex flex-col items-center px-6 pt-10 pb-16 lg:pt-16 lg:pb-24 max-w-7xl mx-auto">
+        {/* GitHub-Style Release Pill Banner */}
+        <div
+          onClick={() => navigate("/transparency")}
+          className={`
+            glow-pill mb-6 cursor-pointer group transition-all duration-700
+            ${mounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}
+          `}
+        >
+          <span className="w-2 h-2 rounded-full bg-accent-success animate-ping" />
+          <span className="text-white font-bold">Tested & Live on Preprod</span>
+          <span className="text-slate-400">·</span>
+          <span className="text-slate-300">75 Verified Testers & Zero Data Leaks</span>
+          <ArrowRight className="w-3 h-3 text-civic-sky group-hover:translate-x-1 transition-transform" />
+        </div>
+
+        {/* Brand Logo Display */}
         <div
           className={`
-            mb-6 transition-all duration-700
+            mb-4 transition-all duration-700 delay-100
             ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-90"}
           `}
         >
-          <GhostFreeLogo size={100} variant="full" animated className="mb-2" />
+          <GhostFreeLogo size={90} variant="full" animated />
         </div>
 
-        {/* Status Badge */}
-        <div
-          className={`
-            trust-badge mb-6 transition-all duration-700 delay-100
-            ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
-          `}
-        >
-          <Zap className="w-3.5 h-3.5 text-accent-success animate-pulse" />
-          <span>Zero-Knowledge Proofs Verified on Midnight Network</span>
-        </div>
-
-        {/* Main Heading */}
+        {/* Main Heading in Everyday Plain English */}
         <h1
           className={`
             text-4xl sm:text-6xl lg:text-7xl font-black text-center text-white
@@ -279,369 +328,626 @@ export const LandingPage: React.FC = () => {
           </span>
         </h1>
 
-        {/* Subtitle */}
+        {/* Subtitle in Everyday Plain English */}
         <p
           className={`
-            text-base sm:text-xl text-slate-300 text-center max-w-3xl mb-6
+            text-base sm:text-xl text-slate-300 text-center max-w-3xl mb-8
             leading-relaxed transition-all duration-700 delay-300
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          Decentralized emergency calamity aid distribution powered by Zero-Knowledge
-          cryptographic nullifiers. Zero identity leaks, zero duplicate payouts, and zero ghost
-          beneficiaries.
+          A secure emergency relief platform where disaster victims receive financial aid in seconds.
+          Your private ID never leaves your phone, and duplicate claims are automatically blocked.
         </p>
 
-        {/* Tech Stack Badges */}
+        {/* Dual Primary Call-to-Action Buttons */}
         <div
           className={`
-            flex flex-wrap items-center justify-center gap-2 mb-12
+            flex flex-col sm:flex-row items-center gap-4 mb-12
             transition-all duration-700 delay-[350ms]
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
           `}
         >
-          {[
-            { label: "Midnight Network", icon: <Shield className="w-3 h-3" /> },
-            { label: "Lace Wallet", icon: <Key className="w-3 h-3" /> },
-            { label: "Compact ZK", icon: <Fingerprint className="w-3 h-3" /> },
-            { label: "Zero Gas Fees", icon: <Zap className="w-3 h-3" /> },
-          ].map((badge) => (
-            <span
-              key={badge.label}
-              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-[0.7rem] text-slate-300 font-medium"
-            >
-              {badge.icon}
-              {badge.label}
-            </span>
-          ))}
+          <button
+            onClick={() => navigate("/claim")}
+            className="btn-civic btn-primary shimmer-btn w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-civic-blue/25"
+          >
+            <Smartphone className="w-5 h-5" />
+            Claim Emergency Aid
+            <ArrowRight className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => navigate("/admin/login")}
+            className="btn-civic btn-secondary w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 border border-slate-700 hover:border-civic-sky/40"
+          >
+            <Landmark className="w-5 h-5 text-civic-sky" />
+            Local Government Portal
+          </button>
         </div>
 
-        {/* Live Civic Telemetry HUD with Animated Counters */}
+        {/* Live Counters Telemetry HUD */}
         <div
           ref={counterRef}
           className={`
-            grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl mb-12
+            grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full max-w-5xl mb-16
             transition-all duration-700 delay-[400ms]
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
           {[
             {
-              label: "Emergency Escrow Locked",
+              label: "Disaster Funds Locked",
               val: escrowCount.toLocaleString(),
               unit: "tNIGHT",
-              sub: "Protected by Compact Circuit",
+              sub: "Protected in Town Treasury",
               icon: <Shield className="w-4 h-4 text-civic-sky" />,
-              color: "civic-sky",
             },
             {
-              label: "Ghost Claims Blocked",
+              label: "Duplicate Claims Blocked",
               val: ghostCount.toLocaleString(),
-              unit: "Attempted",
-              sub: "Nullifier Collisions Prevented",
+              unit: "Attempts",
+              sub: "Ghost claims stopped automatically",
               icon: <Lock className="w-4 h-4 text-accent-purple" />,
-              color: "accent-purple",
             },
             {
-              label: "Verified Beneficiaries",
+              label: "Verified Families Helped",
               val: beneficiaryCount.toLocaleString(),
               unit: "Citizens",
-              sub: "Relief Disbursed Privately",
+              sub: "Aid delivered with 100% privacy",
               icon: <UserCheck className="w-4 h-4 text-accent-success" />,
-              color: "accent-success",
             },
             {
-              label: "Victim Identity Leaks",
+              label: "Personal Data Leaks",
               val: leakCount.toString(),
-              unit: "Expositions",
-              sub: "Strict Witness Sovereignty",
+              unit: "Leaks",
+              sub: "Zero personal data ever stored",
               icon: <EyeOff className="w-4 h-4 text-accent-gold" />,
-              color: "accent-gold",
             },
           ].map((stat, i) => (
-            <div
-              key={i}
-              className="metric-card group"
-            >
+            <div key={i} className="card-spotlight p-4 sm:p-5">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[0.65rem] font-semibold text-slate-400 uppercase tracking-wider leading-tight">
+                <span className="text-[0.7rem] font-bold text-slate-400 uppercase tracking-wider">
                   {stat.label}
                 </span>
-                <div className="flex items-center gap-1.5">
-                  <div className={`live-dot bg-${stat.color} text-${stat.color}`} />
-                  {stat.icon}
-                </div>
+                {stat.icon}
               </div>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-xl sm:text-2xl font-black text-white tracking-tight tabular-nums">
+                <span className="text-2xl sm:text-3xl font-black text-white tracking-tight tabular-nums">
                   {stat.val}
                 </span>
                 <span className="text-xs text-slate-400 font-medium">{stat.unit}</span>
               </div>
-              <div className="text-[0.65rem] text-slate-500 mt-1">{stat.sub}</div>
+              <div className="text-[0.65rem] text-slate-400 mt-1">{stat.sub}</div>
             </div>
           ))}
         </div>
 
-        {/* Live Network Transparency Card */}
-        <div className="w-full max-w-5xl mb-12">
-          <TransparencyCard />
-        </div>
-
-        {/* Dual Primary CTA Cards */}
-        <div
-          className={`
-            grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-4xl mb-16
-            transition-all duration-700 delay-[450ms]
-            ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
-          `}
-        >
-          {/* Citizen CTA */}
-          <button
-            onClick={() => navigate("/claim")}
-            className="glass-card-premium p-6 sm:p-8 rounded-3xl text-left group cursor-pointer relative"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-accent-success/10 rounded-full blur-2xl group-hover:bg-accent-success/20 transition-all pointer-events-none" />
-            <div className="relative z-10">
-              <div className="w-12 h-12 rounded-2xl bg-accent-success/10 border border-accent-success/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Smartphone className="w-6 h-6 text-accent-success" />
-              </div>
-              <span className="text-[0.7rem] font-bold uppercase tracking-widest text-accent-success px-2 py-0.5 rounded bg-accent-success/10 mb-2 inline-block">
-                For Disaster Victims
-              </span>
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center justify-between">
-                Claim Calamity Aid
-                <ChevronRight className="w-5 h-5 text-accent-success group-hover:translate-x-1.5 transition-transform" />
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                No account, email, or password required. Connect your Lace wallet, enter your ID &
-                secret voucher PIN, and receive aid directly with zero gas fees.
-              </p>
-            </div>
-          </button>
-
-          {/* LGU Admin CTA */}
-          <button
-            onClick={() => navigate("/admin/login")}
-            className="glass-card-premium p-6 sm:p-8 rounded-3xl text-left group cursor-pointer relative"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-civic-blue/10 rounded-full blur-2xl group-hover:bg-civic-blue/20 transition-all pointer-events-none" />
-            <div className="relative z-10">
-              <div className="w-12 h-12 rounded-2xl bg-civic-blue/10 border border-civic-blue/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Landmark className="w-6 h-6 text-civic-sky" />
-              </div>
-              <span className="text-[0.7rem] font-bold uppercase tracking-widest text-civic-sky px-2 py-0.5 rounded bg-civic-blue/10 mb-2 inline-block">
-                For Municipalities & LGUs
-              </span>
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center justify-between">
-                LGU Official Portal
-                <ChevronRight className="w-5 h-5 text-civic-sky group-hover:translate-x-1.5 transition-transform" />
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Upload resident eligibility CSV rosters, initialize on-chain Merkle roots, escrow
-                relief funds, and sponsor tDUST execution fees with Web2 admin security.
-              </p>
-            </div>
-          </button>
-        </div>
-
-        {/* Public Treasury & Audit Explorer Banner */}
-        <div
-          onClick={() => navigate("/transparency")}
-          className="w-full max-w-4xl p-5 sm:p-6 rounded-3xl border border-accent-gold/30 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-accent-gold/10 hover:border-accent-gold/60 text-left transition-all duration-300 shadow-xl shadow-accent-gold/5 cursor-pointer relative overflow-hidden mb-16 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-        >
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center shrink-0">
-              <Landmark className="w-6 h-6 text-accent-gold" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-[0.65rem] font-bold uppercase tracking-widest text-accent-gold px-2 py-0.5 rounded bg-accent-gold/10">
-                  Open Governance · R.A. 10121 & COA
-                </span>
-                <span className="text-xs text-white/40">Public Ledger Telemetry</span>
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold text-white">
-                Public Calamity Treasury & Audit Explorer
-              </h3>
-              <p className="text-slate-300 text-xs mt-1 max-w-2xl leading-relaxed">
-                Review real-time relief allocations, monitor anonymous nullifier commitments, and download official Commission on Audit (COA) compliance CSV statements.
-              </p>
-            </div>
-          </div>
-
-          <div className="shrink-0 flex items-center gap-1.5 text-xs font-semibold text-accent-gold group-hover:translate-x-1 transition-transform">
-            <span>Explore Treasury</span>
-            <ChevronRight className="w-4 h-4" />
-          </div>
-        </div>
-
-        {/* Interactive Protocol Engine Simulator */}
+        {/* ========================================================
+            3. GITHUB-GRADE INTERACTIVE PRODUCT SHOWCASE WINDOW
+           ======================================================== */}
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-civic-trust px-3 py-1 rounded-full bg-civic-trust/10 border border-civic-trust/20">
-              Interactive Protocol Architecture
+              Interactive Live Preview
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 section-header">
-              How Zero-Knowledge Calamity Aid Works
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
+              Explore the Platform in Action
             </h2>
-            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-4">
-              Explore the 4-phase cryptographic pipeline ensuring witness sovereignty and
-              anti-ghost protection.
+            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+              See how disaster victims, local officials, and public auditors use GhostFree with zero friction.
             </p>
           </div>
 
-          {/* Step Cards with connection lines */}
-          <div className="relative grid grid-cols-1 lg:grid-cols-4 gap-3 mb-6">
-            {/* Connection lines (desktop only) */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-[2px] -translate-y-1/2 z-0">
-              <div className="w-full h-full bg-gradient-to-r from-civic-blue/20 via-civic-trust/20 to-accent-success/20" style={{ maskImage: 'linear-gradient(90deg, transparent 12%, white 18%, white 32%, transparent 37%, transparent 38%, white 43%, white 57%, transparent 62%, transparent 63%, white 68%, white 82%, transparent 88%)' }} />
+          {/* Interactive Window Chrome */}
+          <div className="app-window-chrome">
+            {/* Top Window Bar with macOS Dots and Tabs */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-slate-900/90 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2 self-start sm:self-center">
+                <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                <div className="ml-2 px-3 py-1 rounded-md bg-slate-950/80 border border-white/[0.06] text-[0.7rem] font-mono text-slate-400 flex items-center gap-1.5">
+                  <Lock className="w-2.5 h-2.5 text-accent-success" />
+                  ghostfree.gov.ph/{activeTab === "citizen" ? "claim" : activeTab === "admin" ? "admin/dashboard" : "transparency"}
+                </div>
+              </div>
+
+              {/* Tab Switcher */}
+              <div className="flex items-center gap-1.5 w-full sm:w-auto bg-slate-950/60 p-1 rounded-xl border border-white/[0.06]">
+                <button
+                  onClick={() => setActiveTab("citizen")}
+                  className={`tab-pill flex items-center gap-1.5 ${
+                    activeTab === "citizen" ? "tab-pill-active" : "tab-pill-inactive"
+                  }`}
+                >
+                  <Smartphone className="w-3.5 h-3.5" />
+                  Citizen Claim
+                </button>
+                <button
+                  onClick={() => setActiveTab("admin")}
+                  className={`tab-pill flex items-center gap-1.5 ${
+                    activeTab === "admin" ? "tab-pill-active" : "tab-pill-inactive"
+                  }`}
+                >
+                  <Landmark className="w-3.5 h-3.5" />
+                  Town Hall Portal
+                </button>
+                <button
+                  onClick={() => setActiveTab("treasury")}
+                  className={`tab-pill flex items-center gap-1.5 ${
+                    activeTab === "treasury" ? "tab-pill-active" : "tab-pill-inactive"
+                  }`}
+                >
+                  <Activity className="w-3.5 h-3.5" />
+                  Public Audit
+                </button>
+              </div>
             </div>
 
-            {protocolPhases.map((phase, i) => (
+            {/* Window Content Area */}
+            <div className="p-6 sm:p-8 bg-slate-950/80 min-h-[380px] flex flex-col justify-between">
+              {/* Tab 1: Citizen Mobile Flow */}
+              {activeTab === "citizen" && (
+                <div className="space-y-6 animate-fade-in-down">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+                    <div>
+                      <span className="text-xs font-bold text-accent-success uppercase tracking-wider">
+                        For Disaster Victims & Evacuees
+                      </span>
+                      <h3 className="text-xl font-bold text-white mt-1">
+                        Fast, Private Emergency Aid on Any Phone
+                      </h3>
+                      <p className="text-slate-400 text-xs mt-1">
+                        No username or password. Connect wallet, enter voucher PIN, receive cash aid.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => navigate("/claim")}
+                      className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
+                    >
+                      Try Live Claim Flow →
+                    </button>
+                  </div>
+
+                  {/* 4 Interactive Flow Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="text-xs font-bold text-civic-sky mb-1">Step 1</div>
+                      <div className="font-bold text-white text-sm">Connect Wallet</div>
+                      <p className="text-slate-400 text-xs mt-1">Lace wallet connects with 1 click. Zero personal data asked.</p>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="text-xs font-bold text-accent-purple mb-1">Step 2</div>
+                      <div className="font-bold text-white text-sm">Enter Voucher PIN</div>
+                      <p className="text-slate-400 text-xs mt-1">Type ID & PIN. They stay on your phone, never sent over the web.</p>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="text-xs font-bold text-accent-success mb-1">Step 3</div>
+                      <div className="font-bold text-white text-sm">Private Pass</div>
+                      <p className="text-slate-400 text-xs mt-1">Phone proves you are on the list without revealing your name.</p>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-accent-gold/40 bg-accent-gold/5">
+                      <div className="text-xs font-bold text-accent-gold mb-1">Step 4</div>
+                      <div className="font-bold text-white text-sm">Instant Relief</div>
+                      <p className="text-slate-300 text-xs mt-1">Funds arrive instantly. Voucher is locked to prevent duplicates.</p>
+                    </div>
+                  </div>
+
+                  {/* Live Status Tag */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-4 text-xs text-slate-400 border-t border-white/[0.06]">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-accent-success" />
+                      <span>Works on 2G/EDGE cellular signals in evacuation shelters</span>
+                    </div>
+                    <span className="text-civic-trust font-medium">Free for Citizens (₱0 gas fee)</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: LGU Command Center */}
+              {activeTab === "admin" && (
+                <div className="space-y-6 animate-fade-in-down">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+                    <div>
+                      <span className="text-xs font-bold text-civic-sky uppercase tracking-wider">
+                        For Municipal Officials & DRRM Officers
+                      </span>
+                      <h3 className="text-xl font-bold text-white mt-1">
+                        Local Government Emergency Command Center
+                      </h3>
+                      <p className="text-slate-400 text-xs mt-1">
+                        Upload disaster rosters, enforce dual-officer approvals, and prevent fraud.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => navigate("/admin/login")}
+                      className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
+                    >
+                      Open Government Portal →
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-slate-400 uppercase">Beneficiary Roster</span>
+                        <FileCheck className="w-4 h-4 text-civic-sky" />
+                      </div>
+                      <div className="text-xl font-bold text-white">2,850 Residents</div>
+                      <p className="text-slate-400 text-xs mt-1">Compiled into an anonymous tamper-proof list</p>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-slate-400 uppercase">Dual-Officer Quorum</span>
+                        <Scale className="w-4 h-4 text-accent-purple" />
+                      </div>
+                      <div className="text-xl font-bold text-accent-success">2 / 2 Signed</div>
+                      <p className="text-slate-400 text-xs mt-1">DRRM Head + Municipal Treasurer sign-off</p>
+                    </div>
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-slate-400 uppercase">Emergency Treasury</span>
+                        <Landmark className="w-4 h-4 text-accent-gold" />
+                      </div>
+                      <div className="text-xl font-bold text-white">₱14,250,000</div>
+                      <p className="text-slate-400 text-xs mt-1">Locked in town emergency relief escrow</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-4 text-xs text-slate-400 border-t border-white/[0.06]">
+                    <CheckCircle2 className="w-4 h-4 text-accent-success" />
+                    <span>Compliant with Philippine Disaster Law (R.A. 10121) and Data Privacy Act (R.A. 10173)</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 3: Public Treasury */}
+              {activeTab === "treasury" && (
+                <div className="space-y-6 animate-fade-in-down">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
+                    <div>
+                      <span className="text-xs font-bold text-accent-gold uppercase tracking-wider">
+                        Open Public Governance & Audit
+                      </span>
+                      <h3 className="text-xl font-bold text-white mt-1">
+                        Track Every Peso Without Leaking Names
+                      </h3>
+                      <p className="text-slate-400 text-xs mt-1">
+                        Full public transparency for citizens, watchdogs, and government auditors.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => navigate("/transparency")}
+                      className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
+                    >
+                      View Live Treasury →
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
+                      <div className="text-xs font-bold text-slate-400 uppercase mb-2">Recent Verified Payouts</div>
+                      <div className="space-y-2 text-xs">
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-white/[0.04]">
+                          <span className="font-mono text-slate-300">Lock: 0x8a9b...3c11</span>
+                          <span className="text-accent-success font-bold">₱5,000 Disbursed</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-white/[0.04]">
+                          <span className="font-mono text-slate-300">Lock: 0x4f12...e90a</span>
+                          <span className="text-accent-success font-bold">₱5,000 Disbursed</span>
+                        </div>
+                        <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-white/[0.04]">
+                          <span className="font-mono text-slate-300">Lock: 0xd722...88ab</span>
+                          <span className="text-accent-success font-bold">₱5,000 Disbursed</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex flex-col justify-between">
+                      <div>
+                        <div className="text-xs font-bold text-slate-400 uppercase mb-2">Commission on Audit (COA) Export</div>
+                        <p className="text-slate-300 text-xs leading-relaxed">
+                          Download complete official disbursement statements containing timestamped transaction hashes and anonymous lock codes for official audit submission.
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => navigate("/transparency")}
+                        className="btn-civic btn-secondary text-xs py-2 px-4 rounded-xl flex items-center justify-center gap-2 mt-4"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        Download Audit Statement (.CSV)
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 pt-4 text-xs text-slate-400 border-t border-white/[0.06]">
+                    <CheckCircle2 className="w-4 h-4 text-accent-success" />
+                    <span>Real-time smart contract transparency on Midnight Network</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            4. THE OLD WAY VS THE GHOSTFREE WAY (Comparison)
+           ======================================================== */}
+        <section className="w-full max-w-5xl mb-20">
+          <div className="text-center mb-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-accent-gold px-3 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/20">
+              Why GhostFree Matters
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
+              The Old Way vs. The GhostFree Way
+            </h2>
+            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+              See how modern civic technology solves decades of disaster relief corruption and delays.
+            </p>
+          </div>
+
+          <div className="card-spotlight p-6 sm:p-8 rounded-3xl overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[600px]">
+              <thead>
+                <tr className="border-b border-slate-800 text-xs uppercase tracking-wider">
+                  <th className="pb-4 font-bold text-slate-400 w-1/4">Aspect</th>
+                  <th className="pb-4 font-bold text-rose-400 w-3/8 flex items-center gap-1.5">
+                    <XCircle className="w-4 h-4" />
+                    The Old Way (Paper Vouchers)
+                  </th>
+                  <th className="pb-4 font-bold text-accent-success w-3/8">
+                    <span className="flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" />
+                      The GhostFree Way
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60 text-xs sm:text-sm">
+                {comparisons.map((row, i) => (
+                  <tr key={i} className="hover:bg-slate-900/40 transition-colors">
+                    <td className="py-4 font-bold text-white">{row.feature}</td>
+                    <td className="py-4 text-slate-400 leading-relaxed pr-4">
+                      {row.oldWay}
+                    </td>
+                    <td className="py-4 text-emerald-300 font-medium leading-relaxed">
+                      {row.ghostFree}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* ========================================================
+            5. HOW IT WORKS IN 4 SIMPLE STEPS
+           ======================================================== */}
+        <section className="w-full max-w-5xl mb-20">
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold uppercase tracking-widest text-civic-trust px-3 py-1 rounded-full bg-civic-trust/10 border border-civic-trust/20">
+              Simple 4-Step Process
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
+              How Disaster Victims Receive Aid
+            </h2>
+            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+              Click through the 4 steps below to see how privacy and duplicate protection work hand-in-hand.
+            </p>
+          </div>
+
+          {/* 4 Step Selector Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 mb-6">
+            {steps.map((step, idx) => (
               <button
-                key={phase.id}
-                onClick={() => setActiveStep(i)}
-                className={`relative z-10 p-4 rounded-2xl border text-left transition-all duration-300 cursor-pointer ${
-                  activeStep === i
-                    ? "bg-slate-800/90 border-civic-trust shadow-lg shadow-civic-trust/10 scale-[1.02]"
-                    : "bg-slate-900/50 border-slate-800 hover:border-slate-700 hover:bg-slate-800/40"
+                key={step.id}
+                onClick={() => setActiveStep(idx)}
+                className={`card-spotlight p-4 text-left cursor-pointer transition-all duration-300 ${
+                  activeStep === idx
+                    ? "border-civic-trust bg-slate-800/90 scale-[1.02] shadow-lg shadow-civic-trust/10"
+                    : "hover:border-slate-700"
                 }`}
               >
-                {/* Active indicator ring */}
-                {activeStep === i && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-civic-trust animate-pulse-ring" />
-                )}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-slate-400">Step {phase.id}</span>
-                  {phase.icon}
+                  <span className="text-xs font-bold text-slate-400">Step {step.id}</span>
+                  {step.icon}
                 </div>
-                <h3 className="font-bold text-sm text-white">{phase.name}</h3>
+                <h3 className="font-bold text-sm text-white">{step.title}</h3>
                 <span className="text-[0.7rem] text-civic-trust font-medium mt-1 inline-block">
-                  {phase.tag}
+                  {step.tag}
                 </span>
               </button>
             ))}
           </div>
 
-          {/* Active Phase Deep Dive Card */}
-          <div className="glass-card-premium p-6 sm:p-8 rounded-3xl">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-slate-800 mb-6">
+          {/* Active Step Deep Dive Card */}
+          <div className="card-spotlight p-6 sm:p-8 rounded-3xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800 mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-2xl bg-civic-trust/10 border border-civic-trust/30 flex items-center justify-center">
-                  {protocolPhases[activeStep].icon}
+                  {steps[activeStep].icon}
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white">
-                    {protocolPhases[activeStep].name}
+                    {steps[activeStep].title}
                   </h3>
                   <span className="text-xs text-civic-trust font-medium">
-                    {protocolPhases[activeStep].tag}
+                    {steps[activeStep].tag} · {steps[activeStep].note}
                   </span>
                 </div>
-              </div>
-              <div className="px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs font-mono text-slate-300">
-                {protocolPhases[activeStep].tech}
               </div>
             </div>
 
             <p className="text-slate-200 text-base leading-relaxed mb-6">
-              {protocolPhases[activeStep].desc}
+              {steps[activeStep].desc}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
-              <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800/80">
-                <div className="text-slate-500 uppercase font-semibold mb-2 flex items-center gap-1.5">
-                  <Eye className="w-3 h-3" />
-                  What Observer Sees (Public)
+            {/* Privacy Breakdown Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800">
+                <div className="text-slate-400 uppercase font-bold mb-2 flex items-center gap-1.5">
+                  <Eye className="w-3.5 h-3.5 text-accent-success" />
+                  What the System Checks (Public)
                 </div>
-                <div className="text-accent-success flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>
-                    {activeStep === 3
-                      ? "Nullifier recorded: 0x8a9b... + Calamity aid payout transferred"
-                      : "Only aggregate Merkle root on blockchain ledger"}
-                  </span>
+                <div className="text-accent-success font-medium">
+                  {steps[activeStep].observerSees}
                 </div>
               </div>
-              <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800/80">
-                <div className="text-slate-500 uppercase font-semibold mb-2 flex items-center gap-1.5">
-                  <EyeOff className="w-3 h-3" />
-                  What Remains Secret (Private)
+
+              <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800">
+                <div className="text-slate-400 uppercase font-bold mb-2 flex items-center gap-1.5">
+                  <EyeOff className="w-3.5 h-3.5 text-civic-sky" />
+                  What Stays With You (Private)
                 </div>
-                <div className="text-civic-sky flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 shrink-0" />
-                  <span>National ID, resident secret PIN, and personal identity never exposed</span>
+                <div className="text-civic-sky font-medium">
+                  {steps[activeStep].staysPrivate}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Philippine Statutory & Governance Compliance Matrix */}
+        {/* ========================================================
+            6. BENTO GRID OF CORE GUARANTEES
+           ======================================================== */}
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-10">
-            <span className="text-xs font-bold uppercase tracking-widest text-accent-gold px-3 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/20">
-              Philippine Civic-Tech Compliance
+            <span className="text-xs font-bold uppercase tracking-widest text-civic-sky px-3 py-1 rounded-full bg-civic-sky/10 border border-civic-sky/20">
+              Four Core Guarantees
             </span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3 section-header">
-              Grounded in Philippine Governance Law
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
+              Engineered for Complete Trust
             </h2>
-            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-4">
-              GhostFree is engineered to satisfy national disaster audit requirements and data
-              sovereignty mandates.
+            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+              Every disaster victim and municipal official gets ironclad privacy and fraud protection.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="card-spotlight p-6 flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-civic-sky/10 border border-civic-sky/30 flex items-center justify-center mb-4 text-civic-sky group-hover:scale-110 transition-transform">
+                  <EyeOff className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-white text-base mb-2">100% Private</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Your National ID and private PIN stay on your phone. No central database ever collects or leaks your personal information.
+                </p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-civic-sky font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Zero Data Tracking
+              </div>
+            </div>
+
+            <div className="card-spotlight p-6 flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center mb-4 text-accent-purple group-hover:scale-110 transition-transform">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-white text-base mb-2">Zero Ghost Claims</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Each voucher generates a one-time digital lock code. The moment aid is received, the code is locked permanently against repeat claims.
+                </p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-purple font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                No Duplicate Payouts
+              </div>
+            </div>
+
+            <div className="card-spotlight p-6 flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-accent-success/10 border border-accent-success/30 flex items-center justify-center mb-4 text-accent-success group-hover:scale-110 transition-transform">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-white text-base mb-2">Free for Families</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  The local government sponsors all technical execution fees in advance. Victims in disaster zones pay ₱0 to claim relief.
+                </p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-success font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Zero Gas Fees
+              </div>
+            </div>
+
+            <div className="card-spotlight p-6 flex flex-col justify-between group">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center mb-4 text-accent-gold group-hover:scale-110 transition-transform">
+                  <Activity className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-white text-base mb-2">Open Public Audit</h3>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  Watchdogs and citizens can verify every peso distributed on a live public dashboard without revealing recipient names.
+                </p>
+              </div>
+              <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-gold font-medium flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                Live COA Reports
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            7. PHILIPPINE LAWS & STATUTORY COMPLIANCE
+           ======================================================== */}
+        <section className="w-full max-w-5xl mb-20">
+          <div className="text-center mb-10">
+            <span className="text-xs font-bold uppercase tracking-widest text-accent-gold px-3 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/20">
+              Philippine Legal Compliance
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
+              Backed by Philippine Governance Law
+            </h2>
+            <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
+              GhostFree meets official government audit standards and citizen privacy rights under national law.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {statutoryLaws.map((law, idx) => (
-              <div
-                key={idx}
-                className="glass-card-premium p-6 rounded-3xl flex flex-col justify-between group"
-              >
+              <div key={idx} className="card-spotlight p-6 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-black text-accent-gold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-accent-gold/10 border border-accent-gold/20">
                       {law.code}
                     </span>
-                    <Scale className="w-4 h-4 text-slate-400 group-hover:text-accent-gold transition-colors" />
+                    <Scale className="w-4 h-4 text-slate-400" />
                   </div>
                   <h3 className="font-bold text-white text-base mb-2">{law.title}</h3>
                   <p className="text-slate-300 text-xs leading-relaxed">{law.impact}</p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-slate-800/80 text-[0.7rem] text-slate-400 font-mono flex items-center gap-1.5">
+                <div className="mt-6 pt-4 border-t border-slate-800 text-[0.7rem] text-slate-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-accent-success" />
-                  Statutory Audit Compliant
+                  Government Audit Compliant
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* Frequently Asked Questions Accordion */}
-        <section className="w-full max-w-4xl mb-16">
+        {/* ========================================================
+            8. EVERYDAY ENGLISH FAQS
+           ======================================================== */}
+        <section className="w-full max-w-4xl mb-20">
           <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-black text-white section-header">
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
               Frequently Asked Questions
             </h2>
-            <p className="text-slate-400 text-sm mt-3">
-              Everything you need to know about accounts, privacy, and fund distribution.
+            <p className="text-slate-400 text-sm mt-2">
+              Straightforward answers about accounts, privacy, and emergency payouts.
             </p>
           </div>
 
           <div className="space-y-3">
             {faqs.map((faq, i) => {
               const isOpen = expandedFaq === i;
-              const borderColors = [
-                "border-l-civic-sky",
-                "border-l-accent-purple",
-                "border-l-accent-success",
-                "border-l-accent-gold",
-              ];
               return (
                 <div
                   key={i}
-                  className={`glass-card rounded-2xl border border-shield-glass/20 bg-slate-900/60 overflow-hidden border-l-2 ${borderColors[i % 4]}`}
+                  className="card-spotlight rounded-2xl overflow-hidden"
                 >
                   <button
                     onClick={() => setExpandedFaq(isOpen ? null : i)}
@@ -670,9 +976,45 @@ export const LandingPage: React.FC = () => {
             })}
           </div>
         </section>
+
+        {/* ========================================================
+            9. BOTTOM HIGH-IMPACT CALL TO ACTION
+           ======================================================== */}
+        <section className="w-full max-w-5xl mb-12 p-8 sm:p-12 rounded-3xl card-spotlight text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-civic-blue/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-accent-success/15 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <GhostFreeLogo size={56} variant="icon" animated className="mx-auto mb-4" />
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
+              Ready to Deliver Calamity Aid with Zero Ghosts?
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base mb-8 leading-relaxed">
+              Test the live claim portal on Midnight Preprod, or tour the local government command center today.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button
+                onClick={() => navigate("/claim")}
+                className="btn-civic btn-primary shimmer-btn w-full sm:w-auto px-8 py-3.5 text-sm font-bold rounded-xl"
+              >
+                <Smartphone className="w-4 h-4" />
+                Claim Aid as a Citizen
+              </button>
+              <button
+                onClick={() => navigate("/admin/login")}
+                className="btn-civic btn-secondary w-full sm:w-auto px-8 py-3.5 text-sm font-bold rounded-xl border border-slate-700"
+              >
+                <Landmark className="w-4 h-4 text-civic-sky" />
+                Login as Town Hall Official
+              </button>
+            </div>
+          </div>
+        </section>
       </main>
 
-      {/* === Premium Footer === */}
+      {/* ========================================================
+          10. FOOTER
+         ======================================================== */}
       <div className="footer-gradient-divider" />
       <footer className="relative z-10 bg-slate-950/90 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-12">
@@ -681,7 +1023,7 @@ export const LandingPage: React.FC = () => {
             <div className="md:col-span-1">
               <GhostFreeLogo size={48} variant="icon" animated />
               <p className="text-slate-400 text-xs mt-3 leading-relaxed max-w-xs">
-                Decentralized, privacy-first calamity aid distribution. Deployed on the Midnight Network with Zero-Knowledge cryptographic guarantees.
+                Private, instant calamity aid distribution. Stop ghost beneficiaries and deliver relief with 100% transparency.
               </p>
               <p className="text-slate-500 text-[0.65rem] mt-3 italic">
                 "Stop the ghosts. Protect the people."
@@ -690,13 +1032,13 @@ export const LandingPage: React.FC = () => {
 
             {/* Navigation Column */}
             <div>
-              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Portal</h4>
+              <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Portals</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "Citizen Claim", href: "/claim" },
-                  { label: "LGU Admin", href: "/admin/login" },
-                  { label: "Treasury Explorer", href: "/transparency" },
-                  { label: "Protocol Demo", href: "/demo" },
+                  { label: "Citizen Claim Portal", href: "/claim" },
+                  { label: "Town Hall Official Login", href: "/admin/login" },
+                  { label: "Public Calamity Treasury", href: "/transparency" },
+                  { label: "Interactive Demo", href: "/demo" },
                 ].map((link) => (
                   <li key={link.label}>
                     <a
@@ -716,10 +1058,10 @@ export const LandingPage: React.FC = () => {
               <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Resources</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "GitHub Repository", href: "https://github.com/zneright/GhostFree", external: true },
-                  { label: "Midnight Network", href: "https://midnight.network", external: true },
-                  { label: "Lace Wallet", href: "https://www.lace.io", external: true },
-                  { label: "Privacy Policy", href: "#" },
+                  { label: "GitHub Codebase", href: "https://github.com/zneright/GhostFree", external: true },
+                  { label: "Midnight Blockchain", href: "https://midnight.network", external: true },
+                  { label: "Lace Web3 Wallet", href: "https://www.lace.io", external: true },
+                  { label: "Commission on Audit (COA)", href: "https://www.coa.gov.ph", external: true },
                 ].map((link) => (
                   <li key={link.label}>
                     <a
@@ -745,7 +1087,7 @@ export const LandingPage: React.FC = () => {
                   <span className="text-xs font-bold text-white">Rise In</span>
                 </div>
                 <p className="text-[0.65rem] text-slate-400 leading-relaxed">
-                  Midnight Builder Challenge — Privacy-first decentralized applications on the Midnight blockchain.
+                  Midnight Builder Challenge — Privacy-first decentralized disaster relief.
                 </p>
               </div>
               <div className="flex items-center gap-3 mt-4">
@@ -777,16 +1119,16 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom bar */}
+          {/* Bottom Bar */}
           <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-2 text-[0.65rem] text-slate-500">
             <span>
               © {new Date().getFullYear()} GhostFree Civic-Tech Calamity Aid Protocol
             </span>
             <span className="flex items-center gap-1.5">
-              Deployed on{" "}
-              <span className="text-civic-trust font-medium">Midnight Network</span>
-              {" "}· Empowered by{" "}
-              <span className="text-civic-trust font-medium">Lace Wallet & Compact ZK</span>
+              Live on{" "}
+              <span className="text-civic-trust font-medium">Midnight Preprod</span>
+              {" "}· Built with{" "}
+              <span className="text-civic-trust font-medium">Lace Wallet</span>
             </span>
           </div>
         </div>

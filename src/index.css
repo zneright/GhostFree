@@ -545,5 +545,75 @@
   body.large-text button {
     font-size: 1.05em;
   }
+
+  /* ---- GitHub-Grade Interactive Utilities ---- */
+  .card-spotlight {
+    position: relative;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(10, 17, 32, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.25rem;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+  .card-spotlight:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: 0 12px 36px -10px rgba(14, 165, 233, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .glow-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #38BDF8;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+    transition: all 0.25s ease;
+  }
+  .glow-pill:hover {
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 22px rgba(56, 189, 248, 0.3);
+    transform: scale(1.02);
+  }
+
+  .app-window-chrome {
+    border-radius: 1rem;
+    background: #0B1220;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+  }
+
+  .tab-pill {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 0.625rem;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+  .tab-pill-active {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38BDF8;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+  }
+  .tab-pill-inactive {
+    background: transparent;
+    color: #94A3B8;
+    border: 1px solid transparent;
+  }
+  .tab-pill-inactive:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #F8FAFC;
+  }
 }
+
 
