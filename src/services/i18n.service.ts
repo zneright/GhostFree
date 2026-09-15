@@ -80,6 +80,92 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     printVoucher: "Print / Export Voucher",
     verifiedValid: "Verified Valid",
     alreadyClaimedError: "This identity has already received calamity aid for this relief operation.",
+
+    // Landing Page Navigation & Hero
+    navClaimAid: "Claim Aid",
+    navGovPortal: "Government Portal",
+    navLivePreprod: "Live Preprod",
+    navZeroGhostSub: "Zero Ghost Claims · Emergency Aid",
+    releasePillText: "Tested & Live on Preprod · 75 Verified Testers & Zero Data Leaks",
+    heroTitlePrefix: "Stop the Ghosts.",
+    heroTitleSuffix: "Protect the People.",
+    heroSubtitle: "A secure emergency relief platform where disaster victims receive financial aid in seconds. Your private ID never leaves your phone, and duplicate claims are automatically blocked.",
+    claimEmergencyAid: "Claim Emergency Aid",
+    localGovernmentPortal: "Local Government Portal",
+
+    // Telemetry HUD
+    statFundsLocked: "Disaster Funds Locked",
+    statFundsLockedSub: "Protected in Town Treasury",
+    statGhostBlocked: "Duplicate Claims Blocked",
+    statGhostBlockedSub: "Ghost claims stopped automatically",
+    statFamiliesHelped: "Verified Families Helped",
+    statFamiliesHelpedSub: "Aid delivered with 100% privacy",
+    statDataLeaks: "Personal Data Leaks",
+    statDataLeaksSub: "Zero personal data ever stored",
+
+    // Interactive Window
+    livePreviewTag: "Interactive Live Preview",
+    livePreviewTitle: "Explore the Platform in Action",
+    livePreviewSubtitle: "See how disaster victims, local officials, and public auditors use GhostFree with zero friction.",
+    tabCitizen: "Citizen Claim",
+    tabAdmin: "Town Hall Portal",
+    tabTreasury: "Public Audit",
+    citizenTabTag: "For Disaster Victims & Evacuees",
+    citizenTabTitle: "Fast, Private Emergency Aid on Any Phone",
+    citizenTabDesc: "No username or password. Connect wallet, enter voucher PIN, receive cash aid.",
+    tryLiveClaim: "Try Live Claim Flow →",
+    adminTabTag: "For Municipal Officials & DRRM Officers",
+    adminTabTitle: "Local Government Emergency Command Center",
+    adminTabDesc: "Upload disaster rosters, enforce dual-officer approvals, and prevent fraud.",
+    openGovPortal: "Open Government Portal →",
+    treasuryTabTag: "Open Public Governance & Audit",
+    treasuryTabTitle: "Track Every Peso Without Leaking Names",
+    treasuryTabDesc: "Full public transparency for citizens, watchdogs, and government auditors.",
+    viewLiveTreasury: "View Live Treasury →",
+
+    // Comparison Section
+    comparisonTag: "Why GhostFree Matters",
+    comparisonTitle: "The Old Way vs. The GhostFree Way",
+    comparisonSubtitle: "See how modern civic technology solves decades of disaster relief corruption and delays.",
+    comparisonAspect: "Aspect",
+    comparisonOldWayHeader: "The Old Way (Paper Vouchers)",
+    comparisonGhostFreeHeader: "The GhostFree Way",
+
+    // 4-Step Process Section
+    stepsTag: "Simple 4-Step Process",
+    stepsTitle: "How Disaster Victims Receive Aid",
+    stepsSubtitle: "Click through the 4 steps below to see how privacy and duplicate protection work hand-in-hand.",
+    whatObserverSees: "What the System Checks (Public)",
+    whatStaysPrivate: "What Stays With You (Private)",
+
+    // Bento 4 Core Guarantees
+    bentoTag: "Four Core Guarantees",
+    bentoTitle: "Engineered for Complete Trust",
+    bentoSubtitle: "Every disaster victim and municipal official gets ironclad privacy and fraud protection.",
+    bentoPrivateTitle: "100% Private",
+    bentoPrivateDesc: "Your National ID and private PIN stay on your phone. No central database ever collects or leaks your personal information.",
+    bentoGhostTitle: "Zero Ghost Claims",
+    bentoGhostDesc: "Each voucher generates a one-time digital lock code. The moment aid is received, the code is locked permanently against repeat claims.",
+    bentoFreeTitle: "Free for Families",
+    bentoFreeDesc: "The local government sponsors all technical execution fees in advance. Victims in disaster zones pay ₱0 to claim relief.",
+    bentoAuditTitle: "Open Public Audit",
+    bentoAuditDesc: "Watchdogs and citizens can verify every peso distributed on a live public dashboard without revealing recipient names.",
+
+    // Laws & Compliance
+    lawsTag: "Philippine Legal Compliance",
+    lawsTitle: "Backed by Philippine Governance Law",
+    lawsSubtitle: "GhostFree meets official government audit standards and citizen privacy rights under national law.",
+    govAuditCompliant: "Government Audit Compliant",
+
+    // FAQs Section
+    faqTitle: "Frequently Asked Questions",
+    faqSubtitle: "Straightforward answers about accounts, privacy, and emergency payouts.",
+
+    // Bottom CTA
+    ctaTitle: "Ready to Deliver Calamity Aid with Zero Ghosts?",
+    ctaSubtitle: "Test the live claim portal on Midnight Preprod, or tour the local government command center today.",
+    ctaClaimBtn: "Claim Aid as a Citizen",
+    ctaAdminBtn: "Login as Town Hall Official",
   },
 
   fil: {
@@ -140,6 +226,92 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     printVoucher: "I-print / I-export ang Voucher",
     verifiedValid: "Beripikadong Wasto",
     alreadyClaimedError: "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief operation na ito.",
+
+    // Landing Page Navigation & Hero
+    navClaimAid: "Mag-claim ng Ayuda",
+    navGovPortal: "Portal ng Pamahalaan",
+    navLivePreprod: "Aktibo sa Preprod",
+    navZeroGhostSub: "Walang Ghost Claims · Ayuda sa Kalamidad",
+    releasePillText: "Nasubukan at Aktibo sa Preprod · 75 Beripikadong Kalahok at Walang Tagas ng Datos",
+    heroTitlePrefix: "Pigilan ang mga Multo.",
+    heroTitleSuffix: "Protektahan ang Mamamayan.",
+    heroSubtitle: "Isang ligtas na plataporma ng ayuda kung saan mabilis na nakakatanggap ng tulong ang mga biktima ng kalamidad. Ang iyong ID ay mananatili sa iyong selpon, at kusang hinaharang ang paulit-ulit na pag-claim.",
+    claimEmergencyAid: "Mag-claim ng Ayuda sa Kalamidad",
+    localGovernmentPortal: "Portal ng Lokal na Pamahalaan",
+
+    // Telemetry HUD
+    statFundsLocked: "Naka-lock na Pondo sa Kalamidad",
+    statFundsLockedSub: "Protektado sa Ingat-yaman ng Bayan",
+    statGhostBlocked: "Naharang na Doble o Ghost Claims",
+    statGhostBlockedSub: "Kusang napigilan ang mga pekeng claim",
+    statFamiliesHelped: "Beripikadong Pamilyang Natulungan",
+    statFamiliesHelpedSub: "Naipamahagi nang 100% pribado",
+    statDataLeaks: "Tagas ng Personal na Datos",
+    statDataLeaksSub: "Walang personal na datos na naitatala",
+
+    // Interactive Window
+    livePreviewTag: "Aktibong Pagsubok sa Sistema",
+    livePreviewTitle: "Tuklasin ang Plataporma sa Aksyon",
+    livePreviewSubtitle: "Alamin kung paano madaling nagagamit ng mga biktima, opisyal, at auditor ang GhostFree nang walang sagabal.",
+    tabCitizen: "Pag-claim ng Mamamayan",
+    tabAdmin: "Portal ng Munisipyo",
+    tabTreasury: "Pampublikong Pagsusuri",
+    citizenTabTag: "Para sa mga Biktima ng Kalamidad at Evacuees",
+    citizenTabTitle: "Mabilis at Pribadong Ayuda sa Anumang Selpon",
+    citizenTabDesc: "Walang username o password. Ikonekta ang wallet, ilagay ang PIN, tanggapin ang ayuda.",
+    tryLiveClaim: "Subukan ang Live Claim Flow →",
+    adminTabTag: "Para sa mga Opisyal ng Munisipyo at DRRM",
+    adminTabTitle: "Emergency Command Center ng Pamahalaan",
+    adminTabDesc: "Mag-upload ng listahan ng ayuda, magpatupad ng dual-officer approval, at pigilan ang pandaraya.",
+    openGovPortal: "Buksan ang Portal ng Pamahalaan →",
+    treasuryTabTag: "Bukas na Pamamahala at Pagsusuri ng Pondo",
+    treasuryTabTitle: "Suriin ang Bawat Piso nang Walang Ibinubunyag na Pangalan",
+    treasuryTabDesc: "Buong transparency para sa mamamayan, watchdogs, at mga auditor ng pamahalaan.",
+    viewLiveTreasury: "Tingnan ang Live na Pondo →",
+
+    // Comparison Section
+    comparisonTag: "Bakit Mahalaga ang GhostFree",
+    comparisonTitle: "Ang Lumang Paraan vs. Ang GhostFree",
+    comparisonSubtitle: "Tingnan kung paano nilulutas ng makabagong teknolohiya ang korapsyon at pagkaantala sa pamamahagi ng ayuda.",
+    comparisonAspect: "Aspeto",
+    comparisonOldWayHeader: "Ang Lumang Paraan (Papel na Voucher)",
+    comparisonGhostFreeHeader: "Ang Paraan ng GhostFree",
+
+    // 4-Step Process Section
+    stepsTag: "Madaling 4 na Hakbang",
+    stepsTitle: "Paano Nakakatanggap ng Ayuda ang Mamamayan",
+    stepsSubtitle: "Pindutin ang bawat hakbang upang makita kung paano magkasamang nagpoprotekta ang privacy at seguridad.",
+    whatObserverSees: "Ang Sinusuri ng Sistema (Publiko)",
+    whatStaysPrivate: "Ang Mananatili sa Iyo (Pribado)",
+
+    // Bento 4 Core Guarantees
+    bentoTag: "Apat na Pangunahing Garantiya",
+    bentoTitle: "Itinayo para sa Buong Tiwala",
+    bentoSubtitle: "Bawat biktima ng kalamidad at opisyal ay may garantisadong proteksyon sa datos at panloloko.",
+    bentoPrivateTitle: "100% Pribado",
+    bentoPrivateDesc: "Ang iyong National ID at PIN ay mananatili sa iyong selpon. Walang sentral na database na nag-iimbak o naglalabas ng iyong impormasyon.",
+    bentoGhostTitle: "Zero Ghost Claims",
+    bentoGhostDesc: "Bawat voucher ay lumilikha ng one-time digital lock code. Sa sandaling makuha ang ayuda, permanente itong naka-lock laban sa duplicate claims.",
+    bentoFreeTitle: "Libre para sa Pamilya",
+    bentoFreeDesc: "Sagot ng lokal na pamahalaan ang lahat ng technical gas fees. Ang mga biktima sa kalamidad ay ₱0 ang babayaran.",
+    bentoAuditTitle: "Bukas na Pagsusuri sa Publiko",
+    bentoAuditDesc: "Maaaring suriin ng mamamayan at COA ang bawat pisong naipamahagi sa live dashboard nang walang nakikitang pangalan.",
+
+    // Laws & Compliance
+    lawsTag: "Pagsunod sa Batas ng Pilipinas",
+    lawsTitle: "Alinsunod sa mga Batas ng Pamahalaan",
+    lawsSubtitle: "Tugma ang GhostFree sa mga pamantayan ng Commission on Audit at karapatan sa privacy sa ilalim ng pambansang batas.",
+    govAuditCompliant: "Tugma sa Pamantayan ng Audit",
+
+    // FAQs Section
+    faqTitle: "Mga Madalas Itanong",
+    faqSubtitle: "Diretsahang kasagutan tungkol sa mga account, privacy, at pamamahagi ng pondo.",
+
+    // Bottom CTA
+    ctaTitle: "Handa Ka Bang Mamahagi ng Ayuda nang Walang Ghost Claims?",
+    ctaSubtitle: "Subukan ang live claim portal sa Midnight Preprod, o tingnan ang command center ng lokal na pamahalaan ngayon.",
+    ctaClaimBtn: "Mag-claim ng Ayuda bilang Mamamayan",
+    ctaAdminBtn: "Mag-login bilang Opisyal ng Munisipyo",
   },
 
   ceb: {
@@ -200,6 +372,92 @@ export const TRANSLATIONS: Record<SupportedLanguage, Record<string, string>> = {
     printVoucher: "I-print / I-export ang Resibo",
     verifiedValid: "Gipamatud-ang Balido",
     alreadyClaimedError: "Kini nga pagkatawo nakadawat na og ayuda alang niining relief operation.",
+
+    // Landing Page Navigation & Hero
+    navClaimAid: "Mag-claim og Hinabang",
+    navGovPortal: "Portal sa Kagamhanan",
+    navLivePreprod: "Aktibo sa Preprod",
+    navZeroGhostSub: "Walay Ghost Claims · Hinabang sa Katalagman",
+    releasePillText: "Nasulayan ug Aktibo sa Preprod · 75 Beripikadong Partisipante ug Walay Pagtagas sa Datos",
+    heroTitlePrefix: "Hunonga ang mga Multo.",
+    heroTitleSuffix: "Panalipdi ang Katawhan.",
+    heroSubtitle: "Usa ka luwas nga plataporma sa ayuda diin ang mga biktima sa katalagman makadawat og tabang pinansyal sa pipila ka segundo. Ang imong ID magpabilin sa imong selpon, ug awtomatikong pugngan ang doble nga pag-claim.",
+    claimEmergencyAid: "Mag-claim og Hinabang sa Katalagman",
+    localGovernmentPortal: "Portal sa Lokal nga Kagamhanan",
+
+    // Telemetry HUD
+    statFundsLocked: "Naka-lock nga Pundo sa Katalagman",
+    statFundsLockedSub: "Gipanalipdan sa Tipiganan sa Lungsod",
+    statGhostBlocked: "Napugngang Doble o Ghost Claims",
+    statGhostBlockedSub: "Awtomatikong napugngan ang mga peke nga claim",
+    statFamiliesHelped: "Giberipikang Pamilya nga Natabangan",
+    statFamiliesHelpedSub: "Naapod-apod nga 100% pribado",
+    statDataLeaks: "Pagtagas sa Personal nga Datos",
+    statDataLeaksSub: "Walay personal nga datos nga gitipigan",
+
+    // Interactive Window
+    livePreviewTag: "Aktibong Pagsulay sa Sistema",
+    livePreviewTitle: "Susihon ang Plataporma sa Aksyon",
+    livePreviewSubtitle: "Tan-awa kung giunsa sayon magamit sa mga biktima, opisyal, ug auditor ang GhostFree nga walay kakulian.",
+    tabCitizen: "Pag-claim sa Katawhan",
+    tabAdmin: "Portal sa Munisipyo",
+    tabTreasury: "Publikong Pagsusi",
+    citizenTabTag: "Alang sa mga Biktima sa Katalagman ug Evacuees",
+    citizenTabTitle: "Paspas ug Pribadong Hinabang sa Bisan Unsang Selpon",
+    citizenTabDesc: "Walay username o password. Ikonektar ang wallet, ibutang ang PIN, dawata ang ayuda.",
+    tryLiveClaim: "Sulayi ang Live Claim Flow →",
+    adminTabTag: "Alang sa mga Opisyal sa Munisipyo ug DRRM",
+    adminTabTitle: "Emergency Command Center sa Kagamhanan",
+    adminTabDesc: "I-upload ang listahan sa ayuda, ipatuman ang dual-officer approval, ug pugngi ang panlimbong.",
+    openGovPortal: "Ablihi ang Portal sa Kagamhanan →",
+    treasuryTabTag: "Bukas nga Pagdumala ug Pagsusi sa Pundo",
+    treasuryTabTitle: "Susiha ang Matag Piso nga Walay Gipadayag nga Ngalan",
+    treasuryTabDesc: "Tibuok transparency alang sa katawhan, watchdogs, ug mga auditor sa kagamhanan.",
+    viewLiveTreasury: "Tan-awa ang Live nga Pundo →",
+
+    // Comparison Section
+    comparisonTag: "Nganong Importante ang GhostFree",
+    comparisonTitle: "Ang Karaang Paagi batok sa GhostFree",
+    comparisonSubtitle: "Tan-awa giunsa pagsulbad sa modernong teknolohiya ang korapsyon ug kalangan sa pag-apod-apod sa ayuda.",
+    comparisonAspect: "Aspeto",
+    comparisonOldWayHeader: "Ang Karaang Paagi (Papel nga Resibo)",
+    comparisonGhostFreeHeader: "Ang Paagi sa GhostFree",
+
+    // 4-Step Process Section
+    stepsTag: "Sayon nga 4 ka Lakang",
+    stepsTitle: "Giunsa Pagdawat og Hinabang sa mga Biktima",
+    stepsSubtitle: "Pindota ang matag lakang aron makita giunsa pagtinabangay ang pribasiya ug proteksyon.",
+    whatObserverSees: "Ang Gisusi sa Sistema (Publiko)",
+    whatStaysPrivate: "Ang Magpabilin Kanimo (Pribado)",
+
+    // Bento 4 Core Guarantees
+    bentoTag: "Upat ka Pangunang Garantiya",
+    bentoTitle: "Gihimo alang sa Tibuok Pagsalig",
+    bentoSubtitle: "Matag biktima sa katalagman ug opisyal adunay garantisadong proteksyon sa datos ug panlimbong.",
+    bentoPrivateTitle: "100% Pribado",
+    bentoPrivateDesc: "Ang imong National ID ug PIN magpabilin sa imong selpon. Walay sentral nga database nga magtipig o magpagula sa imong impormasyon.",
+    bentoGhostTitle: "Zero Ghost Claims",
+    bentoGhostDesc: "Matag resibo maghimo og one-time digital lock code. Sa higayon nga madawat ang ayuda, permanente kining ma-lock batok sa doble nga claim.",
+    bentoFreeTitle: "Libre alang sa Pamilya",
+    bentoFreeDesc: "Abagahon sa lokal nga kagamhanan ang tanang technical gas fees. Ang mga biktima sa katalagman ₱0 ang bayran.",
+    bentoAuditTitle: "Bukas nga Pagsusi sa Publiko",
+    bentoAuditDesc: "Mahimong susihon sa katawhan ug COA ang matag piso nga naapod-apod sa live dashboard nga walay makitang ngalan.",
+
+    // Laws & Compliance
+    lawsTag: "Pagsunod sa Balaod sa Pilipinas",
+    lawsTitle: "Nahiuyon sa mga Balaod sa Kagamhanan",
+    lawsSubtitle: "Nahiuyon ang GhostFree sa mga sumbanan sa Commission on Audit ug katungod sa pribasiya ubos sa nasudnong balaod.",
+    govAuditCompliant: "Nahiuyon sa Sumbanan sa Audit",
+
+    // FAQs Section
+    faqTitle: "Mga Kasagarang Pangutana",
+    faqSubtitle: "Diretsong tubag mahitungod sa mga account, pribasiya, ug pag-apod-apod sa pundo.",
+
+    // Bottom CTA
+    ctaTitle: "Andam Na Ba Ka Moapod-apod og Hinabang nga Walay Ghost Claims?",
+    ctaSubtitle: "Sulayi ang live claim portal sa Midnight Preprod, o susiha ang command center sa lokal nga kagamhanan karon.",
+    ctaClaimBtn: "Mag-claim og Hinabang isip Katawhan",
+    ctaAdminBtn: "Mag-login isip Opisyal sa Munisipyo",
   },
 };
 

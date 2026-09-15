@@ -64,4 +64,41 @@ describe("Disaster Regional Dialect i18n Service (fb-user-008)", () => {
       expect(TRANSLATIONS.ceb[key]).toBeDefined();
     }
   });
+
+  it("should provide complete landing page translations in EN, FIL, and CEB", () => {
+    const landingKeys = [
+      "navClaimAid",
+      "navGovPortal",
+      "releasePillText",
+      "heroTitlePrefix",
+      "heroTitleSuffix",
+      "heroSubtitle",
+      "claimEmergencyAid",
+      "localGovernmentPortal",
+      "statFundsLocked",
+      "statGhostBlocked",
+      "statFamiliesHelped",
+      "statDataLeaks",
+      "livePreviewTitle",
+      "tabCitizen",
+      "tabAdmin",
+      "tabTreasury",
+      "comparisonTitle",
+      "stepsTitle",
+      "bentoTitle",
+      "lawsTitle",
+      "faqTitle",
+      "ctaTitle",
+    ];
+
+    for (const key of landingKeys) {
+      expect(TRANSLATIONS.en[key]).toBeDefined();
+      expect(TRANSLATIONS.fil[key]).toBeDefined();
+      expect(TRANSLATIONS.ceb[key]).toBeDefined();
+      expect(t(key, "en").length).toBeGreaterThan(0);
+      expect(t(key, "fil").length).toBeGreaterThan(0);
+      expect(t(key, "ceb").length).toBeGreaterThan(0);
+    }
+  });
 });
+

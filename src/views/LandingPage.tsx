@@ -2,9 +2,10 @@
 // GhostFree — GitHub-Grade Civic-Tech Landing Page (v1.4.0)
 // 100% Plain English Copy · Product Showcase Window
 // Old Way vs GhostFree Comparison · Interactive Bento
+// Multi-Dialect Regional Localization (EN / FIL / CEB)
 // =======================================================
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Shield,
@@ -26,15 +27,20 @@ import {
   ExternalLink,
   Globe,
   ArrowRight,
-  Layers,
-  Clock,
   FileCheck,
   Download,
 } from "lucide-react";
 import TransparencyCard from "../components/TransparencyCard";
 import OnboardingModal from "../components/OnboardingModal";
 import GhostFreeLogo from "../components/GhostFreeLogo";
+import LanguageSelector from "../components/LanguageSelector";
 import { GithubIcon, TwitterIcon } from "../components/SocialIcons";
+import {
+  t,
+  getStoredLanguage,
+  subscribeLanguageChange,
+  type SupportedLanguage,
+} from "../services/i18n.service";
 
 // ---- Animated Counter Hook ----
 function useCountUp(target: number, duration = 2000, trigger = false) {
@@ -66,6 +72,7 @@ function useCountUp(target: number, duration = 2000, trigger = false) {
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [mounted, setMounted] = useState(false);
+  const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
   const [activeTab, setActiveTab] = useState<"citizen" | "admin" | "treasury">("citizen");
   const [activeStep, setActiveStep] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
@@ -75,6 +82,10 @@ export const LandingPage: React.FC = () => {
 
   useEffect(() => {
     setMounted(true);
+    const unsubscribe = subscribeLanguageChange((newLang) => {
+      setLang(newLang);
+    });
+    return unsubscribe;
   }, []);
 
   // Intersection Observer for counter animation
@@ -99,126 +110,362 @@ export const LandingPage: React.FC = () => {
   const beneficiaryCount = useCountUp(2850, 2000, countersVisible);
   const leakCount = useCountUp(0, 500, countersVisible);
 
-  // Plain English 4-Step Process
-  const steps = [
-    {
-      id: 1,
-      title: "1. Enter Voucher PIN",
-      tag: "100% Private",
-      icon: <Smartphone className="w-5 h-5 text-civic-sky" />,
-      desc: "Type your ID number and the secret PIN printed on your relief voucher. These values stay in your phone's memory.",
-      note: "Nothing is sent over the internet.",
-      observerSees: "Zero data transmitted",
-      staysPrivate: "Your National ID and voucher PIN stay locked on your phone",
-    },
-    {
-      id: 2,
-      title: "2. Create Digital Pass",
-      tag: "On-Phone Math",
-      icon: <Fingerprint className="w-5 h-5 text-accent-purple" />,
-      desc: "Your phone creates a tamper-proof digital pass proving you hold a valid voucher, without revealing your name.",
-      note: "Generated in 1 second on your device.",
-      observerSees: "Only a one-time mathematical proof",
-      staysPrivate: "Your identity remains completely hidden",
-    },
-    {
-      id: 3,
-      title: "3. Check Approved List",
-      tag: "Anonymous Check",
-      icon: <Shield className="w-5 h-5 text-accent-success" />,
-      desc: "The secure contract checks whether your pass matches the town's disaster relief roster without discovering who you are.",
-      note: "Instant confirmation with zero delays.",
-      observerSees: "Eligibility confirmed: YES",
-      staysPrivate: "Nobody can link the check to your real name",
-    },
-    {
-      id: 4,
-      title: "4. Receive Cash Aid",
-      tag: "Instant & Locked",
-      icon: <Lock className="w-5 h-5 text-accent-gold" />,
-      desc: "Emergency aid is deposited straight to your wallet. A one-time lock is saved so no one can ever claim your aid again.",
-      note: "Guaranteed one payout per family.",
-      observerSees: "Aid payout recorded + One-time lock code marked spent",
-      staysPrivate: "Your personal details are never stored on any ledger",
-    },
-  ];
+  // Dynamic Multi-Dialect 4-Step Process
+  const steps = useMemo(() => {
+    if (lang === "fil") {
+      return [
+        {
+          id: 1,
+          title: "1. Ilagay ang PIN",
+          tag: "100% Pribado",
+          icon: <Smartphone className="w-5 h-5 text-civic-sky" />,
+          desc: "Ilagay ang iyong ID number at ang lihim na PIN na nasa iyong relief voucher. Mananatili ito sa memorya ng iyong selpon.",
+          note: "Walang ipinapadala sa internet.",
+          observerSees: "Walang datos na ipinapadala",
+          staysPrivate: "Ang iyong National ID at PIN ay mananatili sa iyong selpon",
+        },
+        {
+          id: 2,
+          title: "2. Lumikha ng Digital Pass",
+          tag: "Kalkulasyon sa Selpon",
+          icon: <Fingerprint className="w-5 h-5 text-accent-purple" />,
+          desc: "Lilikha ang iyong selpon ng ligtas na digital pass na nagpapatunay na mayroon kang balidong voucher nang hindi inilalabas ang iyong pangalan.",
+          note: "Bumubuo sa loob ng 1 segundo sa iyong telepono.",
+          observerSees: "Isang one-time na patunay lamang",
+          staysPrivate: "Mananatiling lihim ang iyong pagkakakilanlan",
+        },
+        {
+          id: 3,
+          title: "3. Suriin ang Listahan",
+          tag: "Pribadong Pagsusuri",
+          icon: <Shield className="w-5 h-5 text-accent-success" />,
+          desc: "Titiyakin ng kontrata kung tugma ang iyong pass sa inaprubahang listahan ng ayuda ng bayan nang hindi nalalaman kung sino ka.",
+          note: "Mabilis na kumpirmasyon nang walang antala.",
+          observerSees: "Kumpirmado ang karapatan: OO",
+          staysPrivate: "Walang makakaugnay sa iyong totoong pangalan",
+        },
+        {
+          id: 4,
+          title: "4. Tanggapin ang Ayuda",
+          tag: "Mabilis at Naka-lock",
+          icon: <Lock className="w-5 h-5 text-accent-gold" />,
+          desc: "Direktang papasok ang ayuda sa iyong wallet. Naka-lock na ang voucher upang hindi na ito muling ma-claim ninuman.",
+          note: "Garantisadong isang ayuda bawat pamilya.",
+          observerSees: "Naitala ang ayuda + Naka-lock na ang one-time code",
+          staysPrivate: "Hindi naitatala sa pampublikong ledger ang iyong datos",
+        },
+      ];
+    }
+    if (lang === "ceb") {
+      return [
+        {
+          id: 1,
+          title: "1. Ibutang ang PIN",
+          tag: "100% Pribado",
+          icon: <Smartphone className="w-5 h-5 text-civic-sky" />,
+          desc: "Ibutang ang imong ID number ug ang tinagong PIN nga anaa sa imong voucher. Magpabilin kini sa panumduman sa imong selpon.",
+          note: "Walay gipadala sa internet.",
+          observerSees: "Walay datos nga gipadala",
+          staysPrivate: "Ang imong National ID ug PIN magpabilin sa imong selpon",
+        },
+        {
+          id: 2,
+          title: "2. Paghimo og Digital Pass",
+          tag: "Kalkulasyon sa Selpon",
+          icon: <Fingerprint className="w-5 h-5 text-accent-purple" />,
+          desc: "Ang imong selpon maghimo og luwas nga digital pass nga nagpamatuod nga aduna kay balidong voucher nga walay pagbutyag sa imong ngalan.",
+          note: "Mahimo sulod sa 1 segundo sa imong selpon.",
+          observerSees: "Usa ka one-time nga pamatuod lamang",
+          staysPrivate: "Magpabilin nga tinago ang imong pagkatawo",
+        },
+        {
+          id: 3,
+          title: "3. Susiha ang Listahan",
+          tag: "Pribadong Pagsusi",
+          icon: <Shield className="w-5 h-5 text-accent-success" />,
+          desc: "Susiha sa kontrata kung ang imong pass nahiuyon sa aprobahang listahan sa ayuda sa lungsod nga dili makaila kung kinsa ka.",
+          note: "Paspas nga kumpirmasyon nga walay kalangan.",
+          observerSees: "Kumpirmado ang katungod: OO",
+          staysPrivate: "Walay makakonektar sa imong tinuod nga ngalan",
+        },
+        {
+          id: 4,
+          title: "4. Dawata ang Ayuda",
+          tag: "Paspas ug Naka-lock",
+          icon: <Lock className="w-5 h-5 text-accent-gold" />,
+          desc: "Direktang mosulod ang hinabang sa imong wallet. Naka-lock na ang voucher aron dili na kini ma-claim pag-usab ni bisan kinsa.",
+          note: "Garantisadong usa ka hinabang matag pamilya.",
+          observerSees: "Narekord ang ayuda + Naka-lock na ang one-time code",
+          staysPrivate: "Wala gitipigan sa ledger ang imong personal nga detalye",
+        },
+      ];
+    }
+    // Default: English
+    return [
+      {
+        id: 1,
+        title: "1. Enter Voucher PIN",
+        tag: "100% Private",
+        icon: <Smartphone className="w-5 h-5 text-civic-sky" />,
+        desc: "Type your ID number and the secret PIN printed on your relief voucher. These values stay in your phone's memory.",
+        note: "Nothing is sent over the internet.",
+        observerSees: "Zero data transmitted",
+        staysPrivate: "Your National ID and voucher PIN stay locked on your phone",
+      },
+      {
+        id: 2,
+        title: "2. Create Digital Pass",
+        tag: "On-Phone Math",
+        icon: <Fingerprint className="w-5 h-5 text-accent-purple" />,
+        desc: "Your phone creates a tamper-proof digital pass proving you hold a valid voucher, without revealing your name.",
+        note: "Generated in 1 second on your device.",
+        observerSees: "Only a one-time mathematical proof",
+        staysPrivate: "Your identity remains completely hidden",
+      },
+      {
+        id: 3,
+        title: "3. Check Approved List",
+        tag: "Anonymous Check",
+        icon: <Shield className="w-5 h-5 text-accent-success" />,
+        desc: "The secure contract checks whether your pass matches the town's disaster relief roster without discovering who you are.",
+        note: "Instant confirmation with zero delays.",
+        observerSees: "Eligibility confirmed: YES",
+        staysPrivate: "Nobody can link the check to your real name",
+      },
+      {
+        id: 4,
+        title: "4. Receive Cash Aid",
+        tag: "Instant & Locked",
+        icon: <Lock className="w-5 h-5 text-accent-gold" />,
+        desc: "Emergency aid is deposited straight to your wallet. A one-time lock is saved so no one can ever claim your aid again.",
+        note: "Guaranteed one payout per family.",
+        observerSees: "Aid payout recorded + One-time lock code marked spent",
+        staysPrivate: "Your personal details are never stored on any ledger",
+      },
+    ];
+  }, [lang]);
 
-  // Plain English Comparison
-  const comparisons = [
-    {
-      feature: "Claiming Speed",
-      oldWay: "Hours waiting in long evacuation lines under the sun",
-      ghostFree: "30 seconds on your smartphone with instant digital delivery",
-      good: true,
-    },
-    {
-      feature: "Personal Privacy",
-      oldWay: "Names, addresses, and ID numbers printed on public paper clipboards",
-      ghostFree: "100% private. Your ID stays on your phone and is never uploaded",
-      good: true,
-    },
-    {
-      feature: "Ghost Beneficiaries",
-      oldWay: "Corrupt middlemen and duplicate claimants steal emergency relief",
-      ghostFree: "Impossible to claim twice. Digital lock blocks duplicates automatically",
-      good: true,
-    },
-    {
-      feature: "Public Accountability",
-      oldWay: "Paper receipts and locked spreadsheets that take months to audit",
-      ghostFree: "Real-time public dashboard tracking every single peso with zero data leaks",
-      good: true,
-    },
-    {
-      feature: "Transaction Costs",
-      oldWay: "Victims pay travel fares and documentation copying fees",
-      ghostFree: "₱0 cost. The town hall pays all digital network fees in advance",
-      good: true,
-    },
-  ];
+  // Dynamic Multi-Dialect Comparison
+  const comparisons = useMemo(() => {
+    if (lang === "fil") {
+      return [
+        {
+          feature: "Bilis ng Pag-claim",
+          oldWay: "Oras ng pagpila sa ilalim ng init ng araw sa evacuation center",
+          ghostFree: "30 segundo sa iyong selpon na may agarang digital na pagdating",
+        },
+        {
+          feature: "Proteksyon sa Privacy",
+          oldWay: "Pangalan, tirahan, at ID na nakasulat sa papel na clipboard na nakikita ng lahat",
+          ghostFree: "100% pribado. Ang iyong ID ay nasa selpon mo lang at hindi ina-upload",
+        },
+        {
+          feature: "Pandaraya at Ghost Claims",
+          oldWay: "Mga tiwaling middleman at dobleng claimant na nagnanakaw ng pondo",
+          ghostFree: "Imposibleng ma-claim nang dalawang beses. Awtomatikong hinaharang ang doble",
+        },
+        {
+          feature: "Pampublikong Audit",
+          oldWay: "Mga resibong papel at spreadsheet na buwan bago ma-audit",
+          ghostFree: "Live na dashboard na sumusubaybay sa bawat piso nang walang tagas ng datos",
+        },
+        {
+          feature: "Gastos ng Biktima",
+          oldWay: "Nagbabayad ng pamasahe at photocopy ang mga nasalanta",
+          ghostFree: "₱0 gastos. Sagot ng munisipyo ang lahat ng technical fees sa simula pa lang",
+        },
+      ];
+    }
+    if (lang === "ceb") {
+      return [
+        {
+          feature: "Kadasig sa Pag-claim",
+          oldWay: "Oras-oras nga paglinya ubos sa init sa adlaw sa evacuation center",
+          ghostFree: "30 segundo sa imong selpon nga adunay dinaliang digital nga pag-abot",
+        },
+        {
+          feature: "Pribasiya sa Datos",
+          oldWay: "Ngalan, adres, ug ID nga nakasulat sa papel nga makita sa tanan",
+          ghostFree: "100% pribado. Ang imong ID anaa ra sa selpon ug dili i-upload",
+        },
+        {
+          feature: "Panlimbong ug Ghost Claims",
+          oldWay: "Mga korap nga middleman ug doble nga pag-claim nga nangawat sa hinabang",
+          ghostFree: "Imposible nga ma-claim og kaduha. Awtomatikong pugngan ang duplicate",
+        },
+        {
+          feature: "Publikong Pagsusi",
+          oldWay: "Mga resibong papel ug spreadsheet nga abtan og mga bulan una masusi",
+          ghostFree: "Live nga dashboard nga nagsubay sa matag piso nga walay pagtagas sa datos",
+        },
+        {
+          feature: "Gasto sa Biktima",
+          oldWay: "Mobayad og plete ug photocopy ang mga biktima",
+          ghostFree: "₱0 gasto. Abagahon sa munisipyo ang tanang technical fees daan",
+        },
+      ];
+    }
+    return [
+      {
+        feature: "Claiming Speed",
+        oldWay: "Hours waiting in long evacuation lines under the sun",
+        ghostFree: "30 seconds on your smartphone with instant digital delivery",
+      },
+      {
+        feature: "Personal Privacy",
+        oldWay: "Names, addresses, and ID numbers printed on public paper clipboards",
+        ghostFree: "100% private. Your ID stays on your phone and is never uploaded",
+      },
+      {
+        feature: "Ghost Beneficiaries",
+        oldWay: "Corrupt middlemen and duplicate claimants steal emergency relief",
+        ghostFree: "Impossible to claim twice. Digital lock blocks duplicates automatically",
+      },
+      {
+        feature: "Public Accountability",
+        oldWay: "Paper receipts and locked spreadsheets that take months to audit",
+        ghostFree: "Real-time public dashboard tracking every single peso with zero data leaks",
+      },
+      {
+        feature: "Transaction Costs",
+        oldWay: "Victims pay travel fares and documentation copying fees",
+        ghostFree: "₱0 cost. The town hall pays all digital network fees in advance",
+      },
+    ];
+  }, [lang]);
 
-  // Plain English Philippine Disaster Laws
-  const statutoryLaws = [
-    {
-      code: "R.A. 10121",
-      title: "Disaster Risk Reduction & Management Act",
-      impact: "Requires emergency disaster funds and Quick Response Funds (QRF) to reach affected families immediately with full public accounting.",
-    },
-    {
-      code: "R.A. 10173",
-      title: "Data Privacy Act of 2012",
-      impact: "Guarantees your personal data cannot be published or leaked online. Your identity remains protected at all times.",
-    },
-    {
-      code: "R.A. 8792",
-      title: "Electronic Commerce Act",
-      impact: "Recognizes digital emergency vouchers and secure blockchain receipts as legally valid proof of disaster assistance.",
-    },
-  ];
+  // Dynamic Multi-Dialect Philippine Disaster Laws
+  const statutoryLaws = useMemo(() => {
+    if (lang === "fil") {
+      return [
+        {
+          code: "R.A. 10121",
+          title: "Disaster Risk Reduction & Management Act",
+          impact: "Nag-aatas na ang pondo sa kalamidad at Quick Response Funds (QRF) ay dapat maipamahagi agad sa mga apektadong pamilya na may buong pananagutan.",
+        },
+        {
+          code: "R.A. 10173",
+          title: "Data Privacy Act of 2012",
+          impact: "Garantiya na ang iyong personal na impormasyon ay hindi maaaring ipaskil o ikalat sa internet. Ligtas ang iyong pagkakakilanlan.",
+        },
+        {
+          code: "R.A. 8792",
+          title: "Electronic Commerce Act",
+          impact: "Kinikilala ang mga digital na voucher at cryptographic receipts bilang opisyal at legal na katibayan ng ayuda sa kalamidad.",
+        },
+      ];
+    }
+    if (lang === "ceb") {
+      return [
+        {
+          code: "R.A. 10121",
+          title: "Disaster Risk Reduction & Management Act",
+          impact: "Nagmando nga ang pundo sa katalagman ug Quick Response Funds (QRF) kinahanglan maapod-apod dayon sa mga apektadong pamilya nga adunay hustong tulubagon.",
+        },
+        {
+          code: "R.A. 10173",
+          title: "Data Privacy Act of 2012",
+          impact: "Naggagarantiya nga ang imong personal nga datos dili mamahimong ipagula o ikalat online. Protektado ang imong pagkatawo sa tanang panahon.",
+        },
+        {
+          code: "R.A. 8792",
+          title: "Electronic Commerce Act",
+          impact: "Nag-ila sa mga digital nga voucher ug cryptographic receipts isip legal ug balidong pamatuod sa tabang sa katalagman.",
+        },
+      ];
+    }
+    return [
+      {
+        code: "R.A. 10121",
+        title: "Disaster Risk Reduction & Management Act",
+        impact: "Requires emergency disaster funds and Quick Response Funds (QRF) to reach affected families immediately with full public accounting.",
+      },
+      {
+        code: "R.A. 10173",
+        title: "Data Privacy Act of 2012",
+        impact: "Guarantees your personal data cannot be published or leaked online. Your identity remains protected at all times.",
+      },
+      {
+        code: "R.A. 8792",
+        title: "Electronic Commerce Act",
+        impact: "Recognizes digital emergency vouchers and secure blockchain receipts as legally valid proof of disaster assistance.",
+      },
+    ];
+  }, [lang]);
 
-  // Plain English FAQs
-  const faqs = [
-    {
-      q: "Do I need to register an account, username, or password?",
-      a: "No. When an emergency strikes, creating accounts and remembering passwords only slows down help. You simply open the claim page on your smartphone, type your voucher PIN, and receive your aid directly.",
-    },
-    {
-      q: "How does GhostFree stop people from claiming aid twice?",
-      a: "Each disaster voucher contains a secret number that creates a unique digital lock code. The moment aid is claimed, that lock code is permanently marked as used. If someone tries to claim again with the same voucher, the system automatically rejects it.",
-    },
-    {
-      q: "Does the government or anyone else see my private identity?",
-      a: "Never. GhostFree proves that you are an authorized disaster victim without ever sharing your name, National ID, or private details with the government, the internet, or the blockchain.",
-    },
-    {
-      q: "Do I have to pay any fees or buy cryptocurrency?",
-      a: "No, claiming aid is 100% free for all disaster victims. The local government sponsors all technical execution fees in advance, so you can claim even with an empty wallet balance.",
-    },
-    {
-      q: "How do town hall officials upload beneficiary lists and send funds?",
-      a: "Authorized government officials log in with secure municipal credentials. They upload an approved disaster roster spreadsheet, lock relief funds into the emergency treasury, and review live disbursement statistics on their command center dashboard.",
-    },
-  ];
+  // Dynamic Multi-Dialect FAQs
+  const faqs = useMemo(() => {
+    if (lang === "fil") {
+      return [
+        {
+          q: "Kailangan ko bang magrehistro ng account, username, o password?",
+          a: "Hindi. Sa panahon ng kalamidad, ang pagpaparehistro at pag-alala ng password ay nagpapatagal lamang ng tulong. Buksan lamang ang claim portal sa iyong selpon, ilagay ang iyong PIN, at tanggapin ang ayuda.",
+        },
+        {
+          q: "Paano pinipigilan ng GhostFree ang paulit-ulit na pag-claim?",
+          a: "Bawat voucher ay may lihim na numerong lumilikha ng natatanging digital lock code. Kapag nakuha na ang ayuda, permanente itong minamarkahan bilang gamit na. Kung subukan itong gamitin muli, kusang tatanggihan ito ng sistema.",
+        },
+        {
+          q: "Makikita ba ng pamahalaan o ng ibang tao ang aking pribadong datos?",
+          a: "Hinding-hindi. Pinatutunayan ng GhostFree na ikaw ay lehitimong biktima nang hindi kailanman ibinubunyag ang iyong pangalan, National ID, o detalye sa pamahalaan o internet.",
+        },
+        {
+          q: "Kailangan ko bang magbayad ng bayarin o bumili ng cryptocurrency?",
+          a: "Hindi. 100% libre ang pag-claim para sa lahat ng biktima ng kalamidad. Sagot ng lokal na pamahalaan ang lahat ng technical gas fees, kaya maaari kang mag-claim kahit walang laman ang iyong wallet.",
+        },
+        {
+          q: "Paano nag-a-upload ang mga opisyal ng munisipyo at nagpapadala ng pondo?",
+          a: "Ang mga awtorisadong opisyal ay naglo-log in gamit ang secure na municipal credentials. Nag-a-upload sila ng listahan ng mga benepisyaryo, nagla-lock ng pondo sa emergency treasury, at sumusubaybay sa live disbursement sa command center.",
+        },
+      ];
+    }
+    if (lang === "ceb") {
+      return [
+        {
+          q: "Kinahanglan ba kong magrehistro og account, username, o password?",
+          a: "Dili. Panahon sa katalagman, ang pagrehistro ug pagsag-ulo sa password makalangan lang sa hinabang. Ablihi lang ang claim portal sa imong selpon, ibutang ang imong PIN, ug dawata ang hinabang.",
+        },
+        {
+          q: "Giunsa pagpugong sa GhostFree ang pag-claim og kaduha?",
+          a: "Matag voucher adunay tinagong numero nga maghimo og talagsaong digital lock code. Sa higayon nga makuha ang hinabang, permanente kining markahan nga nagamit na. Kung sulayan pag-usab, awtomatiko kining isalikway sa sistema.",
+        },
+        {
+          q: "Makakita ba ang kagamhanan o uban sa akong pribadong pagkatawo?",
+          a: "Dili gayud. Gipamatud-an sa GhostFree nga ikaw lehitimong biktima nga walay bisan unsang pagbutyag sa imong ngalan, National ID, o detalye sa gobyerno o internet.",
+        },
+        {
+          q: "Kinahanglan ba kong mobayad og bayranan o mopalit og cryptocurrency?",
+          a: "Dili. 100% libre ang pag-claim alang sa tanang biktima sa katalagman. Abagahon sa lokal nga kagamhanan ang tanang technical gas fees, aron makadawat ka bisan walay sulod ang imong wallet.",
+        },
+        {
+          q: "Giunsa sa mga opisyal sa munisipyo pag-upload sa listahan ug pagpadala og pundo?",
+          a: "Ang mga awtorisadong opisyal mag-log in gamit ang luwas nga mga kredensyal. Sila mag-upload sa listahan sa mga benepisyaryo, mag-lock sa pundo sa emergency treasury, ug magsubay sa live nga pag-apod-apod sa command center.",
+        },
+      ];
+    }
+    return [
+      {
+        q: "Do I need to register an account, username, or password?",
+        a: "No. When an emergency strikes, creating accounts and remembering passwords only slows down help. You simply open the claim page on your smartphone, type your voucher PIN, and receive your aid directly.",
+      },
+      {
+        q: "How does GhostFree stop people from claiming aid twice?",
+        a: "Each disaster voucher contains a secret number that creates a unique digital lock code. The moment aid is claimed, that lock code is permanently marked as used. If someone tries to claim again with the same voucher, the system automatically rejects it.",
+      },
+      {
+        q: "Does the government or anyone else see my private identity?",
+        a: "Never. GhostFree proves that you are an authorized disaster victim without ever sharing your name, National ID, or private details with the government, the internet, or the blockchain.",
+      },
+      {
+        q: "Do I have to pay any fees or buy cryptocurrency?",
+        a: "No, claiming aid is 100% free for all disaster victims. The local government sponsors all technical execution fees in advance, so you can claim even with an empty wallet balance.",
+      },
+      {
+        q: "How do town hall officials upload beneficiary lists and send funds?",
+        a: "Authorized government officials log in with secure municipal credentials. They upload an approved disaster roster spreadsheet, lock relief funds into the emergency treasury, and review live disbursement statistics on their command center dashboard.",
+      },
+    ];
+  }, [lang]);
 
   return (
     <div className="min-h-dvh bg-civic-navy relative overflow-hidden text-slate-100 selection:bg-civic-blue selection:text-white">
@@ -232,7 +479,7 @@ export const LandingPage: React.FC = () => {
       <div className="absolute bottom-[20%] left-[8%] w-80 h-80 bg-accent-gold/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* ========================================================
-          1. HEADER & TOP NAVIGATION
+          1. HEADER & TOP NAVIGATION WITH LANGUAGE SELECTOR
          ======================================================== */}
       <header className="relative z-20 flex items-center justify-between px-6 py-4 lg:px-12 lg:py-4 border-b border-white/[0.08] backdrop-blur-2xl bg-civic-navy/70 sticky top-0">
         <div className="flex items-center gap-3">
@@ -240,46 +487,49 @@ export const LandingPage: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xl font-black text-white tracking-tight leading-none">
-                GhostFree
+                {t("appName", lang)}
               </span>
               <span className="text-[0.65rem] font-bold px-2 py-0.5 rounded-full bg-civic-trust/20 text-civic-trust border border-civic-trust/30 uppercase tracking-wider">
-                Live Preprod
+                {t("navLivePreprod", lang)}
               </span>
             </div>
             <p className="text-[0.65rem] text-slate-400 font-medium tracking-wider uppercase mt-0.5">
-              Zero Ghost Claims · Emergency Aid
+              {t("navZeroGhostSub", lang)}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
+          {/* Dialect / Language Selector in Header */}
+          <LanguageSelector compact />
+
           <button
             onClick={() => setShowOnboarding(true)}
             className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-civic-sky/30 text-civic-sky hover:bg-civic-sky/10"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Tour
+            {t("tour", lang)}
           </button>
           <button
             onClick={() => navigate("/transparency")}
             className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 py-2 px-3 rounded-xl border border-accent-gold/30 text-accent-gold hover:bg-accent-gold/10"
           >
             <Landmark className="w-3.5 h-3.5" />
-            Treasury
+            {t("treasury", lang)}
           </button>
           <button
             onClick={() => navigate("/claim")}
             className="btn-civic btn-primary shimmer-btn text-xs sm:text-sm flex items-center gap-1.5 py-2 px-4 rounded-xl"
           >
             <Smartphone className="w-4 h-4" />
-            Claim Aid
+            {t("navClaimAid", lang)}
           </button>
           <button
             onClick={() => navigate("/admin/login")}
             className="btn-civic btn-ghost text-xs sm:text-sm hidden sm:flex items-center gap-1.5 py-2 px-4 rounded-xl"
           >
             <Landmark className="w-4 h-4" />
-            Government Portal
+            {t("navGovPortal", lang)}
           </button>
         </div>
       </header>
@@ -297,9 +547,7 @@ export const LandingPage: React.FC = () => {
           `}
         >
           <span className="w-2 h-2 rounded-full bg-accent-success animate-ping" />
-          <span className="text-white font-bold">Tested & Live on Preprod</span>
-          <span className="text-slate-400">·</span>
-          <span className="text-slate-300">75 Verified Testers & Zero Data Leaks</span>
+          <span className="text-white font-bold">{t("releasePillText", lang)}</span>
           <ArrowRight className="w-3 h-3 text-civic-sky group-hover:translate-x-1 transition-transform" />
         </div>
 
@@ -313,7 +561,7 @@ export const LandingPage: React.FC = () => {
           <GhostFreeLogo size={90} variant="full" animated />
         </div>
 
-        {/* Main Heading in Everyday Plain English */}
+        {/* Main Heading in Localized Dialect */}
         <h1
           className={`
             text-4xl sm:text-6xl lg:text-7xl font-black text-center text-white
@@ -322,13 +570,13 @@ export const LandingPage: React.FC = () => {
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          Stop the Ghosts.{" "}
+          {t("heroTitlePrefix", lang)}{" "}
           <span className="bg-gradient-to-r from-civic-sky via-civic-trust to-accent-success bg-clip-text text-transparent">
-            Protect the People.
+            {t("heroTitleSuffix", lang)}
           </span>
         </h1>
 
-        {/* Subtitle in Everyday Plain English */}
+        {/* Subtitle in Localized Dialect */}
         <p
           className={`
             text-base sm:text-xl text-slate-300 text-center max-w-3xl mb-8
@@ -336,8 +584,7 @@ export const LandingPage: React.FC = () => {
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
           `}
         >
-          A secure emergency relief platform where disaster victims receive financial aid in seconds.
-          Your private ID never leaves your phone, and duplicate claims are automatically blocked.
+          {t("heroSubtitle", lang)}
         </p>
 
         {/* Dual Primary Call-to-Action Buttons */}
@@ -353,7 +600,7 @@ export const LandingPage: React.FC = () => {
             className="btn-civic btn-primary shimmer-btn w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-civic-blue/25"
           >
             <Smartphone className="w-5 h-5" />
-            Claim Emergency Aid
+            {t("claimEmergencyAid", lang)}
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
@@ -361,7 +608,7 @@ export const LandingPage: React.FC = () => {
             className="btn-civic btn-secondary w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 border border-slate-700 hover:border-civic-sky/40"
           >
             <Landmark className="w-5 h-5 text-civic-sky" />
-            Local Government Portal
+            {t("localGovernmentPortal", lang)}
           </button>
         </div>
 
@@ -376,31 +623,31 @@ export const LandingPage: React.FC = () => {
         >
           {[
             {
-              label: "Disaster Funds Locked",
+              label: t("statFundsLocked", lang),
               val: escrowCount.toLocaleString(),
               unit: "tNIGHT",
-              sub: "Protected in Town Treasury",
+              sub: t("statFundsLockedSub", lang),
               icon: <Shield className="w-4 h-4 text-civic-sky" />,
             },
             {
-              label: "Duplicate Claims Blocked",
+              label: t("statGhostBlocked", lang),
               val: ghostCount.toLocaleString(),
               unit: "Attempts",
-              sub: "Ghost claims stopped automatically",
+              sub: t("statGhostBlockedSub", lang),
               icon: <Lock className="w-4 h-4 text-accent-purple" />,
             },
             {
-              label: "Verified Families Helped",
+              label: t("statFamiliesHelped", lang),
               val: beneficiaryCount.toLocaleString(),
               unit: "Citizens",
-              sub: "Aid delivered with 100% privacy",
+              sub: t("statFamiliesHelpedSub", lang),
               icon: <UserCheck className="w-4 h-4 text-accent-success" />,
             },
             {
-              label: "Personal Data Leaks",
+              label: t("statDataLeaks", lang),
               val: leakCount.toString(),
               unit: "Leaks",
-              sub: "Zero personal data ever stored",
+              sub: t("statDataLeaksSub", lang),
               icon: <EyeOff className="w-4 h-4 text-accent-gold" />,
             },
           ].map((stat, i) => (
@@ -428,13 +675,13 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-civic-trust px-3 py-1 rounded-full bg-civic-trust/10 border border-civic-trust/20">
-              Interactive Live Preview
+              {t("livePreviewTag", lang)}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              Explore the Platform in Action
+              {t("livePreviewTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
-              See how disaster victims, local officials, and public auditors use GhostFree with zero friction.
+              {t("livePreviewSubtitle", lang)}
             </p>
           </div>
 
@@ -461,7 +708,7 @@ export const LandingPage: React.FC = () => {
                   }`}
                 >
                   <Smartphone className="w-3.5 h-3.5" />
-                  Citizen Claim
+                  {t("tabCitizen", lang)}
                 </button>
                 <button
                   onClick={() => setActiveTab("admin")}
@@ -470,7 +717,7 @@ export const LandingPage: React.FC = () => {
                   }`}
                 >
                   <Landmark className="w-3.5 h-3.5" />
-                  Town Hall Portal
+                  {t("tabAdmin", lang)}
                 </button>
                 <button
                   onClick={() => setActiveTab("treasury")}
@@ -479,7 +726,7 @@ export const LandingPage: React.FC = () => {
                   }`}
                 >
                   <Activity className="w-3.5 h-3.5" />
-                  Public Audit
+                  {t("tabTreasury", lang)}
                 </button>
               </div>
             </div>
@@ -492,20 +739,20 @@ export const LandingPage: React.FC = () => {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
                     <div>
                       <span className="text-xs font-bold text-accent-success uppercase tracking-wider">
-                        For Disaster Victims & Evacuees
+                        {t("citizenTabTag", lang)}
                       </span>
                       <h3 className="text-xl font-bold text-white mt-1">
-                        Fast, Private Emergency Aid on Any Phone
+                        {t("citizenTabTitle", lang)}
                       </h3>
                       <p className="text-slate-400 text-xs mt-1">
-                        No username or password. Connect wallet, enter voucher PIN, receive cash aid.
+                        {t("citizenTabDesc", lang)}
                       </p>
                     </div>
                     <button
                       onClick={() => navigate("/claim")}
                       className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
                     >
-                      Try Live Claim Flow →
+                      {t("tryLiveClaim", lang)}
                     </button>
                   </div>
 
@@ -513,23 +760,39 @@ export const LandingPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="text-xs font-bold text-civic-sky mb-1">Step 1</div>
-                      <div className="font-bold text-white text-sm">Connect Wallet</div>
-                      <p className="text-slate-400 text-xs mt-1">Lace wallet connects with 1 click. Zero personal data asked.</p>
+                      <div className="font-bold text-white text-sm">
+                        {lang === "fil" ? "Ikonekta ang Wallet" : lang === "ceb" ? "Ikonektar ang Wallet" : "Connect Wallet"}
+                      </div>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {lang === "fil" ? "1-click sa Lace wallet. Walang personal na data." : lang === "ceb" ? "1-click sa Lace wallet. Walay personal nga datos." : "Lace wallet connects with 1 click. Zero personal data asked."}
+                      </p>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="text-xs font-bold text-accent-purple mb-1">Step 2</div>
-                      <div className="font-bold text-white text-sm">Enter Voucher PIN</div>
-                      <p className="text-slate-400 text-xs mt-1">Type ID & PIN. They stay on your phone, never sent over the web.</p>
+                      <div className="font-bold text-white text-sm">
+                        {lang === "fil" ? "Ilagay ang PIN" : lang === "ceb" ? "Ibutang ang PIN" : "Enter Voucher PIN"}
+                      </div>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {lang === "fil" ? "ID at PIN ay nasa selpon lang, hindi ipinapadala." : lang === "ceb" ? "ID ug PIN anaa ra sa selpon, dili ipadala." : "Type ID & PIN. They stay on your phone, never sent over the web."}
+                      </p>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="text-xs font-bold text-accent-success mb-1">Step 3</div>
-                      <div className="font-bold text-white text-sm">Private Pass</div>
-                      <p className="text-slate-400 text-xs mt-1">Phone proves you are on the list without revealing your name.</p>
+                      <div className="font-bold text-white text-sm">
+                        {lang === "fil" ? "Pribadong Pass" : lang === "ceb" ? "Pribadong Pass" : "Private Pass"}
+                      </div>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {lang === "fil" ? "Patunayang nasa listahan nang walang ibinubunyag na ngalan." : lang === "ceb" ? "Pamatuod nga naa sa listahan nga walay gibutyag nga ngalan." : "Phone proves you are on the list without revealing your name."}
+                      </p>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-accent-gold/40 bg-accent-gold/5">
                       <div className="text-xs font-bold text-accent-gold mb-1">Step 4</div>
-                      <div className="font-bold text-white text-sm">Instant Relief</div>
-                      <p className="text-slate-300 text-xs mt-1">Funds arrive instantly. Voucher is locked to prevent duplicates.</p>
+                      <div className="font-bold text-white text-sm">
+                        {lang === "fil" ? "Ayudang Pondo" : lang === "ceb" ? "Hinabang Pundo" : "Instant Relief"}
+                      </div>
+                      <p className="text-slate-300 text-xs mt-1">
+                        {lang === "fil" ? "Pondo dumarating agad. Voucher ay naka-lock na." : lang === "ceb" ? "Pundo moabot dayon. Resibo naka-lock na." : "Funds arrive instantly. Voucher is locked to prevent duplicates."}
+                      </p>
                     </div>
                   </div>
 
@@ -537,9 +800,13 @@ export const LandingPage: React.FC = () => {
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-4 text-xs text-slate-400 border-t border-white/[0.06]">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-accent-success" />
-                      <span>Works on 2G/EDGE cellular signals in evacuation shelters</span>
+                      <span>
+                        {lang === "fil" ? "Gumagana sa 2G/EDGE cellular signal sa evacuation shelters" : lang === "ceb" ? "Molihok sa 2G/EDGE cellular signal sa evacuation shelters" : "Works on 2G/EDGE cellular signals in evacuation shelters"}
+                      </span>
                     </div>
-                    <span className="text-civic-trust font-medium">Free for Citizens (₱0 gas fee)</span>
+                    <span className="text-civic-trust font-medium">
+                      {lang === "fil" ? "Libre para sa Mamamayan (₱0 gas fee)" : lang === "ceb" ? "Libre alang sa Katawhan (₱0 gas fee)" : "Free for Citizens (₱0 gas fee)"}
+                    </span>
                   </div>
                 </div>
               )}
@@ -550,35 +817,41 @@ export const LandingPage: React.FC = () => {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
                     <div>
                       <span className="text-xs font-bold text-civic-sky uppercase tracking-wider">
-                        For Municipal Officials & DRRM Officers
+                        {t("adminTabTag", lang)}
                       </span>
                       <h3 className="text-xl font-bold text-white mt-1">
-                        Local Government Emergency Command Center
+                        {t("adminTabTitle", lang)}
                       </h3>
                       <p className="text-slate-400 text-xs mt-1">
-                        Upload disaster rosters, enforce dual-officer approvals, and prevent fraud.
+                        {t("adminTabDesc", lang)}
                       </p>
                     </div>
                     <button
                       onClick={() => navigate("/admin/login")}
                       className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
                     >
-                      Open Government Portal →
+                      {t("openGovPortal", lang)}
                     </button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Beneficiary Roster</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">
+                          {lang === "fil" ? "Talaan ng Residente" : lang === "ceb" ? "Talaan sa Residente" : "Beneficiary Roster"}
+                        </span>
                         <FileCheck className="w-4 h-4 text-civic-sky" />
                       </div>
                       <div className="text-xl font-bold text-white">2,850 Residents</div>
-                      <p className="text-slate-400 text-xs mt-1">Compiled into an anonymous tamper-proof list</p>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {lang === "fil" ? "Inaprubahang listahan ng mga nasalantang pamilya" : lang === "ceb" ? "Aprobahang listahan sa mga naapektuhang pamilya" : "Compiled into an anonymous tamper-proof list"}
+                      </p>
                     </div>
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Dual-Officer Quorum</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">
+                          {lang === "fil" ? "Pirma ng Dalawang Opisyal" : lang === "ceb" ? "Pirma sa Duha ka Opisyal" : "Dual-Officer Quorum"}
+                        </span>
                         <Scale className="w-4 h-4 text-accent-purple" />
                       </div>
                       <div className="text-xl font-bold text-accent-success">2 / 2 Signed</div>
@@ -586,11 +859,15 @@ export const LandingPage: React.FC = () => {
                     </div>
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-slate-400 uppercase">Emergency Treasury</span>
+                        <span className="text-xs font-bold text-slate-400 uppercase">
+                          {lang === "fil" ? "Pondong Pang-kalamidad" : lang === "ceb" ? "Pundong Pang-katalagman" : "Emergency Treasury"}
+                        </span>
                         <Landmark className="w-4 h-4 text-accent-gold" />
                       </div>
                       <div className="text-xl font-bold text-white">₱14,250,000</div>
-                      <p className="text-slate-400 text-xs mt-1">Locked in town emergency relief escrow</p>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {lang === "fil" ? "Naka-lock sa pondo ng munisipyo para sa ayudang pondo" : lang === "ceb" ? "Naka-lock sa pundo sa munisipyo alang sa hinabang" : "Locked in town emergency relief escrow"}
+                      </p>
                     </div>
                   </div>
 
@@ -607,26 +884,28 @@ export const LandingPage: React.FC = () => {
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
                     <div>
                       <span className="text-xs font-bold text-accent-gold uppercase tracking-wider">
-                        Open Public Governance & Audit
+                        {t("treasuryTabTag", lang)}
                       </span>
                       <h3 className="text-xl font-bold text-white mt-1">
-                        Track Every Peso Without Leaking Names
+                        {t("treasuryTabTitle", lang)}
                       </h3>
                       <p className="text-slate-400 text-xs mt-1">
-                        Full public transparency for citizens, watchdogs, and government auditors.
+                        {t("treasuryTabDesc", lang)}
                       </p>
                     </div>
                     <button
                       onClick={() => navigate("/transparency")}
                       className="btn-civic btn-primary text-xs py-2 px-4 rounded-xl shrink-0"
                     >
-                      View Live Treasury →
+                      {t("viewLiveTreasury", lang)}
                     </button>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800">
-                      <div className="text-xs font-bold text-slate-400 uppercase mb-2">Recent Verified Payouts</div>
+                      <div className="text-xs font-bold text-slate-400 uppercase mb-2">
+                        {lang === "fil" ? "Kamakailang Naipamahaging Ayuda" : lang === "ceb" ? "Bag-ong Naapod-apod nga Ayuda" : "Recent Verified Payouts"}
+                      </div>
                       <div className="space-y-2 text-xs">
                         <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950/60 border border-white/[0.04]">
                           <span className="font-mono text-slate-300">Lock: 0x8a9b...3c11</span>
@@ -647,7 +926,11 @@ export const LandingPage: React.FC = () => {
                       <div>
                         <div className="text-xs font-bold text-slate-400 uppercase mb-2">Commission on Audit (COA) Export</div>
                         <p className="text-slate-300 text-xs leading-relaxed">
-                          Download complete official disbursement statements containing timestamped transaction hashes and anonymous lock codes for official audit submission.
+                          {lang === "fil"
+                            ? "I-download ang opisyal na ulat ng pagbabayad na may timestamp at transaksyon para sa pagsusuri ng Commission on Audit."
+                            : lang === "ceb"
+                            ? "I-download ang opisyal nga taho sa pagbayad nga adunay timestamp ug transaksyon alang sa pagsusi sa Commission on Audit."
+                            : "Download complete official disbursement statements containing timestamped transaction hashes and anonymous lock codes for official audit submission."}
                         </p>
                       </div>
                       <button
@@ -676,13 +959,13 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-accent-gold px-3 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/20">
-              Why GhostFree Matters
+              {t("comparisonTag", lang)}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              The Old Way vs. The GhostFree Way
+              {t("comparisonTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
-              See how modern civic technology solves decades of disaster relief corruption and delays.
+              {t("comparisonSubtitle", lang)}
             </p>
           </div>
 
@@ -690,15 +973,15 @@ export const LandingPage: React.FC = () => {
             <table className="w-full text-left border-collapse min-w-[600px]">
               <thead>
                 <tr className="border-b border-slate-800 text-xs uppercase tracking-wider">
-                  <th className="pb-4 font-bold text-slate-400 w-1/4">Aspect</th>
+                  <th className="pb-4 font-bold text-slate-400 w-1/4">{t("comparisonAspect", lang)}</th>
                   <th className="pb-4 font-bold text-rose-400 w-3/8 flex items-center gap-1.5">
                     <XCircle className="w-4 h-4" />
-                    The Old Way (Paper Vouchers)
+                    {t("comparisonOldWayHeader", lang)}
                   </th>
                   <th className="pb-4 font-bold text-accent-success w-3/8">
                     <span className="flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4" />
-                      The GhostFree Way
+                      {t("comparisonGhostFreeHeader", lang)}
                     </span>
                   </th>
                 </tr>
@@ -726,13 +1009,13 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-8">
             <span className="text-xs font-bold uppercase tracking-widest text-civic-trust px-3 py-1 rounded-full bg-civic-trust/10 border border-civic-trust/20">
-              Simple 4-Step Process
+              {t("stepsTag", lang)}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              How Disaster Victims Receive Aid
+              {t("stepsTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
-              Click through the 4 steps below to see how privacy and duplicate protection work hand-in-hand.
+              {t("stepsSubtitle", lang)}
             </p>
           </div>
 
@@ -787,7 +1070,7 @@ export const LandingPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800">
                 <div className="text-slate-400 uppercase font-bold mb-2 flex items-center gap-1.5">
                   <Eye className="w-3.5 h-3.5 text-accent-success" />
-                  What the System Checks (Public)
+                  {t("whatObserverSees", lang)}
                 </div>
                 <div className="text-accent-success font-medium">
                   {steps[activeStep].observerSees}
@@ -797,7 +1080,7 @@ export const LandingPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-slate-950/90 border border-slate-800">
                 <div className="text-slate-400 uppercase font-bold mb-2 flex items-center gap-1.5">
                   <EyeOff className="w-3.5 h-3.5 text-civic-sky" />
-                  What Stays With You (Private)
+                  {t("whatStaysPrivate", lang)}
                 </div>
                 <div className="text-civic-sky font-medium">
                   {steps[activeStep].staysPrivate}
@@ -813,13 +1096,13 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-civic-sky px-3 py-1 rounded-full bg-civic-sky/10 border border-civic-sky/20">
-              Four Core Guarantees
+              {t("bentoTag", lang)}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              Engineered for Complete Trust
+              {t("bentoTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
-              Every disaster victim and municipal official gets ironclad privacy and fraud protection.
+              {t("bentoSubtitle", lang)}
             </p>
           </div>
 
@@ -829,9 +1112,9 @@ export const LandingPage: React.FC = () => {
                 <div className="w-10 h-10 rounded-xl bg-civic-sky/10 border border-civic-sky/30 flex items-center justify-center mb-4 text-civic-sky group-hover:scale-110 transition-transform">
                   <EyeOff className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-white text-base mb-2">100% Private</h3>
+                <h3 className="font-bold text-white text-base mb-2">{t("bentoPrivateTitle", lang)}</h3>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  Your National ID and private PIN stay on your phone. No central database ever collects or leaks your personal information.
+                  {t("bentoPrivateDesc", lang)}
                 </p>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-civic-sky font-medium flex items-center gap-1">
@@ -845,9 +1128,9 @@ export const LandingPage: React.FC = () => {
                 <div className="w-10 h-10 rounded-xl bg-accent-purple/10 border border-accent-purple/30 flex items-center justify-center mb-4 text-accent-purple group-hover:scale-110 transition-transform">
                   <Lock className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-white text-base mb-2">Zero Ghost Claims</h3>
+                <h3 className="font-bold text-white text-base mb-2">{t("bentoGhostTitle", lang)}</h3>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  Each voucher generates a one-time digital lock code. The moment aid is received, the code is locked permanently against repeat claims.
+                  {t("bentoGhostDesc", lang)}
                 </p>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-purple font-medium flex items-center gap-1">
@@ -861,9 +1144,9 @@ export const LandingPage: React.FC = () => {
                 <div className="w-10 h-10 rounded-xl bg-accent-success/10 border border-accent-success/30 flex items-center justify-center mb-4 text-accent-success group-hover:scale-110 transition-transform">
                   <Zap className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-white text-base mb-2">Free for Families</h3>
+                <h3 className="font-bold text-white text-base mb-2">{t("bentoFreeTitle", lang)}</h3>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  The local government sponsors all technical execution fees in advance. Victims in disaster zones pay ₱0 to claim relief.
+                  {t("bentoFreeDesc", lang)}
                 </p>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-success font-medium flex items-center gap-1">
@@ -877,9 +1160,9 @@ export const LandingPage: React.FC = () => {
                 <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/30 flex items-center justify-center mb-4 text-accent-gold group-hover:scale-110 transition-transform">
                   <Activity className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-white text-base mb-2">Open Public Audit</h3>
+                <h3 className="font-bold text-white text-base mb-2">{t("bentoAuditTitle", lang)}</h3>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  Watchdogs and citizens can verify every peso distributed on a live public dashboard without revealing recipient names.
+                  {t("bentoAuditDesc", lang)}
                 </p>
               </div>
               <div className="mt-4 pt-4 border-t border-slate-800 text-[0.7rem] text-accent-gold font-medium flex items-center gap-1">
@@ -896,13 +1179,13 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-5xl mb-20">
           <div className="text-center mb-10">
             <span className="text-xs font-bold uppercase tracking-widest text-accent-gold px-3 py-1 rounded-full bg-accent-gold/10 border border-accent-gold/20">
-              Philippine Legal Compliance
+              {t("lawsTag", lang)}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black text-white mt-3">
-              Backed by Philippine Governance Law
+              {t("lawsTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm max-w-xl mx-auto mt-2">
-              GhostFree meets official government audit standards and citizen privacy rights under national law.
+              {t("lawsSubtitle", lang)}
             </p>
           </div>
 
@@ -921,7 +1204,7 @@ export const LandingPage: React.FC = () => {
                 </div>
                 <div className="mt-6 pt-4 border-t border-slate-800 text-[0.7rem] text-slate-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-accent-success" />
-                  Government Audit Compliant
+                  {t("govAuditCompliant", lang)}
                 </div>
               </div>
             ))}
@@ -934,10 +1217,10 @@ export const LandingPage: React.FC = () => {
         <section className="w-full max-w-4xl mb-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Frequently Asked Questions
+              {t("faqTitle", lang)}
             </h2>
             <p className="text-slate-400 text-sm mt-2">
-              Straightforward answers about accounts, privacy, and emergency payouts.
+              {t("faqSubtitle", lang)}
             </p>
           </div>
 
@@ -987,10 +1270,10 @@ export const LandingPage: React.FC = () => {
           <div className="relative z-10 max-w-2xl mx-auto">
             <GhostFreeLogo size={56} variant="icon" animated className="mx-auto mb-4" />
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
-              Ready to Deliver Calamity Aid with Zero Ghosts?
+              {t("ctaTitle", lang)}
             </h2>
             <p className="text-slate-300 text-sm sm:text-base mb-8 leading-relaxed">
-              Test the live claim portal on Midnight Preprod, or tour the local government command center today.
+              {t("ctaSubtitle", lang)}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
@@ -998,14 +1281,14 @@ export const LandingPage: React.FC = () => {
                 className="btn-civic btn-primary shimmer-btn w-full sm:w-auto px-8 py-3.5 text-sm font-bold rounded-xl"
               >
                 <Smartphone className="w-4 h-4" />
-                Claim Aid as a Citizen
+                {t("ctaClaimBtn", lang)}
               </button>
               <button
                 onClick={() => navigate("/admin/login")}
                 className="btn-civic btn-secondary w-full sm:w-auto px-8 py-3.5 text-sm font-bold rounded-xl border border-slate-700"
               >
                 <Landmark className="w-4 h-4 text-civic-sky" />
-                Login as Town Hall Official
+                {t("ctaAdminBtn", lang)}
               </button>
             </div>
           </div>
@@ -1023,10 +1306,14 @@ export const LandingPage: React.FC = () => {
             <div className="md:col-span-1">
               <GhostFreeLogo size={48} variant="icon" animated />
               <p className="text-slate-400 text-xs mt-3 leading-relaxed max-w-xs">
-                Private, instant calamity aid distribution. Stop ghost beneficiaries and deliver relief with 100% transparency.
+                {lang === "fil"
+                  ? "Pribado at mabilis na pamamahagi ng ayuda sa kalamidad. Pigilan ang mga ghost beneficiary nang may 100% transparency."
+                  : lang === "ceb"
+                  ? "Pribado ug paspas nga pag-apod-apod sa hinabang sa katalagman. Pugngi ang mga ghost beneficiary nga adunay 100% transparency."
+                  : "Private, instant calamity aid distribution. Stop ghost beneficiaries and deliver relief with 100% transparency."}
               </p>
               <p className="text-slate-500 text-[0.65rem] mt-3 italic">
-                "Stop the ghosts. Protect the people."
+                "{t("tagline", lang)}"
               </p>
             </div>
 
@@ -1035,9 +1322,9 @@ export const LandingPage: React.FC = () => {
               <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-4">Portals</h4>
               <ul className="space-y-2.5">
                 {[
-                  { label: "Citizen Claim Portal", href: "/claim" },
-                  { label: "Town Hall Official Login", href: "/admin/login" },
-                  { label: "Public Calamity Treasury", href: "/transparency" },
+                  { label: t("navClaimAid", lang), href: "/claim" },
+                  { label: t("navGovPortal", lang), href: "/admin/login" },
+                  { label: t("treasury", lang), href: "/transparency" },
                   { label: "Interactive Demo", href: "/demo" },
                 ].map((link) => (
                   <li key={link.label}>
