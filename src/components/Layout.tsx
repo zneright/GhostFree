@@ -17,12 +17,11 @@ import {
   X,
   ChevronRight,
   ExternalLink,
-  Github,
-  Twitter,
   Globe,
   Smartphone,
   Key,
 } from "lucide-react";
+import { GithubIcon, TwitterIcon } from "./SocialIcons";
 import OnboardingModal from "./OnboardingModal";
 import FeedbackWidget from "./FeedbackWidget";
 import LanguageSelector from "./LanguageSelector";
@@ -226,10 +225,10 @@ const Layout: React.FC<LayoutProps> = ({
                   <h4 className="text-[0.65rem] font-bold text-white uppercase tracking-wider mb-3">Connect</h4>
                   <div className="flex items-center gap-2">
                     <a href="https://github.com/zneright/GhostFree" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                      <Github className="w-3.5 h-3.5" />
+                      <GithubIcon className="w-3.5 h-3.5" />
                     </a>
                     <a href="https://x.com/AidGhostfree" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                      <Twitter className="w-3.5 h-3.5" />
+                      <TwitterIcon className="w-3.5 h-3.5" />
                     </a>
                     <a href="https://ghost-free-eight.vercel.app/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
                       <Globe className="w-3.5 h-3.5" />

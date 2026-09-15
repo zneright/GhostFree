@@ -25,14 +25,13 @@ import {
   Sparkles,
   Server,
   Key,
-  Github,
-  Twitter,
   ExternalLink,
   Globe,
 } from "lucide-react";
 import TransparencyCard from "../components/TransparencyCard";
 import OnboardingModal from "../components/OnboardingModal";
 import GhostFreeLogo from "../components/GhostFreeLogo";
+import { GithubIcon, TwitterIcon } from "../components/SocialIcons";
 
 // ---- Animated Counter Hook ----
 function useCountUp(target: number, duration = 2000, trigger = false) {
@@ -756,7 +755,7 @@ export const LandingPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors"
                 >
-                  <Github className="w-4 h-4" />
+                  <GithubIcon className="w-4 h-4" />
                 </a>
                 <a
                   href="https://x.com/AidGhostfree"
@@ -764,7 +763,7 @@ export const LandingPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/[0.08] transition-colors"
                 >
-                  <Twitter className="w-4 h-4" />
+                  <TwitterIcon className="w-4 h-4" />
                 </a>
                 <a
                   href="https://ghost-free-eight.vercel.app/"
