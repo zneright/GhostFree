@@ -1,8 +1,9 @@
 // =======================================================
 // GhostFree — Vibrant Human Civic-Tech Landing Page (v2.5)
 // Plain English & Multi-Dialect (EN / FIL / CEB)
-// Interactive 30-Second Eligibility Checker Tool
-// Old Way vs GhostFree Comparison · Interactive App Showcase
+// Live PAGASA Advisory Marquee · ₱5,000 Relief Basket Breakdown
+// Regional Evacuation Center Directory · 30-Sec Eligibility Checker
+// Old Way vs GhostFree Comparison · Interactive Civilian FAQs
 // =======================================================
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
@@ -10,43 +11,35 @@ import { useNavigate } from "react-router-dom";
 import {
   Shield,
   Lock,
-  UserCheck,
   Landmark,
   Smartphone,
-  ChevronRight,
-  Fingerprint,
-  Eye,
-  EyeOff,
-  Zap,
   CheckCircle2,
   XCircle,
-  Activity,
   ChevronDown,
-  Scale,
-  Sparkles,
-  ExternalLink,
-  Globe,
   ArrowRight,
-  FileCheck,
-  Download,
   ShieldCheck,
   Search,
   Check,
-  AlertCircle,
-  HelpCircle,
-  HeartHandshake,
-  Clock,
-  Printer,
   Coins,
+  MapPin,
+  Users,
+  Building2,
+  Wheat,
+  UtensilsCrossed,
+  Droplets,
+  HeartPulse,
+  Hammer,
+  AlertTriangle,
+  Radio,
+  Clock,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 import Layout from "../components/Layout";
-import TransparencyCard from "../components/TransparencyCard";
 import OnboardingModal from "../components/OnboardingModal";
 import ReceiptVerifierModal from "../components/ReceiptVerifierModal";
 import GhostFreeLogo from "../components/GhostFreeLogo";
-import LanguageSelector from "../components/LanguageSelector";
 import {
-  t,
   getStoredLanguage,
   subscribeLanguageChange,
   type SupportedLanguage,
@@ -80,15 +73,15 @@ function useCountUp(target: number, duration = 1800, trigger = false) {
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [mounted, setMounted] = useState(false);
   const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
-  const [activeTab, setActiveTab] = useState<"citizen" | "admin" | "treasury">("citizen");
-  const [activeStep, setActiveStep] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showVerifier, setShowVerifier] = useState(false);
   const [countersVisible, setCountersVisible] = useState(false);
   const counterRef = useRef<HTMLDivElement>(null);
+
+  // Active Evacuation Center Selection
+  const [selectedCenter, setSelectedCenter] = useState<number>(0);
 
   // Interactive 30-Second Eligibility Checker State
   const [barangayInput, setBarangayInput] = useState("");
@@ -101,7 +94,6 @@ export const LandingPage: React.FC = () => {
   } | null>(null);
 
   useEffect(() => {
-    setMounted(true);
     return subscribeLanguageChange((newLang) => setLang(newLang));
   }, []);
 
@@ -137,20 +129,112 @@ export const LandingPage: React.FC = () => {
         eligible: true,
         location: "Barangay San Roque, Gonzaga, Cagayan (Evacuation Zone A)",
         amount: 5000,
-        tranche: "Typhoon Marce QRF Tranche #1",
+        tranche: "Typhoon Marce Quick Response Fund Tranche #1",
       });
       return;
     }
 
-    // Friendly demonstration validation
     setEligibilityResult({
       checked: true,
       eligible: true,
-      location: query.includes("Brgy") || query.includes("Barangay") ? query : `Barangay ${query}, Disaster Zone`,
+      location: query.includes("Brgy") || query.includes("Barangay") ? query : `Barangay ${query}, Calamity Zone`,
       amount: 5000,
-      tranche: "Typhoon Marce Quick Response Fund (Active)",
+      tranche: "Typhoon Marce Quick Response Fund (Declared)",
     });
   };
+
+  // ₱5,000 Calamity Relief Basket Breakdown
+  const reliefBasketItems = [
+    {
+      id: "rice",
+      name: "25kg NFA Well-Milled Rice",
+      tagalog: "Bigas para sa 3 linggo",
+      amount: 1250,
+      icon: <Wheat className="w-5 h-5 text-amber-400" />,
+      desc: "Sapat na pangunahing pagkain para sa isang pamilyang may 5 miyembro sa buong emergency period.",
+      color: "border-amber-500/40 bg-amber-500/10",
+    },
+    {
+      id: "foodpack",
+      name: "DSWD Family Food Packs",
+      tagalog: "Canned Goods, Noodles, Kape",
+      amount: 1500,
+      icon: <UtensilsCrossed className="w-5 h-5 text-emerald-400" />,
+      desc: "12 latang sardinas at corned beef, 10 packs instant noodles, cereal drink, at kape para sa almusal at hapunan.",
+      color: "border-emerald-500/40 bg-emerald-500/10",
+    },
+    {
+      id: "water",
+      name: "Clean Water & Hygiene Kit",
+      tagalog: "Malinis na Tubig & Sanitation",
+      amount: 1000,
+      icon: <Droplets className="w-5 h-5 text-sky-400" />,
+      desc: "2x 5-gallon purified drinking water containers, sabon, shampoo, toothpaste, sanitary napkins, at bleach.",
+      color: "border-sky-500/40 bg-sky-500/10",
+    },
+    {
+      id: "medicine",
+      name: "Emergency First Aid & Medicine",
+      tagalog: "Paracetamol, Gamot, Antiseptic",
+      amount: 750,
+      icon: <HeartPulse className="w-5 h-5 text-rose-400" />,
+      desc: "Paracetamol para sa lagnat, oral rehydration salts para sa dehydration, band-aids, betadine, at alcohol.",
+      color: "border-rose-500/40 bg-rose-500/10",
+    },
+    {
+      id: "shelter",
+      name: "Emergency Shelter Repair Kit",
+      tagalog: "Traapal, Lubid, Pako",
+      amount: 500,
+      icon: <Hammer className="w-5 h-5 text-indigo-400" />,
+      desc: "Mabigat na trapal (tarpaulin), nylon rope, at pako upang pansamantalang protektahan ang nawasak na bubong.",
+      color: "border-indigo-500/40 bg-indigo-500/10",
+    },
+  ];
+
+  // Regional Evacuation Center Directory
+  const evacuationCenters = [
+    {
+      name: "Tuguegarao City People's Coliseum",
+      municipality: "Tuguegarao City, Cagayan",
+      activeDisasters: "Tropical Cyclone Marce — Signal No. 3",
+      capacity: 450,
+      disbursed: 423,
+      contractId: "02005a76e93a86c0b938f97b",
+      status: "Actively Disbursing",
+      statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+    },
+    {
+      name: "Gonzaga Municipal Gymnasium",
+      municipality: "Gonzaga, Cagayan",
+      activeDisasters: "Coastal Storm Surge Evacuation",
+      capacity: 280,
+      disbursed: 247,
+      contractId: "02008f12cc3e819b02a77b10",
+      status: "Actively Disbursing",
+      statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+    },
+    {
+      name: "Santa Ana Fisherfolk Multi-Purpose Center",
+      municipality: "Santa Ana, Cagayan",
+      activeDisasters: "Flash Flood Quick Response",
+      capacity: 190,
+      disbursed: 190,
+      contractId: "0200b39f71ac2e690f9119aa",
+      status: "100% Fully Disbursed",
+      statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
+    },
+    {
+      name: "Aparri Coastal Evacuation Staging Post",
+      municipality: "Aparri, Cagayan",
+      activeDisasters: "Cagayan River Basin Overflow Alert",
+      capacity: 310,
+      disbursed: 282,
+      contractId: "02009d43ab881c300f88bb2c",
+      status: "Actively Disbursing",
+      statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+    },
+  ];
 
   // Dynamic 4-Step Explanations
   const steps = useMemo(() => {
@@ -277,26 +361,42 @@ export const LandingPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className="relative overflow-hidden text-slate-100 selection:bg-amber-500/30 selection:text-white pb-12">
+      <div className="relative overflow-hidden text-slate-100 selection:bg-amber-500/30 selection:text-white pb-16">
         {/* Background Ambient Glow Orbs */}
-        <div className="absolute top-[8%] left-[10%] w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[8%] left-[10%] w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-[25%] right-[10%] w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-[20%] left-[8%] w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
         {/* ========================================================
-            HERO SECTION
+            SECTION 1: LIVE PAGASA / NDRRMO TROPICAL CYCLONE ADVISORY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 pt-6 sm:pt-12 pb-12 sm:pb-16 max-w-6xl mx-auto text-center">
+        <div className="bg-gradient-to-r from-red-950 via-amber-950 to-red-950 border-b border-amber-500/30 py-2.5 px-4 text-xs font-semibold overflow-hidden shadow-inner">
+          <div className="max-w-7xl mx-auto flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0 bg-red-600/90 text-white px-2.5 py-1 rounded-md uppercase font-black tracking-wider text-[0.7rem] shadow-sm">
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              <span>PAGASA DRRM Alert</span>
+            </div>
+            <div className="overflow-hidden whitespace-nowrap flex-1">
+              <div className="inline-block animate-marqueeScroll text-amber-200 text-xs">
+                ⚠️ TYPHOON MARCE QUICK RESPONSE FUND ACTIVE — Tropical Cyclone Signal No. 3 declared for Region II (Cagayan Valley). Emergency Calamity Cash Aid of ₱5,000 per family available across 4 accredited regional evacuation sites. Free gas sponsorship activated on Midnight Testnet.
+              </div>
+            </div>
+          </div>
+        </div>
 
+        {/* ========================================================
+            SECTION 2: HERO SECTION WITH OFFICIAL CIVIC IDENTITY
+           ======================================================== */}
+        <section className="relative z-10 px-4 sm:px-6 pt-8 sm:pt-14 pb-12 sm:pb-16 max-w-6xl mx-auto text-center">
           {/* Floating Calamity Relief Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border-2 border-amber-500/30 shadow-md mb-6 animate-floatSlow">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border-2 border-amber-500/40 shadow-lg mb-6 animate-floatSlow">
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-300">
-              🚨 Aktibong Calamity Quick Response Fund: ₱5,000 Payout / Pamilya
+              🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya
             </span>
           </div>
 
-          {/* Official GhostFree Logo with ambient glow */}
+          {/* Official GhostFree Logo with radiant glow */}
           <div className="mb-6 flex justify-center">
             <GhostFreeLogo size={110} variant="hero" animated showGlow />
           </div>
@@ -313,7 +413,7 @@ export const LandingPage: React.FC = () => {
           {/* Reassuring Civic Subtitle */}
           <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
             Privacy-first emergency cash aid distribution sa <strong>Midnight Network</strong>.
-            Direktang ayuda sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.
+            Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.
           </p>
 
           {/* Action Buttons */}
@@ -367,7 +467,151 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            INTERACTIVE 30-SECOND ELIGIBILITY CHECKER
+            SECTION 3: INTERACTIVE ₱5,000 CALAMITY RELIEF BASKET
+           ======================================================== */}
+        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-8">
+            <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
+              Paano Makatutulong ang Ayuda
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              Saan Napupunta ang ₱5,000 Emergency Calamity Cash Aid?
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
+              Binuo ayon sa pamantayan ng DSWD Disaster Response Management Bureau (DRMB) upang matustusan ang pangangailangan ng isang pamilya sa unang 21 araw ng kalamidad.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3.5 mb-6">
+            {reliefBasketItems.map((item) => (
+              <div
+                key={item.id}
+                className={`p-4 rounded-2xl border-2 transition-all flex flex-col justify-between shadow-lg ${item.color}`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="p-2 rounded-xl bg-black/30 border border-white/10">
+                      {item.icon}
+                    </span>
+                    <span className="text-xs font-black text-white bg-black/40 px-2 py-0.5 rounded-md">
+                      ₱{item.amount.toLocaleString()}
+                    </span>
+                  </div>
+                  <h3 className="text-xs font-black text-white leading-tight mb-1">
+                    {item.name}
+                  </h3>
+                  <p className="text-[0.68rem] text-slate-300 font-semibold mb-2">
+                    {item.tagalog}
+                  </p>
+                </div>
+                <p className="text-[0.65rem] text-slate-400 leading-relaxed border-t border-white/10 pt-2">
+                  {item.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Total Bar */}
+          <div className="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
+            <div className="flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+                <Coins className="w-6 h-6" />
+              </span>
+              <div>
+                <span className="text-xs text-slate-400 block">Kabuuang Emergency Relief Package</span>
+                <span className="text-lg sm:text-xl font-black text-white">
+                  ₱5,000.00 Ayuda Assistance bawat Kwalipikadong Pamilya
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => navigate("/claim")}
+              className="btn-civic-gold px-6 py-2.5 text-xs sm:text-sm font-black whitespace-nowrap shadow-md"
+            >
+              Simulan ang Claim (₱5,000)
+            </button>
+          </div>
+        </section>
+
+        {/* ========================================================
+            SECTION 4: REGIONAL EVACUATION CENTER DIRECTORY
+           ======================================================== */}
+        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-8">
+            <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
+              Aktibong Operasyon ng NDRRMO
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
+              Mga Akreditadong Evacuation Center sa Northern Luzon
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
+              Real-time on-chain telemetry ng mga evacuation sites na may aktibong GhostFree smart contract disbursement.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {evacuationCenters.map((ec, idx) => {
+              const percent = Math.round((ec.disbursed / ec.capacity) * 100);
+              const isSelected = selectedCenter === idx;
+              return (
+                <div
+                  key={idx}
+                  onClick={() => setSelectedCenter(idx)}
+                  className={`p-5 rounded-2xl border-2 cursor-pointer transition-all ${
+                    isSelected
+                      ? "bg-slate-900 border-amber-400/80 shadow-xl shadow-amber-500/10"
+                      : "bg-slate-900/80 border-white/10 hover:border-white/20"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-5 h-5 text-amber-400 shrink-0" />
+                      <div>
+                        <h3 className="text-sm font-black text-white leading-tight">
+                          {ec.name}
+                        </h3>
+                        <span className="text-[0.72rem] text-slate-400 flex items-center gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 text-red-400" />
+                          {ec.municipality}
+                        </span>
+                      </div>
+                    </div>
+                    <span className={`text-[0.65rem] font-bold px-2 py-0.5 rounded-full border ${ec.statusColor}`}>
+                      {ec.status}
+                    </span>
+                  </div>
+
+                  {/* Meter */}
+                  <div className="my-3">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-slate-300 font-semibold">
+                        Pondo Naipamahagi: {ec.disbursed} / {ec.capacity} pamilya
+                      </span>
+                      <span className="font-bold text-amber-400">{percent}%</span>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
+                        style={{ width: `${percent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[0.68rem] text-slate-400">
+                    <span className="font-mono">Contract: {ec.contractId.slice(0, 16)}...</span>
+                    <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                      <ShieldCheck className="w-3 h-3" />
+                      0 Ghost Claims
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ========================================================
+            SECTION 5: INTERACTIVE 30-SECOND ELIGIBILITY CHECKER
            ======================================================== */}
         <section className="px-4 sm:px-6 py-6 max-w-4xl mx-auto relative z-10">
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950/60 border-2 border-amber-500/40 shadow-2xl relative overflow-hidden">
@@ -454,13 +698,13 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            REAL-TIME CALAMITY TELEMETRY TICKER
+            SECTION 6: REAL-TIME CALAMITY TELEMETRY TICKER
            ======================================================== */}
         <section ref={counterRef} className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
             {[
               {
-                num: `₱${(fundsCounter).toLocaleString()}`,
+                num: `₱${fundsCounter.toLocaleString()}`,
                 label: "Naipamahaging Ayuda",
                 sub: "Nailipat nang buo",
                 color: "text-amber-400",
@@ -496,9 +740,9 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            HOW IT WORKS: 4 SIMPLE STEPS
+            SECTION 7: HOW IT WORKS: 4 SIMPLE STEPS
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-12 max-w-5xl mx-auto relative z-10">
+        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-8">
             <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
               Paano Gumagana
@@ -509,7 +753,7 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {steps.map((s, idx) => (
+            {steps.map((s) => (
               <div
                 key={s.id}
                 className="p-5 rounded-2xl bg-slate-900/80 border-2 border-white/10 hover:border-amber-400/40 transition-all flex flex-col justify-between shadow-lg"
@@ -536,7 +780,7 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            THE OLD WAY VS. GHOSTFREE COMPARISON
+            SECTION 8: THE OLD WAY VS. GHOSTFREE COMPARISON
            ======================================================== */}
         <section className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-6">
@@ -596,7 +840,7 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            CIVILIAN FAQ ACCORDION
+            SECTION 9: CIVILIAN FAQ ACCORDION
            ======================================================== */}
         <section className="px-4 sm:px-6 py-10 max-w-4xl mx-auto relative z-10">
           <div className="text-center mb-6">
