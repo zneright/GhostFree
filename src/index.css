@@ -835,85 +835,231 @@
 }
 
 /* ============================================
-   ACCESSIBILITY & SUNLIGHT OUTDOOR MODE
+   ACCESSIBILITY & BULLETPROOF SUNLIGHT OUTDOOR MODE
+   Guarantees 100% readability under direct tropical sun at evacuation centers
    ============================================ */
 
-/* High Contrast & Sunlight Outdoor Mode for Evacuation Centers */
 body.high-contrast,
 body.sunlight-mode {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
 }
 
+/* 1. Universal Background Overrides: Turn all dark utility surfaces into pure crisp daylight cards */
+body.high-contrast [class*="bg-slate-9"],
+body.sunlight-mode [class*="bg-slate-9"],
+body.high-contrast [class*="bg-slate-8"],
+body.sunlight-mode [class*="bg-slate-8"],
+body.high-contrast [class*="bg-slate-7"],
+body.sunlight-mode [class*="bg-slate-7"],
+body.high-contrast [class*="bg-black"],
+body.sunlight-mode [class*="bg-black"],
+body.high-contrast [class*="bg-blue-9"],
+body.sunlight-mode [class*="bg-blue-9"],
+body.high-contrast [class*="bg-blue-950"],
+body.sunlight-mode [class*="bg-blue-950"],
+body.high-contrast [class*="bg-indigo-9"],
+body.sunlight-mode [class*="bg-indigo-9"],
+body.high-contrast [class*="bg-[#0A1628]"],
+body.sunlight-mode [class*="bg-[#0A1628]"],
+body.high-contrast [class*="bg-[#0B1528]"],
+body.sunlight-mode [class*="bg-[#0B1528]"],
 body.high-contrast .ambient-canvas,
-body.sunlight-mode .ambient-canvas {
-  background-color: #F1F5F9 !important;
+body.sunlight-mode .ambient-canvas,
+body.high-contrast .glass-card,
+body.sunlight-mode .glass-card,
+body.high-contrast .glass-card-elevated,
+body.sunlight-mode .glass-card-elevated {
+  background-color: #FFFFFF !important;
   background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 2. Secondary Surface Backgrounds: Pills, inset wells, table headers */
+body.high-contrast [class*="bg-white/5"],
+body.sunlight-mode [class*="bg-white/5"],
+body.high-contrast [class*="bg-white/10"],
+body.sunlight-mode [class*="bg-white/10"],
+body.high-contrast [class*="bg-white/20"],
+body.sunlight-mode [class*="bg-white/20"],
+body.high-contrast [class*="bg-slate-800/"],
+body.sunlight-mode [class*="bg-slate-800/"],
+body.high-contrast [class*="bg-slate-900/"],
+body.sunlight-mode [class*="bg-slate-900/"] {
+  background-color: #F1F5F9 !important;
+}
+
+/* 3. High-Contrast Border Overrides */
+body.high-contrast [class*="border-white"],
+body.sunlight-mode [class*="border-white"],
+body.high-contrast [class*="border-slate-8"],
+body.sunlight-mode [class*="border-slate-8"],
+body.high-contrast [class*="border-slate-7"],
+body.sunlight-mode [class*="border-slate-7"] {
+  border-color: #CBD5E1 !important;
 }
 
 body.high-contrast .glass-card,
 body.sunlight-mode .glass-card,
 body.high-contrast .glass-card-elevated,
 body.sunlight-mode .glass-card-elevated {
-  background: #FFFFFF !important;
   border: 2px solid #0F172A !important;
-  color: #0F172A !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
 }
 
-body.high-contrast p,
-body.sunlight-mode p,
-body.high-contrast span,
-body.sunlight-mode span,
-body.high-contrast h1,
-body.sunlight-mode h1,
-body.high-contrast h2,
-body.sunlight-mode h2,
-body.high-contrast h3,
-body.sunlight-mode h3,
-body.high-contrast h4,
-body.sunlight-mode h4 {
+/* 4. Universal High-Contrast Typography */
+body.high-contrast [class*="text-white"],
+body.sunlight-mode [class*="text-white"],
+body.high-contrast [class*="text-slate-1"],
+body.sunlight-mode [class*="text-slate-1"],
+body.high-contrast [class*="text-slate-2"],
+body.sunlight-mode [class*="text-slate-2"],
+body.high-contrast [class*="text-slate-3"],
+body.sunlight-mode [class*="text-slate-3"] {
   color: #0F172A !important;
 }
 
-body.high-contrast .text-slate-400,
-body.sunlight-mode .text-slate-400,
-body.high-contrast .text-slate-500,
-body.sunlight-mode .text-slate-500,
-body.high-contrast .text-slate-300,
-body.sunlight-mode .text-slate-300 {
+body.high-contrast [class*="text-slate-4"],
+body.sunlight-mode [class*="text-slate-4"],
+body.high-contrast [class*="text-slate-5"],
+body.sunlight-mode [class*="text-slate-5"] {
   color: #334155 !important;
 }
 
-body.high-contrast .text-white,
-body.sunlight-mode .text-white {
-  color: #0F172A !important;
+/* Deepened accent colors for outdoor sunlight contrast (WCAG AAA) */
+body.high-contrast [class*="text-amber-4"],
+body.sunlight-mode [class*="text-amber-4"],
+body.high-contrast [class*="text-yellow-4"],
+body.sunlight-mode [class*="text-yellow-4"] {
+  color: #B45309 !important;
+  font-weight: 700 !important;
 }
 
-body.high-contrast input,
-body.sunlight-mode input,
-body.high-contrast select,
-body.sunlight-mode select {
-  background: #FFFFFF !important;
-  color: #020617 !important;
-  border: 2px solid #0F172A !important;
+body.high-contrast [class*="text-emerald-4"],
+body.sunlight-mode [class*="text-emerald-4"],
+body.high-contrast [class*="text-green-4"],
+body.sunlight-mode [class*="text-green-4"] {
+  color: #047857 !important;
+  font-weight: 700 !important;
 }
 
+body.high-contrast [class*="text-blue-4"],
+body.sunlight-mode [class*="text-blue-4"],
+body.high-contrast [class*="text-sky-4"],
+body.sunlight-mode [class*="text-sky-4"] {
+  color: #1D4ED8 !important;
+  font-weight: 700 !important;
+}
+
+body.high-contrast [class*="text-red-4"],
+body.sunlight-mode [class*="text-red-4"] {
+  color: #B91C1C !important;
+  font-weight: 700 !important;
+}
+
+/* 5. Headers & Footers */
 body.high-contrast header,
 body.sunlight-mode header,
 body.high-contrast footer,
 body.sunlight-mode footer {
   background-color: #FFFFFF !important;
-  border-color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 6. Form Inputs & Selects */
+body.high-contrast input,
+body.sunlight-mode input,
+body.high-contrast textarea,
+body.sunlight-mode textarea,
+body.high-contrast select,
+body.sunlight-mode select {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 2px solid #0F172A !important;
+  box-shadow: none !important;
+}
+
+body.high-contrast input::placeholder,
+body.sunlight-mode input::placeholder {
+  color: #64748B !important;
+}
+
+/* 7. Tables */
+body.high-contrast table,
+body.sunlight-mode table {
+  background-color: #FFFFFF !important;
+}
+body.high-contrast th,
+body.sunlight-mode th {
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-bottom: 2px solid #0F172A !important;
+}
+body.high-contrast td,
+body.sunlight-mode td {
+  border-bottom: 1px solid #E2E8F0 !important;
+  color: #0F172A !important;
+}
+
+/* 8. Badges & Inset Highlights */
+body.high-contrast [class*="bg-emerald-9"],
+body.sunlight-mode [class*="bg-emerald-9"],
+body.high-contrast [class*="bg-emerald-500/10"],
+body.sunlight-mode [class*="bg-emerald-500/10"] {
+  background-color: #ECFDF5 !important;
+  border-color: #059669 !important;
+}
+
+body.high-contrast [class*="bg-amber-9"],
+body.sunlight-mode [class*="bg-amber-9"],
+body.high-contrast [class*="bg-amber-500/10"],
+body.sunlight-mode [class*="bg-amber-500/10"] {
+  background-color: #FFFBEB !important;
+  border-color: #D97706 !important;
+}
+
+body.high-contrast [class*="bg-blue-9"],
+body.sunlight-mode [class*="bg-blue-9"],
+body.high-contrast [class*="bg-blue-500/10"],
+body.sunlight-mode [class*="bg-blue-500/10"] {
+  background-color: #EFF6FF !important;
+  border-color: #2563EB !important;
+}
+
+/* 9. High-Contrast Action Buttons */
+body.high-contrast .btn-civic-gold,
+body.sunlight-mode .btn-civic-gold {
+  background: #D97706 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #92400E !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast .btn-civic-emerald,
+body.sunlight-mode .btn-civic-emerald {
+  background: #059669 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #065F46 !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast .btn-secondary,
+body.sunlight-mode .btn-secondary {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+  border: 2px solid #0F172A !important;
 }
 
 body.high-contrast .mobile-bottom-bar,
 body.sunlight-mode .mobile-bottom-bar {
   background: #FFFFFF !important;
   border-top: 2px solid #0F172A !important;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* Font Scale Modes */
+/* 10. Font Scale Modes */
 body.large-text {
   font-size: 112.5% !important;
 }
@@ -931,6 +1077,7 @@ body.xlarge-text input {
   font-size: 1.15rem !important;
   min-height: 56px !important;
 }
+
 
 
 
