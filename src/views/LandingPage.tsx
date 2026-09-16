@@ -29,9 +29,11 @@ import {
   ArrowRight,
   FileCheck,
   Download,
+  ShieldCheck,
 } from "lucide-react";
 import TransparencyCard from "../components/TransparencyCard";
 import OnboardingModal from "../components/OnboardingModal";
+import ReceiptVerifierModal from "../components/ReceiptVerifierModal";
 import GhostFreeLogo from "../components/GhostFreeLogo";
 import LanguageSelector from "../components/LanguageSelector";
 import { GithubIcon, TwitterIcon } from "../components/SocialIcons";
@@ -77,6 +79,7 @@ export const LandingPage: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showVerifier, setShowVerifier] = useState(false);
   const [countersVisible, setCountersVisible] = useState(false);
   const counterRef = useRef<HTMLDivElement>(null);
 
@@ -551,14 +554,14 @@ export const LandingPage: React.FC = () => {
           <ArrowRight className="w-3 h-3 text-civic-sky group-hover:translate-x-1 transition-transform" />
         </div>
 
-        {/* Brand Logo Display */}
+        {/* Brand Logo Display with Ambient Glow */}
         <div
           className={`
-            mb-4 transition-all duration-700 delay-100
+            mb-6 transition-all duration-700 delay-100
             ${mounted ? "opacity-100 scale-100" : "opacity-0 scale-90"}
           `}
         >
-          <GhostFreeLogo size={90} variant="full" animated />
+          <GhostFreeLogo size={105} variant="hero" animated showGlow />
         </div>
 
         {/* Main Heading in Localized Dialect */}
@@ -571,7 +574,7 @@ export const LandingPage: React.FC = () => {
           `}
         >
           {t("heroTitlePrefix", lang)}{" "}
-          <span className="bg-gradient-to-r from-civic-sky via-civic-trust to-accent-success bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-sky-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent drop-shadow-sm">
             {t("heroTitleSuffix", lang)}
           </span>
         </h1>
@@ -590,25 +593,32 @@ export const LandingPage: React.FC = () => {
         {/* Dual Primary Call-to-Action Buttons */}
         <div
           className={`
-            flex flex-col sm:flex-row items-center gap-4 mb-12
+            flex flex-col sm:flex-row items-center gap-3.5 mb-14
             transition-all duration-700 delay-[350ms]
             ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}
           `}
         >
           <button
             onClick={() => navigate("/claim")}
-            className="btn-civic btn-primary shimmer-btn w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 shadow-xl shadow-civic-blue/25"
+            className="btn-civic-glow w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 shadow-xl text-white tap-scale"
           >
-            <Smartphone className="w-5 h-5" />
-            {t("claimEmergencyAid", lang)}
+            <Smartphone className="w-5 h-5 text-sky-300" />
+            <span>{t("claimEmergencyAid", lang)}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
           <button
             onClick={() => navigate("/admin/login")}
-            className="btn-civic btn-secondary w-full sm:w-auto px-8 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 border border-slate-700 hover:border-civic-sky/40"
+            className="w-full sm:w-auto px-7 py-4 text-base font-bold rounded-2xl flex items-center justify-center gap-2.5 bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white border border-white/10 hover:border-sky-400/40 transition-all shadow-md tap-scale"
           >
-            <Landmark className="w-5 h-5 text-civic-sky" />
-            {t("localGovernmentPortal", lang)}
+            <Landmark className="w-5 h-5 text-sky-400" />
+            <span>{t("localGovernmentPortal", lang)}</span>
+          </button>
+          <button
+            onClick={() => setShowVerifier(true)}
+            className="w-full sm:w-auto px-5 py-4 text-sm font-semibold rounded-2xl flex items-center justify-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/25 transition-all tap-scale"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            <span>Verify Voucher</span>
           </button>
         </div>
 
@@ -1425,6 +1435,12 @@ export const LandingPage: React.FC = () => {
       <OnboardingModal
         isOpen={showOnboarding}
         onClose={() => setShowOnboarding(false)}
+      />
+
+      {/* Checkpoint Voucher Verifier Modal */}
+      <ReceiptVerifierModal
+        isOpen={showVerifier}
+        onClose={() => setShowVerifier(false)}
       />
     </div>
   );
