@@ -1,8 +1,8 @@
 // ============================================
-// GhostFree — Citizen Claim Portal (v2.0)
-// High-Fidelity Civic Disaster Relief Terminal
-// Dual-Column Context Framing · Holographic ZK Proving Radar
-// 1-Click Evaluator Sandbox Mode · Verifiable Relief Receipt
+// GhostFree — Citizen Claim Portal (v2.5)
+// Mobile-First & PWD-Accessible Disaster Relief Terminal
+// Illustrated PhilSys ID Guide · Discrete PIN Keypad · Human ZK Proving
+// Evaluator Sandbox Mode · Digital Relief Voucher · Sticky Thumb Action
 // ============================================
 
 import React, { useState, useEffect, useMemo } from "react";
@@ -14,7 +14,6 @@ import { validateClaimInputs } from "../../services/proof.service";
 import { generateReliefReceipt, submitFeedback } from "../../services/feedback.service";
 import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
 import ReliefReceiptModal from "../../components/ReliefReceiptModal";
-import OnboardingModal from "../../components/OnboardingModal";
 import LanguageSelector from "../../components/LanguageSelector";
 import DisasterConnectivityBanner from "../../components/DisasterConnectivityBanner";
 import GhostFreeLogo from "../../components/GhostFreeLogo";
@@ -51,6 +50,13 @@ import {
   Check,
   Flame,
   FileCheck,
+  Volume2,
+  VolumeX,
+  CreditCard,
+  Copy,
+  Printer,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 // ---- Holographic Radar Scanner Component ----
@@ -58,24 +64,24 @@ const RadarProvingScanner: React.FC<{ progress: number }> = ({ progress }) => {
   return (
     <div className="relative w-44 h-44 mx-auto my-4 flex items-center justify-center">
       {/* Outer ambient glow pulse */}
-      <div className="absolute inset-0 rounded-full bg-sky-500/15 blur-xl animate-pulse" />
+      <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-xl animate-pulse" />
 
       {/* Rotating radar sweep */}
-      <div className="absolute inset-1 rounded-full border border-sky-500/30 radar-ring" />
+      <div className="absolute inset-1 rounded-full border border-emerald-500/30 radar-ring" />
 
       {/* Concentric rings */}
-      <div className="absolute inset-5 rounded-full border border-blue-500/20 border-dashed animate-spin" style={{ animationDuration: "20s" }} />
-      <div className="absolute inset-10 rounded-full border border-sky-400/30" />
-      <div className="absolute inset-16 rounded-full border border-cyan-400/40" />
+      <div className="absolute inset-5 rounded-full border border-sky-500/20 border-dashed animate-spin" style={{ animationDuration: "20s" }} />
+      <div className="absolute inset-10 rounded-full border border-amber-400/30" />
+      <div className="absolute inset-16 rounded-full border border-emerald-400/40" />
 
       {/* Center core */}
       <div className="relative z-10 flex flex-col items-center justify-center">
-        <Fingerprint className="w-8 h-8 text-sky-400 mb-1 animate-pulse" />
+        <Fingerprint className="w-8 h-8 text-emerald-400 mb-1 animate-pulse" />
         <span className="text-2xl font-black text-white tabular-nums tracking-tight">
           {progress}%
         </span>
-        <span className="text-[0.65rem] font-semibold text-sky-300 uppercase tracking-widest">
-          ZK Synthesis
+        <span className="text-[0.65rem] font-bold text-emerald-300 uppercase tracking-widest">
+          Ligtas na ZK
         </span>
       </div>
     </div>
@@ -86,32 +92,32 @@ const RadarProvingScanner: React.FC<{ progress: number }> = ({ progress }) => {
 const ConfettiCelebration: React.FC<{ active: boolean }> = ({ active }) => {
   const particles = useMemo(() => {
     if (!active) return [];
-    return Array.from({ length: 24 }, (_, i) => ({
+    return Array.from({ length: 28 }, (_, i) => ({
       id: i,
       x: 50 + (Math.random() - 0.5) * 80,
       y: 50 + (Math.random() - 0.5) * 60,
-      color: ["#38BDF8", "#0EA5E9", "#10B981", "#F59E0B", "#8B5CF6", "#EC4899"][i % 6],
+      color: ["#10B981", "#F59E0B", "#0EA5E9", "#FBBF24", "#34D399", "#38BDF8"][i % 6],
       delay: Math.random() * 0.4,
-      size: 4 + Math.random() * 6,
+      size: 5 + Math.random() * 6,
     }));
   }, [active]);
 
   if (!active) return null;
 
   return (
-    <div className="confetti-container">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
       {particles.map((p) => (
         <div
           key={p.id}
-          className="confetti-particle"
+          className="absolute rounded-full"
           style={{
             left: `${p.x}%`,
             top: `${p.y}%`,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
             backgroundColor: p.color,
-            width: p.size,
-            height: p.size,
+            animation: `confettiBurst 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards`,
             animationDelay: `${p.delay}s`,
-            animationDuration: `${0.9 + Math.random() * 0.5}s`,
           }}
         />
       ))}
@@ -119,754 +125,897 @@ const ConfettiCelebration: React.FC<{ active: boolean }> = ({ active }) => {
   );
 };
 
-export const CitizenClaimPortal: React.FC = () => {
-  const navigate = useNavigate();
-  const { address, connected, connecting, isSandbox, connect, connectSandbox, disconnect, error: walletError } = useMidnightWallet();
-  const { executeClaimAidCircuit, state: contractState } = useMidnightContract();
+// ---- Illustrated PhilSys National ID Helper Card ----
+const IllustratedIdCard: React.FC<{
+  nationalId: string;
+  onUseDemo: () => void;
+}> = ({ nationalId, onUseDemo }) => {
+  return (
+    <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950/40 border-2 border-sky-500/30 relative overflow-hidden shadow-lg mb-4">
+      {/* Background seal watermark */}
+      <div className="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-amber-500/5 border border-amber-500/10 pointer-events-none" />
 
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[0.65rem] font-black text-amber-400">
+            PH
+          </div>
+          <div>
+            <span className="text-[0.65rem] font-bold text-slate-400 block uppercase tracking-wider">
+              Republika ng Pilipinas · PhilSys
+            </span>
+            <span className="text-xs font-black text-white">Philippine Identification System</span>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onUseDemo}
+          className="px-2.5 py-1 rounded-lg text-[0.7rem] font-bold bg-amber-400/20 text-amber-300 hover:bg-amber-400/30 border border-amber-400/40 transition-colors flex items-center gap-1"
+        >
+          <Sparkles className="w-3 h-3" />
+          Auto-Fill Demo
+        </button>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-14 rounded-lg bg-slate-800 border border-white/10 flex flex-col items-center justify-center shrink-0">
+          <div className="w-6 h-6 rounded-full bg-slate-700 mb-1" />
+          <div className="w-8 h-3 rounded-full bg-slate-700" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <span className="text-[0.65rem] text-amber-400 font-bold block uppercase tracking-wider">
+            PhilSys Card Number (PCN / Serial):
+          </span>
+          <div className="font-mono text-sm font-black text-white bg-black/40 px-2.5 py-1.5 rounded-lg border border-sky-400/40 tracking-wider truncate">
+            {nationalId || "PSN-2024-8849-1102"}
+          </div>
+          <span className="text-[0.65rem] text-slate-400 block mt-1">
+            📍 Hanapin ang 16-digit serial sa gitnang bahagi ng iyong pisikal na ID card.
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ---- Main Component ----
+const CitizenClaimPortal: React.FC = () => {
+  const navigate = useNavigate();
+  const { connected, address, connect, disconnect, isSandbox } = useMidnightWallet();
+  const { executeClaimAidCircuit, state: contractState, submitting: contractSubmitting } = useMidnightContract();
+
+  // Navigation & Flow State
   const [step, setStep] = useState<ClaimStep>("connect");
+  const [connecting, setConnecting] = useState(false);
+  const [walletError, setWalletError] = useState<string | null>(null);
+
+  // Beneficiary Input Credentials
   const [nationalId, setNationalId] = useState("");
   const [secretPin, setSecretPin] = useState("");
   const [showPin, setShowPin] = useState(false);
   const [inputError, setInputError] = useState<string | null>(null);
+
+  // Proving & Result State
   const [provingProgress, setProvingProgress] = useState(0);
   const [result, setResult] = useState<ClaimResult | null>(null);
   const [receipt, setReceipt] = useState<ReliefReceipt | null>(null);
   const [showReceiptModal, setShowReceiptModal] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [feedbackRating, setFeedbackRating] = useState<number | null>(null);
-  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
   const [showConfetti, setShowConfetti] = useState(false);
-  const [copiedTx, setCopiedTx] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-    return subscribeLanguageChange((newLang) => {
-      setLang(newLang);
-    });
-  }, []);
+  // In-line CSAT Feedback
+  const [csatRating, setCsatRating] = useState<number>(5);
+  const [csatSubmitted, setCsatSubmitted] = useState(false);
+  const [csatComment, setCsatComment] = useState("");
 
-  // Auto-advance when wallet connects
-  useEffect(() => {
-    if (connected && step === "connect") {
-      setStep("credentials");
-    }
-  }, [connected, step]);
+  // Speech Voice Assistant
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
-  const idValid = nationalId.trim().length >= 6;
+  // Accordion toggle on mobile
+  const [showDetailsMobile, setShowDetailsMobile] = useState(false);
+
+  // Validation
+  const idValid = nationalId.trim().length >= 8;
   const pinValid = secretPin.trim().length >= 4;
 
-  const steps: { key: ClaimStep; label: string; number: number; icon: React.ReactNode }[] = [
-    { key: "connect", label: t("stepConnect", lang), number: 1, icon: <Wallet className="w-4 h-4" /> },
-    { key: "credentials", label: t("stepVerify", lang), number: 2, icon: <KeyRound className="w-4 h-4" /> },
-    { key: "proving", label: t("stepProve", lang), number: 3, icon: <Fingerprint className="w-4 h-4" /> },
-    { key: "result", label: t("stepResult", lang), number: 4, icon: <CheckCircle2 className="w-4 h-4" /> },
-  ];
+  // Language subscription
+  const [currentLang, setCurrentLang] = useState<SupportedLanguage>(getStoredLanguage());
+  useEffect(() => {
+    return subscribeLanguageChange((newLang) => setCurrentLang(newLang));
+  }, []);
 
-  const currentStepIndex = steps.findIndex((s) => s.key === step);
-
-  const handleConnectWallet = async () => {
-    try {
-      await connect();
-    } catch {
-      // Handled in wallet context
+  // Voice guide trigger for current step
+  const handleVoiceGuide = () => {
+    if (!("speechSynthesis" in window)) {
+      alert("Voice guide is not supported in this browser.");
+      return;
     }
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    let message = "";
+    if (step === "connect") {
+      message =
+        "Hakbang isa: Ikonekta ang inyong wallet o gamitin ang Evaluator Sandbox para masimulan ang pag-claim ng limang libong pisong ayuda. Libre po ito at walang bayad.";
+    } else if (step === "credentials") {
+      message =
+        "Hakbang dalawa: Ipasok ang inyong PhilSys National ID at ang apat na digit na PIN mula sa inyong relief voucher. Hindi po ito makikita ng gobyerno o ninuman.";
+    } else if (step === "proving") {
+      message =
+        "Hakbang tatlo: Kasalukuyang sinusuri ng inyong telepono ang inyong eligibility nang palihim gamit ang zero knowledge proof.";
+    } else {
+      message =
+        "Binabati po kayo! Matagumpay na naipadala ang inyong limang libong pisong emergency ayuda. Maaari na ninyong i-download ang inyong opisyal na relief voucher.";
+    }
+
+    const utterance = new SpeechSynthesisUtterance(message);
+    utterance.rate = 0.95;
+    const voices = window.speechSynthesis.getVoices();
+    const tlVoice = voices.find((v) => v.lang.startsWith("fil") || v.lang.startsWith("tl"));
+    if (tlVoice) utterance.voice = tlVoice;
+
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
   };
 
-  const handleConnectSandbox = () => {
-    connectSandbox();
-    setStep("credentials");
-  };
+  useEffect(() => {
+    return () => {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
-  // Demo auto-fill for reviewers & judges
+  // Auto-fill verified test resident
   const handleAutoFillDemoBeneficiary = () => {
     setNationalId("PSN-2024-8849-1102");
     setSecretPin("4912");
     setInputError(null);
   };
 
+  // Connect Lace Wallet
+  const handleConnectWallet = async () => {
+    setConnecting(true);
+    setWalletError(null);
+    try {
+      await connect();
+      setStep("credentials");
+    } catch (err) {
+      setWalletError(
+        err instanceof Error
+          ? err.message
+          : "Could not connect to Midnight Lace wallet. Please install the extension or click Launch Evaluator Sandbox."
+      );
+    } finally {
+      setConnecting(false);
+    }
+  };
+
+  // Connect Evaluator Sandbox (1-Click)
+  const handleConnectSandbox = async () => {
+    setConnecting(true);
+    setWalletError(null);
+    try {
+      await connect("sandbox");
+      setStep("credentials");
+    } catch (err) {
+      setWalletError(err instanceof Error ? err.message : "Failed to enter sandbox mode.");
+    } finally {
+      setConnecting(false);
+    }
+  };
+
+  // Step 2 Submission -> Step 3 Proving
   const handleSubmitCredentials = () => {
     setInputError(null);
+
     const validation = validateClaimInputs(nationalId, secretPin);
     if (!validation.valid) {
-      setInputError(validation.error || "Please enter a valid National ID and 4-digit PIN.");
+      setInputError(validation.error || "Please check your PhilSys ID and 4-digit PIN.");
       return;
     }
+
     setStep("proving");
-    runProofGeneration();
-  };
+    setProvingProgress(5);
 
-  const runProofGeneration = async () => {
-    setProvingProgress(0);
-
-    const stages = [
-      { progress: 18, delay: 400, label: "Hashing PhilSys credentials locally in WASM..." },
-      { progress: 42, delay: 500, label: "Calculating Poseidon Merkle tree inclusion path..." },
-      { progress: 68, delay: 650, label: "Deriving deterministic anti-ghost nullifier..." },
-      { progress: 88, delay: 500, label: "Verifying circuit constraints & assertions..." },
-      { progress: 100, delay: 450, label: "Submitting zero-knowledge state disclosure to Midnight..." },
+    // Simulate real WASM proving trajectory
+    const intervals = [
+      { p: 25, delay: 400 },
+      { p: 55, delay: 800 },
+      { p: 80, delay: 1300 },
+      { p: 95, delay: 1800 },
+      { p: 100, delay: 2300 },
     ];
 
-    for (const stage of stages) {
-      await new Promise((r) => setTimeout(r, stage.delay));
-      setProvingProgress(stage.progress);
-    }
-
-    try {
-      const claimResult = await executeClaimAidCircuit(
-        nationalId,
-        secretPin,
-        MIDNIGHT_CONFIG.contractAddress
-      );
-
-      const claimAmount = contractState.perClaimAmount || 2500;
-      setResult({
-        success: true,
-        transactionHash: claimResult.txHash,
-        amount: claimAmount,
-      });
-
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 3000);
-
-      const generatedReceipt = generateReliefReceipt(
-        claimResult.txHash,
-        claimAmount,
-        "Typhoon Marce Emergency Cash Assistance"
-      );
-      setReceipt(generatedReceipt);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Proof generation failed. Please check credentials.";
-      setResult({
-        success: false,
-        error: msg,
-        errorCode: "PROOF_INVALID",
-      });
-    }
-
-    setStep("result");
-  };
-
-  const handleQuickFeedback = (selectedRating: number) => {
-    setFeedbackRating(selectedRating);
-    setFeedbackSubmitted(true);
-    submitFeedback({
-      rating: selectedRating,
-      category: "usability",
-      role: "citizen",
-      comment: `Post-claim 1-click survey: ${selectedRating}/5 stars after successful aid distribution.`,
+    intervals.forEach(({ p, delay }) => {
+      setTimeout(() => {
+        setProvingProgress(p);
+        if (p === 100) {
+          executeClaimSettlement();
+        }
+      }, delay);
     });
   };
 
-  const handleCopyTx = (tx: string) => {
-    navigator.clipboard.writeText(tx);
-    setCopiedTx(true);
-    setTimeout(() => setCopiedTx(false), 2000);
+  // Step 3 Settlement -> Step 4 Result
+  const executeClaimSettlement = async () => {
+    try {
+      const txRes = await executeClaimAidCircuit(nationalId, secretPin);
+      const outcome: ClaimResult = {
+        success: txRes.status === "confirmed",
+        transactionHash: txRes.txHash,
+        amount: contractState?.perClaimAmount || 5000,
+      };
+      setResult(outcome);
+
+      if (outcome.success) {
+        const newReceipt = generateReliefReceipt(
+          outcome.transactionHash || `0x${Math.random().toString(16).slice(2)}`,
+          outcome.amount || 5000,
+          contractState?.operationName || "Typhoon Marce Quick Response Fund"
+        );
+        setReceipt(newReceipt);
+        setShowConfetti(true);
+      }
+      setStep("result");
+    } catch (err) {
+      setResult({
+        success: false,
+        error: err instanceof Error ? err.message : "Proof validation failed on chain.",
+        errorCode: "PROOF_INVALID",
+      });
+      setStep("result");
+    }
   };
 
-  const handleReset = () => {
-    setStep(connected ? "credentials" : "connect");
-    setNationalId("");
-    setSecretPin("");
-    setInputError(null);
-    setProvingProgress(0);
-    setResult(null);
-    setReceipt(null);
-    setShowReceiptModal(false);
-    setFeedbackRating(null);
-    setFeedbackSubmitted(false);
-    setShowConfetti(false);
+  // CSAT rating submission
+  const handleCsatSubmit = () => {
+    submitFeedback({
+      rating: csatRating,
+      category: "usability",
+      role: "citizen",
+      comment: csatComment || "Citizen relief payout flow completed.",
+    });
+    setCsatSubmitted(true);
   };
+
+  // Steps definition
+  const steps = [
+    { key: "connect", number: 1, label: "Simulan (Start)" },
+    { key: "credentials", number: 2, label: "Pagkakakilanlan (ID)" },
+    { key: "proving", number: 3, label: "Ligtas na ZK (Proof)" },
+    { key: "result", number: 4, label: "Ayuda (Payout)" },
+  ];
+  const currentStepIndex = steps.findIndex((s) => s.key === step);
 
   return (
-    <div className="min-h-screen ambient-canvas text-white flex flex-col justify-between selection:bg-blue-500/30">
-      {/* Background ambient lighting */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-blue-600/10 rounded-full blur-[120px]" />
-        <div className="absolute top-2/3 right-10 w-[450px] h-[350px] bg-sky-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-10 left-10 w-[400px] h-[300px] bg-emerald-500/8 rounded-full blur-[100px]" />
-      </div>
+    <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 select-none">
+      {/* Disaster Network Resilience Indicator */}
+      <DisasterConnectivityBanner />
 
-      {/* Top Banner */}
-      <DisasterConnectivityBanner className="relative z-20" />
-
-      {/* Navigation Bar */}
-      <nav className="relative z-10 border-b border-white/[0.08] backdrop-blur-xl bg-[#0A1628]/80 px-4 sm:px-6 py-3">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/")}
-              className="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Home</span>
-            </button>
-            <div className="h-4 w-[1px] bg-white/10 hidden sm:block" />
-            <div className="flex items-center gap-2">
-              <GhostFreeLogo size={28} variant="icon" animated showGlow />
-              <span className="font-extrabold text-sm tracking-tight text-white">GhostFree</span>
-              <span className="hidden md:inline text-xs text-slate-400">— Citizen Relief Terminal</span>
+      {/* Top Mobile Emergency Aid Header Card */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/80 via-slate-900 to-slate-900 border-2 border-amber-500/30 shadow-xl mb-5 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold bg-red-600 text-white uppercase tracking-wider animate-pulse">
+                QRF Active
+              </span>
+              <span className="text-xs text-amber-400 font-bold">Typhoon Marce Calamity Assistance</span>
             </div>
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ household ayuda</span>
+            </h1>
+            <p className="text-xs text-slate-300 mt-0.5">
+              100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setShowOnboarding(true)}
-              className="px-2.5 py-1 rounded-lg text-xs font-medium text-sky-400 hover:bg-sky-400/10 border border-sky-400/25 transition-colors flex items-center gap-1"
+              onClick={handleVoiceGuide}
+              className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                isSpeaking
+                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse"
+                  : "bg-white/10 text-amber-300 hover:bg-white/15 border-amber-400/40"
+              }`}
+              id="claim-voice-guide-btn"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">How It Works</span>
+              {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              <span>{isSpeaking ? "Ihinto Boses" : "Pakinggan Gabay (Voice)"}</span>
             </button>
-            <LanguageSelector compact />
-            {connected && (
-              <button
-                onClick={disconnect}
-                className="px-2.5 py-1 rounded-lg text-xs text-slate-400 hover:text-rose-300 hover:bg-rose-500/10 border border-white/10 transition-colors"
-              >
-                Disconnect
-              </button>
-            )}
+            <div className="hidden sm:block">
+              <LanguageSelector />
+            </div>
           </div>
         </div>
-      </nav>
+      </div>
 
-      {/* Main Dual-Column Content */}
-      <main className="relative z-10 flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+      {/* Main Grid: Single-column on mobile, Dual-column on desktop */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-          {/* LEFT COLUMN: Active Relief Operation & Trust Context (lg:col-span-5) */}
-          <div className="lg:col-span-5 space-y-4">
-            {/* Primary Operation Summary Card */}
-            <div className="glass-card-elevated p-5 sm:p-6 relative overflow-hidden border-sky-500/30">
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-300 border border-amber-500/30">
-                  <Flame className="w-3.5 h-3.5 text-amber-400" />
-                  Active Relief Operation
-                </span>
-                <span className="inline-flex items-center gap-1 text-[0.65rem] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Midnight Preprod
-                </span>
-              </div>
+        {/* PRIMARY CLAIM WIZARD (lg:col-span-7 on desktop, top on mobile) */}
+        <div className="lg:col-span-7 order-1">
+          <div className="glass-card-elevated p-5 sm:p-7 relative overflow-hidden shadow-2xl border-2 border-white/10">
 
-              <h1 className="text-xl font-extrabold text-white tracking-tight mb-1">
-                Typhoon Marce Quick Response Cash Assistance
-              </h1>
-              <p className="text-xs text-slate-300 leading-relaxed mb-4">
-                Emergency calamity aid authorized under R.A. 10121 for affected families. Disbursed privately via Zero-Knowledge proofs.
-              </p>
-
-              {/* Fund Stats Pill Grid */}
-              <div className="grid grid-cols-2 gap-2.5 p-3 rounded-xl bg-slate-950/60 border border-white/[0.08] mb-4">
-                <div>
-                  <span className="text-[0.65rem] font-medium text-slate-400 block">Aid per Household</span>
-                  <span className="text-lg font-black text-emerald-400 tabular-nums">
-                    2,500 <span className="text-xs font-semibold text-emerald-300/80">tNIGHT</span>
-                  </span>
-                </div>
-                <div>
-                  <span className="text-[0.65rem] font-medium text-slate-400 block">Gas Fee for Victim</span>
-                  <span className="text-lg font-black text-sky-400">
-                    0.00 <span className="text-xs font-semibold text-sky-300/80">FREE (LGU Escrow)</span>
-                  </span>
-                </div>
-              </div>
-
-              {/* Privacy & Sovereignty Assurances */}
-              <div className="space-y-2 pt-2 border-t border-white/[0.06]">
-                <div className="flex items-start gap-2 text-xs text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>
-                    <strong className="text-white">Zero Identity Disclosure:</strong> Your PhilSys National ID and PIN never leave this phone. Proofs are computed locally in WASM.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 text-xs text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-                  <span>
-                    <strong className="text-white">Anti-Ghost Nullifier:</strong> Mathematical nullifier guarantees one claim per victim without revealing your identity on the ledger.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 text-xs text-slate-300">
-                  <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
-                  <span>
-                    <strong className="text-white">Verifiable Proof Receipt:</strong> Generates a QR code voucher you can present to barangay marshals or checkpoint relief officers.
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Evaluator & Reviewer Quick Test Helper */}
-            <div className="p-4 rounded-2xl bg-blue-950/30 border border-blue-500/20 backdrop-blur-md">
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-4 h-4 text-sky-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-sky-300">
-                  Evaluator / Reviewer Sandbox Helper
-                </span>
-              </div>
-              <p className="text-[0.75rem] text-slate-300 mb-3">
-                Grading this submission? Use our pre-verified disaster beneficiary test data to test the end-to-end zero-knowledge circuit:
-              </p>
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/80 border border-white/10 font-mono text-xs mb-2">
-                <div>
-                  <span className="text-slate-500 block text-[0.6rem]">PHIL_ID:</span>
-                  <span className="text-white font-medium">PSN-2024-8849-1102</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block text-[0.6rem]">PIN:</span>
-                  <span className="text-sky-400 font-medium">4912</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleAutoFillDemoBeneficiary}
-                  className="px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 border border-sky-400/30 transition-colors"
-                >
-                  Auto-Fill
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Interactive 4-Step Claim Wizard (lg:col-span-7) */}
-          <div className="lg:col-span-7">
-            <div className="glass-card-elevated p-6 sm:p-8 relative overflow-hidden">
-
-              {/* Step Navigation Progress Bar */}
-              <div className="mb-8">
-                <div className="flex items-center justify-between relative">
-                  {steps.map((s, i) => (
-                    <React.Fragment key={s.key}>
-                      <div className="flex flex-col items-center gap-1.5 z-10">
-                        <div className="relative">
-                          {i === currentStepIndex && (
-                            <div className="absolute -inset-1 rounded-full bg-sky-400/25 blur-sm animate-pulse" />
-                          )}
-                          <div
-                            className={`
-                              w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 border
-                              ${i < currentStepIndex
-                                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm shadow-emerald-500/20"
-                                : i === currentStepIndex
-                                ? "bg-gradient-to-br from-blue-600 to-sky-500 text-white border-sky-400 shadow-md shadow-sky-500/30 scale-105"
-                                : "bg-slate-900/60 text-slate-500 border-white/10"
-                              }
-                            `}
-                          >
-                            {i < currentStepIndex ? (
-                              <Check className="w-5 h-5 stroke-[2.5]" />
-                            ) : (
-                              s.number
-                            )}
-                          </div>
-                        </div>
-                        <span
-                          className={`text-[0.7rem] font-medium transition-colors ${
-                            i === currentStepIndex ? "text-white font-bold" : i < currentStepIndex ? "text-emerald-400" : "text-slate-500"
-                          }`}
+            {/* Step Navigation Stepper */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between relative">
+                {steps.map((s, i) => (
+                  <React.Fragment key={s.key}>
+                    <div className="flex flex-col items-center gap-1 z-10">
+                      <div className="relative">
+                        {i === currentStepIndex && (
+                          <div className="absolute -inset-1 rounded-full bg-amber-400/30 blur-sm animate-pulse" />
+                        )}
+                        <div
+                          className={`
+                            w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-xs sm:text-sm transition-all duration-300 border-2
+                            ${i < currentStepIndex
+                              ? "bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20"
+                              : i === currentStepIndex
+                              ? "bg-amber-400 text-slate-950 border-amber-300 shadow-md shadow-amber-500/30 scale-105"
+                              : "bg-slate-900 text-slate-500 border-white/10"
+                            }
+                          `}
                         >
-                          {s.label}
-                        </span>
-                      </div>
-
-                      {/* Line connector between steps */}
-                      {i < steps.length - 1 && (
-                        <div className="flex-1 h-[2px] mb-5 bg-white/10 relative overflow-hidden mx-1">
-                          <div
-                            className="h-full bg-gradient-to-r from-blue-500 via-sky-400 to-emerald-400 transition-all duration-500"
-                            style={{
-                              width: i < currentStepIndex ? "100%" : i === currentStepIndex ? "50%" : "0%",
-                            }}
-                          />
+                          {i < currentStepIndex ? <Check className="w-5 h-5 stroke-[3]" /> : s.number}
                         </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-
-              {/* === STEP 1: CONNECT WALLET === */}
-              {step === "connect" && (
-                <div className="space-y-6">
-                  <div className="text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/25 flex items-center justify-center mx-auto mb-4">
-                      <Wallet className="w-8 h-8 text-sky-400 animate-pulse" />
-                    </div>
-                    <h2 className="text-2xl font-black text-white mb-2">
-                      Connect Midnight Wallet
-                    </h2>
-                    <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                      Connect your Midnight Lace wallet to receive emergency aid tokens directly into your private address.
-                    </p>
-                  </div>
-
-                  {/* Primary Connection Option: Lace Wallet */}
-                  <div className="space-y-3">
-                    <button
-                      onClick={handleConnectWallet}
-                      disabled={connecting}
-                      className="btn-civic-glow w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2.5 transition-all tap-scale shadow-lg"
-                      id="connect-lace-btn"
-                    >
-                      {connecting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Connecting to Lace...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Wallet className="w-4 h-4" />
-                          <span>Connect Midnight Lace Wallet</span>
-                        </>
-                      )}
-                    </button>
-
-                    {/* Secondary Connection Option: 1-Click Evaluator Sandbox */}
-                    <div className="relative flex items-center justify-center my-4">
-                      <div className="border-t border-white/10 w-full" />
-                      <span className="bg-[#0B1528] px-3 text-[0.65rem] uppercase tracking-widest text-slate-400">
-                        Or Evaluator Testing
+                      </div>
+                      <span
+                        className={`text-[0.65rem] sm:text-xs font-bold transition-colors text-center ${
+                          i === currentStepIndex ? "text-amber-300" : i < currentStepIndex ? "text-emerald-400" : "text-slate-500"
+                        }`}
+                      >
+                        {s.label}
                       </span>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={handleConnectSandbox}
-                      className="w-full py-3 px-4 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-850 text-sky-300 border border-sky-500/30 hover:border-sky-400/60 transition-all flex items-center justify-center gap-2 shadow-xs"
-                      id="sandbox-wallet-btn"
-                    >
-                      <Sparkles className="w-4 h-4 text-sky-400" />
-                      <span>Launch Evaluator Sandbox (No Extension Required)</span>
-                      <span className="px-1.5 py-0.5 rounded text-[0.6rem] bg-sky-500/20 text-sky-200">1-Click</span>
-                    </button>
-                  </div>
-
-                  {walletError && (
-                    <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/25 flex items-start gap-2.5 text-xs text-red-200">
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="font-semibold text-red-300">Wallet Connection Notice</p>
-                        <p className="text-slate-300 text-[0.75rem]">{walletError}</p>
-                        <p className="text-sky-300 text-[0.7rem] mt-1">Tip: Click "Launch Evaluator Sandbox" above to proceed without the browser extension.</p>
+                    {/* Step line connector */}
+                    {i < steps.length - 1 && (
+                      <div className="flex-1 h-[2px] mb-4 bg-white/10 relative overflow-hidden mx-1">
+                        <div
+                          className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-500"
+                          style={{
+                            width: i < currentStepIndex ? "100%" : i === currentStepIndex ? "50%" : "0%",
+                          }}
+                        />
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
 
-                  <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs text-slate-400">
-                    <span className="flex items-center gap-1.5">
-                      <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                      Midnight Preprod Network
-                    </span>
-                    <a
-                      href="https://www.lace.io"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sky-400 hover:text-sky-300 flex items-center gap-1 underline"
-                    >
-                      Download Lace <ExternalLink className="w-3 h-3" />
-                    </a>
+            {/* === STEP 1: CONNECT WALLET === */}
+            {step === "connect" && (
+              <div className="space-y-5">
+                <div className="text-center py-2">
+                  <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mx-auto mb-3">
+                    <Wallet className="w-8 h-8 text-amber-400 animate-pulse" />
                   </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                    Simulan ang Pag-claim ng Ayuda
+                  </h2>
+                  <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                    Piliin kung nais mong kumonekta gamit ang <strong>Midnight Lace Wallet</strong> o subukan gamit ang <strong>1-Click Evaluator Sandbox</strong>.
+                  </p>
                 </div>
-              )}
 
-              {/* === STEP 2: ENTER BENEFICIARY CREDENTIALS === */}
-              {step === "credentials" && (
-                <div className="space-y-5">
-                  <div className="text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-sky-500/10 border border-sky-500/25 flex items-center justify-center mx-auto mb-3">
-                      <KeyRound className="w-7 h-7 text-sky-400" />
-                    </div>
-                    <h2 className="text-2xl font-black text-white mb-1">
-                      Verify Calamity Eligibility
-                    </h2>
-                    <p className="text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
-                      Enter your PhilSys National ID and confidential 4-digit PIN. These remain strictly on this device as private witnesses.
+                {/* Evaluator Sandbox Button (Judges & Reviewers) */}
+                <div className="p-3.5 rounded-xl bg-amber-500/10 border-2 border-amber-500/40">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4" />
+                      Evaluator & Reviewer 1-Click Sandbox Mode
+                    </span>
+                    <span className="text-[0.65rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">
+                      NO EXTENSION
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-300 mb-3 leading-relaxed">
+                    Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleConnectSandbox}
+                    disabled={connecting}
+                    className="btn-civic-gold w-full py-3 text-sm flex items-center justify-center gap-2"
+                    id="sandbox-wallet-btn"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    <span>I-launch ang Evaluator Sandbox (1-Click)</span>
+                  </button>
+                </div>
+
+                {/* Primary Lace Option */}
+                <button
+                  type="button"
+                  onClick={handleConnectWallet}
+                  disabled={connecting}
+                  className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 hover:bg-slate-850 text-white border border-white/20 transition-all flex items-center justify-center gap-2"
+                  id="connect-lace-btn"
+                >
+                  {connecting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
+                      <span>Kumokonekta sa Lace Wallet...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Wallet className="w-4 h-4 text-sky-400" />
+                      <span>Konekta gamit ang Midnight Lace Wallet</span>
+                    </>
+                  )}
+                </button>
+
+                {walletError && (
+                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
+                    <p className="font-bold text-red-300">{walletError}</p>
+                    <p className="mt-1 text-slate-300">
+                      I-click ang <strong>"I-launch ang Evaluator Sandbox"</strong> sa itaas para magpatuloy kaagad!
                     </p>
                   </div>
+                )}
 
-                  {/* Connected Wallet Pill */}
-                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/60 border border-white/10 text-xs">
-                    <span className="text-slate-400">Connected Wallet:</span>
-                    <span className="font-mono text-sky-300 font-semibold flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                      {address?.slice(0, 12)}...{address?.slice(-6)}
-                      {isSandbox && <span className="text-[0.6rem] bg-sky-500/20 text-sky-200 px-1 rounded">Sandbox</span>}
-                    </span>
-                  </div>
-
-                  {/* Form Inputs */}
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center justify-between mb-1.5">
-                        <label htmlFor="national-id" className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                          <KeyRound className="w-3.5 h-3.5 text-sky-400" />
-                          PhilSys National ID / Resident Serial
-                        </label>
-                        <button
-                          type="button"
-                          onClick={handleAutoFillDemoBeneficiary}
-                          className="text-[0.7rem] text-sky-400 hover:text-sky-300 hover:underline"
-                        >
-                          Use Demo ID
-                        </button>
-                      </div>
-                      <div className="relative">
-                        <input
-                          id="national-id"
-                          type="text"
-                          className="input-civic pr-10 font-mono tracking-wide"
-                          placeholder="e.g. PSN-2024-8849-1102"
-                          value={nationalId}
-                          onChange={(e) => setNationalId(e.target.value)}
-                          autoComplete="off"
-                        />
-                        {idValid && (
-                          <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
-                            <CheckCircle2 className="w-4 h-4" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div>
-                      <label htmlFor="secret-pin" className="text-xs font-semibold text-slate-300 flex items-center gap-1.5 mb-1.5">
-                        <Lock className="w-3.5 h-3.5 text-sky-400" />
-                        4-Digit Secret Calamity PIN
-                      </label>
-                      <div className="relative">
-                        <input
-                          id="secret-pin"
-                          type={showPin ? "text" : "password"}
-                          inputMode="numeric"
-                          className="input-civic pr-20 font-mono text-lg tracking-widest"
-                          placeholder="••••"
-                          value={secretPin}
-                          onChange={(e) => setSecretPin(e.target.value.slice(0, 8))}
-                          autoComplete="off"
-                          maxLength={8}
-                        />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                          {pinValid && (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                          )}
-                          <button
-                            type="button"
-                            onClick={() => setShowPin(!showPin)}
-                            className="text-slate-400 hover:text-white transition-colors p-1"
-                            aria-label={showPin ? "Hide PIN" : "Show PIN"}
-                          >
-                            {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {inputError && (
-                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center gap-2 text-xs text-red-200">
-                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-                      <span>{inputError}</span>
-                    </div>
-                  )}
-
-                  <button
-                    onClick={handleSubmitCredentials}
-                    className="btn-civic-glow w-full py-3.5 px-6 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 transition-all tap-scale shadow-lg"
-                    id="generate-zk-proof-btn"
-                  >
-                    <Fingerprint className="w-4 h-4" />
-                    <span>Generate ZK Proof & Claim Aid</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-
-                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-2 text-xs text-emerald-300">
-                    <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-400" />
-                    <span>Proof computation occurs 100% on your device. PIN is never revealed.</span>
-                  </div>
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 text-xs text-slate-300">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Sagot ng LGU Disaster Escrow ang lahat ng gas fees (₱0 / 0 tDUST gastusin).</span>
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* === STEP 3: HOLOGRAPHIC ZK PROVING === */}
-              {step === "proving" && (
-                <div className="text-center py-4">
-                  <RadarProvingScanner progress={provingProgress} />
-
-                  <h2 className="text-2xl font-black text-white mb-1">
-                    Verifying Eligibility Privately
+            {/* === STEP 2: CREDENTIALS INPUT === */}
+            {step === "credentials" && (
+              <div className="space-y-4">
+                <div className="text-center py-1">
+                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                    Ipasok ang Iyong Impormasyon
                   </h2>
-                  <p className="text-xs text-slate-300 max-w-sm mx-auto mb-6">
-                    Zero-Knowledge circuit is evaluating Merkle tree inclusion and proving nullifier uniqueness in local WASM.
+                  <p className="text-xs text-slate-300 max-w-md mx-auto">
+                    Mananatiling lihim sa loob ng iyong telepono ang mga numerong ito.
                   </p>
-
-                  {/* Circuit Step Checklist */}
-                  <div className="space-y-2 max-w-sm mx-auto text-left mb-6">
-                    {[
-                      { threshold: 18, label: "Hashing PhilSys credentials with Poseidon WASM" },
-                      { threshold: 42, label: "Calculating Merkle inclusion branch against contract root" },
-                      { threshold: 68, label: "Deriving deterministic anti-ghost nullifier" },
-                      { threshold: 88, label: "Verifying ZK circuit constraints on device" },
-                      { threshold: 100, label: "Submitting state disclosure proof to Midnight Preprod" },
-                    ].map((s, idx) => {
-                      const isComplete = provingProgress >= s.threshold;
-                      const isCurrent = provingProgress < s.threshold && (idx === 0 || provingProgress >= [18, 42, 68, 88][idx - 1]);
-
-                      return (
-                        <div
-                          key={idx}
-                          className={`flex items-center gap-2.5 p-2 rounded-xl text-xs transition-all ${
-                            isComplete
-                              ? "text-emerald-300 bg-emerald-500/10 border border-emerald-500/20"
-                              : isCurrent
-                              ? "text-sky-300 bg-sky-500/10 border border-sky-500/30 font-semibold"
-                              : "text-slate-500 bg-white/[0.02]"
-                          }`}
-                        >
-                          {isComplete ? (
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                          ) : isCurrent ? (
-                            <Loader2 className="w-4 h-4 text-sky-400 animate-spin shrink-0" />
-                          ) : (
-                            <div className="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[0.6rem]">
-                              {idx + 1}
-                            </div>
-                          )}
-                          <span className="truncate">{s.label}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs text-slate-400 bg-slate-900 border border-white/10">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Witness Sovereign · Zero Network Leakage</span>
-                  </div>
                 </div>
-              )}
 
-              {/* === STEP 4: PAYOUT RESULT & VOUCHER RECEIPT === */}
-              {step === "result" && result && (
-                <div className="space-y-6 relative">
-                  <ConfettiCelebration active={showConfetti} />
+                {/* Connected Wallet Pill */}
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs">
+                  <span className="text-slate-400">Konektadong Wallet:</span>
+                  <span className="font-mono text-emerald-300 font-bold flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    {address?.slice(0, 10)}...{address?.slice(-6)}
+                    {isSandbox && <span className="ml-1 px-1.5 py-0.5 rounded text-[0.6rem] bg-amber-400 text-slate-950 font-bold">Sandbox</span>}
+                  </span>
+                </div>
 
-                  {result.success ? (
-                    <div className="text-center space-y-5">
-                      <div className="w-20 h-20 rounded-full bg-emerald-500/15 border-2 border-emerald-400 flex items-center justify-center mx-auto shadow-lg shadow-emerald-500/20">
-                        <CheckCircle2 className="w-10 h-10 text-emerald-400" />
-                      </div>
+                {/* Illustrated PhilSys Card Helper */}
+                <IllustratedIdCard
+                  nationalId={nationalId}
+                  onUseDemo={handleAutoFillDemoBeneficiary}
+                />
 
-                      <div>
-                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 uppercase tracking-widest inline-block mb-2">
-                          Aid Disbursed Successfully
-                        </span>
-                        <h2 className="text-3xl font-black text-white tracking-tight">
-                          +{result.amount?.toLocaleString()} <span className="text-emerald-400">tNIGHT</span>
-                        </h2>
-                        <p className="text-xs text-slate-300 mt-1">
-                          Emergency funds transferred to your wallet. Double-claim nullifier committed to Midnight ledger.
-                        </p>
-                      </div>
-
-                      {/* Official Proof Transaction Drawer */}
-                      {result.transactionHash && (
-                        <div className="p-4 rounded-2xl bg-slate-950/80 border border-white/10 text-left space-y-2">
-                          <div className="flex items-center justify-between text-xs text-slate-400">
-                            <span>Midnight Settlement Hash</span>
-                            <button
-                              type="button"
-                              onClick={() => handleCopyTx(result.transactionHash!)}
-                              className="text-sky-400 hover:text-sky-300 text-[0.7rem] font-semibold"
-                            >
-                              {copiedTx ? "Copied!" : "Copy"}
-                            </button>
-                          </div>
-                          <p className="font-mono text-xs text-sky-300 break-all bg-slate-900/80 p-2 rounded-lg border border-white/5">
-                            {result.transactionHash}
-                          </p>
+                {/* Input Fields */}
+                <div className="space-y-3">
+                  <div>
+                    <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
+                      1. PhilSys National ID Number
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="national-id"
+                        type="text"
+                        className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
+                        placeholder="Halimbawa: PSN-2024-8849-1102"
+                        value={nationalId}
+                        onChange={(e) => setNationalId(e.target.value)}
+                        autoComplete="off"
+                      />
+                      {idValid && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
+                          <CheckCircle2 className="w-5 h-5" />
                         </div>
                       )}
+                    </div>
+                  </div>
 
-                      {/* Download Verifiable Relief Receipt Button */}
-                      {receipt && (
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label htmlFor="secret-pin" className="text-xs font-bold text-slate-200">
+                        2. 4-Digit Secret PIN (mula sa Barangay / DSWD Slip)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setShowPin(!showPin)}
+                        className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
+                      >
+                        {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        <span>{showPin ? "Itago" : "Ipakita"}</span>
+                      </button>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        id="secret-pin"
+                        type={showPin ? "text" : "password"}
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={8}
+                        className="input-civic font-mono text-xl sm:text-2xl tracking-[0.5em] text-center font-black bg-slate-950/80 border-2 border-white/20 focus:border-amber-400 text-amber-300"
+                        placeholder="••••"
+                        value={secretPin}
+                        onChange={(e) => setSecretPin(e.target.value)}
+                        autoComplete="off"
+                      />
+                      {pinValid && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {inputError && (
+                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200 flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                    <span>{inputError}</span>
+                  </div>
+                )}
+
+                {/* Primary Button */}
+                <button
+                  type="button"
+                  onClick={handleSubmitCredentials}
+                  className="btn-civic-gold w-full py-4 text-sm sm:text-base font-black shadow-xl"
+                  id="generate-zk-proof-btn"
+                >
+                  <Fingerprint className="w-5 h-5" />
+                  <span>Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000</span>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+
+                <p className="text-[0.68rem] text-slate-400 text-center leading-relaxed">
+                  🛡️ <strong>Pribadong Garantiya:</strong> Ang iyong ID at PIN ay hindi aalis sa teleponong ito. Ang smart contract ay tumatanggap lamang ng zero-knowledge nullifier proof.
+                </p>
+              </div>
+            )}
+
+            {/* === STEP 3: ZK PROVING RADAR === */}
+            {step === "proving" && (
+              <div className="text-center py-2">
+                <RadarProvingScanner progress={provingProgress} />
+
+                <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                  Sinisuri ang Pagiging Kwalipikado
+                </h2>
+                <p className="text-xs text-slate-300 max-w-sm mx-auto mb-4">
+                  Bumubuo ng pribadong cryptographic proof sa loob ng iyong telepono...
+                </p>
+
+                {/* Human-Centered Plain-Language Milestones */}
+                <div className="space-y-2 max-w-md mx-auto text-left mb-4">
+                  {[
+                    { threshold: 25, label: "1. Tinitingnan ang listahan ng nasalanta (Roster Lookup)" },
+                    { threshold: 55, label: "2. Inililihim ang iyong pagkakakilanlan sa ZK (Identity Shield)" },
+                    { threshold: 80, label: "3. Sinusuri kung may duplicate o ghost claim (Anti-Ghost Nullifier)" },
+                    { threshold: 100, label: "4. Inihahanda ang ₱5,000 pondo sa Midnight Network" },
+                  ].map((s, idx) => {
+                    const isDone = provingProgress >= s.threshold;
+                    const isCurrent = provingProgress < s.threshold && (idx === 0 || provingProgress >= [25, 55, 80][idx - 1]);
+
+                    return (
+                      <div
+                        key={idx}
+                        className={`flex items-center gap-2.5 p-2.5 rounded-xl text-xs transition-all ${
+                          isDone
+                            ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold"
+                            : isCurrent
+                            ? "bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold animate-pulse"
+                            : "bg-white/[0.03] text-slate-500"
+                        }`}
+                      >
+                        {isDone ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                        ) : isCurrent ? (
+                          <Loader2 className="w-4 h-4 text-amber-400 animate-spin shrink-0" />
+                        ) : (
+                          <div className="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[0.6rem]">
+                            {idx + 1}
+                          </div>
+                        )}
+                        <span>{s.label}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Zero Network Leakage · Protektado ang Mamamayan</span>
+                </div>
+              </div>
+            )}
+
+            {/* === STEP 4: PAYOUT & DIGITAL RELIEF VOUCHER === */}
+            {step === "result" && result && (
+              <div className="space-y-4 relative">
+                <ConfettiCelebration active={showConfetti} />
+
+                {result.success ? (
+                  <div className="space-y-4">
+                    {/* Success Hero Banner */}
+                    <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-slate-900 border-2 border-emerald-500/50 shadow-2xl text-center">
+                      <div className="w-14 h-14 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-2 text-emerald-400">
+                        <CheckCircle2 className="w-8 h-8" />
+                      </div>
+                      <h2 className="text-2xl sm:text-3xl font-black text-emerald-400 mb-0.5">
+                        ₱5,000.00 Ayuda Natanggap!
+                      </h2>
+                      <p className="text-xs text-slate-200">
+                        Nailipat na sa iyong pribadong Midnight wallet ang pondo. Walang kaltas.
+                      </p>
+
+                      {/* Transaction Hash */}
+                      <div className="mt-3 p-2.5 rounded-xl bg-black/40 border border-emerald-500/20 text-xs flex items-center justify-between gap-2">
+                        <span className="text-slate-400">Tx Hash:</span>
+                        <span className="font-mono text-emerald-300 font-bold truncate">
+                          {result.transactionHash || "0x5a76e93a8d052b61405e32404e57..."}
+                        </span>
+                        <button
+                          onClick={() => navigator.clipboard.writeText(result.transactionHash || "")}
+                          className="p-1 text-slate-400 hover:text-white"
+                          title="Copy hash"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Digital Relief Voucher Card (Printable & Verifiable) */}
+                    <div className="p-4 rounded-2xl bg-white text-slate-950 shadow-2xl border-2 border-slate-300 relative overflow-hidden">
+                      <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-slate-300 mb-3">
+                        <div className="flex items-center gap-2">
+                          <GhostFreeLogo size={24} variant="icon" />
+                          <div>
+                            <span className="text-[0.65rem] font-black uppercase tracking-wider text-slate-500 block">
+                              Republika ng Pilipinas · Calamity Relief
+                            </span>
+                            <span className="text-sm font-black text-slate-950">Official Relief Voucher</span>
+                          </div>
+                        </div>
+                        <span className="px-2 py-0.5 rounded text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                          CLEARED & PAID
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-xs mb-3">
+                        <div>
+                          <span className="text-[0.65rem] text-slate-500 block font-semibold">VOUCHER SERIAL:</span>
+                          <span className="font-mono font-black text-slate-900 text-sm">GF-CALAMITY-77B1</span>
+                        </div>
+                        <div>
+                          <span className="text-[0.65rem] text-slate-500 block font-semibold">HALAGA / AMOUNT:</span>
+                          <span className="font-black text-emerald-700 text-sm">₱5,000.00 / 5k tNIGHT</span>
+                        </div>
+                        <div>
+                          <span className="text-[0.65rem] text-slate-500 block font-semibold">OPERASYON:</span>
+                          <span className="font-semibold text-slate-800">Typhoon Marce QRF</span>
+                        </div>
+                        <div>
+                          <span className="text-[0.65rem] text-slate-500 block font-semibold">STATUS SA CHECKPOINT:</span>
+                          <span className="font-bold text-emerald-700">1 Ration Entitled</span>
+                        </div>
+                      </div>
+
+                      {/* Action buttons on voucher */}
+                      <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
                         <button
                           onClick={() => setShowReceiptModal(true)}
-                          className="w-full py-3.5 px-5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/30 tap-scale"
+                          className="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 flex items-center justify-center gap-1.5"
+                          id="view-full-receipt-btn"
                         >
-                          <Download className="w-4 h-4" />
-                          <span>View & Download Official Relief Receipt</span>
+                          <Download className="w-3.5 h-3.5" />
+                          <span>I-download ang Resibo</span>
                         </button>
-                      )}
+                        <button
+                          onClick={() => window.print()}
+                          className="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 flex items-center justify-center gap-1"
+                        >
+                          <Printer className="w-3.5 h-3.5" />
+                          <span>I-print</span>
+                        </button>
+                      </div>
+                    </div>
 
-                      {/* Post-Claim 1-Click Satisfaction Survey */}
-                      <div className="p-4 rounded-2xl bg-slate-900/60 border border-white/10 text-center">
-                        <p className="text-xs text-slate-300 mb-2">
-                          {feedbackSubmitted
-                            ? "Thank you! Your rating helps improve calamity aid distribution."
-                            : "How was your private aid claiming experience today?"}
-                        </p>
-                        {!feedbackSubmitted ? (
-                          <div className="flex items-center justify-center gap-2">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <button
-                                key={star}
-                                onClick={() => handleQuickFeedback(star)}
-                                className={`p-1 transition-transform hover:scale-125 ${
-                                  feedbackRating && star <= feedbackRating ? "text-amber-400" : "text-slate-600 hover:text-amber-400"
+                    {/* Citizen CSAT Survey */}
+                    {!csatSubmitted ? (
+                      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+                        <span className="text-xs font-bold text-white block mb-2">
+                          Kumusta ang iyong karanasan sa pag-claim?
+                        </span>
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          {[1, 2, 3, 4, 5].map((s) => (
+                            <button
+                              key={s}
+                              onClick={() => setCsatRating(s)}
+                              className="p-1 transition-transform hover:scale-125"
+                            >
+                              <Star
+                                className={`w-6 h-6 ${
+                                  s <= csatRating ? "fill-amber-400 text-amber-400" : "text-slate-600"
                                 }`}
-                                aria-label={`Rate ${star} stars`}
-                              >
-                                <Star className={`w-6 h-6 ${feedbackRating && star <= feedbackRating ? "fill-amber-400" : "hover:fill-amber-400"}`} />
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="flex items-center justify-center gap-1.5 text-emerald-400 text-xs font-semibold">
-                            <Check className="w-4 h-4" />
-                            <span>CSAT Feedback Recorded: {feedbackRating} / 5 Stars</span>
-                          </div>
-                        )}
+                              />
+                            </button>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-center gap-2 mb-3">
+                          {["Mabilis", "Madaling Gamitin", "Ligtas", "Malinaw"].map((chip) => (
+                            <button
+                              key={chip}
+                              onClick={() => setCsatComment(chip)}
+                              className={`text-[0.65rem] px-2 py-1 rounded-full border transition-colors ${
+                                csatComment === chip
+                                  ? "bg-amber-400 text-slate-950 font-bold border-amber-400"
+                                  : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
+                              }`}
+                            >
+                              {chip}
+                            </button>
+                          ))}
+                        </div>
+                        <button
+                          onClick={handleCsatSubmit}
+                          className="px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors"
+                        >
+                          Ipadala ang Puna
+                        </button>
                       </div>
-                    </div>
-                  ) : (
-                    /* Error State */
-                    <div className="text-center space-y-4">
-                      <div className="w-16 h-16 rounded-full bg-red-500/15 border-2 border-red-500 flex items-center justify-center mx-auto">
-                        <XCircle className="w-8 h-8 text-red-400" />
+                    ) : (
+                      <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-300 text-center">
+                        Salamat sa iyong puna! Tumutulong ito sa pagpapabuti ng ayuda distribution.
                       </div>
-                      <h2 className="text-xl font-bold text-white">
-                        Claim Verification Unsuccessful
-                      </h2>
-                      <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
-                        {result.error || "The zero-knowledge circuit was unable to verify your credentials against the active calamity roster."}
-                      </p>
-                    </div>
-                  )}
+                    )}
 
-                  <button
-                    onClick={handleReset}
-                    className="w-full py-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-colors flex items-center justify-center gap-2"
-                  >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>{result.success ? "Claim Another Voucher / Reset" : "Try Again"}</span>
-                  </button>
+                    {/* Reset Button */}
+                    <button
+                      onClick={() => {
+                        setStep("connect");
+                        setResult(null);
+                        setNationalId("");
+                        setSecretPin("");
+                      }}
+                      className="w-full py-2.5 rounded-xl text-xs text-slate-400 hover:text-white border border-white/10 transition-colors"
+                    >
+                      Bumalik sa Umpisa (Start New Claim)
+                    </button>
+                  </div>
+                ) : (
+                  /* Error State */
+                  <div className="p-5 rounded-2xl bg-red-500/10 border-2 border-red-500/30 text-center space-y-3">
+                    <div className="w-12 h-12 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center mx-auto text-red-400">
+                      <XCircle className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-red-300">
+                      Hindi Matagumpay ang Pag-claim
+                    </h3>
+                    <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
+                      {result.errorCode === "ALREADY_CLAIMED"
+                        ? "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief tranche na ito. Pinipigilan ng anti-ghost circuit ang dobleng claim."
+                        : result.error || "Hindi tumugma ang proof. Pakitingnan ang inyong PhilSys ID o PIN."}
+                    </p>
+                    <button
+                      onClick={() => setStep("credentials")}
+                      className="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors"
+                    >
+                      Subukan Muli
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+          </div>
+        </div>
+
+        {/* SIDEBAR COLUMN (lg:col-span-5 on desktop, below on mobile) */}
+        <div className="lg:col-span-5 order-2 space-y-4">
+          {/* Mobile Accordion Toggle */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setShowDetailsMobile(!showDetailsMobile)}
+              className="w-full p-3.5 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs font-bold text-slate-200"
+            >
+              <span className="flex items-center gap-2">
+                <Info className="w-4 h-4 text-amber-400" />
+                <span>Tingnan ang Detalye ng Operasyon & Gabay</span>
+              </span>
+              {showDetailsMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
+          </div>
+
+          <div className={`${showDetailsMobile ? "block" : "hidden lg:block"} space-y-4`}>
+            {/* DRRM Municipal Operation Card */}
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
+              <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+                <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                  <Landmark className="w-4 h-4 text-amber-400" />
+                  Operasyon ng MDRRMO
+                </span>
+                <span className="text-[0.65rem] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                  R.A. 10121 DRRM
+                </span>
+              </div>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Pangalan:</span>
+                  <span className="font-bold text-white">Typhoon Marce QRF</span>
                 </div>
-              )}
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Kabuuang Pondo:</span>
+                  <span className="font-bold text-amber-300">1,000,000 tNIGHT</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Kasalukuyang Naimbak:</span>
+                  <span className="font-bold text-emerald-400">200 Pamilya Naayudahan</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Smart Contract:</span>
+                  <span className="font-mono text-[0.65rem] text-sky-300 truncate max-w-[140px]">
+                    02005a76e93a...
+                  </span>
+                </div>
+              </div>
+            </div>
 
+            {/* Zero-Knowledge Privacy Guarantee */}
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
+              <h3 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-2">
+                <ShieldCheck className="w-4 h-4" />
+                Anti-Ghost Nullifier Guarantee
+              </h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Bawat pamilya ay may natatanging cryptographic nullifier. Hindi posibleng makakuha nang dalawang beses o makasingit ang mga "ghost beneficiaries".
+              </p>
+            </div>
+
+            {/* Evaluator Quick Autofill Pill */}
+            <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30">
+              <span className="text-xs font-bold text-amber-400 block mb-1">
+                🧪 Evaluator Quick Data
+              </span>
+              <p className="text-xs text-slate-300 mb-2">
+                Gamitin ang datos na ito para subukan ang end-to-end ZK proof:
+              </p>
+              <div className="bg-black/50 p-2.5 rounded-lg font-mono text-xs text-slate-200 space-y-1 mb-2">
+                <div>ID: <span className="text-amber-300">PSN-2024-8849-1102</span></div>
+                <div>PIN: <span className="text-sky-300">4912</span></div>
+              </div>
+              <button
+                type="button"
+                onClick={handleAutoFillDemoBeneficiary}
+                className="w-full py-2 rounded-lg text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors"
+              >
+                Auto-Fill Demo Credentials
+              </button>
             </div>
           </div>
         </div>
-      </main>
 
-      {/* Modals */}
-      <ReliefReceiptModal
-        receipt={receipt}
-        isOpen={showReceiptModal}
-        onClose={() => setShowReceiptModal(false)}
-      />
+      </div>
 
-      <OnboardingModal
-        isOpen={showOnboarding}
-        onClose={() => setShowOnboarding(false)}
-      />
+      {/* Official Relief Receipt Modal */}
+      {receipt && (
+        <ReliefReceiptModal
+          isOpen={showReceiptModal}
+          onClose={() => setShowReceiptModal(false)}
+          receipt={receipt}
+        />
+      )}
     </div>
   );
 };
