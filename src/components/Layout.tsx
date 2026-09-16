@@ -64,37 +64,50 @@ const Layout: React.FC<LayoutProps> = ({
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-blue-500/30 selection:text-white">
+    <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white">
+      {/* Top Disaster Emergency Broadcast Bar */}
+      <div className="w-full bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white text-[0.7rem] sm:text-xs font-semibold py-1.5 px-4 shadow-md flex items-center justify-between overflow-hidden relative border-b border-red-500/30">
+        <div className="flex items-center gap-2 max-w-7xl mx-auto w-full">
+          <span className="flex items-center gap-1 bg-white text-red-700 font-extrabold px-1.5 py-0.5 rounded text-[0.6rem] uppercase tracking-wider shrink-0 shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping inline-block mr-0.5" />
+            CALAMITY ADVISORY
+          </span>
+          <div className="overflow-hidden whitespace-nowrap w-full">
+            <span className="inline-block animate-marquee sm:animate-none">
+              🚨 <strong>TYPHOON RELIEF ACTIVE:</strong> Region II & IV-A evacuation centers eligible for <strong>₱5,000 emergency cash assistance</strong>. Zero gas fees sponsored by DRRM.
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Header */}
       <header
         className={`
           w-full border-b sticky top-0 z-50 transition-all duration-300
           ${scrolled
-            ? "border-blue-500/15 backdrop-blur-2xl bg-[#0A1628]/92 shadow-xl shadow-black/20"
-            : "border-white/[0.06] backdrop-blur-xl bg-[#0A1628]/70"
+            ? "border-amber-500/20 backdrop-blur-2xl bg-[#0A1628]/95 shadow-xl shadow-black/30"
+            : "border-white/[0.08] backdrop-blur-xl bg-[#0A1628]/80"
           }
         `}
       >
         {/* Top subtle ambient highlight */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-sky-400/25 to-transparent" />
-        {/* Bottom glow line */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-3 group">
-            <GhostFreeLogo size={36} variant="icon" animated showGlow />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2.5 sm:gap-3 group">
+            <GhostFreeLogo size={34} variant="icon" animated showGlow />
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent group-hover:from-white group-hover:to-sky-300 transition-colors">
+                <span className="text-lg sm:text-xl font-black tracking-tight text-white group-hover:text-amber-300 transition-colors">
                   GhostFree
                 </span>
-                <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[0.65rem] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-xs shadow-emerald-500/10">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[0.65rem] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Preprod Live
+                  Preprod
                 </span>
               </div>
-              <span className="text-[0.65rem] font-medium text-slate-400 tracking-wider hidden sm:block">
-                Stop the Ghosts. Protect the People.
+              <span className="text-[0.65rem] font-medium text-slate-400 tracking-wide hidden sm:block">
+                Ligtas na Ayuda. Walang Ghost Beneficiaries.
               </span>
             </div>
           </a>
@@ -103,105 +116,113 @@ const Layout: React.FC<LayoutProps> = ({
           <div className="hidden md:flex items-center gap-2">
             <a
               href="/claim"
-              className="px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 hover:border-blue-400/50 transition-all flex items-center gap-1.5 shadow-sm shadow-blue-500/10"
+              className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 border border-amber-300 transition-all flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
             >
-              <Smartphone className="w-3.5 h-3.5 text-sky-400" />
-              <span>Claim Aid</span>
+              <Smartphone className="w-3.5 h-3.5 text-slate-950" />
+              <span>Claim Ayuda (₱5,000)</span>
             </a>
             <a
               href="/transparency"
-              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
+              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
             >
               <Landmark className="w-3.5 h-3.5 text-amber-400" />
               <span>Treasury</span>
             </a>
             <a
               href="/admin/login"
-              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-300 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
+              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
             >
-              <Key className="w-3.5 h-3.5 text-blue-400" />
-              <span>LGU Login</span>
+              <Key className="w-3.5 h-3.5 text-sky-400" />
+              <span>LGU DRRM</span>
             </a>
             <button
               onClick={() => setShowVerifier(true)}
-              className="px-2.5 py-1.5 rounded-xl text-xs text-emerald-400 hover:bg-emerald-400/10 border border-emerald-400/20 transition-colors flex items-center gap-1.5 font-medium"
+              className="px-2.5 py-1.5 rounded-xl text-xs text-emerald-400 hover:bg-emerald-400/10 border border-emerald-400/30 transition-colors flex items-center gap-1.5 font-medium"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
               <span>Verify Voucher</span>
             </button>
             <button
               onClick={() => setShowOnboarding(true)}
-              className="px-2.5 py-1.5 rounded-xl text-xs text-sky-400 hover:bg-sky-400/10 border border-sky-400/20 transition-colors flex items-center gap-1.5 font-medium"
+              className="px-2.5 py-1.5 rounded-xl text-xs text-sky-300 hover:bg-sky-400/10 border border-sky-400/30 transition-colors flex items-center gap-1.5 font-medium"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Tour</span>
+              <span>Gabay / Tour</span>
             </button>
             <div className="h-4 w-[1px] bg-white/10 mx-1" />
             <LanguageSelector />
           </div>
 
-          {/* Mobile Hamburger */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/10 text-white/80 transition-colors"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+          {/* Mobile Navigation Buttons */}
+          <div className="flex items-center gap-2 md:hidden">
+            <a
+              href="/claim"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-sm"
+            >
+              Claim ₱5k
+            </a>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-xl bg-white/[0.06] border border-white/10 hover:bg-white/10 text-white transition-colors"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
 
-        {/* Mobile Slide-in Menu */}
+        {/* Mobile Dropdown Menu */}
         <div
           className={`
             md:hidden overflow-hidden transition-all duration-300 ease-in-out
-            ${mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"}
+            ${mobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
           `}
         >
-          <div className="px-4 pb-4 pt-1 space-y-2 border-t border-white/[0.06]">
+          <div className="px-4 pb-4 pt-2 space-y-2 border-t border-white/[0.08] bg-slate-950/95">
             <a
               href="/claim"
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 transition-colors"
             >
-              <Smartphone className="w-4 h-4 text-accent-success" />
-              Citizen Claim Portal
-            </a>
-            <a
-              href="/admin/login"
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors"
-            >
-              <Landmark className="w-4 h-4 text-civic-sky" />
-              LGU Admin Portal
+              <Smartphone className="w-4.5 h-4.5 text-slate-950" />
+              Citizen Claim Portal (Kumuha ng Ayuda)
             </a>
             <a
               href="/transparency"
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-white/70 hover:bg-white/5 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
             >
-              <Landmark className="w-4 h-4 text-accent-gold" />
-              Treasury Explorer
+              <Landmark className="w-4 h-4 text-amber-400" />
+              Public Calamity Treasury (COA Explorer)
+            </a>
+            <a
+              href="/admin/login"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
+            >
+              <Key className="w-4 h-4 text-sky-400" />
+              LGU Disaster Command Center (Admin)
             </a>
             <button
               onClick={() => { setShowVerifier(true); setMobileMenuOpen(false); }}
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-emerald-400 hover:bg-emerald-400/5 transition-colors w-full text-left"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-emerald-400 hover:bg-emerald-400/10 transition-colors w-full text-left border border-emerald-500/20"
             >
               <ShieldCheck className="w-4 h-4" />
-              Verify Voucher
+              Verify Relief Voucher (Para sa Tanod/Marshal)
             </button>
             <button
               onClick={() => { setShowOnboarding(true); setMobileMenuOpen(false); }}
-              className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-civic-sky hover:bg-civic-sky/5 transition-colors w-full text-left"
+              className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-sky-300 hover:bg-sky-400/10 transition-colors w-full text-left border border-sky-500/20"
             >
               <Sparkles className="w-4 h-4" />
-              Product Tour
+              Gabay sa Paggamit (Civic-Tech Tour)
             </button>
-            <div className="pt-2 px-3">
+            <div className="pt-2 px-1">
               <LanguageSelector />
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className={`flex-1 ${className}`}>
+      {/* Main Content with Safe Mobile Spacing */}
+      <main className={`flex-1 pb-16 sm:pb-8 ${className}`}>
         {children}
       </main>
 

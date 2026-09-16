@@ -164,6 +164,8 @@ export interface AuditReportEntry {
 export interface AccessibilityPreferences {
   highContrast: boolean;
   largeText: boolean;
+  textScale?: 'normal' | 'large' | 'xlarge';
+  sunlightMode?: boolean;
 }
 
 /** Claim lifecycle stage for status tracking (feedback-driven: fb-user-007) */

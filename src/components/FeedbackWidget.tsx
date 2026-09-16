@@ -103,12 +103,12 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 px-3.5 py-2 rounded-full bg-civic-trust/90 hover:bg-civic-trust text-white shadow-xl shadow-civic-trust/20 backdrop-blur-md border border-white/20 transition-all hover:scale-105 active:scale-95 text-xs font-semibold"
+          className="fixed bottom-24 right-4 sm:bottom-6 sm:right-6 z-40 flex items-center gap-2 px-3.5 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 text-amber-300 shadow-xl shadow-black/40 backdrop-blur-md border-2 border-amber-500/40 hover:border-amber-400 transition-all hover:scale-105 active:scale-95 text-xs font-bold"
           aria-label="Give Feedback"
           id="global-feedback-trigger"
         >
-          <MessageSquarePlus className="w-4 h-4 text-accent-gold" />
-          <span>Give Feedback</span>
+          <MessageSquarePlus className="w-4 h-4 text-amber-400" />
+          <span className="hidden xs:inline">Puna / Feedback</span>
         </button>
       )}
 
