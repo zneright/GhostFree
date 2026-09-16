@@ -1,7 +1,7 @@
 // ============================================
 // GhostFree — Citizen Claim Portal (v2.5)
 // Mobile-First & PWD-Accessible Disaster Relief Terminal
-// Illustrated PhilSys ID Guide · Discrete PIN Keypad · Human ZK Proving
+// Illustrated PhilSys ID Guide · GCash-style MPIN Keypad · Human ZK Proving
 // Evaluator Sandbox Mode · Digital Relief Voucher · Sticky Thumb Action
 // ============================================
 
@@ -9,7 +9,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMidnightWallet } from "../../contexts/MidnightWalletContext";
 import { useMidnightContract } from "../../hooks/useMidnightContract";
-import { MIDNIGHT_CONFIG } from "../../configuration/midnight.config";
 import { validateClaimInputs } from "../../services/proof.service";
 import { generateReliefReceipt, submitFeedback } from "../../services/feedback.service";
 import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
@@ -18,7 +17,6 @@ import LanguageSelector from "../../components/LanguageSelector";
 import DisasterConnectivityBanner from "../../components/DisasterConnectivityBanner";
 import GhostFreeLogo from "../../components/GhostFreeLogo";
 import {
-  t,
   getStoredLanguage,
   subscribeLanguageChange,
   type SupportedLanguage,
@@ -26,30 +24,20 @@ import {
 import {
   Shield,
   Wallet,
-  KeyRound,
-  Fingerprint,
   CheckCircle2,
   XCircle,
   AlertTriangle,
-  ArrowLeft,
   ArrowRight,
   Loader2,
   Eye,
   EyeOff,
   ShieldCheck,
-  Lock,
-  ExternalLink,
-  RefreshCw,
   Smartphone,
   Sparkles,
   Star,
   Download,
   Landmark,
-  Zap,
-  Info,
   Check,
-  Flame,
-  FileCheck,
   Volume2,
   VolumeX,
   CreditCard,
@@ -57,6 +45,9 @@ import {
   Printer,
   ChevronDown,
   ChevronUp,
+  Delete,
+  QrCode,
+  Radio,
 } from "lucide-react";
 
 // ---- Holographic Radar Scanner Component ----
@@ -76,7 +67,7 @@ const RadarProvingScanner: React.FC<{ progress: number }> = ({ progress }) => {
 
       {/* Center core */}
       <div className="relative z-10 flex flex-col items-center justify-center">
-        <Fingerprint className="w-8 h-8 text-emerald-400 mb-1 animate-pulse" />
+        <ShieldCheck className="w-8 h-8 text-emerald-400 mb-1 animate-pulse" />
         <span className="text-2xl font-black text-white tabular-nums tracking-tight">
           {progress}%
         </span>
@@ -92,10 +83,10 @@ const RadarProvingScanner: React.FC<{ progress: number }> = ({ progress }) => {
 const ConfettiCelebration: React.FC<{ active: boolean }> = ({ active }) => {
   const particles = useMemo(() => {
     if (!active) return [];
-    return Array.from({ length: 28 }, (_, i) => ({
+    return Array.from({ length: 32 }, (_, i) => ({
       id: i,
-      x: 50 + (Math.random() - 0.5) * 80,
-      y: 50 + (Math.random() - 0.5) * 60,
+      x: 50 + (Math.random() - 0.5) * 85,
+      y: 50 + (Math.random() - 0.5) * 65,
       color: ["#10B981", "#F59E0B", "#0EA5E9", "#FBBF24", "#34D399", "#38BDF8"][i % 6],
       delay: Math.random() * 0.4,
       size: 5 + Math.random() * 6,
@@ -132,12 +123,15 @@ const IllustratedIdCard: React.FC<{
 }> = ({ nationalId, onUseDemo }) => {
   return (
     <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950/40 border-2 border-sky-500/30 relative overflow-hidden shadow-lg mb-4">
-      {/* Background seal watermark */}
-      <div className="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-amber-500/5 border border-amber-500/10 pointer-events-none" />
+      {/* Philippine Flag Color Bars on top edge */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 flex">
+        <div className="h-full w-1/2 bg-blue-600" />
+        <div className="h-full w-1/2 bg-red-600" />
+      </div>
 
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 pt-1">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[0.65rem] font-black text-amber-400">
+          <div className="w-7 h-7 rounded-md bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-[0.65rem] font-black text-amber-400">
             PH
           </div>
           <div>
@@ -158,9 +152,11 @@ const IllustratedIdCard: React.FC<{
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="w-12 h-14 rounded-lg bg-slate-800 border border-white/10 flex flex-col items-center justify-center shrink-0">
+        {/* Photo Frame with hologram chip */}
+        <div className="w-12 h-14 rounded-lg bg-slate-800 border border-white/10 flex flex-col items-center justify-center shrink-0 relative">
           <div className="w-6 h-6 rounded-full bg-slate-700 mb-1" />
           <div className="w-8 h-3 rounded-full bg-slate-700" />
+          <div className="absolute bottom-0.5 right-0.5 w-3 h-2.5 rounded-sm bg-amber-400/80 border border-amber-300" title="Smart Chip" />
         </div>
         <div className="flex-1 min-w-0">
           <span className="text-[0.65rem] text-amber-400 font-bold block uppercase tracking-wider">
@@ -179,10 +175,10 @@ const IllustratedIdCard: React.FC<{
 };
 
 // ---- Main Component ----
-const CitizenClaimPortal: React.FC = () => {
+export const CitizenClaimPortal: React.FC = () => {
   const navigate = useNavigate();
-  const { connected, address, connect, disconnect, isSandbox } = useMidnightWallet();
-  const { executeClaimAidCircuit, state: contractState, submitting: contractSubmitting } = useMidnightContract();
+  const { connected, address, connect, isSandbox } = useMidnightWallet();
+  const { executeClaimAidCircuit, state: contractState } = useMidnightContract();
 
   // Navigation & Flow State
   const [step, setStep] = useState<ClaimStep>("connect");
@@ -242,7 +238,7 @@ const CitizenClaimPortal: React.FC = () => {
         "Hakbang isa: Ikonekta ang inyong wallet o gamitin ang Evaluator Sandbox para masimulan ang pag-claim ng limang libong pisong ayuda. Libre po ito at walang bayad.";
     } else if (step === "credentials") {
       message =
-        "Hakbang dalawa: Ipasok ang inyong PhilSys National ID at ang apat na digit na PIN mula sa inyong relief voucher. Hindi po ito makikita ng gobyerno o ninuman.";
+        "Hakbang dalawa: Ipasok ang inyong PhilSys National ID at ang apat na digit na PIN mula sa inyong relief voucher gamit ang keypad. Hindi po ito makikita ng gobyerno o ninuman.";
     } else if (step === "proving") {
       message =
         "Hakbang tatlo: Kasalukuyang sinusuri ng inyong telepono ang inyong eligibility nang palihim gamit ang zero knowledge proof.";
@@ -394,23 +390,35 @@ const CitizenClaimPortal: React.FC = () => {
   ];
   const currentStepIndex = steps.findIndex((s) => s.key === step);
 
+  // Keypad button click
+  const handleKeypadPress = (val: string) => {
+    if (val === "clear") {
+      setSecretPin("");
+    } else if (val === "backspace") {
+      setSecretPin((prev) => prev.slice(0, -1));
+    } else if (secretPin.length < 4) {
+      setSecretPin((prev) => prev + val);
+    }
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 select-none">
       {/* Disaster Network Resilience Indicator */}
       <DisasterConnectivityBanner />
 
       {/* Top Mobile Emergency Aid Header Card */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/80 via-slate-900 to-slate-900 border-2 border-amber-500/30 shadow-xl mb-5 relative overflow-hidden">
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/90 via-slate-900 to-slate-900 border-2 border-amber-500/40 shadow-xl mb-5 relative overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold bg-red-600 text-white uppercase tracking-wider animate-pulse">
+              <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold bg-red-600 text-white uppercase tracking-wider animate-pulse flex items-center gap-1">
+                <Radio className="w-3 h-3" />
                 QRF Active
               </span>
               <span className="text-xs text-amber-400 font-bold">Typhoon Marce Calamity Assistance</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ household ayuda</span>
+              ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ pamilyang ayuda</span>
             </h1>
             <p className="text-xs text-slate-300 mt-0.5">
               100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID
@@ -422,7 +430,7 @@ const CitizenClaimPortal: React.FC = () => {
               onClick={handleVoiceGuide}
               className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
                 isSpeaking
-                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse"
+                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
                   : "bg-white/10 text-amber-300 hover:bg-white/15 border-amber-400/40"
               }`}
               id="claim-voice-guide-btn"
@@ -571,7 +579,7 @@ const CitizenClaimPortal: React.FC = () => {
               </div>
             )}
 
-            {/* === STEP 2: CREDENTIALS INPUT === */}
+            {/* === STEP 2: CREDENTIALS INPUT WITH AUTHENTIC MPIN KEYPAD === */}
             {step === "credentials" && (
               <div className="space-y-4">
                 <div className="text-center py-1">
@@ -599,64 +607,99 @@ const CitizenClaimPortal: React.FC = () => {
                   onUseDemo={handleAutoFillDemoBeneficiary}
                 />
 
-                {/* Input Fields */}
-                <div className="space-y-3">
-                  <div>
-                    <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
-                      1. PhilSys National ID Number
+                {/* Input 1: PhilSys ID */}
+                <div>
+                  <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
+                    1. PhilSys National ID Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="national-id"
+                      type="text"
+                      className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
+                      placeholder="Halimbawa: PSN-2024-8849-1102"
+                      value={nationalId}
+                      onChange={(e) => setNationalId(e.target.value)}
+                      autoComplete="off"
+                    />
+                    {idValid && (
+                      <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
+                        <CheckCircle2 className="w-5 h-5" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Input 2: 4-Digit MPIN Display & Virtual Keypad */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-bold text-slate-200">
+                      2. 4-Digit Secret PIN (mula sa Barangay Relief Slip)
                     </label>
-                    <div className="relative">
-                      <input
-                        id="national-id"
-                        type="text"
-                        className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
-                        placeholder="Halimbawa: PSN-2024-8849-1102"
-                        value={nationalId}
-                        onChange={(e) => setNationalId(e.target.value)}
-                        autoComplete="off"
-                      />
-                      {idValid && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
-                          <CheckCircle2 className="w-5 h-5" />
-                        </div>
-                      )}
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowPin(!showPin)}
+                      className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
+                    >
+                      {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      <span>{showPin ? "Itago" : "Ipakita"}</span>
+                    </button>
                   </div>
 
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label htmlFor="secret-pin" className="text-xs font-bold text-slate-200">
-                        2. 4-Digit Secret PIN (mula sa Barangay / DSWD Slip)
-                      </label>
-                      <button
-                        type="button"
-                        onClick={() => setShowPin(!showPin)}
-                        className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
-                      >
-                        {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                        <span>{showPin ? "Itago" : "Ipakita"}</span>
-                      </button>
-                    </div>
-
-                    <div className="relative">
-                      <input
-                        id="secret-pin"
-                        type={showPin ? "text" : "password"}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        maxLength={8}
-                        className="input-civic font-mono text-xl sm:text-2xl tracking-[0.5em] text-center font-black bg-slate-950/80 border-2 border-white/20 focus:border-amber-400 text-amber-300"
-                        placeholder="••••"
-                        value={secretPin}
-                        onChange={(e) => setSecretPin(e.target.value)}
-                        autoComplete="off"
-                      />
-                      {pinValid && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
-                          <CheckCircle2 className="w-5 h-5" />
+                  {/* 4 Discrete MPIN Boxes */}
+                  <div className="flex items-center justify-center gap-3 my-2">
+                    {[0, 1, 2, 3].map((index) => {
+                      const char = secretPin[index];
+                      const isFilled = Boolean(char);
+                      return (
+                        <div
+                          key={index}
+                          className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all ${
+                            isFilled
+                              ? "bg-slate-900 border-amber-400 text-amber-300 shadow-md shadow-amber-500/20"
+                              : "bg-slate-950/60 border-white/20 text-slate-600"
+                          }`}
+                        >
+                          {isFilled ? (showPin ? char : "●") : ""}
                         </div>
-                      )}
-                    </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* GCash / Maya-style 3x4 Touch Keypad */}
+                  <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto mt-3 mb-2">
+                    {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
+                      <button
+                        key={num}
+                        type="button"
+                        onClick={() => handleKeypadPress(num)}
+                        className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                      >
+                        {num}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => handleKeypadPress("clear")}
+                      className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleKeypadPress("0")}
+                      className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                    >
+                      0
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleKeypadPress("backspace")}
+                      className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
+                      title="Backspace"
+                    >
+                      <Delete className="w-5 h-5" />
+                    </button>
                   </div>
                 </div>
 
@@ -674,7 +717,7 @@ const CitizenClaimPortal: React.FC = () => {
                   className="btn-civic-gold w-full py-4 text-sm sm:text-base font-black shadow-xl"
                   id="generate-zk-proof-btn"
                 >
-                  <Fingerprint className="w-5 h-5" />
+                  <ShieldCheck className="w-5 h-5" />
                   <span>Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
@@ -796,7 +839,7 @@ const CitizenClaimPortal: React.FC = () => {
                       <div className="grid grid-cols-2 gap-2 text-xs mb-3">
                         <div>
                           <span className="text-[0.65rem] text-slate-500 block font-semibold">VOUCHER SERIAL:</span>
-                          <span className="font-mono font-black text-slate-900 text-sm">GF-CALAMITY-77B1</span>
+                          <span className="font-mono font-black text-slate-900 text-sm">GF-MARCE-2026-77B1</span>
                         </div>
                         <div>
                           <span className="text-[0.65rem] text-slate-500 block font-semibold">HALAGA / AMOUNT:</span>
@@ -810,6 +853,15 @@ const CitizenClaimPortal: React.FC = () => {
                           <span className="text-[0.65rem] text-slate-500 block font-semibold">STATUS SA CHECKPOINT:</span>
                           <span className="font-bold text-emerald-700">1 Ration Entitled</span>
                         </div>
+                      </div>
+
+                      {/* Barcode representation */}
+                      <div className="py-2 px-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <QrCode className="w-5 h-5 text-slate-900" />
+                          <span className="font-mono text-[0.7rem] font-bold">VERIFY: 02005a76e93a86c0</span>
+                        </div>
+                        <span className="text-[0.65rem] text-slate-500 font-semibold">DSWD DRRM Valid</span>
                       </div>
 
                       {/* Action buttons on voucher */}
@@ -931,7 +983,7 @@ const CitizenClaimPortal: React.FC = () => {
               className="w-full p-3.5 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs font-bold text-slate-200"
             >
               <span className="flex items-center gap-2">
-                <Info className="w-4 h-4 text-amber-400" />
+                <Landmark className="w-4 h-4 text-amber-400" />
                 <span>Tingnan ang Detalye ng Operasyon & Gabay</span>
               </span>
               {showDetailsMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
