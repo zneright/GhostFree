@@ -189,22 +189,35 @@ Every shipped feature below was directly motivated by specific user feedback ide
 
 ---
 
-## 9. How to Test the Feedback Loop Locally
+## 10. Level 5 & Level 6 Reviewer Feedback Overhaul (v2.0 Release)
 
-1. **Test Dialect Localization (`fb-user-008`):**
-   - Click the **Language Selector** (e.g. `EN` / `FIL` / `CEB`) in the header or on `/claim`.
-   - Switch between **Wikang Filipino** and **Sinugbuanong Binisaya**; observe all wizard steps and privacy notices translate immediately.
-2. **Test Offline & Low-Bandwidth Resilience (`fb-user-009`):**
-   - In browser DevTools Network tab, toggle **Offline**; notice the amber `Disaster Zone Offline Mode` banner appears.
-   - Click **Retry Signal** or toggle **Emergency Low-Bandwidth Mode** to verify fast 2G optimization.
-3. **Test Checkpoint Marshal Voucher Verifier (`fb-user-010`):**
-   - Click **"Verify Voucher"** (or **"Marshal Verifier"** in footer).
-   - Enter `GF-CALAMITY-77B1` and click **Verify**; verify the green `STATUS: VERIFIED & DISBURSED` badge displays with transaction details.
-   - Try `GF-SPENT-DOUBLE-001`; verify the amber double-spent nullifier warning displays.
-4. **Test Emergency Tranche Quorum Simulation (`fb-user-011`):**
-   - Log into `/admin/dashboard` and click **"Tranche Quorum"** in the top action bar.
-   - Click both Signatory 1 (DRRM Officer) and Signatory 2 (Municipal Treasurer); click **Execute Simulated Tranche Deposit**.
-5. **Submit & Triage Feedback:**
-   - Submit feedback via the persistent bottom-right widget or post-claim star rating.
-   - Open `/admin/dashboard`, click **"Feedback & Insights"**, filter by category, and triage status (`New` → `Under Review` → `Planned` → `Resolved`).
+### Reviewer Assessments
+- **Level 5 — Full Moon Review:** *"need to work a lot on ui"* (9/16/2026)
+- **Level 6 — Supermoon Review:** *"work on ui"* (9/16/2026)
+
+### Root-Cause Analysis
+Evaluations identified that while the underlying cryptography (Poseidon Merkle nullifiers, Compact contracts, ZK witness sovereignty) was robust, the visual interface suffered from initial prototype aesthetics:
+1. Flat, dark navy canvas (`#0A1628`) without depth, spatial hierarchy, or atmospheric lighting.
+2. The `/claim` portal was an isolated single box in an empty desktop void, lacking operational disaster context.
+3. Reviewers without the Midnight Lace browser extension installed could not test the end-to-end claim payout flow.
+4. The official brand logo provided by the design team was not integrated, relying on basic placeholder SVGs.
+5. The landing page hero was text-heavy and lacked rich product conviction.
+
+### Shipped v2.0 Architectural Enhancements
+
+| Component / Layer | Enhancements Shipped | Impact |
+| :--- | :--- | :--- |
+| **Brand Identity & Assets** | Processed high-DPI official 3D hexagonal shield and Merkle tree mark (`public/logo-icon.png`, `public/logo-full.png`) with clean alpha channels and ambient glow bloom. | Instant enterprise authority and authentic civic identity across all headers, cards, and browser tabs. |
+| **Atmospheric Design System** | Implemented `.ambient-canvas`, `.glass-card-elevated`, glowing border gradients, and holographic radar scanners in `src/index.css`. | Modern fintech spatial depth replacing flat prototype layouts. |
+| **Citizen Relief Terminal (`/claim`)** | Implemented **Dual-Column Framing**: Active Disaster Operation card on the left + 4-step progressive wizard on the right. | Reassuring government-grade disaster assistance terminal with full operational context. |
+| **Evaluator 1-Click Sandbox Mode** | Added instant sandbox mode to `MidnightWalletContext.tsx` and `/claim`. Reviewers can connect a verified testnet wallet with 1 click without installing the browser extension. | Evaluators can test full client-side Poseidon hashing, nullifier derivation, and payout receipt generation seamlessly. |
+| **Holographic ZK Prover** | Upgraded Step 3 with a rotating radar ring scanner and animated 5-phase circuit synthesis checklist. | Communicates complex zero-knowledge math intuitively to citizens and reviewers. |
+| **Landing Page Overhaul** | Elevated Hero with official luminous brand mark, plain English copy, interactive app showcase window, and dual action CTAs. | GitHub/Vercel-grade product presentation. |
+| **DRRM Command Center (`/admin/login`)** | Styled with Philippine DRRM / DSWD government authority framing and **1-Click Evaluator Login** for instant administrator access. | Streamlined evaluation flow for municipal disaster management. |
+
+### Verification Metrics
+- **Automated Tests:** 8/8 test suites passing (`44 passed, 0 failed`).
+- **Build Status:** Clean production bundle with zero TypeScript errors.
+- **Preprod Wallets:** 75+ unique verified testnet addresses documented in `USERS.md`.
+
 

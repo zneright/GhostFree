@@ -82,19 +82,19 @@ export const GhostFreeLogo: React.FC<GhostFreeLogoProps> = ({
       <div className={`relative inline-flex flex-col items-center justify-center ${className}`}>
         {/* Ambient background bloom */}
         <div
-          className="absolute -inset-6 rounded-full bg-gradient-to-r from-blue-600/30 via-sky-500/25 to-cyan-400/20 blur-2xl pointer-events-none animate-pulse"
+          className="absolute -inset-10 rounded-full bg-gradient-to-r from-blue-600/35 via-sky-500/30 to-cyan-400/25 blur-3xl pointer-events-none animate-pulse"
           style={{ animationDuration: "4s" }}
         />
         {!imgError ? (
           <img
-            src="/logo-full.png"
+            src="/logo-icon.png"
             alt="GhostFree Logo"
             width={size}
-            height={Math.round(size * 1.01)}
+            height={size}
             style={{
               width: `${size}px`,
-              height: "auto",
-              ...glowStyle,
+              height: `${size}px`,
+              filter: "drop-shadow(0 0 24px rgba(56, 189, 248, 0.5)) drop-shadow(0 0 45px rgba(14, 165, 233, 0.3))",
             }}
             className={`relative z-10 transition-transform duration-300 hover:scale-105 ${animated ? "logo-glow" : ""}`}
             onError={() => setImgError(true)}
@@ -102,34 +102,38 @@ export const GhostFreeLogo: React.FC<GhostFreeLogoProps> = ({
         ) : (
           renderFallbackSvg()
         )}
+        <div className="relative z-10 mt-3 flex items-center justify-center">
+          <span className="text-2xl sm:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-sky-200 to-cyan-300 bg-clip-text text-transparent drop-shadow-md">
+            GhostFree
+          </span>
+        </div>
       </div>
     );
   }
 
   if (variant === "full") {
     return (
-      <div className={`inline-flex items-center gap-3 ${className}`}>
+      <div className={`inline-flex items-center gap-2.5 ${className}`}>
         {!imgError ? (
           <img
-            src="/logo-full.png"
+            src="/logo-icon.png"
             alt="GhostFree Logo"
             width={size}
+            height={size}
             style={{
               width: `${size}px`,
-              height: "auto",
+              height: `${size}px`,
               ...glowStyle,
             }}
-            className={`transition-transform duration-200 hover:scale-102 ${animated ? "logo-glow" : ""}`}
+            className={`transition-transform duration-200 hover:scale-105 ${animated ? "logo-glow" : ""}`}
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="flex items-center gap-2.5">
-            {renderFallbackSvg()}
-            <span className="font-extrabold tracking-tight bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#0EA5E9] bg-clip-text text-transparent text-xl">
-              GhostFree
-            </span>
-          </div>
+          renderFallbackSvg()
         )}
+        <span className="font-extrabold tracking-tight bg-gradient-to-r from-white via-sky-200 to-cyan-300 bg-clip-text text-transparent text-xl">
+          GhostFree
+        </span>
       </div>
     );
   }
