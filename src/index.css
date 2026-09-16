@@ -860,10 +860,8 @@ body.high-contrast [class*="bg-blue-950"],
 body.sunlight-mode [class*="bg-blue-950"],
 body.high-contrast [class*="bg-indigo-9"],
 body.sunlight-mode [class*="bg-indigo-9"],
-body.high-contrast [class*="bg-[#0A1628]"],
-body.sunlight-mode [class*="bg-[#0A1628]"],
-body.high-contrast [class*="bg-[#0B1528]"],
-body.sunlight-mode [class*="bg-[#0B1528]"],
+body.high-contrast [class*="bg-[#"],
+body.sunlight-mode [class*="bg-[#"],
 body.high-contrast [class*="bg-civic-"],
 body.sunlight-mode [class*="bg-civic-"],
 body.high-contrast [class*="bg-shield-"],
@@ -894,7 +892,7 @@ body.sunlight-mode [class*="border-shield-"] {
   border-color: #CBD5E1 !important;
 }
 
-/* 2. Secondary Surface Backgrounds: Pills, inset wells, table headers */
+/* 2. Secondary Surface Backgrounds: Inset wells, table headers */
 body.high-contrast [class*="bg-white/5"],
 body.sunlight-mode [class*="bg-white/5"],
 body.high-contrast [class*="bg-white/10"],
@@ -1021,32 +1019,50 @@ body.sunlight-mode td {
   color: #0F172A !important;
 }
 
-/* 8. Badges & Inset Highlights */
-body.high-contrast [class*="bg-emerald-9"],
-body.sunlight-mode [class*="bg-emerald-9"],
-body.high-contrast [class*="bg-emerald-500/10"],
-body.sunlight-mode [class*="bg-emerald-500/10"] {
-  background-color: #ECFDF5 !important;
-  border-color: #059669 !important;
-}
-
+/* 8. Badges & Inset Highlights mapped to high-contrast daylight pastels */
+body.high-contrast [class*="bg-amber-500/"],
+body.sunlight-mode [class*="bg-amber-500/"],
+body.high-contrast [class*="bg-amber-400/"],
+body.sunlight-mode [class*="bg-amber-400/"],
 body.high-contrast [class*="bg-amber-9"],
-body.sunlight-mode [class*="bg-amber-9"],
-body.high-contrast [class*="bg-amber-500/10"],
-body.sunlight-mode [class*="bg-amber-500/10"] {
+body.sunlight-mode [class*="bg-amber-9"] {
   background-color: #FFFBEB !important;
   border-color: #D97706 !important;
+  color: #B45309 !important;
 }
 
+body.high-contrast [class*="bg-emerald-500/"],
+body.sunlight-mode [class*="bg-emerald-500/"],
+body.high-contrast [class*="bg-emerald-400/"],
+body.sunlight-mode [class*="bg-emerald-400/"],
+body.high-contrast [class*="bg-emerald-9"],
+body.sunlight-mode [class*="bg-emerald-9"] {
+  background-color: #ECFDF5 !important;
+  border-color: #059669 !important;
+  color: #047857 !important;
+}
+
+body.high-contrast [class*="bg-sky-500/"],
+body.sunlight-mode [class*="bg-sky-500/"],
+body.high-contrast [class*="bg-blue-500/"],
+body.sunlight-mode [class*="bg-blue-500/"],
 body.high-contrast [class*="bg-blue-9"],
-body.sunlight-mode [class*="bg-blue-9"],
-body.high-contrast [class*="bg-blue-500/10"],
-body.sunlight-mode [class*="bg-blue-500/10"] {
+body.sunlight-mode [class*="bg-blue-9"] {
   background-color: #EFF6FF !important;
   border-color: #2563EB !important;
+  color: #1D4ED8 !important;
 }
 
-/* 9. High-Contrast Action Buttons */
+body.high-contrast [class*="bg-red-500/"],
+body.sunlight-mode [class*="bg-red-500/"],
+body.high-contrast [class*="bg-rose-500/"],
+body.sunlight-mode [class*="bg-rose-500/"] {
+  background-color: #FEF2F2 !important;
+  border-color: #DC2626 !important;
+  color: #B91C1C !important;
+}
+
+/* 9. High-Contrast Action Buttons & Solid Button Text Protection */
 body.high-contrast .btn-civic-gold,
 body.sunlight-mode .btn-civic-gold {
   background: #D97706 !important;
@@ -1063,6 +1079,30 @@ body.sunlight-mode .btn-civic-emerald {
   font-weight: 800 !important;
 }
 
+body.high-contrast .btn-primary,
+body.sunlight-mode .btn-primary {
+  background: #1D4ED8 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #1E40AF !important;
+  font-weight: 800 !important;
+}
+
+/* CRITICAL: Ensure solid buttons & alert badges maintain pure white text, never inverted black */
+body.high-contrast .btn-civic-gold *,
+body.sunlight-mode .btn-civic-gold *,
+body.high-contrast .btn-civic-emerald *,
+body.sunlight-mode .btn-civic-emerald *,
+body.high-contrast .btn-primary *,
+body.sunlight-mode .btn-primary *,
+body.high-contrast [class*="bg-red-600"] *,
+body.sunlight-mode [class*="bg-red-600"] *,
+body.high-contrast [class*="bg-blue-600"] *,
+body.sunlight-mode [class*="bg-blue-600"] *,
+body.high-contrast [class*="bg-emerald-600"] *,
+body.sunlight-mode [class*="bg-emerald-600"] * {
+  color: #FFFFFF !important;
+}
+
 body.high-contrast .btn-secondary,
 body.sunlight-mode .btn-secondary {
   background: #F8FAFC !important;
@@ -1075,6 +1115,44 @@ body.sunlight-mode .mobile-bottom-bar {
   background: #FFFFFF !important;
   border-top: 2px solid #0F172A !important;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Modals & Dialogs in Sunlight Mode */
+body.high-contrast .fixed.inset-0,
+body.sunlight-mode .fixed.inset-0 {
+  background-color: rgba(15, 23, 42, 0.6) !important;
+}
+
+body.high-contrast .fixed.inset-0 > div,
+body.sunlight-mode .fixed.inset-0 > div {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 2px solid #0F172A !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Touch Keypad tiles in Sunlight Mode */
+body.high-contrast button[type="button"].bg-slate-900,
+body.sunlight-mode button[type="button"].bg-slate-900,
+body.high-contrast button[type="button"].bg-slate-800,
+body.sunlight-mode button[type="button"].bg-slate-800 {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 2px solid #0F172A !important;
+}
+body.high-contrast button[type="button"].bg-slate-900:hover,
+body.sunlight-mode button[type="button"].bg-slate-900:hover {
+  background-color: #F1F5F9 !important;
+}
+
+/* Floating widgets in Sunlight Mode */
+body.high-contrast #global-feedback-trigger,
+body.sunlight-mode #global-feedback-trigger,
+body.high-contrast #accessibility-toggle-button,
+body.sunlight-mode #accessibility-toggle-button {
+  background-color: #FFFFFF !important;
+  color: #D97706 !important;
+  border: 2px solid #D97706 !important;
 }
 
 /* 10. Font Scale Modes */
