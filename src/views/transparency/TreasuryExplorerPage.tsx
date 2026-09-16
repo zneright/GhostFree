@@ -32,6 +32,7 @@ import {
   generateCOAAuditCSV,
 } from "../../services/governance.service";
 import { MIDNIGHT_CONFIG } from "../../configuration/midnight.config";
+import Layout from "../../components/Layout";
 
 export const TreasuryExplorerPage: React.FC = () => {
   const navigate = useNavigate();
@@ -120,59 +121,47 @@ export const TreasuryExplorerPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-dvh bg-[#0A1628] text-white selection:bg-civic-blue selection:text-white">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 bg-grid opacity-20 pointer-events-none" />
-      <div className="absolute top-0 right-1/4 w-[600px] h-[400px] bg-civic-trust/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-[500px] h-[300px] bg-accent-gold/5 rounded-full blur-[120px] pointer-events-none" />
-
-      {/* Navigation Header */}
-      <header className="relative z-20 border-b border-white/10 backdrop-blur-md bg-[#0A1628]/80 sticky top-0">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+    <Layout>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8 select-none">
+        {/* Top Header Bar inside page */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-slate-900/90 border border-white/10 shadow-xl">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => navigate("/")}
-              className="btn-civic btn-ghost text-xs sm:text-sm py-1.5 px-2.5 flex items-center gap-1.5"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Back</span>
-            </button>
-            <div className="h-5 w-px bg-white/10 hidden sm:block" />
-            <div className="flex items-center gap-2">
-              <Landmark className="w-5 h-5 text-accent-gold" />
-              <h1 className="text-base sm:text-lg font-bold tracking-tight">
-                Public Calamity Treasury & Audit Explorer
-              </h1>
+            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border-2 border-amber-500/30 flex items-center justify-center text-amber-400">
+              <Landmark className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                  Public Calamity Treasury & Audit Explorer
+                </h1>
+                <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  PREPROD LIVE
+                </span>
+              </div>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Real-time disaster relief fund telemetry & COA compliance under Philippine R.A. 10121 & R.A. 10173
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-bold bg-accent-success/15 text-accent-success border border-accent-success/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent-success animate-pulse" />
-              PREPROD VERIFIED
-            </span>
-            <button
-              onClick={handleDownloadCOA}
-              className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-civic-trust hover:bg-civic-trust/80 text-white transition-all flex items-center gap-1.5 shadow-md shadow-civic-trust/20"
-            >
-              {downloadSuccess ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-accent-success" />
-                  <span>Report Downloaded!</span>
-                </>
-              ) : (
-                <>
-                  <FileSpreadsheet className="w-3.5 h-3.5" />
-                  <span>Download COA Audit (.CSV)</span>
-                </>
-              )}
-            </button>
-          </div>
+          <button
+            onClick={handleDownloadCOA}
+            className="btn-civic-gold py-2.5 px-4 text-xs font-black shadow-lg"
+          >
+            {downloadSuccess ? (
+              <>
+                <Check className="w-4 h-4 text-slate-950" />
+                <span>Report Downloaded!</span>
+              </>
+            ) : (
+              <>
+                <FileSpreadsheet className="w-4 h-4 text-slate-950" />
+                <span>Download COA Audit (.CSV)</span>
+              </>
+            )}
+          </button>
         </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Statutory Compliance Callout Banner */}
         <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-accent-gold/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
@@ -502,15 +491,15 @@ export const TreasuryExplorerPage: React.FC = () => {
             <div className="pt-4 border-t border-white/10 mt-4">
               <button
                 onClick={() => navigate("/claim")}
-                className="w-full py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-civic-blue to-civic-trust text-white hover:brightness-110 shadow-md shadow-civic-blue/20 transition-all text-center"
+                className="btn-civic-gold w-full py-2.5 text-xs font-black shadow-md text-center"
               >
-                Go to Citizen Claim Portal
+                Go to Citizen Claim Portal (Claim ₱5,000)
               </button>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 };
 
