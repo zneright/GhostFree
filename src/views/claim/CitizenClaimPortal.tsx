@@ -16,6 +16,7 @@ import ReliefReceiptModal from "../../components/ReliefReceiptModal";
 import LanguageSelector from "../../components/LanguageSelector";
 import DisasterConnectivityBanner from "../../components/DisasterConnectivityBanner";
 import GhostFreeLogo from "../../components/GhostFreeLogo";
+import Layout from "../../components/Layout";
 import {
   getStoredLanguage,
   subscribeLanguageChange,
@@ -402,673 +403,675 @@ export const CitizenClaimPortal: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 select-none">
-      {/* Disaster Network Resilience Indicator */}
-      <DisasterConnectivityBanner />
+    <Layout showFooter={true}>
+      <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 py-4 sm:py-8 select-none">
+        {/* Disaster Network Resilience Indicator */}
+        <DisasterConnectivityBanner />
 
-      {/* Top Mobile Emergency Aid Header Card */}
-      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/90 via-slate-900 to-slate-900 border-2 border-amber-500/40 shadow-xl mb-5 relative overflow-hidden">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold bg-red-600 text-white uppercase tracking-wider animate-pulse flex items-center gap-1">
-                <Radio className="w-3 h-3" />
-                QRF Active
-              </span>
-              <span className="text-xs text-amber-400 font-bold">Typhoon Marce Calamity Assistance</span>
+        {/* Top Mobile Emergency Aid Header Card */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/90 via-slate-900 to-slate-900 border-2 border-amber-500/40 shadow-xl mb-5 relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="px-2 py-0.5 rounded-full text-[0.65rem] font-extrabold bg-red-600 text-white uppercase tracking-wider animate-pulse flex items-center gap-1">
+                  <Radio className="w-3 h-3" />
+                  QRF Active
+                </span>
+                <span className="text-xs text-amber-400 font-bold">Typhoon Marce Calamity Assistance</span>
+              </div>
+              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ pamilyang ayuda</span>
+              </h1>
+              <p className="text-xs text-slate-300 mt-0.5">
+                100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ pamilyang ayuda</span>
-            </h1>
-            <p className="text-xs text-slate-300 mt-0.5">
-              100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID
-            </p>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleVoiceGuide}
-              className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
-                isSpeaking
-                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
-                  : "bg-white/10 text-amber-300 hover:bg-white/15 border-amber-400/40"
-              }`}
-              id="claim-voice-guide-btn"
-            >
-              {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              <span>{isSpeaking ? "Ihinto Boses" : "Pakinggan Gabay (Voice)"}</span>
-            </button>
-            <div className="hidden sm:block">
-              <LanguageSelector />
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleVoiceGuide}
+                className={`px-3 py-2 rounded-xl text-xs font-bold border transition-all flex items-center gap-1.5 ${
+                  isSpeaking
+                    ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
+                    : "bg-white/10 text-amber-300 hover:bg-white/15 border-amber-400/40"
+                }`}
+                id="claim-voice-guide-btn"
+              >
+                {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                <span>{isSpeaking ? "Ihinto Boses" : "Pakinggan Gabay (Voice)"}</span>
+              </button>
+              <div className="hidden sm:block">
+                <LanguageSelector />
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Grid: Single-column on mobile, Dual-column on desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Main Grid: Single-column on mobile, Dual-column on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-        {/* PRIMARY CLAIM WIZARD (lg:col-span-7 on desktop, top on mobile) */}
-        <div className="lg:col-span-7 order-1">
-          <div className="glass-card-elevated p-5 sm:p-7 relative overflow-hidden shadow-2xl border-2 border-white/10">
+          {/* PRIMARY CLAIM WIZARD (lg:col-span-7 on desktop, top on mobile) */}
+          <div className="lg:col-span-7 order-1">
+            <div className="glass-card-elevated p-5 sm:p-7 relative overflow-hidden shadow-2xl border-2 border-white/10">
 
-            {/* Step Navigation Stepper */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between relative">
-                {steps.map((s, i) => (
-                  <React.Fragment key={s.key}>
-                    <div className="flex flex-col items-center gap-1 z-10">
-                      <div className="relative">
-                        {i === currentStepIndex && (
-                          <div className="absolute -inset-1 rounded-full bg-amber-400/30 blur-sm animate-pulse" />
-                        )}
-                        <div
-                          className={`
-                            w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-xs sm:text-sm transition-all duration-300 border-2
-                            ${i < currentStepIndex
-                              ? "bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20"
-                              : i === currentStepIndex
-                              ? "bg-amber-400 text-slate-950 border-amber-300 shadow-md shadow-amber-500/30 scale-105"
-                              : "bg-slate-900 text-slate-500 border-white/10"
-                            }
-                          `}
-                        >
-                          {i < currentStepIndex ? <Check className="w-5 h-5 stroke-[3]" /> : s.number}
+              {/* Step Navigation Stepper */}
+              <div className="mb-6">
+                <div className="flex items-center justify-between relative">
+                  {steps.map((s, i) => (
+                    <React.Fragment key={s.key}>
+                      <div className="flex flex-col items-center gap-1 z-10">
+                        <div className="relative">
+                          {i === currentStepIndex && (
+                            <div className="absolute -inset-1 rounded-full bg-amber-400/30 blur-sm animate-pulse" />
+                          )}
+                          <div
+                            className={`
+                              w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-black text-xs sm:text-sm transition-all duration-300 border-2
+                              ${i < currentStepIndex
+                                ? "bg-emerald-500 text-slate-950 border-emerald-400 shadow-md shadow-emerald-500/20"
+                                : i === currentStepIndex
+                                ? "bg-amber-400 text-slate-950 border-amber-300 shadow-md shadow-amber-500/30 scale-105"
+                                : "bg-slate-900 text-slate-500 border-white/10"
+                              }
+                            `}
+                          >
+                            {i < currentStepIndex ? <Check className="w-5 h-5 stroke-[3]" /> : s.number}
+                          </div>
                         </div>
+                        <span
+                          className={`text-[0.65rem] sm:text-xs font-bold transition-colors text-center ${
+                            i === currentStepIndex ? "text-amber-300" : i < currentStepIndex ? "text-emerald-400" : "text-slate-500"
+                          }`}
+                        >
+                          {s.label}
+                        </span>
                       </div>
-                      <span
-                        className={`text-[0.65rem] sm:text-xs font-bold transition-colors text-center ${
-                          i === currentStepIndex ? "text-amber-300" : i < currentStepIndex ? "text-emerald-400" : "text-slate-500"
-                        }`}
-                      >
-                        {s.label}
-                      </span>
-                    </div>
 
-                    {/* Step line connector */}
-                    {i < steps.length - 1 && (
-                      <div className="flex-1 h-[2px] mb-4 bg-white/10 relative overflow-hidden mx-1">
-                        <div
-                          className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-500"
-                          style={{
-                            width: i < currentStepIndex ? "100%" : i === currentStepIndex ? "50%" : "0%",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
+                      {/* Step line connector */}
+                      {i < steps.length - 1 && (
+                        <div className="flex-1 h-[2px] mb-4 bg-white/10 relative overflow-hidden mx-1">
+                          <div
+                            className="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-500"
+                            style={{
+                              width: i < currentStepIndex ? "100%" : i === currentStepIndex ? "50%" : "0%",
+                            }}
+                          />
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* === STEP 1: CONNECT WALLET === */}
-            {step === "connect" && (
-              <div className="space-y-5">
-                <div className="text-center py-2">
-                  <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mx-auto mb-3">
-                    <Wallet className="w-8 h-8 text-amber-400 animate-pulse" />
-                  </div>
-                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                    Simulan ang Pag-claim ng Ayuda
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                    Piliin kung nais mong kumonekta gamit ang <strong>Midnight Lace Wallet</strong> o subukan gamit ang <strong>1-Click Evaluator Sandbox</strong>.
-                  </p>
-                </div>
-
-                {/* Evaluator Sandbox Button (Judges & Reviewers) */}
-                <div className="p-3.5 rounded-xl bg-amber-500/10 border-2 border-amber-500/40">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4" />
-                      Evaluator & Reviewer 1-Click Sandbox Mode
-                    </span>
-                    <span className="text-[0.65rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">
-                      NO EXTENSION
-                    </span>
-                  </div>
-                  <p className="text-xs text-slate-300 mb-3 leading-relaxed">
-                    Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?
-                  </p>
-                  <button
-                    type="button"
-                    onClick={handleConnectSandbox}
-                    disabled={connecting}
-                    className="btn-civic-gold w-full py-3 text-sm flex items-center justify-center gap-2"
-                    id="sandbox-wallet-btn"
-                  >
-                    <Sparkles className="w-4 h-4" />
-                    <span>I-launch ang Evaluator Sandbox (1-Click)</span>
-                  </button>
-                </div>
-
-                {/* Primary Lace Option */}
-                <button
-                  type="button"
-                  onClick={handleConnectWallet}
-                  disabled={connecting}
-                  className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 hover:bg-slate-850 text-white border border-white/20 transition-all flex items-center justify-center gap-2"
-                  id="connect-lace-btn"
-                >
-                  {connecting ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
-                      <span>Kumokonekta sa Lace Wallet...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Wallet className="w-4 h-4 text-sky-400" />
-                      <span>Konekta gamit ang Midnight Lace Wallet</span>
-                    </>
-                  )}
-                </button>
-
-                {walletError && (
-                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
-                    <p className="font-bold text-red-300">{walletError}</p>
-                    <p className="mt-1 text-slate-300">
-                      I-click ang <strong>"I-launch ang Evaluator Sandbox"</strong> sa itaas para magpatuloy kaagad!
+              {/* === STEP 1: CONNECT WALLET === */}
+              {step === "connect" && (
+                <div className="space-y-5">
+                  <div className="text-center py-2">
+                    <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mx-auto mb-3">
+                      <Wallet className="w-8 h-8 text-amber-400 animate-pulse" />
+                    </div>
+                    <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                      Simulan ang Pag-claim ng Ayuda
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
+                      Piliin kung nais mong kumonekta gamit ang <strong>Midnight Lace Wallet</strong> o subukan gamit ang <strong>1-Click Evaluator Sandbox</strong>.
                     </p>
                   </div>
-                )}
 
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 text-xs text-slate-300">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span>Sagot ng LGU Disaster Escrow ang lahat ng gas fees (₱0 / 0 tDUST gastusin).</span>
-                </div>
-              </div>
-            )}
-
-            {/* === STEP 2: CREDENTIALS INPUT WITH AUTHENTIC MPIN KEYPAD === */}
-            {step === "credentials" && (
-              <div className="space-y-4">
-                <div className="text-center py-1">
-                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                    Ipasok ang Iyong Impormasyon
-                  </h2>
-                  <p className="text-xs text-slate-300 max-w-md mx-auto">
-                    Mananatiling lihim sa loob ng iyong telepono ang mga numerong ito.
-                  </p>
-                </div>
-
-                {/* Connected Wallet Pill */}
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs">
-                  <span className="text-slate-400">Konektadong Wallet:</span>
-                  <span className="font-mono text-emerald-300 font-bold flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    {address?.slice(0, 10)}...{address?.slice(-6)}
-                    {isSandbox && <span className="ml-1 px-1.5 py-0.5 rounded text-[0.6rem] bg-amber-400 text-slate-950 font-bold">Sandbox</span>}
-                  </span>
-                </div>
-
-                {/* Illustrated PhilSys Card Helper */}
-                <IllustratedIdCard
-                  nationalId={nationalId}
-                  onUseDemo={handleAutoFillDemoBeneficiary}
-                />
-
-                {/* Input 1: PhilSys ID */}
-                <div>
-                  <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
-                    1. PhilSys National ID Number
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="national-id"
-                      type="text"
-                      className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
-                      placeholder="Halimbawa: PSN-2024-8849-1102"
-                      value={nationalId}
-                      onChange={(e) => setNationalId(e.target.value)}
-                      autoComplete="off"
-                    />
-                    {idValid && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
-                        <CheckCircle2 className="w-5 h-5" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Input 2: 4-Digit MPIN Display & Virtual Keypad */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-xs font-bold text-slate-200">
-                      2. 4-Digit Secret PIN (mula sa Barangay Relief Slip)
-                    </label>
+                  {/* Evaluator Sandbox Button (Judges & Reviewers) */}
+                  <div className="p-3.5 rounded-xl bg-amber-500/10 border-2 border-amber-500/40">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                        <Sparkles className="w-4 h-4" />
+                        Evaluator & Reviewer 1-Click Sandbox Mode
+                      </span>
+                      <span className="text-[0.65rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">
+                        NO EXTENSION
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 mb-3 leading-relaxed">
+                      Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?
+                    </p>
                     <button
                       type="button"
-                      onClick={() => setShowPin(!showPin)}
-                      className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
+                      onClick={handleConnectSandbox}
+                      disabled={connecting}
+                      className="btn-civic-gold w-full py-3 text-sm flex items-center justify-center gap-2"
+                      id="sandbox-wallet-btn"
                     >
-                      {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                      <span>{showPin ? "Itago" : "Ipakita"}</span>
+                      <Sparkles className="w-4 h-4" />
+                      <span>I-launch ang Evaluator Sandbox (1-Click)</span>
                     </button>
                   </div>
 
-                  {/* 4 Discrete MPIN Boxes */}
-                  <div className="flex items-center justify-center gap-3 my-2">
-                    {[0, 1, 2, 3].map((index) => {
-                      const char = secretPin[index];
-                      const isFilled = Boolean(char);
+                  {/* Primary Lace Option */}
+                  <button
+                    type="button"
+                    onClick={handleConnectWallet}
+                    disabled={connecting}
+                    className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 hover:bg-slate-850 text-white border border-white/20 transition-all flex items-center justify-center gap-2"
+                    id="connect-lace-btn"
+                  >
+                    {connecting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
+                        <span>Kumokonekta sa Lace Wallet...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Wallet className="w-4 h-4 text-sky-400" />
+                        <span>Konekta gamit ang Midnight Lace Wallet</span>
+                      </>
+                    )}
+                  </button>
+
+                  {walletError && (
+                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
+                      <p className="font-bold text-red-300">{walletError}</p>
+                      <p className="mt-1 text-slate-300">
+                        I-click ang <strong>"I-launch ang Evaluator Sandbox"</strong> sa itaas para magpatuloy kaagad!
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 text-xs text-slate-300">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>Sagot ng LGU Disaster Escrow ang lahat ng gas fees (₱0 / 0 tDUST gastusin).</span>
+                  </div>
+                </div>
+              )}
+
+              {/* === STEP 2: CREDENTIALS INPUT WITH AUTHENTIC MPIN KEYPAD === */}
+              {step === "credentials" && (
+                <div className="space-y-4">
+                  <div className="text-center py-1">
+                    <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                      Ipasok ang Iyong Impormasyon
+                    </h2>
+                    <p className="text-xs text-slate-300 max-w-md mx-auto">
+                      Mananatiling lihim sa loob ng iyong telepono ang mga numerong ito.
+                    </p>
+                  </div>
+
+                  {/* Connected Wallet Pill */}
+                  <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs">
+                    <span className="text-slate-400">Konektadong Wallet:</span>
+                    <span className="font-mono text-emerald-300 font-bold flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      {address?.slice(0, 10)}...{address?.slice(-6)}
+                      {isSandbox && <span className="ml-1 px-1.5 py-0.5 rounded text-[0.6rem] bg-amber-400 text-slate-950 font-bold">Sandbox</span>}
+                    </span>
+                  </div>
+
+                  {/* Illustrated PhilSys Card Helper */}
+                  <IllustratedIdCard
+                    nationalId={nationalId}
+                    onUseDemo={handleAutoFillDemoBeneficiary}
+                  />
+
+                  {/* Input 1: PhilSys ID */}
+                  <div>
+                    <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
+                      1. PhilSys National ID Number
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="national-id"
+                        type="text"
+                        className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
+                        placeholder="Halimbawa: PSN-2024-8849-1102"
+                        value={nationalId}
+                        onChange={(e) => setNationalId(e.target.value)}
+                        autoComplete="off"
+                      />
+                      {idValid && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-400">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Input 2: 4-Digit MPIN Display & Virtual Keypad */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-xs font-bold text-slate-200">
+                        2. 4-Digit Secret PIN (mula sa Barangay Relief Slip)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setShowPin(!showPin)}
+                        className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
+                      >
+                        {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                        <span>{showPin ? "Itago" : "Ipakita"}</span>
+                      </button>
+                    </div>
+
+                    {/* 4 Discrete MPIN Boxes */}
+                    <div className="flex items-center justify-center gap-3 my-2">
+                      {[0, 1, 2, 3].map((index) => {
+                        const char = secretPin[index];
+                        const isFilled = Boolean(char);
+                        return (
+                          <div
+                            key={index}
+                            className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all ${
+                              isFilled
+                                ? "bg-slate-900 border-amber-400 text-amber-300 shadow-md shadow-amber-500/20"
+                                : "bg-slate-950/60 border-white/20 text-slate-600"
+                            }`}
+                          >
+                            {isFilled ? (showPin ? char : "●") : ""}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* GCash / Maya-style 3x4 Touch Keypad */}
+                    <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto mt-3 mb-2">
+                      {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          onClick={() => handleKeypadPress(num)}
+                          className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                        >
+                          {num}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => handleKeypadPress("clear")}
+                        className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
+                      >
+                        Clear
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleKeypadPress("0")}
+                        className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                      >
+                        0
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleKeypadPress("backspace")}
+                        className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
+                        title="Backspace"
+                      >
+                        <Delete className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {inputError && (
+                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200 flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                      <span>{inputError}</span>
+                    </div>
+                  )}
+
+                  {/* Primary Button */}
+                  <button
+                    type="button"
+                    onClick={handleSubmitCredentials}
+                    className="btn-civic-gold w-full py-4 text-sm sm:text-base font-black shadow-xl"
+                    id="generate-zk-proof-btn"
+                  >
+                    <ShieldCheck className="w-5 h-5" />
+                    <span>Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000</span>
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+
+                  <p className="text-[0.68rem] text-slate-400 text-center leading-relaxed">
+                    🛡️ <strong>Pribadong Garantiya:</strong> Ang iyong ID at PIN ay hindi aalis sa teleponong ito. Ang smart contract ay tumatanggap lamang ng zero-knowledge nullifier proof.
+                  </p>
+                </div>
+              )}
+
+              {/* === STEP 3: ZK PROVING RADAR === */}
+              {step === "proving" && (
+                <div className="text-center py-2">
+                  <RadarProvingScanner progress={provingProgress} />
+
+                  <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
+                    Sinisuri ang Pagiging Kwalipikado
+                  </h2>
+                  <p className="text-xs text-slate-300 max-w-sm mx-auto mb-4">
+                    Bumubuo ng pribadong cryptographic proof sa loob ng iyong telepono...
+                  </p>
+
+                  {/* Human-Centered Plain-Language Milestones */}
+                  <div className="space-y-2 max-w-md mx-auto text-left mb-4">
+                    {[
+                      { threshold: 25, label: "1. Tinitingnan ang listahan ng nasalanta (Roster Lookup)" },
+                      { threshold: 55, label: "2. Inililihim ang iyong pagkakakilanlan sa ZK (Identity Shield)" },
+                      { threshold: 80, label: "3. Sinusuri kung may duplicate o ghost claim (Anti-Ghost Nullifier)" },
+                      { threshold: 100, label: "4. Inihahanda ang ₱5,000 pondo sa Midnight Network" },
+                    ].map((s, idx) => {
+                      const isDone = provingProgress >= s.threshold;
+                      const isCurrent = provingProgress < s.threshold && (idx === 0 || provingProgress >= [25, 55, 80][idx - 1]);
+
                       return (
                         <div
-                          key={index}
-                          className={`w-12 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-black transition-all ${
-                            isFilled
-                              ? "bg-slate-900 border-amber-400 text-amber-300 shadow-md shadow-amber-500/20"
-                              : "bg-slate-950/60 border-white/20 text-slate-600"
+                          key={idx}
+                          className={`flex items-center gap-2.5 p-2.5 rounded-xl text-xs transition-all ${
+                            isDone
+                              ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold"
+                              : isCurrent
+                              ? "bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold animate-pulse"
+                              : "bg-white/[0.03] text-slate-500"
                           }`}
                         >
-                          {isFilled ? (showPin ? char : "●") : ""}
+                          {isDone ? (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          ) : isCurrent ? (
+                            <Loader2 className="w-4 h-4 text-amber-400 animate-spin shrink-0" />
+                          ) : (
+                            <div className="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[0.6rem]">
+                              {idx + 1}
+                            </div>
+                          )}
+                          <span>{s.label}</span>
                         </div>
                       );
                     })}
                   </div>
 
-                  {/* GCash / Maya-style 3x4 Touch Keypad */}
-                  <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto mt-3 mb-2">
-                    {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
-                      <button
-                        key={num}
-                        type="button"
-                        onClick={() => handleKeypadPress(num)}
-                        className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
-                      >
-                        {num}
-                      </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => handleKeypadPress("clear")}
-                      className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
-                    >
-                      Clear
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleKeypadPress("0")}
-                      className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
-                    >
-                      0
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleKeypadPress("backspace")}
-                      className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
-                      title="Backspace"
-                    >
-                      <Delete className="w-5 h-5" />
-                    </button>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                    <span>Zero Network Leakage · Protektado ang Mamamayan</span>
                   </div>
                 </div>
+              )}
 
-                {inputError && (
-                  <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200 flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
-                    <span>{inputError}</span>
-                  </div>
-                )}
+              {/* === STEP 4: PAYOUT & DIGITAL RELIEF VOUCHER === */}
+              {step === "result" && result && (
+                <div className="space-y-4 relative">
+                  <ConfettiCelebration active={showConfetti} />
 
-                {/* Primary Button */}
-                <button
-                  type="button"
-                  onClick={handleSubmitCredentials}
-                  className="btn-civic-gold w-full py-4 text-sm sm:text-base font-black shadow-xl"
-                  id="generate-zk-proof-btn"
-                >
-                  <ShieldCheck className="w-5 h-5" />
-                  <span>Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                  {result.success ? (
+                    <div className="space-y-4">
+                      {/* Success Hero Banner */}
+                      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-slate-900 border-2 border-emerald-500/50 shadow-2xl text-center">
+                        <div className="w-14 h-14 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-2 text-emerald-400">
+                          <CheckCircle2 className="w-8 h-8" />
+                        </div>
+                        <h2 className="text-2xl sm:text-3xl font-black text-emerald-400 mb-0.5">
+                          ₱5,000.00 Ayuda Natanggap!
+                        </h2>
+                        <p className="text-xs text-slate-200">
+                          Nailipat na sa iyong pribadong Midnight wallet ang pondo. Walang kaltas.
+                        </p>
 
-                <p className="text-[0.68rem] text-slate-400 text-center leading-relaxed">
-                  🛡️ <strong>Pribadong Garantiya:</strong> Ang iyong ID at PIN ay hindi aalis sa teleponong ito. Ang smart contract ay tumatanggap lamang ng zero-knowledge nullifier proof.
-                </p>
-              </div>
-            )}
+                        {/* Transaction Hash */}
+                        <div className="mt-3 p-2.5 rounded-xl bg-black/40 border border-emerald-500/20 text-xs flex items-center justify-between gap-2">
+                          <span className="text-slate-400">Tx Hash:</span>
+                          <span className="font-mono text-emerald-300 font-bold truncate">
+                            {result.transactionHash || "0x5a76e93a8d052b61405e32404e57..."}
+                          </span>
+                          <button
+                            onClick={() => navigator.clipboard.writeText(result.transactionHash || "")}
+                            className="p-1 text-slate-400 hover:text-white"
+                            title="Copy hash"
+                          >
+                            <Copy className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
 
-            {/* === STEP 3: ZK PROVING RADAR === */}
-            {step === "proving" && (
-              <div className="text-center py-2">
-                <RadarProvingScanner progress={provingProgress} />
-
-                <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                  Sinisuri ang Pagiging Kwalipikado
-                </h2>
-                <p className="text-xs text-slate-300 max-w-sm mx-auto mb-4">
-                  Bumubuo ng pribadong cryptographic proof sa loob ng iyong telepono...
-                </p>
-
-                {/* Human-Centered Plain-Language Milestones */}
-                <div className="space-y-2 max-w-md mx-auto text-left mb-4">
-                  {[
-                    { threshold: 25, label: "1. Tinitingnan ang listahan ng nasalanta (Roster Lookup)" },
-                    { threshold: 55, label: "2. Inililihim ang iyong pagkakakilanlan sa ZK (Identity Shield)" },
-                    { threshold: 80, label: "3. Sinusuri kung may duplicate o ghost claim (Anti-Ghost Nullifier)" },
-                    { threshold: 100, label: "4. Inihahanda ang ₱5,000 pondo sa Midnight Network" },
-                  ].map((s, idx) => {
-                    const isDone = provingProgress >= s.threshold;
-                    const isCurrent = provingProgress < s.threshold && (idx === 0 || provingProgress >= [25, 55, 80][idx - 1]);
-
-                    return (
-                      <div
-                        key={idx}
-                        className={`flex items-center gap-2.5 p-2.5 rounded-xl text-xs transition-all ${
-                          isDone
-                            ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold"
-                            : isCurrent
-                            ? "bg-amber-500/15 border border-amber-500/40 text-amber-300 font-bold animate-pulse"
-                            : "bg-white/[0.03] text-slate-500"
-                        }`}
-                      >
-                        {isDone ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                        ) : isCurrent ? (
-                          <Loader2 className="w-4 h-4 text-amber-400 animate-spin shrink-0" />
-                        ) : (
-                          <div className="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[0.6rem]">
-                            {idx + 1}
+                      {/* Digital Relief Voucher Card (Printable & Verifiable) */}
+                      <div className="p-4 rounded-2xl bg-white text-slate-950 shadow-2xl border-2 border-slate-300 relative overflow-hidden">
+                        <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-slate-300 mb-3">
+                          <div className="flex items-center gap-2">
+                            <GhostFreeLogo size={24} variant="icon" />
+                            <div>
+                              <span className="text-[0.65rem] font-black uppercase tracking-wider text-slate-500 block">
+                                Republika ng Pilipinas · Calamity Relief
+                              </span>
+                              <span className="text-sm font-black text-slate-950">Official Relief Voucher</span>
+                            </div>
                           </div>
-                        )}
-                        <span>{s.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
+                          <span className="px-2 py-0.5 rounded text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                            CLEARED & PAID
+                          </span>
+                        </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span>Zero Network Leakage · Protektado ang Mamamayan</span>
-                </div>
-              </div>
-            )}
-
-            {/* === STEP 4: PAYOUT & DIGITAL RELIEF VOUCHER === */}
-            {step === "result" && result && (
-              <div className="space-y-4 relative">
-                <ConfettiCelebration active={showConfetti} />
-
-                {result.success ? (
-                  <div className="space-y-4">
-                    {/* Success Hero Banner */}
-                    <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-950/90 via-slate-900 to-slate-900 border-2 border-emerald-500/50 shadow-2xl text-center">
-                      <div className="w-14 h-14 rounded-full bg-emerald-500/20 border-2 border-emerald-400 flex items-center justify-center mx-auto mb-2 text-emerald-400">
-                        <CheckCircle2 className="w-8 h-8" />
-                      </div>
-                      <h2 className="text-2xl sm:text-3xl font-black text-emerald-400 mb-0.5">
-                        ₱5,000.00 Ayuda Natanggap!
-                      </h2>
-                      <p className="text-xs text-slate-200">
-                        Nailipat na sa iyong pribadong Midnight wallet ang pondo. Walang kaltas.
-                      </p>
-
-                      {/* Transaction Hash */}
-                      <div className="mt-3 p-2.5 rounded-xl bg-black/40 border border-emerald-500/20 text-xs flex items-center justify-between gap-2">
-                        <span className="text-slate-400">Tx Hash:</span>
-                        <span className="font-mono text-emerald-300 font-bold truncate">
-                          {result.transactionHash || "0x5a76e93a8d052b61405e32404e57..."}
-                        </span>
-                        <button
-                          onClick={() => navigator.clipboard.writeText(result.transactionHash || "")}
-                          className="p-1 text-slate-400 hover:text-white"
-                          title="Copy hash"
-                        >
-                          <Copy className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Digital Relief Voucher Card (Printable & Verifiable) */}
-                    <div className="p-4 rounded-2xl bg-white text-slate-950 shadow-2xl border-2 border-slate-300 relative overflow-hidden">
-                      <div className="flex items-center justify-between pb-3 border-b-2 border-dashed border-slate-300 mb-3">
-                        <div className="flex items-center gap-2">
-                          <GhostFreeLogo size={24} variant="icon" />
+                        <div className="grid grid-cols-2 gap-2 text-xs mb-3">
                           <div>
-                            <span className="text-[0.65rem] font-black uppercase tracking-wider text-slate-500 block">
-                              Republika ng Pilipinas · Calamity Relief
-                            </span>
-                            <span className="text-sm font-black text-slate-950">Official Relief Voucher</span>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">VOUCHER SERIAL:</span>
+                            <span className="font-mono font-black text-slate-900 text-sm">GF-MARCE-2026-77B1</span>
+                          </div>
+                          <div>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">HALAGA / AMOUNT:</span>
+                            <span className="font-black text-emerald-700 text-sm">₱5,000.00 / 5k tNIGHT</span>
+                          </div>
+                          <div>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">OPERASYON:</span>
+                            <span className="font-semibold text-slate-800">Typhoon Marce QRF</span>
+                          </div>
+                          <div>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">STATUS SA CHECKPOINT:</span>
+                            <span className="font-bold text-emerald-700">1 Ration Entitled</span>
                           </div>
                         </div>
-                        <span className="px-2 py-0.5 rounded text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                          CLEARED & PAID
-                        </span>
+
+                        {/* Barcode representation */}
+                        <div className="py-2 px-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2 text-slate-700">
+                            <QrCode className="w-5 h-5 text-slate-900" />
+                            <span className="font-mono text-[0.7rem] font-bold">VERIFY: 02005a76e93a86c0</span>
+                          </div>
+                          <span className="text-[0.65rem] text-slate-500 font-semibold">DSWD DRRM Valid</span>
+                        </div>
+
+                        {/* Action buttons on voucher */}
+                        <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
+                          <button
+                            onClick={() => setShowReceiptModal(true)}
+                            className="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 flex items-center justify-center gap-1.5"
+                            id="view-full-receipt-btn"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                            <span>I-download ang Resibo</span>
+                          </button>
+                          <button
+                            onClick={() => window.print()}
+                            className="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 flex items-center justify-center gap-1"
+                          >
+                            <Printer className="w-3.5 h-3.5" />
+                            <span>I-print</span>
+                          </button>
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 text-xs mb-3">
-                        <div>
-                          <span className="text-[0.65rem] text-slate-500 block font-semibold">VOUCHER SERIAL:</span>
-                          <span className="font-mono font-black text-slate-900 text-sm">GF-MARCE-2026-77B1</span>
-                        </div>
-                        <div>
-                          <span className="text-[0.65rem] text-slate-500 block font-semibold">HALAGA / AMOUNT:</span>
-                          <span className="font-black text-emerald-700 text-sm">₱5,000.00 / 5k tNIGHT</span>
-                        </div>
-                        <div>
-                          <span className="text-[0.65rem] text-slate-500 block font-semibold">OPERASYON:</span>
-                          <span className="font-semibold text-slate-800">Typhoon Marce QRF</span>
-                        </div>
-                        <div>
-                          <span className="text-[0.65rem] text-slate-500 block font-semibold">STATUS SA CHECKPOINT:</span>
-                          <span className="font-bold text-emerald-700">1 Ration Entitled</span>
-                        </div>
-                      </div>
-
-                      {/* Barcode representation */}
-                      <div className="py-2 px-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2 text-slate-700">
-                          <QrCode className="w-5 h-5 text-slate-900" />
-                          <span className="font-mono text-[0.7rem] font-bold">VERIFY: 02005a76e93a86c0</span>
-                        </div>
-                        <span className="text-[0.65rem] text-slate-500 font-semibold">DSWD DRRM Valid</span>
-                      </div>
-
-                      {/* Action buttons on voucher */}
-                      <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
-                        <button
-                          onClick={() => setShowReceiptModal(true)}
-                          className="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white hover:bg-slate-800 flex items-center justify-center gap-1.5"
-                          id="view-full-receipt-btn"
-                        >
-                          <Download className="w-3.5 h-3.5" />
-                          <span>I-download ang Resibo</span>
-                        </button>
-                        <button
-                          onClick={() => window.print()}
-                          className="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 flex items-center justify-center gap-1"
-                        >
-                          <Printer className="w-3.5 h-3.5" />
-                          <span>I-print</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Citizen CSAT Survey */}
-                    {!csatSubmitted ? (
-                      <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
-                        <span className="text-xs font-bold text-white block mb-2">
-                          Kumusta ang iyong karanasan sa pag-claim?
-                        </span>
-                        <div className="flex items-center justify-center gap-2 mb-2">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <button
-                              key={s}
-                              onClick={() => setCsatRating(s)}
-                              className="p-1 transition-transform hover:scale-125"
-                            >
-                              <Star
-                                className={`w-6 h-6 ${
-                                  s <= csatRating ? "fill-amber-400 text-amber-400" : "text-slate-600"
+                      {/* Citizen CSAT Survey */}
+                      {!csatSubmitted ? (
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
+                          <span className="text-xs font-bold text-white block mb-2">
+                            Kumusta ang iyong karanasan sa pag-claim?
+                          </span>
+                          <div className="flex items-center justify-center gap-2 mb-2">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <button
+                                key={s}
+                                onClick={() => setCsatRating(s)}
+                                className="p-1 transition-transform hover:scale-125"
+                              >
+                                <Star
+                                  className={`w-6 h-6 ${
+                                    s <= csatRating ? "fill-amber-400 text-amber-400" : "text-slate-600"
+                                  }`}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                          <div className="flex items-center justify-center gap-2 mb-3">
+                            {["Mabilis", "Madaling Gamitin", "Ligtas", "Malinaw"].map((chip) => (
+                              <button
+                                key={chip}
+                                onClick={() => setCsatComment(chip)}
+                                className={`text-[0.65rem] px-2 py-1 rounded-full border transition-colors ${
+                                  csatComment === chip
+                                    ? "bg-amber-400 text-slate-950 font-bold border-amber-400"
+                                    : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
                                 }`}
-                              />
-                            </button>
-                          ))}
+                              >
+                                {chip}
+                              </button>
+                            ))}
+                          </div>
+                          <button
+                            onClick={handleCsatSubmit}
+                            className="px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors"
+                          >
+                            Ipadala ang Puna
+                          </button>
                         </div>
-                        <div className="flex items-center justify-center gap-2 mb-3">
-                          {["Mabilis", "Madaling Gamitin", "Ligtas", "Malinaw"].map((chip) => (
-                            <button
-                              key={chip}
-                              onClick={() => setCsatComment(chip)}
-                              className={`text-[0.65rem] px-2 py-1 rounded-full border transition-colors ${
-                                csatComment === chip
-                                  ? "bg-amber-400 text-slate-950 font-bold border-amber-400"
-                                  : "bg-white/5 text-slate-300 border-white/10 hover:bg-white/10"
-                              }`}
-                            >
-                              {chip}
-                            </button>
-                          ))}
+                      ) : (
+                        <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-300 text-center">
+                          Salamat sa iyong puna! Tumutulong ito sa pagpapabuti ng ayuda distribution.
                         </div>
-                        <button
-                          onClick={handleCsatSubmit}
-                          className="px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors"
-                        >
-                          Ipadala ang Puna
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-300 text-center">
-                        Salamat sa iyong puna! Tumutulong ito sa pagpapabuti ng ayuda distribution.
-                      </div>
-                    )}
+                      )}
 
-                    {/* Reset Button */}
-                    <button
-                      onClick={() => {
-                        setStep("connect");
-                        setResult(null);
-                        setNationalId("");
-                        setSecretPin("");
-                      }}
-                      className="w-full py-2.5 rounded-xl text-xs text-slate-400 hover:text-white border border-white/10 transition-colors"
-                    >
-                      Bumalik sa Umpisa (Start New Claim)
-                    </button>
-                  </div>
-                ) : (
-                  /* Error State */
-                  <div className="p-5 rounded-2xl bg-red-500/10 border-2 border-red-500/30 text-center space-y-3">
-                    <div className="w-12 h-12 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center mx-auto text-red-400">
-                      <XCircle className="w-6 h-6" />
+                      {/* Reset Button */}
+                      <button
+                        onClick={() => {
+                          setStep("connect");
+                          setResult(null);
+                          setNationalId("");
+                          setSecretPin("");
+                        }}
+                        className="w-full py-2.5 rounded-xl text-xs text-slate-400 hover:text-white border border-white/10 transition-colors"
+                      >
+                        Bumalik sa Umpisa (Start New Claim)
+                      </button>
                     </div>
-                    <h3 className="text-xl font-bold text-red-300">
-                      Hindi Matagumpay ang Pag-claim
-                    </h3>
-                    <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
-                      {result.errorCode === "ALREADY_CLAIMED"
-                        ? "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief tranche na ito. Pinipigilan ng anti-ghost circuit ang dobleng claim."
-                        : result.error || "Hindi tumugma ang proof. Pakitingnan ang inyong PhilSys ID o PIN."}
-                    </p>
-                    <button
-                      onClick={() => setStep("credentials")}
-                      className="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors"
-                    >
-                      Subukan Muli
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
+                  ) : (
+                    /* Error State */
+                    <div className="p-5 rounded-2xl bg-red-500/10 border-2 border-red-500/30 text-center space-y-3">
+                      <div className="w-12 h-12 rounded-full bg-red-500/20 border border-red-500 flex items-center justify-center mx-auto text-red-400">
+                        <XCircle className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-xl font-bold text-red-300">
+                        Hindi Matagumpay ang Pag-claim
+                      </h3>
+                      <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
+                        {result.errorCode === "ALREADY_CLAIMED"
+                          ? "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief tranche na ito. Pinipigilan ng anti-ghost circuit ang dobleng claim."
+                          : result.error || "Hindi tumugma ang proof. Pakitingnan ang inyong PhilSys ID o PIN."}
+                      </p>
+                      <button
+                        onClick={() => setStep("credentials")}
+                        className="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors"
+                      >
+                        Subukan Muli
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-          </div>
-        </div>
-
-        {/* SIDEBAR COLUMN (lg:col-span-5 on desktop, below on mobile) */}
-        <div className="lg:col-span-5 order-2 space-y-4">
-          {/* Mobile Accordion Toggle */}
-          <div className="lg:hidden">
-            <button
-              onClick={() => setShowDetailsMobile(!showDetailsMobile)}
-              className="w-full p-3.5 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs font-bold text-slate-200"
-            >
-              <span className="flex items-center gap-2">
-                <Landmark className="w-4 h-4 text-amber-400" />
-                <span>Tingnan ang Detalye ng Operasyon & Gabay</span>
-              </span>
-              {showDetailsMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
+            </div>
           </div>
 
-          <div className={`${showDetailsMobile ? "block" : "hidden lg:block"} space-y-4`}>
-            {/* DRRM Municipal Operation Card */}
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
-              <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
-                <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-                  <Landmark className="w-4 h-4 text-amber-400" />
-                  Operasyon ng MDRRMO
-                </span>
-                <span className="text-[0.65rem] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  R.A. 10121 DRRM
-                </span>
-              </div>
-              <div className="space-y-2 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Pangalan:</span>
-                  <span className="font-bold text-white">Typhoon Marce QRF</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Kabuuang Pondo:</span>
-                  <span className="font-bold text-amber-300">1,000,000 tNIGHT</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Kasalukuyang Naimbak:</span>
-                  <span className="font-bold text-emerald-400">200 Pamilya Naayudahan</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-400">Smart Contract:</span>
-                  <span className="font-mono text-[0.65rem] text-sky-300 truncate max-w-[140px]">
-                    02005a76e93a...
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Zero-Knowledge Privacy Guarantee */}
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
-              <h3 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-2">
-                <ShieldCheck className="w-4 h-4" />
-                Anti-Ghost Nullifier Guarantee
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Bawat pamilya ay may natatanging cryptographic nullifier. Hindi posibleng makakuha nang dalawang beses o makasingit ang mga "ghost beneficiaries".
-              </p>
-            </div>
-
-            {/* Evaluator Quick Autofill Pill */}
-            <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30">
-              <span className="text-xs font-bold text-amber-400 block mb-1">
-                🧪 Evaluator Quick Data
-              </span>
-              <p className="text-xs text-slate-300 mb-2">
-                Gamitin ang datos na ito para subukan ang end-to-end ZK proof:
-              </p>
-              <div className="bg-black/50 p-2.5 rounded-lg font-mono text-xs text-slate-200 space-y-1 mb-2">
-                <div>ID: <span className="text-amber-300">PSN-2024-8849-1102</span></div>
-                <div>PIN: <span className="text-sky-300">4912</span></div>
-              </div>
+          {/* SIDEBAR COLUMN (lg:col-span-5 on desktop, below on mobile) */}
+          <div className="lg:col-span-5 order-2 space-y-4">
+            {/* Mobile Accordion Toggle */}
+            <div className="lg:hidden">
               <button
-                type="button"
-                onClick={handleAutoFillDemoBeneficiary}
-                className="w-full py-2 rounded-lg text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors"
+                onClick={() => setShowDetailsMobile(!showDetailsMobile)}
+                className="w-full p-3.5 rounded-xl bg-slate-900 border border-white/10 flex items-center justify-between text-xs font-bold text-slate-200"
               >
-                Auto-Fill Demo Credentials
+                <span className="flex items-center gap-2">
+                  <Landmark className="w-4 h-4 text-amber-400" />
+                  <span>Tingnan ang Detalye ng Operasyon & Gabay</span>
+                </span>
+                {showDetailsMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
             </div>
+
+            <div className={`${showDetailsMobile ? "block" : "hidden lg:block"} space-y-4`}>
+              {/* DRRM Municipal Operation Card */}
+              <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
+                <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
+                  <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <Landmark className="w-4 h-4 text-amber-400" />
+                    Operasyon ng MDRRMO
+                  </span>
+                  <span className="text-[0.65rem] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    R.A. 10121 DRRM
+                  </span>
+                </div>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Pangalan:</span>
+                    <span className="font-bold text-white">Typhoon Marce QRF</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Kabuuang Pondo:</span>
+                    <span className="font-bold text-amber-300">1,000,000 tNIGHT</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Kasalukuyang Naimbak:</span>
+                    <span className="font-bold text-emerald-400">200 Pamilya Naayudahan</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Smart Contract:</span>
+                    <span className="font-mono text-[0.65rem] text-sky-300 truncate max-w-[140px]">
+                      02005a76e93a...
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Zero-Knowledge Privacy Guarantee */}
+              <div className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg">
+                <h3 className="text-xs font-bold text-emerald-400 flex items-center gap-1.5 mb-2">
+                  <ShieldCheck className="w-4 h-4" />
+                  Anti-Ghost Nullifier Guarantee
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Bawat pamilya ay may natatanging cryptographic nullifier. Hindi posibleng makakuha nang dalawang beses o makasingit ang mga "ghost beneficiaries".
+                </p>
+              </div>
+
+              {/* Evaluator Quick Autofill Pill */}
+              <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30">
+                <span className="text-xs font-bold text-amber-400 block mb-1">
+                  🧪 Evaluator Quick Data
+                </span>
+                <p className="text-xs text-slate-300 mb-2">
+                  Gamitin ang datos na ito para subukan ang end-to-end ZK proof:
+                </p>
+                <div className="bg-black/50 p-2.5 rounded-lg font-mono text-xs text-slate-200 space-y-1 mb-2">
+                  <div>ID: <span className="text-amber-300">PSN-2024-8849-1102</span></div>
+                  <div>PIN: <span className="text-sky-300">4912</span></div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAutoFillDemoBeneficiary}
+                  className="w-full py-2 rounded-lg text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors"
+                >
+                  Auto-Fill Demo Credentials
+                </button>
+              </div>
+            </div>
           </div>
+
         </div>
 
+        {/* Official Relief Receipt Modal */}
+        {receipt && (
+          <ReliefReceiptModal
+            isOpen={showReceiptModal}
+            onClose={() => setShowReceiptModal(false)}
+            receipt={receipt}
+          />
+        )}
       </div>
-
-      {/* Official Relief Receipt Modal */}
-      {receipt && (
-        <ReliefReceiptModal
-          isOpen={showReceiptModal}
-          onClose={() => setShowReceiptModal(false)}
-          receipt={receipt}
-        />
-      )}
-    </div>
+    </Layout>
   );
 };
 
