@@ -60,7 +60,7 @@ export const TrancheQuorumModal: React.FC<TrancheQuorumModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-xl rounded-2xl bg-[#0F223D] border border-white/15 p-6 shadow-2xl shadow-black/80 text-white max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-xl rounded-2xl glass-card-elevated bg-slate-900/95 border border-shield-glass/30 p-6 shadow-2xl shadow-black/80 text-white max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-xl text-white/50 hover:text-white hover:bg-white/10 transition-colors"
@@ -109,7 +109,7 @@ export const TrancheQuorumModal: React.FC<TrancheQuorumModalProps> = ({
             </div>
 
             {/* Treasury Projection Card */}
-            <div className="p-4 rounded-xl bg-[#0A1628] border border-white/10 flex items-center justify-between text-xs">
+            <div className="p-4 rounded-xl bg-slate-950/70 border border-shield-glass/30 flex items-center justify-between text-xs">
               <div>
                 <span className="text-white/50 block">Current Vault Balance:</span>
                 <span className="font-mono text-sm text-white font-bold">{currentBalance.toLocaleString()} tNIGHT</span>
@@ -185,7 +185,7 @@ export const TrancheQuorumModal: React.FC<TrancheQuorumModalProps> = ({
             <button
               onClick={handleExecuteTranche}
               disabled={!quorumMet || executing}
-              className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-accent-gold to-amber-500 text-black font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20"
+              className="w-full py-3.5 px-4 rounded-xl btn-civic-gold font-bold text-sm hover:opacity-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20"
             >
               {executing ? (
                 <span>Simulating Midnight Preprod Execution...</span>
@@ -207,7 +207,7 @@ export const TrancheQuorumModal: React.FC<TrancheQuorumModalProps> = ({
               Dual-officer quorum verification succeeded. Preprod treasury top-up circuit assertions satisfied.
             </p>
 
-            <div className="p-3.5 rounded-xl bg-[#0A1628] border border-white/10 text-left text-xs font-mono space-y-1.5">
+            <div className="p-3.5 rounded-xl bg-slate-950/70 border border-shield-glass/30 text-left text-xs font-mono space-y-1.5">
               <div className="text-white/50 text-[11px]">Simulated Transaction Hash:</div>
               <div className="text-civic-sky break-all text-[11px]">{txHash}</div>
             </div>

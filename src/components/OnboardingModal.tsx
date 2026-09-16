@@ -87,7 +87,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/10 bg-[#0A1628] shadow-2xl p-6 sm:p-8">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-shield-glass/30 glass-card-elevated bg-slate-900/95 shadow-2xl p-6 sm:p-8">
         {/* Glow backdrop */}
         <div className="absolute -top-24 -right-24 w-48 h-48 rounded-full bg-civic-sky/15 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-48 h-48 rounded-full bg-accent-success/15 blur-3xl pointer-events-none" />
@@ -176,7 +176,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
             )}
             <button
               onClick={handleNext}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-gradient-to-r from-civic-blue to-civic-trust text-white hover:brightness-110 shadow-lg shadow-civic-blue/20 transition-all flex items-center gap-1"
+              className="btn-civic btn-primary px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-civic-blue/20"
             >
               {currentStep === slides.length - 1 ? (
                 <>

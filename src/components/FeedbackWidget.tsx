@@ -115,7 +115,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
       {/* Modal Dialog */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#0A1628] shadow-2xl p-6">
+          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-shield-glass/30 glass-card-elevated bg-slate-900/95 shadow-2xl p-6">
             {/* Header Glow */}
             <div className="absolute top-0 right-0 w-36 h-36 bg-civic-sky/10 rounded-full blur-2xl pointer-events-none" />
 
@@ -203,7 +203,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
                       className="w-full px-3 py-2 rounded-xl text-xs bg-white/5 border border-white/10 text-white focus:border-civic-sky focus:outline-none transition-colors"
                     >
                       {roles.map((r) => (
-                        <option key={r.id} value={r.id} className="bg-[#0A1628] text-white">
+                        <option key={r.id} value={r.id} className="bg-slate-900 text-white">
                           {r.label}
                         </option>
                       ))}
@@ -263,7 +263,7 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-civic-blue to-civic-trust text-white hover:brightness-110 shadow-md shadow-civic-blue/20 transition-all flex items-center gap-1.5 disabled:opacity-50"
+                      className="btn-civic btn-primary px-4 py-2 rounded-xl text-xs font-bold shadow-md shadow-civic-blue/20 transition-all flex items-center gap-1.5 disabled:opacity-50"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Submit</span>

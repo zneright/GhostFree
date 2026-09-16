@@ -27,7 +27,7 @@ export const TransparencyCard: React.FC = () => {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/[0.02] backdrop-blur-md p-5 sm:p-6 transition-all hover:border-civic-sky/30">
+    <div className="w-full rounded-2xl glass-card border border-shield-glass/30 bg-slate-900/80 backdrop-blur-md p-5 sm:p-6 transition-all hover:border-civic-sky/30">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4 mb-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-civic-sky/10 border border-civic-sky/20 flex items-center justify-center">
@@ -55,7 +55,7 @@ export const TransparencyCard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-        <div className="p-3 rounded-xl bg-black/20 border border-white/5">
+        <div className="p-3 rounded-xl bg-white/5 border border-white/10">
           <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
             Gas Sponsorship
           </span>
@@ -68,7 +68,7 @@ export const TransparencyCard: React.FC = () => {
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-black/20 border border-white/5">
+        <div className="p-3 rounded-xl bg-white/5 border border-white/10">
           <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
             Zero-Knowledge Privacy
           </span>
@@ -81,7 +81,7 @@ export const TransparencyCard: React.FC = () => {
           </span>
         </div>
 
-        <div className="p-3 rounded-xl bg-black/20 border border-white/5">
+        <div className="p-3 rounded-xl bg-white/5 border border-white/10">
           <span className="text-[0.65rem] text-white/40 uppercase tracking-wider block mb-1">
             Anti-Ghost Mechanism
           </span>
@@ -96,7 +96,7 @@ export const TransparencyCard: React.FC = () => {
       </div>
 
       {/* Contract Address Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-black/30 border border-white/5 text-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
         <div className="flex items-center gap-2 min-w-0">
           <span className="text-white/40 text-[0.7rem] shrink-0">
             Active Contract:

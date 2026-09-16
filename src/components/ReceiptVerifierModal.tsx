@@ -70,7 +70,7 @@ export const ReceiptVerifierModal: React.FC<ReceiptVerifierModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-2xl bg-[#0F223D] border border-white/15 p-6 shadow-2xl shadow-black/80 text-white max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-lg rounded-2xl glass-card-elevated bg-slate-900/95 border border-shield-glass/30 p-6 shadow-2xl shadow-black/80 text-white max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -107,12 +107,12 @@ export const ReceiptVerifierModal: React.FC<ReceiptVerifierModalProps> = ({
                 value={inputCode}
                 onChange={(e) => setInputCode(e.target.value)}
                 placeholder="e.g. GF-CALAMITY-8A2F or 0x9f1a2b..."
-                className="w-full px-4 py-3 rounded-xl bg-[#0A1628] border border-white/20 text-white placeholder-white/40 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-civic-sky"
+                className="w-full px-4 py-3 rounded-xl bg-slate-950/70 border border-shield-glass/30 text-white placeholder-white/40 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-civic-sky"
               />
               <button
                 type="submit"
                 disabled={verifying || !inputCode.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-civic-sky text-[#0A1628] font-semibold text-xs hover:bg-civic-sky/90 transition-colors flex items-center gap-1 disabled:opacity-50"
+                className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg btn-civic-emerald text-xs font-bold transition-all flex items-center gap-1 disabled:opacity-50"
               >
                 <Search className="w-3.5 h-3.5" />
                 <span>{verifying ? "Checking..." : "Verify"}</span>
@@ -120,7 +120,7 @@ export const ReceiptVerifierModal: React.FC<ReceiptVerifierModalProps> = ({
             </div>
           </div>
           <p className="text-[11px] text-white/40">
-            Quick test examples: <code className="text-civic-sky cursor-pointer" onClick={() => setInputCode("GF-CALAMITY-77B1")}>GF-CALAMITY-77B1</code> (Valid) · <code className="text-amber-400 cursor-pointer" onClick={() => setInputCode("GF-SPENT-DOUBLE-001")}>GF-SPENT-DOUBLE-001</code> (Double Spent)
+            Quick test examples: <code className="text-civic-sky cursor-pointer font-semibold" onClick={() => setInputCode("GF-CALAMITY-77B1")}>GF-CALAMITY-77B1</code> (Valid) · <code className="text-amber-400 cursor-pointer font-semibold" onClick={() => setInputCode("GF-SPENT-DOUBLE-001")}>GF-SPENT-DOUBLE-001</code> (Double Spent)
           </p>
         </form>
 
@@ -157,7 +157,7 @@ export const ReceiptVerifierModal: React.FC<ReceiptVerifierModalProps> = ({
 
             {/* Details Table */}
             {result.valid && result.details && (
-              <div className="p-4 rounded-xl bg-[#0A1628] border border-white/10 space-y-2.5 text-xs font-mono">
+              <div className="p-4 rounded-xl bg-slate-950/70 border border-shield-glass/30 space-y-2.5 text-xs font-mono">
                 <div className="flex justify-between border-b border-white/5 pb-2">
                   <span className="text-white/50">Disbursement Amount:</span>
                   <span className="text-emerald-400 font-bold">{result.amount} tNIGHT</span>
