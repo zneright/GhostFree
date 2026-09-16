@@ -29,6 +29,7 @@
 | 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
 | 👥 **Preprod User Registry** | [USERS.md](USERS.md) | 75 verified Midnight Preprod wallet addresses across 3 user pilot cohorts |
 | 📋 **Feedback Report** | [docs/FEEDBACK.md](docs/FEEDBACK.md) | Level 5 user validation report, CSAT analytics, and feedback-driven changelog |
+| 📸 **Visual Showcase** | [docs/screenshots/](docs/screenshots/) | High-resolution UI walkthrough of the v2.0 civic-tech interface |
 
 ---
 
@@ -68,6 +69,83 @@ GhostFree combines **Midnight Network's dual-state zero-knowledge architecture**
 - **Dual-Key Municipal Quorum Workflow:** Enforces statutory joint authorizations under R.A. 10121 requiring cryptographic approval seals from both the Local DRRM Officer and Municipal Treasurer before funds can be released on Midnight.
 - **Public Calamity Treasury & Audit Explorer (`/transparency`):** Public governance portal tracking real-time relief fund allocations, anonymous nullifier commitments, and one-click Commission on Audit (COA) compliance CSV statements.
 - **Preprod Protocol Transparency:** Real-time visibility into the Midnight Preprod smart contract, active address, and zero-knowledge verification latency.
+
+---
+
+## 📸 Product Interface & Visual Showcase (v2.0)
+
+> **Enterprise Civic-Tech UI Release:** Designed with high-authority government design principles (`#0A1628` obsidian foundation, luminous teal & emerald accents, glassmorphism cards, WCAG AAA high-contrast typography, and 1-click evaluator sandbox modes).
+
+---
+
+### 1. Enterprise Civic Landing Page & Live Midnight Telemetry
+The public landing page features the official **GhostFree dual-wing shield & keyhole brandmark**, live testnet transaction counter, real-time node latency monitors, and direct navigation for citizens, officials, and auditors.
+
+![GhostFree Civic Landing Page](docs/screenshots/01-landing-hero.png)
+
+- 🛡️ **Brand Identity:** Custom dual-wing civic shield with central privacy keyhole symbolizing unbreachable citizen sovereignty.
+- ⚡ **Real-Time Network Telemetry:** Live Midnight Preprod block connection, smart contract ping, and zero-knowledge verification latency tracker.
+- 🌐 **Plain Civic Language:** Clear, accessible explanations eliminating cryptographic jargon for disaster victims and civil servants.
+- 🚀 **Quick Action Hub:** Direct access to the Citizen Claim Terminal, Treasury Audit Explorer, and LGU Command Center.
+
+---
+
+### 2. Citizen Claim Terminal — Step 1: Wallet Connection & Evaluator Sandbox
+Mobile-optimized emergency terminal guiding disaster victims through wallet authentication with zero required gas balance (LGU sponsors execution fees via gas delegation).
+
+![Citizen Claim Terminal - Step 1](docs/screenshots/02-claim-terminal-step1.png)
+
+- 🧪 **1-Click Evaluator Sandbox:** Testnet evaluators and hackathon judges can click `"Quick Test: Pre-fill Verified Resident"` to instantly test without setting up local proving infrastructure.
+- 🇵🇭 **Disaster Zone Dialect Selector:** Instant 1-tap switching between English, Tagalog (Filipino), and Cebuano (Bisaya).
+- 📶 **Offline & Low-Bandwidth Guard:** In-memory caching ensures victims with intermittent 2G/EDGE cellular connectivity do not lose progress.
+- ⏱️ **Zero Wait Time:** Automatic Lace browser extension detection with fast polling.
+
+---
+
+### 3. Zero-Knowledge Identity Verification — Step 2: Private Credentials
+Disaster victims input their PhilSys National ID and confidential emergency PIN. Zero-knowledge Merkle proofs run locally in-browser without disclosing personal data to the blockchain or government servers.
+
+![Citizen Claim Terminal - Step 2](docs/screenshots/03-claim-terminal-step2.png)
+
+- 🔒 **Strict Zero-Knowledge Perimeter:** Private witnesses (`nationalId`, `secretPin`) remain strictly inside the client's device.
+- 🛡️ **The Anti-Ghost Nullifier Guarantee:** Produces a deterministic nullifier $\text{Hash}(\text{leaf} + \text{contractAddress})$ that prevents duplicate claims without revealing the claimant's identity.
+- 💡 **Real-Time Cryptographic Validation:** Visual validation badges indicate format compliance before triggering zero-knowledge proof synthesis.
+- 🚫 **Zero Transmission Guarantee:** Visual indicators reassure citizens that no personal identity records are stored or broadcast.
+
+---
+
+### 4. Calamity Aid Disbursed — Step 4: Settlement Hash & Relief Receipt
+Upon on-chain nullifier verification on the Midnight Network, the citizen receives immediate confirmation with transparent settlement details, cryptographic receipt download, and feedback collection.
+
+![Citizen Claim Terminal - Payout & Receipt](docs/screenshots/04-claim-payout-receipt.png)
+
+- 💰 **Instant Aid Payout Confirmation:** Confirms disbursement (+5,000 tNIGHT) with verified on-chain Midnight transaction hash.
+- 🧾 **Downloadable Confidential Receipt:** Generates an offline-verifiable QR relief receipt for evacuation center marshals without exposing citizen identity.
+- 🌟 **Citizen CSAT Feedback:** Embedded 1-click satisfaction survey feeding directly into the LGU triage center.
+- 🎉 **Confetti & Visual Celebration:** Uplifting UX reinforcement for vulnerable citizens during disaster recovery.
+
+---
+
+### 5. LGU Disaster Command Center — DRRM Authority & Dual-Key Quorum
+High-authority administrative portal for Municipal Disaster Risk Reduction and Management (MDRRMO) officials and Municipal Treasurers under statutory Philippine Disaster Act (R.A. 10121) standards.
+
+![LGU Disaster Command Center Login](docs/screenshots/05-admin-login-drrm.png)
+
+- 🏛️ **Government Authority Branding:** Official DRRM insignia, secure session tokens, and dual-officer credentials.
+- ⚡ **1-Click Reviewer Sandbox:** Evaluators can click `"1-Click Evaluator Login"` to instantly explore the administrative dashboard without manual account setup.
+- 🔐 **Dual-Key Municipal Quorum:** Enforces joint cryptographic sign-offs from both the MDRRM Officer and Municipal Treasurer before relief funds release on-chain.
+- 📋 **Live Triage Board:** Real-time citizen feedback aggregation and evacuation center telemetry.
+
+---
+
+### 6. Public Calamity Treasury & Audit Explorer (`/transparency`)
+Fully public, trustless governance portal providing real-time oversight into relief funds, anonymous nullifier commitments, and Commission on Audit (COA) compliance exports.
+
+![Public Calamity Treasury Explorer](docs/screenshots/06-treasury-explorer.png)
+
+- 📊 **Zero-Knowledge Accountability:** Real-time ledger balances (`1,000,000 tNIGHT`) and public nullifier counts (`1,240 Spent`) without exposing recipient identities.
+- 📑 **Automated COA Compliance Export:** Generates standardized CSV audit statements for state auditors and civic watchdogs.
+- ⛓️ **Decentralized Verifiability:** Every transaction is tied to immutable Midnight Preprod block commitments.
 
 ---
 
