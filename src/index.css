@@ -864,16 +864,34 @@ body.high-contrast [class*="bg-[#0A1628]"],
 body.sunlight-mode [class*="bg-[#0A1628]"],
 body.high-contrast [class*="bg-[#0B1528]"],
 body.sunlight-mode [class*="bg-[#0B1528]"],
+body.high-contrast [class*="bg-civic-"],
+body.sunlight-mode [class*="bg-civic-"],
+body.high-contrast [class*="bg-shield-"],
+body.sunlight-mode [class*="bg-shield-"],
 body.high-contrast .ambient-canvas,
 body.sunlight-mode .ambient-canvas,
 body.high-contrast .glass-card,
 body.sunlight-mode .glass-card,
 body.high-contrast .glass-card-elevated,
-body.sunlight-mode .glass-card-elevated {
+body.sunlight-mode .glass-card-elevated,
+body.high-contrast .glass-card-premium,
+body.sunlight-mode .glass-card-premium,
+body.high-contrast main,
+body.sunlight-mode main {
   background-color: #FFFFFF !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+}
+
+body.high-contrast [class*="text-shield-"],
+body.sunlight-mode [class*="text-shield-"] {
+  color: #334155 !important;
+}
+
+body.high-contrast [class*="border-shield-"],
+body.sunlight-mode [class*="border-shield-"] {
+  border-color: #CBD5E1 !important;
 }
 
 /* 2. Secondary Surface Backgrounds: Pills, inset wells, table headers */
