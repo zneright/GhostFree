@@ -23,6 +23,7 @@ import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } fro
 import TransparencyCard from "../../components/TransparencyCard";
 import TrancheQuorumModal from "../../components/TrancheQuorumModal";
 import GhostFreeLogo from "../../components/GhostFreeLogo";
+import Layout from "../../components/Layout";
 import {
   Upload,
   FileSpreadsheet,
@@ -272,51 +273,60 @@ const AdminDashboard: React.FC = () => {
   const summary = entries ? getCSVSummary(entries) : null;
 
   return (
-    <div className="min-h-dvh bg-civic-navy">
-      {/* Header */}
-      <header className="border-b border-shield-glass/30 bg-shield-dark/50 backdrop-blur-xl sticky top-0 z-20 relative">
-        {/* Bottom glow line */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-civic-blue/20 to-transparent" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <GhostFreeLogo size={32} variant="icon" animated />
-            <div>
-              <h1 className="text-sm font-bold text-white leading-none">GhostFree Admin</h1>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[0.6rem] text-shield-muted">{profile?.name || profile?.email}</span>
-                <span className="text-[0.55rem] px-1.5 py-0.5 rounded-full bg-civic-blue/15 text-civic-sky border border-civic-blue/20 font-semibold uppercase tracking-wider">LGU Officer</span>
+    <Layout showFooter={true}>
+      <div className="min-h-dvh">
+        {/* Officer Status Sub-Bar */}
+        <div className="border-b border-shield-glass/30 bg-shield-dark/50 backdrop-blur-xl relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-civic-trust/15 border border-civic-trust/30 flex items-center justify-center text-civic-trust shadow-sm">
+                <Landmark className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h1 className="text-sm font-bold text-white leading-none">LGU Disaster Relief Operations</h1>
+                  <span className="text-[0.55rem] px-2 py-0.5 rounded-full bg-civic-blue/20 text-civic-sky border border-civic-blue/30 font-bold uppercase tracking-wider">
+                    Authorized Officer
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-xs text-shield-muted">
+                    Officer: <span className="text-slate-200 font-semibold">{profile?.name || profile?.email}</span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center gap-2">
-            {/* Wallet Status */}
-            {connected ? (
-              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent-success/10 border border-accent-success/20">
-                <div className="w-2 h-2 rounded-full bg-accent-success animate-pulse" />
-                <span className="text-xs text-accent-success font-mono">
-                  {address?.slice(0, 8)}...{address?.slice(-6)}
-                </span>
-              </div>
-            ) : (
+            <div className="flex items-center gap-2.5">
+              {/* Wallet Status Badge */}
+              {connected ? (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent-success/15 border border-accent-success/30">
+                  <div className="w-2 h-2 rounded-full bg-accent-success animate-pulse" />
+                  <span className="text-xs text-accent-success font-mono font-bold">
+                    {address?.slice(0, 8)}...{address?.slice(-6)}
+                  </span>
+                </div>
+              ) : (
+                <button
+                  onClick={() => connect()}
+                  disabled={connecting}
+                  className="btn-civic btn-secondary text-xs py-1.5 px-3"
+                >
+                  <Wallet className="w-3.5 h-3.5" />
+                  {connecting ? "Connecting..." : "Connect Wallet"}
+                </button>
+              )}
+
               <button
-                onClick={() => connect()}
-                disabled={connecting}
-                className="btn-civic btn-secondary text-xs py-2 px-3"
+                onClick={handleLogout}
+                className="btn-civic btn-ghost text-xs py-1.5 px-3 border border-white/10 hover:border-red-500/40 hover:text-red-400"
               >
-                <Wallet className="w-3.5 h-3.5" />
-                {connecting ? "Connecting..." : "Connect Wallet"}
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Sign Out</span>
               </button>
-            )}
-
-            <button onClick={handleLogout} className="btn-civic btn-ghost text-xs py-2 px-3">
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Logout</span>
-            </button>
+            </div>
           </div>
         </div>
-      </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -335,7 +345,7 @@ const AdminDashboard: React.FC = () => {
             <button
               onClick={() => setShowQuorum(!showQuorum)}
               className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
-                showQuorum ? "btn-primary" : "btn-secondary"
+                showQuorum ? "btn-civic-emerald" : "btn-secondary"
               }`}
             >
               <Key className="w-4 h-4 text-accent-success" />
@@ -349,7 +359,7 @@ const AdminDashboard: React.FC = () => {
             <button
               onClick={() => setShowFeedback(!showFeedback)}
               className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
-                showFeedback ? "btn-primary" : "btn-secondary"
+                showFeedback ? "btn-civic-gold" : "btn-secondary"
               }`}
             >
               <MessageSquarePlus className="w-4 h-4 text-accent-gold" />
@@ -360,14 +370,14 @@ const AdminDashboard: React.FC = () => {
             </button>
             <button
               onClick={() => setShowTrancheSimulator(true)}
-              className="btn-civic btn-secondary text-xs sm:text-sm flex items-center gap-1.5 hover:border-accent-gold/40 text-accent-gold"
+              className="btn-civic btn-civic-gold text-xs sm:text-sm flex items-center gap-1.5 shadow-md"
             >
-              <Sparkles className="w-4 h-4 text-accent-gold" />
+              <Sparkles className="w-4 h-4" />
               <span>Tranche Quorum</span>
             </button>
             <button
               onClick={() => navigate("/transparency")}
-              className="btn-civic btn-ghost text-xs sm:text-sm flex items-center gap-1.5 border border-white/10"
+              className="btn-civic btn-secondary text-xs sm:text-sm flex items-center gap-1.5"
             >
               <Landmark className="w-4 h-4 text-civic-sky" />
               <span>Public Treasury</span>
@@ -378,7 +388,9 @@ const AdminDashboard: React.FC = () => {
                 setShowHistory(!showHistory);
                 if (!showHistory) loadHistory();
               }}
-              className="btn-civic btn-secondary text-xs sm:text-sm"
+              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
+                showHistory ? "btn-primary" : "btn-secondary"
+              }`}
             >
               <History className="w-4 h-4" />
               {showHistory ? "Hide History" : "View History"}
@@ -1105,7 +1117,8 @@ const AdminDashboard: React.FC = () => {
         isOpen={showTrancheSimulator}
         onClose={() => setShowTrancheSimulator(false)}
       />
-    </div>
+      </div>
+    </Layout>
   );
 };
 
