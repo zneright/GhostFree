@@ -1259,6 +1259,32 @@ body.sunlight-mode ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8 !important;
 }
 
+/* ---- 15.1 Calamity Alert Bar Protection in Sunlight Mode ---- */
+body.high-contrast .calamity-alert-bar,
+body.sunlight-mode .calamity-alert-bar {
+  background-image: linear-gradient(to right, #DC2626, #D97706, #DC2626) !important;
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  border-bottom: 2px solid #991B1B !important;
+}
+body.high-contrast .calamity-alert-bar *,
+body.sunlight-mode .calamity-alert-bar * {
+  color: #FFFFFF !important;
+}
+body.high-contrast .calamity-alert-bar strong,
+body.sunlight-mode .calamity-alert-bar strong {
+  color: #FEF08A !important;
+}
+body.high-contrast .calamity-alert-bar [class*="bg-white"],
+body.sunlight-mode .calamity-alert-bar [class*="bg-white"] {
+  background-color: #FFFFFF !important;
+  color: #B91C1C !important;
+}
+body.high-contrast .calamity-alert-bar [class*="bg-white"] *,
+body.sunlight-mode .calamity-alert-bar [class*="bg-white"] * {
+  color: #B91C1C !important;
+}
+
 /* 16. Font Scale Modes */
 body.large-text {
   font-size: 112.5% !important;

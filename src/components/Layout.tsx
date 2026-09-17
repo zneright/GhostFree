@@ -66,7 +66,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white">
       {/* Top Disaster Emergency Broadcast Bar */}
-      <div className="w-full bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white text-[0.7rem] sm:text-xs font-semibold py-1.5 px-4 shadow-md flex items-center justify-between overflow-hidden relative border-b border-red-500/30">
+      <div className="calamity-alert-bar w-full bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white text-[0.7rem] sm:text-xs font-semibold py-1.5 px-4 shadow-md flex items-center justify-between overflow-hidden relative border-b border-red-500/30">
         <div className="flex items-center gap-2 max-w-7xl mx-auto w-full">
           <span className="flex items-center gap-1 bg-white text-red-700 font-extrabold px-1.5 py-0.5 rounded text-[0.6rem] uppercase tracking-wider shrink-0 shadow-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping inline-block mr-0.5" />

@@ -30,7 +30,6 @@ import {
   HeartPulse,
   Hammer,
   AlertTriangle,
-  Radio,
   Clock,
   Sparkles,
   ExternalLink,
@@ -367,22 +366,6 @@ export const LandingPage: React.FC = () => {
         <div className="absolute top-[25%] right-[10%] w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-[20%] left-[8%] w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        {/* ========================================================
-            SECTION 1: LIVE PAGASA / NDRRMO TROPICAL CYCLONE ADVISORY
-           ======================================================== */}
-        <div className="bg-gradient-to-r from-red-950 via-amber-950 to-red-950 border-b border-amber-500/30 py-2.5 px-4 text-xs font-semibold overflow-hidden shadow-inner">
-          <div className="max-w-7xl mx-auto flex items-center gap-3">
-            <div className="flex items-center gap-2 shrink-0 bg-red-600/90 text-white px-2.5 py-1 rounded-md uppercase font-black tracking-wider text-[0.7rem] shadow-sm">
-              <Radio className="w-3.5 h-3.5 animate-pulse" />
-              <span>PAGASA DRRM Alert</span>
-            </div>
-            <div className="overflow-hidden whitespace-nowrap flex-1">
-              <div className="inline-block animate-marqueeScroll text-amber-200 text-xs">
-                ⚠️ TYPHOON MARCE QUICK RESPONSE FUND ACTIVE — Tropical Cyclone Signal No. 3 declared for Region II (Cagayan Valley). Emergency Calamity Cash Aid of ₱5,000 per family available across 4 accredited regional evacuation sites. Free gas sponsorship activated on Midnight Testnet.
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* ========================================================
             SECTION 2: HERO SECTION WITH OFFICIAL CIVIC IDENTITY
