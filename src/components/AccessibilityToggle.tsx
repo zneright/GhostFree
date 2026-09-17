@@ -11,12 +11,15 @@ import {
 } from "../services/feedback.service";
 import type { AccessibilityPreferences } from "../types";
 
+import { useVoiceAssistant, type VoiceContextKey } from "../services/voice.service";
+import { useTranslation } from "../services/i18n.service";
+
 /**
  * Floating accessibility assistant for disaster relief evacuation centers.
  * Provides:
  * 1. Sunlight Outdoor Mode (High-contrast daylight theme for harsh outdoor sun)
  * 2. 3-level Text Size Scaling (100% / 125% / 150% for elderly and low-vision citizens)
- * 3. Spoken Audio Guide (Web Speech API voice assistance for non-readers and PWDs)
+ * 3. Multi-Dialect Voice Guide (EN / FIL / CEB) for non-readers, PWDs, and field evacuees
  */
 const AccessibilityToggle: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +29,9 @@ const AccessibilityToggle: React.FC = () => {
     textScale: "normal",
     sunlightMode: false,
   });
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  
+  const { isSpeaking, speak, stop } = useVoiceAssistant();
+  const { lang, t } = useTranslation();
 
   // Apply visual preferences to document body
   const applyPreferences = useCallback((p: AccessibilityPreferences) => {
@@ -82,69 +87,23 @@ const AccessibilityToggle: React.FC = () => {
     applyPreferences(updated);
   }, [prefs, applyPreferences]);
 
-  // Built-in Web Speech API voice assistant
+  // Multi-dialect voice guide trigger
   const toggleVoiceGuide = useCallback(() => {
-    if (!("speechSynthesis" in window)) {
-      alert("Voice guide is not supported in this browser.");
-      return;
-    }
-
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
+      stop();
       return;
     }
 
-    // Determine instructional content to read based on current URL path
     const path = window.location.pathname;
-    let spokenText = "";
+    let contextKey: VoiceContextKey = "landingHero";
     if (path.includes("/claim")) {
-      spokenText =
-        "Maligayang pagdating sa GhostFree Disaster Calamity Claim Portal. " +
-        "Ihanda po ang inyong PhilSys National ID at 4-digit secret PIN mula sa inyong evacuation center relief voucher. " +
-        "Pribado po at ligtas ang inyong pag-claim. Hindi po ilalabas sa internet ang inyong personal na impormasyon.";
+      contextKey = "claimStep1";
     } else if (path.includes("/transparency")) {
-      spokenText =
-        "Ito po ang GhostFree Public Calamity Treasury Explorer. " +
-        "Maaari ninyong makita ang kabuuang pondo ng ayuda na naipamahagi nang tapat, " +
-        "walang ghost beneficiaries, at sumusunod sa pamantayan ng Commission on Audit.";
-    } else if (path.includes("/admin")) {
-      spokenText =
-        "Ito po ang LGU Disaster Risk Reduction and Management Command Center. " +
-        "Dito po nagpapatunay ang MDRRMO at Municipal Treasurer gamit ang dual-key quorum authorization.";
-    } else {
-      spokenText =
-        "Maligayang pagdating sa GhostFree. " +
-        "Ang ligtas at pribadong pamamahagi ng emergency calamity ayuda sa Midnight Network. " +
-        "Walang ghost beneficiaries. Walang padrino. Protektado ang mamamayan.";
+      contextKey = "treasury";
     }
 
-    const utterance = new SpeechSynthesisUtterance(spokenText);
-    utterance.rate = 0.95; // Slightly slower for elderly / distress comprehension
-    utterance.pitch = 1.0;
-
-    // Try finding Filipino/Tagalog voice, else fallback to default
-    const voices = window.speechSynthesis.getVoices();
-    const tlVoice = voices.find((v) => v.lang.startsWith("fil") || v.lang.startsWith("tl"));
-    if (tlVoice) {
-      utterance.voice = tlVoice;
-    }
-
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
-  }, [isSpeaking]);
-
-  // Cleanup speech synthesis on unmount
-  useEffect(() => {
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
-  }, []);
+    speak(contextKey);
+  }, [isSpeaking, speak, stop]);
 
   return (
     <div
@@ -258,9 +217,15 @@ const AccessibilityToggle: React.FC = () => {
                   <Volume2 className="w-4 h-4 text-emerald-400" />
                 )}
                 <span>
-                  <strong>{isSpeaking ? "Ihinto ang Boses" : "Boses Gabay (Read Aloud)"}</strong>
+                  <strong>
+                    {isSpeaking
+                      ? (lang === "en" ? "Stop Voice Guide" : lang === "ceb" ? "Hunonga ang Tingog" : "Ihinto ang Boses")
+                      : (lang === "en" ? "Voice Guide (Read Aloud)" : lang === "ceb" ? "Tingog nga Giya (Bisaya)" : "Boses Gabay (Tagalog)")}
+                  </strong>
                   <span className="block text-[0.65rem] text-slate-400 font-normal">
-                    {isSpeaking ? "Pindutin para ihinto" : "Pakinggan ang panuto sa Tagalog"}
+                    {isSpeaking
+                      ? (lang === "en" ? "Click to stop voice" : lang === "ceb" ? "Pindota aron mohunong" : "Pindutin para ihinto")
+                      : (lang === "en" ? "Listen to spoken instructions in English" : lang === "ceb" ? "Paminawa ang mga instruksiyon sa Binisaya" : "Pakinggan ang panuto sa Tagalog")}
                   </span>
                 </span>
               </span>
