@@ -1,28 +1,20 @@
 // =======================================================
-// GhostFree — Vibrant Human Civic-Tech Landing Page (v2.5)
-// Plain English & Multi-Dialect (EN / FIL / CEB)
-// Live PAGASA Advisory Marquee · ₱5,000 Relief Basket Breakdown
-// Regional Evacuation Center Directory · 30-Sec Eligibility Checker
-// Old Way vs GhostFree Comparison · Interactive Civilian FAQs
+// GhostFree — Premier Dribbble-Inspired SaaS Landing Page (v3.0)
+// High-End Modern Civic-Tech & Fintech Aesthetic (Outcrowd Reference)
+// Interactive ZK Terminal Mockup · 5-Box Bento Grid · Framer Motion
 // =======================================================
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
-  Shield,
-  Lock,
-  Landmark,
-  Smartphone,
-  CheckCircle2,
-  XCircle,
-  ChevronDown,
-  ArrowRight,
   ShieldCheck,
+  CheckCircle2,
+  Landmark,
+  ArrowRight,
   Search,
   Check,
-  Coins,
   MapPin,
-  Users,
   Building2,
   Wheat,
   UtensilsCrossed,
@@ -35,16 +27,19 @@ import {
   ExternalLink,
   Volume2,
   VolumeX,
-  Key,
+  Coins,
+  Users,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import OnboardingModal from "../components/OnboardingModal";
 import ReceiptVerifierModal from "../components/ReceiptVerifierModal";
-import GhostFreeLogo from "../components/GhostFreeLogo";
-import {
-  useTranslation,
-  type SupportedLanguage,
-} from "../services/i18n.service";
+import { HeroProductMockup } from "../components/landing/HeroProductMockup";
+import { BentoFeatureGrid } from "../components/landing/BentoFeatureGrid";
+import { HowItWorksTimeline } from "../components/landing/HowItWorksTimeline";
+import { ComparisonMatrix } from "../components/landing/ComparisonMatrix";
+import { CivilianFaqAccordion } from "../components/landing/CivilianFaqAccordion";
+import { BottomCtaBanner } from "../components/landing/BottomCtaBanner";
+import { useTranslation } from "../services/i18n.service";
 import { useVoiceAssistant } from "../services/voice.service";
 
 // ---- Animated Counter Hook ----
@@ -76,8 +71,7 @@ function useCountUp(target: number, duration = 1800, trigger = false) {
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const { t, lang } = useTranslation();
-  const { isSpeaking, currentContext, speak, stop } = useVoiceAssistant();
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const { isSpeaking, speak, stop } = useVoiceAssistant();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showVerifier, setShowVerifier] = useState(false);
   const [countersVisible, setCountersVisible] = useState(false);
@@ -114,10 +108,10 @@ export const LandingPage: React.FC = () => {
   }, []);
 
   // Metric counters
-  const fundsCounter = useCountUp(1000000, 2000, countersVisible);
-  const beneficiariesCounter = useCountUp(200, 1800, countersVisible);
-  const fraudCounter = useCountUp(42, 1600, countersVisible);
-  const uptimeCounter = useCountUp(99, 1200, countersVisible);
+  const fundsCounter = useCountUp(15000000, 2000, countersVisible);
+  const beneficiariesCounter = useCountUp(3000, 1800, countersVisible);
+  const fraudCounter = useCountUp(18, 1600, countersVisible);
+  const provingTimeCounter = useCountUp(12, 1200, countersVisible);
 
   // Handle Quick Eligibility Check
   const handleCheckEligibility = (locationName?: string) => {
@@ -241,31 +235,31 @@ export const LandingPage: React.FC = () => {
       return [
         {
           id: 1,
-          title: "1. Isulod ang ID ug PIN",
-          tag: "Tinago sa Selpon",
-          desc: "I-type ang imong PhilSys ID number ug ang 4-digit secret PIN gikan sa evacuation voucher. Magpabilin kini sa imong telepono.",
-          staysPrivate: "Dili mogawas sa imong telepono ang imong ID o PIN.",
+          title: "1. Isulod ang ID & PIN",
+          tag: "100% On-Device",
+          desc: "Isulod ang imong PhilSys National ID number ug 4-digit secret PIN gikan sa relief slip.",
+          staysPrivate: "Dili mogawas ang datos sa imong telepono.",
         },
         {
           id: 2,
-          title: "2. Pribadong ZK Proof",
-          tag: "100% Matematika",
-          desc: "Naghimo ang imong telepono og zero-knowledge proof aron pamatud-an nga kwalipikado ka nga dili ipadayag ang imong ngalan.",
-          staysPrivate: "Walay makakita sa imong tinuod nga pagkatawo.",
+          title: "2. Zero-Knowledge Proof",
+          tag: "Pribadong Matematika",
+          desc: "Mokalkula ang selpon og cryptographic proof aron pamatud-an nga anaa ka sa listahan.",
+          staysPrivate: "Walay makakita sa imong tinuod nga ngalan.",
         },
         {
           id: 3,
           title: "3. Anti-Ghost Check",
           tag: "Walay Doble nga Claim",
-          desc: "Gipaneguro sa smart contract sa Midnight Network nga wala pa magamit ang imong talagsaong nullifier lock code.",
-          staysPrivate: "Gibabagan ang ghost claimants nga walay data leakage.",
+          desc: "Susiha sa smart contract ang talagsaong nullifier lock code aron masiguro nga walay ghost.",
+          staysPrivate: "Gipugngan ang doble nga pagkuha gamit ang crypto math.",
         },
         {
           id: 4,
           title: "4. Dawata ang ₱5,000",
-          tag: "Diha-diha nga Payout",
-          desc: "Direktang mabalhin ang pundo sa imong pitaka uban ang opisyal nga digital relief voucher alang sa evacuation checkpoint.",
-          staysPrivate: "Walay kaltas. Sagubangon sa kagamhanan ang tanang gas fees.",
+          tag: "Direktang Payout",
+          desc: "Madawat dayon ang pondo sa pitaka inubanan sa opisyal nga digital relief voucher.",
+          staysPrivate: "Walay gas fees. Sagot sa DRRM ang tanan.",
         },
       ];
     }
@@ -273,17 +267,17 @@ export const LandingPage: React.FC = () => {
       return [
         {
           id: 1,
-          title: "1. Ipasok ang ID at PIN",
-          tag: "Ligtas sa Telepono",
-          desc: "I-type ang iyong PhilSys ID number at ang 4-digit secret PIN mula sa relief voucher. Ang mga ito ay mananatili lamang sa iyong telepono.",
-          staysPrivate: "Hindi aalis sa iyong telepono ang iyong ID o PIN.",
+          title: "1. Ilagay ang ID & PIN",
+          tag: "100% On-Device",
+          desc: "I-type ang iyong PhilSys National ID number at 4-digit secret PIN mula sa barangay relief voucher.",
+          staysPrivate: "Hinding-hindi aalis ang datos sa iyong telepono.",
         },
         {
           id: 2,
-          title: "2. Pribadong ZK Proof",
-          tag: "100% Matematikal",
-          desc: "Bumubuo ang iyong telepono ng zero-knowledge proof upang patunayang kwalipikado ka nang hindi kailanman inilalantad ang iyong pangalan.",
-          staysPrivate: "Walang makakakita sa iyong totoong pagkakakilanlan.",
+          title: "2. Zero-Knowledge Proof",
+          tag: "Pribadong Math",
+          desc: "Bumubuo ang iyong telepono ng ZK proof na nagpapatunay na ikaw ay lehitimong benepisyaryo.",
+          staysPrivate: "Protektado ang iyong pagkakakilanlan sa lahat.",
         },
         {
           id: 3,
@@ -333,18 +327,18 @@ export const LandingPage: React.FC = () => {
     ];
   }, [lang]);
 
-  // Comparison Matrix (The Old Way vs. GhostFree)
+  // Comparison Matrix Data
   const comparisons = useMemo(() => {
     return [
       {
-        feature: t("compareFeature1", "Bilis ng Pagkuha ng Ayuda"),
-        oldWay: t("compareOld1", "Oras ng pagpila sa init ng araw o ulan sa evacuation center"),
-        ghostFree: t("compareNew1", "30 segundo sa iyong telepono na may agarang pondo"),
+        feature: t("compareFeature1", "Bilis ng Pagtanggap ng Ayuda"),
+        oldWay: t("compareOld1", "Oras o araw na pagpila sa ilalim ng ulan o matinding init"),
+        ghostFree: t("compareNew1", "30 segundo sa iyong mobile phone na may agarang settlement"),
       },
       {
-        feature: t("compareFeature2", "Proteksyon sa Pagkakakilanlan"),
-        oldWay: t("compareOld2", "Nakasulat ang buong pangalan at National ID sa bukas na papel"),
-        ghostFree: t("compareNew2", "100% pribado gamit ang Zero-Knowledge cryptography"),
+        feature: t("compareFeature2", "Proteksyon sa Personal na ID"),
+        oldWay: t("compareOld2", "Buong pangalan at National ID nakapaskil sa pampublikong billboard"),
+        ghostFree: t("compareNew2", "100% protektado gamit ang Zero-Knowledge cryptography"),
       },
       {
         feature: t("compareFeature3", "Pandaraya at Ghost Beneficiaries"),
@@ -393,620 +387,381 @@ export const LandingPage: React.FC = () => {
   return (
     <Layout>
       <div className="relative overflow-hidden text-slate-100 selection:bg-amber-500/30 selection:text-white pb-16">
-        {/* Background Ambient Glow Orbs */}
-        <div className="absolute top-[8%] left-[10%] w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-[25%] right-[10%] w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-[20%] left-[8%] w-80 h-80 bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
-
-
         {/* ========================================================
-            SECTION 2: HERO SECTION WITH OFFICIAL CIVIC IDENTITY
+            SECTION 1: HERO SECTION WITH DISPLAY TYPOGRAPHY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 pt-10 sm:pt-16 pb-16 sm:pb-24 max-w-6xl mx-auto text-center">
-          {/* Official Calamity Relief Notification Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/30 shadow-xl mb-8 backdrop-blur-md">
+        <section className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center">
+          {/* Radiant Announcement Chip */}
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/30 shadow-xl mb-6 sm:mb-8 backdrop-blur-md"
+          >
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-300">
               {t("heroBadge", "🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya")}
             </span>
-          </div>
+          </motion.div>
 
-          {/* Main Headline: Clean, bold, commanding fintech typography */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.08] tracking-tight max-w-5xl mx-auto mb-6">
-            {t("heroHeadline1", "Ligtas na Ayuda.")}{" "}
+          {/* Main Headline: Bold, commanding display typography */}
+          <motion.h1
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.06] tracking-tight max-w-5xl mx-auto mb-6"
+          >
+            {t("heroHeadline1", "Safe Calamity Aid.")}{" "}
             <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
-              {t("heroHeadlineHighlight", "Walang Ghost Beneficiaries.")}
+              {t("heroHeadlineHighlight", "Zero Ghost Beneficiaries.")}
             </span>{" "}
-            {t("heroHeadline2", "Walang Pahirap.")}
-          </h1>
+            {t("heroHeadline2", "Zero Hassle.")}
+          </motion.h1>
 
           {/* Reassuring Civic Subtitle */}
-          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-            {t("heroSubtitleText", "Privacy-first emergency cash aid distribution sa Midnight Network. Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.")}
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-normal"
+          >
+            {t(
+              "heroSubtitleText",
+              "Privacy-first emergency cash aid distribution sa Midnight Network. Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad."
+            )}
+          </motion.p>
 
-          {/* Focused Action Buttons: Dominant Primary CTA + Clean Secondary */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-6">
+          {/* Dual Action CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8"
+          >
             <button
+              type="button"
               onClick={() => navigate("/claim")}
-              className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black flex items-center justify-center gap-2.5 shadow-2xl shadow-amber-500/30 tap-scale"
-              id="hero-claim-ayuda-btn"
+              className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black flex items-center justify-center gap-2.5 shadow-2xl tap-scale"
+              id="hero-primary-claim-btn"
             >
-              <Smartphone className="w-5 h-5 text-slate-950" />
-              <span>{t("heroClaimBtn", "Kumuha ng Ayuda (Claim ₱5,000)")}</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
+              <ShieldCheck className="w-5 h-5" />
+              <span>{t("claimAidButton", "Claim Aid (₱5,000)")}</span>
+              <ArrowRight className="w-5 h-5" />
             </button>
 
             <button
+              type="button"
               onClick={() => navigate("/transparency")}
-              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-sm sm:text-base font-bold text-slate-200 hover:text-white bg-white/[0.05] hover:bg-white/10 border border-white/15 transition-all flex items-center justify-center gap-2 tap-scale"
+              className="btn-secondary w-full sm:w-auto px-7 py-4 text-base font-bold flex items-center justify-center gap-2.5 shadow-lg tap-scale"
               id="hero-treasury-btn"
             >
-              <Landmark className="w-4.5 h-4.5 text-amber-400" />
-              <span>{t("heroTreasuryBtn", "Public Treasury (COA Explorer)")}</span>
+              <Landmark className="w-5 h-5 text-amber-400" />
+              <span>{t("treasuryExplorerButton", "Public Treasury (COA Explorer)")}</span>
             </button>
-          </div>
+          </motion.div>
 
-          {/* Auxiliary Tools Strip: Audio Guide & Voucher Verifier */}
-          <div className="flex items-center justify-center gap-3 mb-12 text-xs">
+          {/* Micro Action Links */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex items-center justify-center gap-6 text-xs text-slate-400 font-medium"
+          >
             <button
+              type="button"
               onClick={() => setShowVerifier(true)}
-              className="text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-white/[0.04]"
-              id="hero-verify-voucher-btn"
+              className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{t("heroVerifyBtn", "I-verify ang Relief Voucher")}</span>
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>{t("verifyVoucherButton", "Verify Relief Voucher")}</span>
             </button>
-
-            <span className="text-white/20">•</span>
-
+            <span>•</span>
             <button
-              onClick={() => {
-                if (isSpeaking && currentContext === "landingHero") {
-                  stop();
-                } else {
-                  speak("landingHero");
-                }
-              }}
-              className={`transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg ${
-                isSpeaking && currentContext === "landingHero"
-                  ? "text-emerald-300 font-bold animate-pulse bg-emerald-500/10"
-                  : "text-slate-400 hover:text-amber-300 hover:bg-white/[0.04]"
-              }`}
-              id="hero-voice-guide-btn"
+              type="button"
+              onClick={() => (isSpeaking ? stop() : speak("landingHero"))}
+              className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
             >
-              {isSpeaking && currentContext === "landingHero" ? (
-                <VolumeX className="w-3.5 h-3.5" />
-              ) : (
-                <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-              )}
-              <span>
-                {isSpeaking && currentContext === "landingHero"
-                  ? (lang === "en" ? "Stop Voice" : lang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
-                  : (lang === "en" ? "Listen to Audio Guide" : lang === "ceb" ? "Paminawa ang Giya" : "Pakinggan ang Gabay")}
-              </span>
+              {isSpeaking ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+              <span>{isSpeaking ? t("stopVoice", "Stop Voice") : t("listenGuide", "Listen to Audio Guide")}</span>
             </button>
-          </div>
+          </motion.div>
 
-          {/* Key Assurance Highlights Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto text-left">
-            {[
-              { icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />, label: t("assuranceId", "100% Lihim ang ID"), desc: t("assuranceIdSub", "Zero-Knowledge Proof") },
-              { icon: <Coins className="w-4 h-4 text-amber-400" />, label: t("assuranceGas", "Libre ang Gas Fees"), desc: t("assuranceGasSub", "0 tDUST Gastusin") },
-              { icon: <Lock className="w-4 h-4 text-sky-400" />, label: t("assuranceGhost", "Bawal ang Doble"), desc: t("assuranceGhostSub", "Anti-Ghost Nullifier") },
-              { icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />, label: t("assuranceCoa", "COA Compliant"), desc: t("assuranceCoaSub", "R.A. 10121 DRRM") },
-            ].map((b, i) => (
-              <div key={i} className="p-3.5 rounded-2xl bg-slate-900/70 border border-white/[0.08] backdrop-blur-md shadow-sm hover:border-white/20 transition-colors">
-                <div className="flex items-center gap-2 mb-1">
-                  {b.icon}
-                  <span className="text-xs font-bold text-white">{b.label}</span>
-                </div>
-                <span className="text-[0.68rem] text-slate-400 block">{b.desc}</span>
+          {/* Quick 30-Second Barangay Eligibility Search Input */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45 }}
+            className="mt-8 max-w-xl mx-auto"
+          >
+            <div className="p-2 rounded-2xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder={t("searchBarangayPlaceholder", "Suriin ang iyong barangay (hal. San Roque, Gonzaga)...")}
+                  value={barangayInput}
+                  onChange={(e) => setBarangayInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleCheckEligibility()}
+                  className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm bg-transparent border-0 text-white placeholder:text-slate-400 focus:outline-none"
+                />
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================
-            SECTION 3: INTERACTIVE ₱5,000 CALAMITY RELIEF BASKET
-           ======================================================== */}
-        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
-              {t("basketTag", "Paano Makatutulong ang Ayuda")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              {t("basketTitle", "Saan Napupunta ang ₱5,000 Emergency Calamity Cash Aid?")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
-              {t("basketSubtitle", "Binuo ayon sa pamantayan ng DSWD Disaster Response Management Bureau (DRMB) upang matustusan ang pangangailangan ng isang pamilya sa unang 21 araw ng kalamidad.")}
-            </p>
-            <div className="mt-3 flex justify-center">
-              <button
-                onClick={() => {
-                  if (isSpeaking && currentContext === "reliefBasket") {
-                    stop();
-                  } else {
-                    speak("reliefBasket");
-                  }
-                }}
-                className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all inline-flex items-center gap-2 ${
-                  isSpeaking && currentContext === "reliefBasket"
-                    ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
-                    : "bg-white/5 hover:bg-white/10 text-amber-300 border-amber-400/30"
-                }`}
-                id="basket-voice-guide-btn"
-              >
-                {isSpeaking && currentContext === "reliefBasket" ? (
-                  <VolumeX className="w-3.5 h-3.5" />
-                ) : (
-                  <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-                )}
-                <span>
-                  {isSpeaking && currentContext === "reliefBasket"
-                    ? (lang === "en" ? "Stop Audio Breakdown" : lang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
-                    : (lang === "en" ? "Listen to Relief Breakdown (Voice)" : lang === "ceb" ? "Paminawa ang Breakdown (Voice)" : "Pakinggan ang Breakdown ng Ayuda (Boses)")}
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-3.5 mb-6">
-            {reliefBasketItems.map((item) => (
-              <div
-                key={item.id}
-                className="p-5 rounded-2xl bg-slate-900/70 border border-white/[0.08] hover:border-amber-400/40 transition-all duration-200 flex flex-col justify-between shadow-xl backdrop-blur-md hover:-translate-y-1 group"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 group-hover:border-amber-400/30 transition-colors">
-                      {item.icon}
-                    </span>
-                    <span className="text-xs font-black text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">
-                      ₱{item.amount.toLocaleString()}
-                    </span>
-                  </div>
-                  <h3 className="text-xs font-black text-white leading-tight mb-1">
-                    {item.name}
-                  </h3>
-                  <p className="text-[0.68rem] text-slate-400 font-medium mb-2.5">
-                    {item.tagalog}
-                  </p>
-                </div>
-                <p className="text-[0.65rem] text-slate-400 leading-relaxed border-t border-white/[0.08] pt-2.5">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* Total Bar */}
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl backdrop-blur-md">
-            <div className="flex items-center gap-3">
-              <span className="p-2.5 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/25">
-                <Coins className="w-6 h-6" />
-              </span>
-              <div>
-                <span className="text-xs text-slate-400 block">{t("basketTotalLabel", "Kabuuang Emergency Relief Package")}</span>
-                <span className="text-lg sm:text-xl font-black text-white">
-                  {t("basketTotalPerFamily", "₱5,000.00 Ayuda Assistance bawat Kwalipikadong Pamilya")}
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={() => navigate("/claim")}
-              className="btn-civic-gold px-6 py-3 text-xs sm:text-sm font-black whitespace-nowrap shadow-md tap-scale"
-            >
-              {t("basketClaimBtn", "Simulan ang Claim (₱5,000)")}
-            </button>
-          </div>
-        </section>
-
-        {/* ========================================================
-            SECTION 4: REGIONAL EVACUATION CENTER DIRECTORY
-           ======================================================== */}
-        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
-              {t("evacTag", "Aktibong Operasyon ng NDRRMO")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              {t("evacTitle", "Mga Akreditadong Evacuation Center sa Northern Luzon")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
-              {t("evacSubtitle", "Real-time on-chain telemetry ng mga evacuation sites na may aktibong GhostFree smart contract disbursement.")}
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {evacuationCenters.map((ec, idx) => {
-              const percent = Math.round((ec.disbursed / ec.capacity) * 100);
-              const isSelected = selectedCenter === idx;
-              return (
-                <div
-                  key={idx}
-                  onClick={() => setSelectedCenter(idx)}
-                  className={`p-5 rounded-2xl border cursor-pointer transition-all duration-200 ${
-                    isSelected
-                      ? "bg-slate-900/90 border-amber-400/80 shadow-xl shadow-amber-500/10"
-                      : "bg-slate-900/70 border-white/[0.08] hover:border-white/20 backdrop-blur-md"
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                        <Building2 className="w-4 h-4 text-amber-400" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-black text-white leading-tight">
-                          {ec.name}
-                        </h3>
-                        <span className="text-[0.72rem] text-slate-400 flex items-center gap-1 mt-0.5">
-                          <MapPin className="w-3 h-3 text-red-400" />
-                          {ec.municipality}
-                        </span>
-                      </div>
-                    </div>
-                    <span className={`text-[0.65rem] font-bold px-2.5 py-1 rounded-full border ${ec.statusColor}`}>
-                      {ec.status}
-                    </span>
-                  </div>
-
-                  {/* Meter */}
-                  <div className="my-3">
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="text-slate-300 font-medium">
-                        {t("evacDisbursedLabel", "Pondo Naipamahagi:")} <span className="text-white font-bold">{ec.disbursed}</span> / {ec.capacity} {t("evacFamiliesLabel", "pamilya")}
-                      </span>
-                      <span className="font-bold text-amber-400">{percent}%</span>
-                    </div>
-                    <div className="progress-track w-full h-2 rounded-full bg-slate-800/80 overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
-                        style={{ width: `${percent}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.08] text-[0.68rem] text-slate-400">
-                    <span className="font-mono text-slate-400">Contract: <span className="text-slate-300">{ec.contractId.slice(0, 16)}...</span></span>
-                    <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      {t("evacZeroGhost", "0 Ghost Claims")}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ========================================================
-            SECTION 5: INTERACTIVE 30-SECOND ELIGIBILITY CHECKER
-           ======================================================== */}
-        <section className="px-4 sm:px-6 py-6 max-w-4xl mx-auto relative z-10">
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-blue-950/60 border-2 border-amber-500/40 shadow-2xl relative overflow-hidden">
-            <div className="flex items-center gap-2 mb-2">
-              <Search className="w-5 h-5 text-amber-400" />
-              <h2 className="text-lg sm:text-xl font-black text-white">
-                {t("checkerTitle", "30-Segundong Pagsusuri ng Kwalipikasyon (Quick Eligibility Lookup)")}
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">
-              {t("checkerSubtitle", "Tingnan kung ang iyong barangay o bayan ay may aktibong emergency relief declaration bago mag-claim:")}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-2.5 mb-3">
-              <input
-                type="text"
-                value={barangayInput}
-                onChange={(e) => setBarangayInput(e.target.value)}
-                placeholder={t("checkerPlaceholder", "I-type ang iyong Barangay o Bayan (e.g. Brgy. San Roque, Gonzaga)")}
-                className="input-civic flex-1 text-sm bg-black/40 border-2 border-white/20 focus:border-amber-400 text-white"
-                onKeyDown={(e) => e.key === "Enter" && handleCheckEligibility()}
-              />
               <button
                 type="button"
                 onClick={() => handleCheckEligibility()}
-                className="btn-civic-gold px-6 py-3 text-sm font-black whitespace-nowrap shadow-md"
+                className="btn-civic-gold px-4 py-2.5 text-xs font-black shrink-0 tap-scale"
               >
-                {t("checkerButton", "Suriin ang Lugar")}
+                {t("checkButton", "Suriin")}
               </button>
             </div>
 
-            {/* Quick pre-fill buttons */}
-            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-400 mb-4">
-              <span>{t("checkerExamples", "Mga halimbawa:")}</span>
-              {[
-                "Brgy. San Roque, Gonzaga, Cagayan",
-                "Brgy. Poblacion, Tuguegarao",
-                "Brgy. Divilacan, Isabela",
-              ].map((loc) => (
-                <button
-                  key={loc}
-                  type="button"
-                  onClick={() => {
-                    setBarangayInput(loc);
-                    handleCheckEligibility(loc);
-                  }}
-                  className="px-2 py-0.5 rounded-lg bg-white/5 hover:bg-white/10 text-amber-300 border border-white/10 text-[0.7rem]"
-                >
-                  {loc}
-                </button>
-              ))}
-            </div>
-
-            {/* Result Box */}
             {eligibilityResult && (
-              <div className="p-4 rounded-2xl bg-emerald-950/60 border-2 border-emerald-500/60 animate-fade-in-up">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
-                    <div>
-                      <h4 className="text-sm font-black text-emerald-300">
-                        {t("checkerEligibleTitle", "KWALIPIKADO ANG IYONG LUGAR!")}
-                      </h4>
-                      <p className="text-xs text-white mt-0.5">
-                        {eligibilityResult.location}
-                      </p>
-                      <p className="text-[0.72rem] text-slate-300 mt-1">
-                        {t("checkerEligibleSub", "May aktibong emergency ayuda bawat pamilya sa ilalim ng deklaradong QRF.")}
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => navigate("/claim")}
-                    className="btn-civic-emerald px-5 py-2.5 text-xs sm:text-sm font-bold shrink-0 flex items-center justify-center gap-1.5 shadow-md"
-                  >
-                    <span>{t("checkerClaimNow", "I-claim ang Ayuda Ngayon")}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ========================================================
-            SECTION 6: REAL-TIME CALAMITY TELEMETRY TICKER
-           ======================================================== */}
-        <section ref={counterRef} className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-            {[
-              {
-                num: `₱${fundsCounter.toLocaleString()}`,
-                label: t("statDisbursed", "Naipamahaging Ayuda"),
-                sub: "Nailipat nang buo",
-                color: "text-amber-400",
-              },
-              {
-                num: beneficiariesCounter,
-                label: t("statFamiliesHelped", "Nasalantang Pamilya"),
-                sub: "Beripikadong tumanggap",
-                color: "text-emerald-400",
-              },
-              {
-                num: fraudCounter,
-                label: t("statGhostBlocked", "Dobleng Claim Naharang"),
-                sub: "Anti-Ghost Nullifier",
-                color: "text-sky-400",
-              },
-              {
-                num: `${uptimeCounter}.9%`,
-                label: "Midnight Testnet Uptime",
-                sub: "02005a76e93a... Active",
-                color: "text-emerald-400",
-              },
-            ].map((stat, i) => (
-              <div key={i} className="p-4 rounded-2xl bg-slate-900/90 border border-white/10 shadow-lg text-center">
-                <span className={`text-2xl sm:text-3xl font-black ${stat.color} block tracking-tight`}>
-                  {stat.num}
-                </span>
-                <span className="text-xs font-bold text-white block mt-1">{stat.label}</span>
-                <span className="text-[0.65rem] text-slate-400 block">{stat.sub}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ========================================================
-            SECTION 7: HOW IT WORKS: 4 SIMPLE STEPS
-           ======================================================== */}
-        <section className="px-4 sm:px-6 py-12 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-10">
-            <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
-              {t("howItWorks", "Paano Gumagana")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              {t("stepsTitle", "Apat na Hakbang Patungo sa Iyong Ayuda")}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {steps.map((s) => (
-              <div
-                key={s.id}
-                className="p-5 rounded-2xl bg-slate-900/70 border border-white/10 hover:border-amber-400/40 transition-all duration-200 flex flex-col justify-between shadow-xl backdrop-blur-md hover:-translate-y-1"
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-3 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-left flex items-start justify-between gap-3 text-xs"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-md shadow-amber-500/20">
-                      {s.id}
-                    </span>
-                    <span className="text-[0.65rem] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                      {s.tag}
+                  <span className="text-emerald-400 font-bold block flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4" /> Kwalipikado sa Ayuda: ₱{eligibilityResult.amount.toLocaleString()}
+                  </span>
+                  <span className="text-slate-300 block mt-0.5">{eligibilityResult.location}</span>
+                  <span className="text-[0.68rem] text-slate-400 font-mono mt-0.5 block">{eligibilityResult.tranche}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => navigate("/claim")}
+                  className="btn-civic-gold text-[0.7rem] px-3 py-1.5 shrink-0 font-bold"
+                >
+                  I-claim Na
+                </button>
+              </motion.div>
+            )}
+          </motion.div>
+
+          {/* ABSTRACT PRODUCT MOCKUP: Floating 3D Midnight ZK Terminal */}
+          <HeroProductMockup />
+
+          {/* Trust Metric Strip (4 Proof Tiles) */}
+          <div ref={counterRef} className="mt-14 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto">
+            <motion.div
+              whileHover={{ y: -3 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+            >
+              <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
+                <Coins className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">Disbursed</span>
+              </div>
+              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+                ₱{(fundsCounter / 1000000).toFixed(0)}M+
+              </span>
+              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">100% Settled</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ y: -3 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+            >
+              <div className="flex items-center justify-center gap-1.5 text-sky-400 mb-1">
+                <Users className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">Families Aided</span>
+              </div>
+              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+                {beneficiariesCounter.toLocaleString()}+
+              </span>
+              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">Direct to Victims</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ y: -3 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+            >
+              <div className="flex items-center justify-center gap-1.5 text-amber-400 mb-1">
+                <ShieldCheck className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">Ghost Claims</span>
+              </div>
+              <span className="text-xl sm:text-2xl font-black text-amber-300 tabular-nums">
+                0 Duplicates
+              </span>
+              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">18 Fraud Blocked</span>
+            </motion.div>
+
+            <motion.div
+              whileHover={{ y: -3 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+            >
+              <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
+                <Clock className="w-4 h-4" />
+                <span className="text-xs font-bold uppercase tracking-wider">WASM Prover</span>
+              </div>
+              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+                {(provingTimeCounter / 10).toFixed(1)}s
+              </span>
+              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">Local Browser Speed</span>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ========================================================
+            SECTION 2: MODULAR BENTO-BOX FEATURE GRID
+           ======================================================== */}
+        <BentoFeatureGrid t={t} />
+
+        {/* ========================================================
+            SECTION 3: ₱5,000 CALAMITY RELIEF BASKET BREAKDOWN
+           ======================================================== */}
+        <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
+              <Coins className="w-3.5 h-3.5" />
+              <span>{t("basketBadge", "Piso-sa-Piso Transparensya")}</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              {t("basketTitle", "Saan Napupunta ang ₱5,000 Ayuda?")}
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+              {t("basketSubtitle", "Bawat sentimo ay nakalaan para sa totoong pangangailangan ng bawat pamilya sa panahon ng sakuna.")}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 mb-8">
+            {reliefBasketItems.map((item) => (
+              <motion.div
+                key={item.id}
+                whileHover={{ y: -4 }}
+                className="p-5 rounded-3xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex flex-col justify-between glass-card"
+              >
+                <div>
+                  <div className="w-10 h-10 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mb-3">
+                    {item.icon}
+                  </div>
+                  <span className="text-xs font-black text-white block mb-1">{item.name}</span>
+                  <span className="text-[0.68rem] text-amber-400 font-bold block mb-2">{item.tagalog}</span>
+                  <p className="text-[0.72rem] text-slate-300 leading-relaxed">{item.desc}</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-[0.65rem] text-slate-400 uppercase font-medium">Badyet</span>
+                  <span className="text-sm font-black text-white">₱{item.amount.toLocaleString()}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="p-6 rounded-3xl bg-slate-900/90 border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl glass-card">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="text-xs text-amber-400 font-bold block uppercase tracking-wider">
+                  Kabuuan: ₱5,000.00 Ayuda Bawat Pamilya
+                </span>
+                <span className="text-xs text-slate-300">
+                  Direktang napupunta sa biktima nang walang bawas o kaltas ng middleman.
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate("/claim")}
+              className="btn-civic-gold px-6 py-3 text-xs font-black shrink-0 tap-scale"
+            >
+              Simulan ang Pag-Claim
+            </button>
+          </div>
+        </section>
+
+        {/* ========================================================
+            SECTION 4: 4-STEP HOW IT WORKS TIMELINE
+           ======================================================== */}
+        <HowItWorksTimeline steps={steps} t={t} />
+
+        {/* ========================================================
+            SECTION 5: REGIONAL EVACUATION CENTER DIRECTORY
+           ======================================================== */}
+        <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-bold uppercase tracking-wider mb-3">
+              <Building2 className="w-3.5 h-3.5" />
+              <span>{t("evacDirectoryTag", "Opisyal na Sentro ng Evacuation")}</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+              {t("evacDirectoryTitle", "Mga Aktibong Evacuation Center")}
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+              {t("evacDirectorySubtitle", "Real-time monitoring ng pondo at bilang ng natulungang pamilya sa bawat sentro.")}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+            {evacuationCenters.map((ec, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ y: -3 }}
+                onClick={() => setSelectedCenter(i)}
+                className={`p-6 rounded-3xl border transition-all cursor-pointer glass-card ${
+                  selectedCenter === i
+                    ? "bg-slate-900/95 border-amber-400/50 shadow-2xl ring-1 ring-amber-400/40"
+                    : "bg-slate-900/70 border-white/10 hover:border-white/20"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div>
+                    <h3 className="text-base sm:text-lg font-black text-white">{ec.name}</h3>
+                    <span className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                      {ec.municipality}
                     </span>
                   </div>
-                  <h3 className="text-sm font-black text-white mb-2">{s.title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed mb-4">{s.desc}</p>
+                  <span className={`px-2.5 py-1 rounded-full text-[0.65rem] font-bold border ${ec.statusColor}`}>
+                    {ec.status}
+                  </span>
                 </div>
-                <div className="pt-3 border-t border-white/[0.08] text-[0.65rem] text-slate-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <span>{s.staysPrivate}</span>
+
+                <span className="text-xs font-semibold text-amber-400/90 block mb-4">
+                  {ec.activeDisasters}
+                </span>
+
+                <div className="space-y-2 mb-4">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-slate-400">Pamilyang Nabigyan ng Ayuda</span>
+                    <span className="text-white font-bold">{ec.disbursed} / {ec.capacity}</span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full"
+                      style={{ width: `${(ec.disbursed / ec.capacity) * 100}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
+
+                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[0.68rem] text-slate-400 font-mono">
+                  <span>Contract: {ec.contractId.slice(0, 14)}...</span>
+                  <span className="text-emerald-400 font-bold">100% ZK Private</span>
+                </div>
+              </motion.div>
             ))}
           </div>
         </section>
 
         {/* ========================================================
-            SECTION 8: THE OLD WAY VS. GHOSTFREE COMPARISON
+            SECTION 6: OLD WAY VS GHOSTFREE COMPARISON MATRIX
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-12 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
-              {t("comparisonTag", "Bakit GhostFree")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              {t("comparisonTitle", "Tradisyunal na Sistema vs. GhostFree")}
-            </h2>
-          </div>
-
-          <div className="glass-card-elevated p-4 sm:p-6 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {/* Old Way */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-red-500/[0.04] border border-red-500/25 backdrop-blur-sm">
-                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-red-500/20">
-                  <XCircle className="w-5 h-5 text-red-400 shrink-0" />
-                  <h3 className="text-sm sm:text-base font-black text-red-300">
-                    {t("compareOldWayHeader", "❌ Tradisyunal na Ayuda Distribution")}
-                  </h3>
-                </div>
-                <ul className="space-y-3 text-xs text-slate-300">
-                  {comparisons.map((c, i) => (
-                    <li key={i} className="flex items-start gap-2.5 p-2 rounded-lg bg-red-500/[0.03]">
-                      <span className="text-red-400 font-bold mt-0.5">•</span>
-                      <div>
-                        <strong className="text-white block font-semibold mb-0.5">{c.feature}:</strong>
-                        <span className="text-slate-400 leading-relaxed">{c.oldWay}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* GhostFree Way */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.04] border border-emerald-500/30 backdrop-blur-sm shadow-lg shadow-emerald-500/5">
-                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-emerald-500/20">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-                  <h3 className="text-sm sm:text-base font-black text-emerald-300">
-                    {t("compareGhostFreeHeader", "✅ GhostFree sa Midnight Network")}
-                  </h3>
-                </div>
-                <ul className="space-y-3 text-xs text-slate-300">
-                  {comparisons.map((c, i) => (
-                    <li key={i} className="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-500/[0.04]">
-                      <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-white block font-semibold mb-0.5">{c.feature}:</strong>
-                        <span className="text-emerald-100 leading-relaxed">{c.ghostFree}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ComparisonMatrix comparisons={comparisons} t={t} />
 
         {/* ========================================================
-            SECTION 9: CIVILIAN FAQ ACCORDION
+            SECTION 7: CIVILIAN FAQ ACCORDION
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-12 max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-8">
-            <span className="text-xs font-black text-sky-400 uppercase tracking-wider block mb-1">
-              {t("faqSectionTag", "Mga Karaniwang Tanong")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              {t("faqSectionTitle", "Sagot para sa mga Mamamayan")}
-            </h2>
-          </div>
+        <CivilianFaqAccordion faqs={faqs} t={t} />
 
-          <div className="space-y-3">
-            {faqs.map((f, idx) => {
-              const isOpen = expandedFaq === idx;
-              return (
-                <div
-                  key={idx}
-                  className="rounded-2xl bg-slate-900/70 border border-white/[0.08] hover:border-white/20 transition-all overflow-hidden"
-                >
-                  <button
-                    onClick={() => setExpandedFaq(isOpen ? null : idx)}
-                    className="w-full p-4.5 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-white hover:bg-white/5 transition-colors"
-                  >
-                    <span>{f.q}</span>
-                    <ChevronDown
-                      className={`w-4 h-4 text-amber-400 shrink-0 transition-transform duration-200 ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="faq-answer px-4.5 pb-4 pt-1 text-xs text-slate-300 border-t border-white/5 leading-relaxed bg-black/20">
-                      {f.a}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* Bottom Call to Action - Elevated Fintech Card */}
-        <section className="px-4 sm:px-6 py-16 max-w-4xl mx-auto text-center relative z-10">
-          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-900 via-[#0C1B33] to-slate-900 border border-amber-500/30 shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-            <div className="relative z-10">
-              <span className="inline-block text-xs font-black text-amber-400 uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
-                National Calamity Relief
-              </span>
-              <h3 className="text-2xl sm:text-4xl font-black text-white mb-3 tracking-tight">
-                {t("ctaTitle", "Kailangan mo ba ng Ayuda sa Kalamidad?")}
-              </h3>
-              <p className="text-sm text-slate-300 max-w-lg mx-auto mb-8 leading-relaxed font-normal">
-                {t("ctaSubtitle", "Simulan ang pag-claim ngayon. Ligtas ang iyong pagkakakilanlan, walang bayad sa gas, at garantisadong makakarating sa iyo.")}
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-                <button
-                  onClick={() => navigate("/claim")}
-                  className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 tap-scale"
-                >
-                  <Smartphone className="w-5 h-5 text-slate-950" />
-                  <span>{t("ctaClaimBtn", "Simulan ang Pag-claim (₱5,000)")}</span>
-                  <ArrowRight className="w-4 h-4 text-slate-950" />
-                </button>
-
-                <button
-                  onClick={() => navigate("/admin/login")}
-                  className="w-full sm:w-auto px-6 py-4 rounded-xl text-sm font-bold text-slate-300 hover:text-white bg-white/[0.05] hover:bg-white/10 border border-white/15 transition-all flex items-center justify-center gap-2 tap-scale"
-                >
-                  <Key className="w-4 h-4 text-sky-400" />
-                  <span>LGU Command Portal</span>
-                </button>
-              </div>
-
-              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>Zero-Knowledge Sovereign Privacy · Midnight Network</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Modals */}
-        <OnboardingModal
-          isOpen={showOnboarding}
-          onClose={() => setShowOnboarding(false)}
-        />
-        <ReceiptVerifierModal
-          isOpen={showVerifier}
-          onClose={() => setShowVerifier(false)}
-        />
+        {/* ========================================================
+            SECTION 8: HIGH-CONVERSION BOTTOM CTA BANNER
+           ======================================================== */}
+        <BottomCtaBanner t={t} />
       </div>
+
+      {/* Onboarding and Verifier Modals */}
+      <OnboardingModal isOpen={showOnboarding} onClose={() => setShowOnboarding(false)} />
+      <ReceiptVerifierModal isOpen={showVerifier} onClose={() => setShowVerifier(false)} />
     </Layout>
   );
 };
