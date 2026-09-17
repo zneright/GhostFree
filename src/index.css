@@ -938,19 +938,19 @@ body.light-mode {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* 0. Hide All Glowing Dark-Theme Orbs, Ambient Radar Sweeps & Distorting Blurs */
-body.high-contrast [class*="blur-3xl"],
-body.sunlight-mode [class*="blur-3xl"],
-body.light-mode [class*="blur-3xl"],
-body.high-contrast [class*="blur-2xl"],
-body.sunlight-mode [class*="blur-2xl"],
-body.light-mode [class*="blur-2xl"],
-body.high-contrast [class*="blur-xl"],
-body.sunlight-mode [class*="blur-xl"],
-body.light-mode [class*="blur-xl"],
-body.high-contrast .radar-ring,
-body.sunlight-mode .radar-ring,
-body.light-mode .radar-ring {
+/* 0. Hide Background Ambient Glowing Orbs Only (Without Touching Backdrop Blurs) */
+body.high-contrast .pointer-events-none[class*="blur-"],
+body.sunlight-mode .pointer-events-none[class*="blur-"],
+body.light-mode .pointer-events-none[class*="blur-"],
+body.high-contrast [class*="rounded-full"][class*="blur-3xl"],
+body.sunlight-mode [class*="rounded-full"][class*="blur-3xl"],
+body.light-mode [class*="rounded-full"][class*="blur-3xl"],
+body.high-contrast [class*="blur-[140px]"],
+body.sunlight-mode [class*="blur-[140px]"],
+body.light-mode [class*="blur-[140px]"],
+body.high-contrast [class*="blur-[120px]"],
+body.sunlight-mode [class*="blur-[120px]"],
+body.light-mode [class*="blur-[120px]"] {
   display: none !important;
 }
 
@@ -1083,6 +1083,12 @@ body.light-mode .keypad-btn:hover {
 body.high-contrast header,
 body.sunlight-mode header,
 body.light-mode header {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
   background-color: rgba(255, 255, 255, 0.94) !important;
   background-image: none !important;
   backdrop-filter: blur(20px) !important;
@@ -1328,6 +1334,9 @@ body.light-mode [class*="bg-slate-900"][class*="text-slate-500"] {
 body.high-contrast footer,
 body.sunlight-mode footer,
 body.light-mode footer {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
   background-color: #FFFFFF !important;
   background-image: none !important;
   backdrop-filter: none !important;

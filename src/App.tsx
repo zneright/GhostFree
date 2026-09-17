@@ -9,13 +9,16 @@ import { MidnightWalletProvider } from "./contexts/MidnightWalletContext";
 import AppRoutes from "./routes/AppRoutes";
 import FeedbackWidget from "./components/FeedbackWidget";
 import AccessibilityToggle from "./components/AccessibilityToggle";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
         <MidnightWalletProvider>
-          <AppRoutes />
+          <ErrorBoundary>
+            <AppRoutes />
+          </ErrorBoundary>
           <FeedbackWidget />
           <AccessibilityToggle />
         </MidnightWalletProvider>

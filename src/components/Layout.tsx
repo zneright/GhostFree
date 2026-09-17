@@ -26,7 +26,6 @@ import {
 } from "lucide-react";
 import { GithubIcon, TwitterIcon } from "./SocialIcons";
 import OnboardingModal from "./OnboardingModal";
-import FeedbackWidget from "./FeedbackWidget";
 import LanguageSelector from "./LanguageSelector";
 import ReceiptVerifierModal from "./ReceiptVerifierModal";
 import GhostFreeLogo from "./GhostFreeLogo";
