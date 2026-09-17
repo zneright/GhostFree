@@ -1346,6 +1346,13 @@ body.xlarge-text #accessibility-toggle button {
   min-height: auto !important;
 }
 
+/* Treasury Feed Items in Sunlight Mode */
+body.high-contrast .treasury-feed-item,
+body.sunlight-mode .treasury-feed-item {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
+}
+
 /* ---- 10. Gradient Cancellation: Strip dark background-image gradients in sunlight ---- */
 body.high-contrast [class*="bg-gradient-"][class*="from-slate-"],
 body.sunlight-mode [class*="bg-gradient-"][class*="from-slate-"],

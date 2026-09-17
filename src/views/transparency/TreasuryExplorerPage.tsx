@@ -163,7 +163,7 @@ export const TreasuryExplorerPage: React.FC = () => {
           </button>
         </div>
         {/* Statutory Compliance Callout Banner */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-accent-gold/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-accent-gold/30 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-start gap-3">
             <div className="w-10 h-10 rounded-xl bg-accent-gold/10 border border-accent-gold/20 flex items-center justify-center shrink-0">
               <Scale className="w-5 h-5 text-accent-gold" />
@@ -256,7 +256,7 @@ export const TreasuryExplorerPage: React.FC = () => {
         </div>
 
         {/* Operational Telemetry Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/10 text-xs">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 rounded-2xl bg-slate-900/60 border border-white/10 text-xs shadow-sm">
           <div className="flex items-center gap-3">
             <Clock className="w-4 h-4 text-civic-sky shrink-0" />
             <div>
@@ -319,7 +319,7 @@ export const TreasuryExplorerPage: React.FC = () => {
 
           {/* Table */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+            <table className="w-full min-w-[820px] text-left text-xs">
               <thead>
                 <tr className="border-b border-white/10 text-white/40 font-mono text-[0.7rem]">
                   <th className="pb-3 font-semibold">OPERATION & ID</th>
@@ -447,7 +447,7 @@ export const TreasuryExplorerPage: React.FC = () => {
               {nullifiersFeed.map((entry, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 rounded-xl bg-black/30 border border-white/5 text-xs"
+                  className="treasury-feed-item flex items-center justify-between p-3 rounded-xl bg-slate-950/50 border border-white/10 text-xs transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 rounded-full bg-accent-success animate-pulse" />
