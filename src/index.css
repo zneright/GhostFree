@@ -1155,7 +1155,111 @@ body.sunlight-mode #accessibility-toggle-button {
   border: 2px solid #D97706 !important;
 }
 
-/* 10. Font Scale Modes */
+/* ---- 10. Gradient Cancellation: Strip dark background-image gradients in sunlight ---- */
+body.high-contrast [class*="bg-gradient-"][class*="from-slate-"],
+body.sunlight-mode [class*="bg-gradient-"][class*="from-slate-"],
+body.high-contrast [class*="bg-gradient-"][class*="via-slate-"],
+body.sunlight-mode [class*="bg-gradient-"][class*="via-slate-"],
+body.high-contrast [class*="bg-gradient-"][class*="from-blue-9"],
+body.sunlight-mode [class*="bg-gradient-"][class*="from-blue-9"],
+body.high-contrast [class*="bg-gradient-"][class*="from-red-9"],
+body.sunlight-mode [class*="bg-gradient-"][class*="from-red-9"],
+body.high-contrast [class*="bg-gradient-"][class*="from-emerald-9"],
+body.sunlight-mode [class*="bg-gradient-"][class*="from-emerald-9"],
+body.high-contrast [class*="bg-gradient-"][class*="via-amber-9"],
+body.sunlight-mode [class*="bg-gradient-"][class*="via-amber-9"],
+body.high-contrast [class*="bg-gradient-"][class*="to-blue-950"],
+body.sunlight-mode [class*="bg-gradient-"][class*="to-blue-950"] {
+  background-image: none !important;
+  background-color: #FFFFFF !important;
+}
+
+/* ---- 11. Translucent White Text: Override text-white/* opacity variants ---- */
+body.high-contrast [class*="text-white/"],
+body.sunlight-mode [class*="text-white/"] {
+  color: #334155 !important; /* slate-700 — readable on white daylight cards */
+}
+
+/* ---- 12. Light Pastel Text Deepening: Emerald, Red, Sky ranges ---- */
+body.high-contrast [class*="text-emerald-1"],
+body.sunlight-mode [class*="text-emerald-1"],
+body.high-contrast [class*="text-emerald-2"],
+body.sunlight-mode [class*="text-emerald-2"],
+body.high-contrast [class*="text-emerald-3"],
+body.sunlight-mode [class*="text-emerald-3"] {
+  color: #065F46 !important; /* emerald-800 — WCAG AAA on white */
+  font-weight: 700 !important;
+}
+
+body.high-contrast [class*="text-red-2"],
+body.sunlight-mode [class*="text-red-2"],
+body.high-contrast [class*="text-red-3"],
+body.sunlight-mode [class*="text-red-3"] {
+  color: #991B1B !important; /* red-800 — WCAG AAA on white */
+  font-weight: 700 !important;
+}
+
+body.high-contrast [class*="text-sky-3"],
+body.sunlight-mode [class*="text-sky-3"],
+body.high-contrast [class*="text-sky-4"],
+body.sunlight-mode [class*="text-sky-4"] {
+  color: #0369A1 !important; /* sky-700 — WCAG AAA on white */
+  font-weight: 700 !important;
+}
+
+/* ---- 13. Custom Accent Text Deepening for WCAG AAA ---- */
+body.high-contrast [class*="text-accent-success"],
+body.sunlight-mode [class*="text-accent-success"] {
+  color: #047857 !important; /* emerald-700 */
+}
+
+body.high-contrast [class*="text-accent-purple"],
+body.sunlight-mode [class*="text-accent-purple"] {
+  color: #6D28D9 !important; /* violet-700 */
+}
+
+body.high-contrast [class*="text-civic-trust"],
+body.sunlight-mode [class*="text-civic-trust"],
+body.high-contrast [class*="text-civic-sky"],
+body.sunlight-mode [class*="text-civic-sky"] {
+  color: #1D4ED8 !important; /* blue-700 */
+}
+
+body.high-contrast [class*="text-accent-gold"],
+body.sunlight-mode [class*="text-accent-gold"],
+body.high-contrast [class*="text-accent-warning"],
+body.sunlight-mode [class*="text-accent-warning"] {
+  color: #B45309 !important; /* amber-700 */
+}
+
+body.high-contrast [class*="text-accent-danger"],
+body.sunlight-mode [class*="text-accent-danger"] {
+  color: #B91C1C !important; /* red-700 */
+}
+
+/* ---- 14. Placeholder Text in Sunlight Mode ---- */
+body.high-contrast [class*="placeholder-white"]::placeholder,
+body.sunlight-mode [class*="placeholder-white"]::placeholder,
+body.high-contrast [class*="placeholder-slate-"]::placeholder,
+body.sunlight-mode [class*="placeholder-slate-"]::placeholder {
+  color: #64748B !important; /* slate-500 */
+}
+
+/* ---- 15. Scrollbar Daylight Override ---- */
+body.high-contrast ::-webkit-scrollbar-track,
+body.sunlight-mode ::-webkit-scrollbar-track {
+  background: #F1F5F9 !important;
+}
+body.high-contrast ::-webkit-scrollbar-thumb,
+body.sunlight-mode ::-webkit-scrollbar-thumb {
+  background: #CBD5E1 !important;
+}
+body.high-contrast ::-webkit-scrollbar-thumb:hover,
+body.sunlight-mode ::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8 !important;
+}
+
+/* 16. Font Scale Modes */
 body.large-text {
   font-size: 112.5% !important;
 }
