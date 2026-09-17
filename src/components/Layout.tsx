@@ -349,7 +349,7 @@ const Layout: React.FC<LayoutProps> = ({
                   <h4 className="text-[0.7rem] font-bold text-white uppercase tracking-wider mb-3">Network & Links</h4>
                   <div className="flex items-center gap-2 mb-4">
                     <a
-                      href="https://x.com/AidGhostfree"
+                      href="https://x.com/GhostFreepwhq"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-colors"
