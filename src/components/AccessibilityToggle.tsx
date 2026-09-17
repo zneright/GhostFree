@@ -153,7 +153,7 @@ const AccessibilityToggle: React.FC = () => {
     >
       {/* Panel */}
       {isOpen && (
-        <div className="absolute bottom-16 left-0 glass-card p-4.5 w-76 sm:w-80 shadow-2xl border-2 border-amber-500/30 animate-fade-in-up bg-slate-900/95 text-white">
+        <div className="absolute bottom-16 left-0 glass-card p-4 sm:p-5 w-80 max-w-[calc(100vw-2rem)] rounded-2xl shadow-2xl border-2 border-amber-500/30 animate-fade-in-up bg-slate-900/95 text-white">
           <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
             <h3 className="text-sm font-bold text-amber-400 flex items-center gap-2">
               <Accessibility className="w-4.5 h-4.5" />
@@ -189,13 +189,15 @@ const AccessibilityToggle: React.FC = () => {
                 </span>
               </span>
               <span
-                className={`w-9 h-5 rounded-full relative transition-colors ${
-                  prefs.highContrast || prefs.sunlightMode ? "bg-amber-500" : "bg-slate-700"
+                className={`w-11 h-6 rounded-full relative transition-colors inline-flex items-center px-0.5 shrink-0 ${
+                  prefs.highContrast || prefs.sunlightMode
+                    ? "bg-amber-500 border border-amber-400"
+                    : "bg-slate-700 border border-slate-600"
                 }`}
               >
                 <span
-                  className={`absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform ${
-                    prefs.highContrast || prefs.sunlightMode ? "left-4.5" : "left-0.5"
+                  className={`w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-200 transform ${
+                    prefs.highContrast || prefs.sunlightMode ? "translate-x-5" : "translate-x-0"
                   }`}
                 />
               </span>

@@ -1319,6 +1319,33 @@ body.sunlight-mode #accessibility-toggle .glass-card [class*="bg-white/5"] {
   border-color: #CBD5E1 !important;
 }
 
+/* Accessibility Drawer Switch Track in Sunlight Mode */
+body.high-contrast #accessibility-toggle .glass-card [class*="w-11"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"] {
+  background-color: #E2E8F0 !important;
+  border-color: #CBD5E1 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card button[class*="bg-amber-500"] [class*="w-11"],
+body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-amber-500"] [class*="w-11"],
+body.high-contrast #accessibility-toggle .glass-card [class*="w-11"][class*="bg-amber-500"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"][class*="bg-amber-500"] {
+  background-color: #D97706 !important;
+  border-color: #B45309 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card [class*="w-11"] span,
+body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"] span {
+  background-color: #FFFFFF !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Prevent Font Scale mode from blowing up compact drawer buttons */
+body.large-text #accessibility-toggle button,
+body.xlarge-text #accessibility-toggle button {
+  min-height: auto !important;
+}
+
 /* ---- 10. Gradient Cancellation: Strip dark background-image gradients in sunlight ---- */
 body.high-contrast [class*="bg-gradient-"][class*="from-slate-"],
 body.sunlight-mode [class*="bg-gradient-"][class*="from-slate-"],
