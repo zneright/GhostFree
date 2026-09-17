@@ -35,6 +35,7 @@ import {
   ExternalLink,
   Volume2,
   VolumeX,
+  Key,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import OnboardingModal from "../components/OnboardingModal";
@@ -401,36 +402,31 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 2: HERO SECTION WITH OFFICIAL CIVIC IDENTITY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 pt-8 sm:pt-14 pb-12 sm:pb-16 max-w-6xl mx-auto text-center">
-          {/* Floating Calamity Relief Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border-2 border-amber-500/40 shadow-lg mb-6 animate-floatSlow">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+        <section className="relative z-10 px-4 sm:px-6 pt-10 sm:pt-16 pb-16 sm:pb-24 max-w-6xl mx-auto text-center">
+          {/* Official Calamity Relief Notification Badge */}
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/30 shadow-xl mb-8 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-300">
               {t("heroBadge", "🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya")}
             </span>
           </div>
 
-          {/* Official GhostFree Logo with radiant glow */}
-          <div className="mb-6 flex justify-center">
-            <GhostFreeLogo size={110} variant="hero" animated showGlow />
-          </div>
-
-          {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto mb-4">
+          {/* Main Headline: Clean, bold, commanding fintech typography */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.08] tracking-tight max-w-5xl mx-auto mb-6">
             {t("heroHeadline1", "Ligtas na Ayuda.")}{" "}
-            <span className="headline-highlight bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
               {t("heroHeadlineHighlight", "Walang Ghost Beneficiaries.")}
             </span>{" "}
             {t("heroHeadline2", "Walang Pahirap.")}
           </h1>
 
           {/* Reassuring Civic Subtitle */}
-          <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
             {t("heroSubtitleText", "Privacy-first emergency cash aid distribution sa Midnight Network. Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.")}
           </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
+          {/* Focused Action Buttons: Dominant Primary CTA + Clean Secondary */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-6">
             <button
               onClick={() => navigate("/claim")}
               className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black flex items-center justify-center gap-2.5 shadow-2xl shadow-amber-500/30 tap-scale"
@@ -438,28 +434,32 @@ export const LandingPage: React.FC = () => {
             >
               <Smartphone className="w-5 h-5 text-slate-950" />
               <span>{t("heroClaimBtn", "Kumuha ng Ayuda (Claim ₱5,000)")}</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 text-slate-950" />
             </button>
 
             <button
               onClick={() => navigate("/transparency")}
-              className="btn-civic-emerald w-full sm:w-auto px-7 py-4 text-base font-bold flex items-center justify-center gap-2 tap-scale shadow-lg shadow-emerald-500/20"
+              className="w-full sm:w-auto px-6 py-4 rounded-2xl text-sm sm:text-base font-bold text-slate-200 hover:text-white bg-white/[0.05] hover:bg-white/10 border border-white/15 transition-all flex items-center justify-center gap-2 tap-scale"
               id="hero-treasury-btn"
             >
-              <Landmark className="w-5 h-5" />
+              <Landmark className="w-4.5 h-4.5 text-amber-400" />
               <span>{t("heroTreasuryBtn", "Public Treasury (COA Explorer)")}</span>
             </button>
+          </div>
 
+          {/* Auxiliary Tools Strip: Audio Guide & Voucher Verifier */}
+          <div className="flex items-center justify-center gap-3 mb-12 text-xs">
             <button
               onClick={() => setShowVerifier(true)}
-              className="w-full sm:w-auto px-5 py-4 rounded-xl text-xs sm:text-sm font-bold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 transition-all flex items-center justify-center gap-2"
+              className="text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg hover:bg-white/[0.04]"
               id="hero-verify-voucher-btn"
             >
-              <ShieldCheck className="w-4 h-4 text-sky-400" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
               <span>{t("heroVerifyBtn", "I-verify ang Relief Voucher")}</span>
             </button>
 
-            {/* Voice Guide Audio Trigger */}
+            <span className="text-white/20">•</span>
+
             <button
               onClick={() => {
                 if (isSpeaking && currentContext === "landingHero") {
@@ -468,36 +468,36 @@ export const LandingPage: React.FC = () => {
                   speak("landingHero");
                 }
               }}
-              className={`w-full sm:w-auto px-5 py-4 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-2 ${
+              className={`transition-colors flex items-center gap-1.5 py-1 px-2.5 rounded-lg ${
                 isSpeaking && currentContext === "landingHero"
-                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
-                  : "bg-white/5 hover:bg-white/10 text-amber-300 border-amber-400/30"
+                  ? "text-emerald-300 font-bold animate-pulse bg-emerald-500/10"
+                  : "text-slate-400 hover:text-amber-300 hover:bg-white/[0.04]"
               }`}
               id="hero-voice-guide-btn"
             >
               {isSpeaking && currentContext === "landingHero" ? (
-                <VolumeX className="w-4 h-4" />
+                <VolumeX className="w-3.5 h-3.5" />
               ) : (
-                <Volume2 className="w-4 h-4" />
+                <Volume2 className="w-3.5 h-3.5 text-amber-400" />
               )}
               <span>
                 {isSpeaking && currentContext === "landingHero"
                   ? (lang === "en" ? "Stop Voice" : lang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
-                  : (lang === "en" ? "Listen to Guide (Voice)" : lang === "ceb" ? "Paminawa ang Giya (Voice)" : "Pakinggan ang Gabay (Boses)")}
+                  : (lang === "en" ? "Listen to Audio Guide" : lang === "ceb" ? "Paminawa ang Giya" : "Pakinggan ang Gabay")}
               </span>
             </button>
           </div>
 
-          {/* Key Assurance Highlights */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 max-w-3xl mx-auto text-left">
+          {/* Key Assurance Highlights Strip */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-4xl mx-auto text-left">
             {[
-              { icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />, label: t("assuranceId", "100% Lihim ang ID"), desc: t("assuranceIdSub", "Zero-Knowledge") },
-              { icon: <Coins className="w-4 h-4 text-amber-400" />, label: t("assuranceGas", "Libre ang Gas Fees"), desc: t("assuranceGasSub", "0 tDUST gastusin") },
+              { icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />, label: t("assuranceId", "100% Lihim ang ID"), desc: t("assuranceIdSub", "Zero-Knowledge Proof") },
+              { icon: <Coins className="w-4 h-4 text-amber-400" />, label: t("assuranceGas", "Libre ang Gas Fees"), desc: t("assuranceGasSub", "0 tDUST Gastusin") },
               { icon: <Lock className="w-4 h-4 text-sky-400" />, label: t("assuranceGhost", "Bawal ang Doble"), desc: t("assuranceGhostSub", "Anti-Ghost Nullifier") },
               { icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />, label: t("assuranceCoa", "COA Compliant"), desc: t("assuranceCoaSub", "R.A. 10121 DRRM") },
             ].map((b, i) => (
-              <div key={i} className="p-3 rounded-xl bg-slate-900/80 border border-white/10 shadow-sm">
-                <div className="flex items-center gap-2 mb-0.5">
+              <div key={i} className="p-3.5 rounded-2xl bg-slate-900/70 border border-white/[0.08] backdrop-blur-md shadow-sm hover:border-white/20 transition-colors">
+                <div className="flex items-center gap-2 mb-1">
                   {b.icon}
                   <span className="text-xs font-bold text-white">{b.label}</span>
                 </div>
@@ -555,25 +555,25 @@ export const LandingPage: React.FC = () => {
             {reliefBasketItems.map((item) => (
               <div
                 key={item.id}
-                className={`p-4 rounded-2xl border-2 transition-all flex flex-col justify-between shadow-lg ${item.color}`}
+                className="p-5 rounded-2xl bg-slate-900/70 border border-white/[0.08] hover:border-amber-400/40 transition-all duration-200 flex flex-col justify-between shadow-xl backdrop-blur-md hover:-translate-y-1 group"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="p-2 rounded-xl bg-black/30 border border-white/10">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 group-hover:border-amber-400/30 transition-colors">
                       {item.icon}
                     </span>
-                    <span className="text-xs font-black text-white bg-black/40 px-2 py-0.5 rounded-md">
+                    <span className="text-xs font-black text-amber-300 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">
                       ₱{item.amount.toLocaleString()}
                     </span>
                   </div>
                   <h3 className="text-xs font-black text-white leading-tight mb-1">
                     {item.name}
                   </h3>
-                  <p className="text-[0.68rem] text-slate-300 font-semibold mb-2">
+                  <p className="text-[0.68rem] text-slate-400 font-medium mb-2.5">
                     {item.tagalog}
                   </p>
                 </div>
-                <p className="text-[0.65rem] text-slate-400 leading-relaxed border-t border-white/10 pt-2">
+                <p className="text-[0.65rem] text-slate-400 leading-relaxed border-t border-white/[0.08] pt-2.5">
                   {item.desc}
                 </p>
               </div>
@@ -581,9 +581,9 @@ export const LandingPage: React.FC = () => {
           </div>
 
           {/* Total Bar */}
-          <div className="p-4 rounded-2xl bg-slate-900/90 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xl">
+          <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/95 to-slate-900 border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400">
+              <span className="p-2.5 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/25">
                 <Coins className="w-6 h-6" />
               </span>
               <div>
@@ -595,7 +595,7 @@ export const LandingPage: React.FC = () => {
             </div>
             <button
               onClick={() => navigate("/claim")}
-              className="btn-civic-gold px-6 py-2.5 text-xs sm:text-sm font-black whitespace-nowrap shadow-md"
+              className="btn-civic-gold px-6 py-3 text-xs sm:text-sm font-black whitespace-nowrap shadow-md tap-scale"
             >
               {t("basketClaimBtn", "Simulan ang Claim (₱5,000)")}
             </button>
@@ -626,15 +626,17 @@ export const LandingPage: React.FC = () => {
                 <div
                   key={idx}
                   onClick={() => setSelectedCenter(idx)}
-                  className={`p-5 rounded-2xl border-2 cursor-pointer transition-all ${
+                  className={`p-5 rounded-2xl border cursor-pointer transition-all duration-200 ${
                     isSelected
-                      ? "bg-slate-900 border-amber-400/80 shadow-xl shadow-amber-500/10"
-                      : "bg-slate-900/80 border-white/10 hover:border-white/20"
+                      ? "bg-slate-900/90 border-amber-400/80 shadow-xl shadow-amber-500/10"
+                      : "bg-slate-900/70 border-white/[0.08] hover:border-white/20 backdrop-blur-md"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                      <Building2 className="w-5 h-5 text-amber-400 shrink-0" />
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
+                        <Building2 className="w-4 h-4 text-amber-400" />
+                      </div>
                       <div>
                         <h3 className="text-sm font-black text-white leading-tight">
                           {ec.name}
@@ -645,20 +647,20 @@ export const LandingPage: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                    <span className={`text-[0.65rem] font-bold px-2 py-0.5 rounded-full border ${ec.statusColor}`}>
+                    <span className={`text-[0.65rem] font-bold px-2.5 py-1 rounded-full border ${ec.statusColor}`}>
                       {ec.status}
                     </span>
                   </div>
 
                   {/* Meter */}
                   <div className="my-3">
-                    <div className="flex items-center justify-between text-xs mb-1">
-                      <span className="text-slate-300 font-semibold">
-                        {t("evacDisbursedLabel", "Pondo Naipamahagi:")} {ec.disbursed} / {ec.capacity} {t("evacFamiliesLabel", "pamilya")}
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-slate-300 font-medium">
+                        {t("evacDisbursedLabel", "Pondo Naipamahagi:")} <span className="text-white font-bold">{ec.disbursed}</span> / {ec.capacity} {t("evacFamiliesLabel", "pamilya")}
                       </span>
                       <span className="font-bold text-amber-400">{percent}%</span>
                     </div>
-                    <div className="progress-track w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                    <div className="progress-track w-full h-2 rounded-full bg-slate-800/80 overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
                         style={{ width: `${percent}%` }}
@@ -666,10 +668,10 @@ export const LandingPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-2 border-t border-white/10 text-[0.68rem] text-slate-400">
-                    <span className="font-mono">Contract: {ec.contractId.slice(0, 16)}...</span>
+                  <div className="flex items-center justify-between pt-2.5 border-t border-white/[0.08] text-[0.68rem] text-slate-400">
+                    <span className="font-mono text-slate-400">Contract: <span className="text-slate-300">{ec.contractId.slice(0, 16)}...</span></span>
                     <span className="text-emerald-400 font-semibold flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3" />
+                      <ShieldCheck className="w-3.5 h-3.5" />
                       {t("evacZeroGhost", "0 Ghost Claims")}
                     </span>
                   </div>
@@ -811,8 +813,8 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 7: HOW IT WORKS: 4 SIMPLE STEPS
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-8">
+        <section className="px-4 sm:px-6 py-12 max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-10">
             <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
               {t("howItWorks", "Paano Gumagana")}
             </span>
@@ -825,21 +827,21 @@ export const LandingPage: React.FC = () => {
             {steps.map((s) => (
               <div
                 key={s.id}
-                className="p-5 rounded-2xl bg-slate-900/80 border-2 border-white/10 hover:border-amber-400/40 transition-all flex flex-col justify-between shadow-lg"
+                className="p-5 rounded-2xl bg-slate-900/70 border border-white/10 hover:border-amber-400/40 transition-all duration-200 flex flex-col justify-between shadow-xl backdrop-blur-md hover:-translate-y-1"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="w-8 h-8 rounded-full bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 font-black text-xs flex items-center justify-center shadow-md shadow-amber-500/20">
                       {s.id}
                     </span>
-                    <span className="text-[0.65rem] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                    <span className="text-[0.65rem] font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
                       {s.tag}
                     </span>
                   </div>
-                  <h3 className="text-sm font-black text-white mb-1.5">{s.title}</h3>
-                  <p className="text-xs text-slate-300 leading-relaxed mb-3">{s.desc}</p>
+                  <h3 className="text-sm font-black text-white mb-2">{s.title}</h3>
+                  <p className="text-xs text-slate-300 leading-relaxed mb-4">{s.desc}</p>
                 </div>
-                <div className="pt-2.5 border-t border-white/10 text-[0.65rem] text-slate-400 flex items-center gap-1">
+                <div className="pt-3 border-t border-white/[0.08] text-[0.65rem] text-slate-400 flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                   <span>{s.staysPrivate}</span>
                 </div>
@@ -851,8 +853,8 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 8: THE OLD WAY VS. GHOSTFREE COMPARISON
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-6">
+        <section className="px-4 sm:px-6 py-12 max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-8">
             <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
               {t("comparisonTag", "Bakit GhostFree")}
             </span>
@@ -862,22 +864,22 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="glass-card-elevated p-4 sm:p-6 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Old Way */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-red-950/20 border-2 border-red-500/30">
-                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-red-500/30">
-                  <XCircle className="w-5 h-5 text-red-400" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-red-500/[0.04] border border-red-500/25 backdrop-blur-sm">
+                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-red-500/20">
+                  <XCircle className="w-5 h-5 text-red-400 shrink-0" />
                   <h3 className="text-sm sm:text-base font-black text-red-300">
                     {t("compareOldWayHeader", "❌ Tradisyunal na Ayuda Distribution")}
                   </h3>
                 </div>
                 <ul className="space-y-3 text-xs text-slate-300">
                   {comparisons.map((c, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-red-400 font-bold">•</span>
+                    <li key={i} className="flex items-start gap-2.5 p-2 rounded-lg bg-red-500/[0.03]">
+                      <span className="text-red-400 font-bold mt-0.5">•</span>
                       <div>
-                        <strong className="text-white block">{c.feature}:</strong>
-                        <span>{c.oldWay}</span>
+                        <strong className="text-white block font-semibold mb-0.5">{c.feature}:</strong>
+                        <span className="text-slate-400 leading-relaxed">{c.oldWay}</span>
                       </div>
                     </li>
                   ))}
@@ -885,20 +887,20 @@ export const LandingPage: React.FC = () => {
               </div>
 
               {/* GhostFree Way */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-emerald-950/20 border-2 border-emerald-500/40">
-                <div className="flex items-center gap-2 mb-3 pb-2 border-b border-emerald-500/30">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              <div className="p-5 sm:p-6 rounded-2xl bg-emerald-500/[0.04] border border-emerald-500/30 backdrop-blur-sm shadow-lg shadow-emerald-500/5">
+                <div className="flex items-center gap-2.5 mb-4 pb-3 border-b border-emerald-500/20">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <h3 className="text-sm sm:text-base font-black text-emerald-300">
                     {t("compareGhostFreeHeader", "✅ GhostFree sa Midnight Network")}
                   </h3>
                 </div>
                 <ul className="space-y-3 text-xs text-slate-300">
                   {comparisons.map((c, i) => (
-                    <li key={i} className="flex items-start gap-2">
+                    <li key={i} className="flex items-start gap-2.5 p-2 rounded-lg bg-emerald-500/[0.04]">
                       <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-white block">{c.feature}:</strong>
-                        <span className="text-emerald-100">{c.ghostFree}</span>
+                        <strong className="text-white block font-semibold mb-0.5">{c.feature}:</strong>
+                        <span className="text-emerald-100 leading-relaxed">{c.ghostFree}</span>
                       </div>
                     </li>
                   ))}
@@ -911,8 +913,8 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 9: CIVILIAN FAQ ACCORDION
            ======================================================== */}
-        <section className="px-4 sm:px-6 py-10 max-w-4xl mx-auto relative z-10">
-          <div className="text-center mb-6">
+        <section className="px-4 sm:px-6 py-12 max-w-4xl mx-auto relative z-10">
+          <div className="text-center mb-8">
             <span className="text-xs font-black text-sky-400 uppercase tracking-wider block mb-1">
               {t("faqSectionTag", "Mga Karaniwang Tanong")}
             </span>
@@ -927,21 +929,21 @@ export const LandingPage: React.FC = () => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-slate-900/90 border border-white/10 overflow-hidden transition-colors"
+                  className="rounded-2xl bg-slate-900/70 border border-white/[0.08] hover:border-white/20 transition-all overflow-hidden"
                 >
                   <button
                     onClick={() => setExpandedFaq(isOpen ? null : idx)}
-                    className="w-full p-4 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-white hover:bg-white/5 transition-colors"
+                    className="w-full p-4.5 text-left flex items-center justify-between gap-3 text-xs sm:text-sm font-bold text-white hover:bg-white/5 transition-colors"
                   >
                     <span>{f.q}</span>
                     <ChevronDown
-                      className={`w-4 h-4 text-amber-400 shrink-0 transition-transform ${
+                      className={`w-4 h-4 text-amber-400 shrink-0 transition-transform duration-200 ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
                   {isOpen && (
-                    <div className="faq-answer px-4 pb-4 pt-1 text-xs text-slate-300 border-t border-white/5 leading-relaxed bg-black/20">
+                    <div className="faq-answer px-4.5 pb-4 pt-1 text-xs text-slate-300 border-t border-white/5 leading-relaxed bg-black/20">
                       {f.a}
                     </div>
                   )}
@@ -951,21 +953,47 @@ export const LandingPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Bottom Call to Action */}
-        <section className="px-4 sm:px-6 py-12 max-w-3xl mx-auto text-center relative z-10">
-          <div className="p-8 rounded-3xl bg-gradient-to-r from-amber-500/20 via-slate-900 to-emerald-500/20 border-2 border-amber-500/40 shadow-2xl">
-            <h3 className="text-2xl font-black text-white mb-2">
-              {t("ctaTitle", "Kailangan mo ba ng Ayuda sa Kalamidad?")}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto mb-6">
-              {t("ctaSubtitle", "Simulan ang pag-claim ngayon. Ligtas ang iyong pagkakakilanlan, walang bayad sa gas, at garantisadong makakarating sa iyo.")}
-            </p>
-            <button
-              onClick={() => navigate("/claim")}
-              className="btn-civic-gold px-8 py-3.5 text-base font-black shadow-xl"
-            >
-              {t("ctaClaimBtn", "Simulan ang Pag-claim (₱5,000)")}
-            </button>
+        {/* Bottom Call to Action - Elevated Fintech Card */}
+        <section className="px-4 sm:px-6 py-16 max-w-4xl mx-auto text-center relative z-10">
+          <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-900 via-[#0C1B33] to-slate-900 border border-amber-500/30 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10">
+              <span className="inline-block text-xs font-black text-amber-400 uppercase tracking-widest px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 mb-4">
+                National Calamity Relief
+              </span>
+              <h3 className="text-2xl sm:text-4xl font-black text-white mb-3 tracking-tight">
+                {t("ctaTitle", "Kailangan mo ba ng Ayuda sa Kalamidad?")}
+              </h3>
+              <p className="text-sm text-slate-300 max-w-lg mx-auto mb-8 leading-relaxed font-normal">
+                {t("ctaSubtitle", "Simulan ang pag-claim ngayon. Ligtas ang iyong pagkakakilanlan, walang bayad sa gas, at garantisadong makakarating sa iyo.")}
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                <button
+                  onClick={() => navigate("/claim")}
+                  className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 tap-scale"
+                >
+                  <Smartphone className="w-5 h-5 text-slate-950" />
+                  <span>{t("ctaClaimBtn", "Simulan ang Pag-claim (₱5,000)")}</span>
+                  <ArrowRight className="w-4 h-4 text-slate-950" />
+                </button>
+
+                <button
+                  onClick={() => navigate("/admin/login")}
+                  className="w-full sm:w-auto px-6 py-4 rounded-xl text-sm font-bold text-slate-300 hover:text-white bg-white/[0.05] hover:bg-white/10 border border-white/15 transition-all flex items-center justify-center gap-2 tap-scale"
+                >
+                  <Key className="w-4 h-4 text-sky-400" />
+                  <span>LGU Command Portal</span>
+                </button>
+              </div>
+
+              <div className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-400">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <span>Zero-Knowledge Sovereign Privacy · Midnight Network</span>
+              </div>
+            </div>
           </div>
         </section>
 

@@ -7,7 +7,7 @@
 // navigation header and footer with dynamic content area,
 // quick onboarding tour access, and feedback actions.
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Sparkles,
   MessageSquarePlus,
@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  ChevronDown,
   ExternalLink,
   Globe,
   Smartphone,
@@ -56,6 +57,9 @@ const Layout: React.FC<LayoutProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   // Scroll-aware header
   useEffect(() => {
     const handleScroll = () => {
@@ -65,17 +69,28 @@ const Layout: React.FC<LayoutProps> = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setToolsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white">
-      {/* Top Disaster Emergency Broadcast Bar */}
-      <div className="calamity-alert-bar w-full bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white text-[0.7rem] sm:text-xs font-semibold py-1.5 px-4 shadow-md flex items-center justify-between overflow-hidden relative border-b border-red-500/30">
-        <div className="flex items-center gap-2 max-w-7xl mx-auto w-full">
-          <span className="flex items-center gap-1 bg-white text-red-700 font-extrabold px-1.5 py-0.5 rounded text-[0.6rem] uppercase tracking-wider shrink-0 shadow-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping inline-block mr-0.5" />
+      {/* Top Disaster Emergency Broadcast Bar - Refined Modern Civic Aesthetic */}
+      <div className="calamity-alert-bar w-full bg-gradient-to-r from-red-950/80 via-slate-900/90 to-red-950/80 text-slate-200 text-[0.7rem] sm:text-xs font-medium py-1 px-4 shadow-sm flex items-center justify-between overflow-hidden relative border-b border-red-500/20 backdrop-blur-md">
+        <div className="flex items-center gap-2.5 max-w-7xl mx-auto w-full">
+          <span className="flex items-center gap-1.5 bg-red-500/15 text-red-400 border border-red-500/30 font-bold px-2 py-0.5 rounded-full text-[0.62rem] uppercase tracking-wider shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             {t("advisoryBadge", "CALAMITY ADVISORY")}
           </span>
           <div className="overflow-hidden whitespace-nowrap w-full">
-            <span className="inline-block animate-marquee sm:animate-none">
+            <span className="inline-block animate-marquee sm:animate-none text-slate-300">
               {t("advisoryMarquee", "🚨 TYPHOON RELIEF ACTIVE: Region II & IV-A evacuation centers eligible for ₱5,000 emergency cash assistance. Zero gas fees sponsored by DRRM.")}
             </span>
           </div>
@@ -87,13 +102,13 @@ const Layout: React.FC<LayoutProps> = ({
         className={`
           w-full border-b sticky top-0 z-50 transition-all duration-300
           ${scrolled
-            ? "border-amber-500/20 backdrop-blur-2xl bg-[#0A1628]/95 shadow-xl shadow-black/30"
-            : "border-white/[0.08] backdrop-blur-xl bg-[#0A1628]/80"
+            ? "border-white/[0.08] backdrop-blur-2xl bg-[#0A1628]/95 shadow-xl shadow-black/30"
+            : "border-white/[0.06] backdrop-blur-xl bg-[#0A1628]/80"
           }
         `}
       >
         {/* Top subtle ambient highlight */}
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/30 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/25 to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5 sm:gap-3 group">
@@ -114,52 +129,80 @@ const Layout: React.FC<LayoutProps> = ({
             </div>
           </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Desktop Nav: Streamlined to 2 text links + Tools dropdown + 1 Primary CTA */}
+          <div className="hidden md:flex items-center gap-1.5">
+            <a
+              href="/transparency"
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5"
+            >
+              <Landmark className="w-3.5 h-3.5 text-amber-400/90" />
+              <span>{t("treasury", "Treasury")}</span>
+            </a>
+
+            <a
+              href="/admin/login"
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5"
+            >
+              <Key className="w-3.5 h-3.5 text-sky-400/90" />
+              <span>{t("lguDrrmButton", "LGU DRRM")}</span>
+            </a>
+
+            {/* Tools Dropdown (Verify Voucher + Tour) */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
+                className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1"
+                aria-expanded={toolsDropdownOpen}
+              >
+                <span>Tools</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${toolsDropdownOpen ? "rotate-180 text-amber-400" : ""}`} />
+              </button>
+
+              {toolsDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-slate-900/95 border border-white/10 shadow-2xl backdrop-blur-xl p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <button
+                    onClick={() => {
+                      setShowVerifier(true);
+                      setToolsDropdownOpen(false);
+                    }}
+                    className="w-full px-2.5 py-2 rounded-lg text-xs text-left text-slate-200 hover:text-emerald-300 hover:bg-white/[0.06] transition-all flex items-center gap-2 font-medium"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>{t("verifyVoucherButton", "Verify Voucher")}</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowOnboarding(true);
+                      setToolsDropdownOpen(false);
+                    }}
+                    className="w-full px-2.5 py-2 rounded-lg text-xs text-left text-slate-200 hover:text-sky-300 hover:bg-white/[0.06] transition-all flex items-center gap-2 font-medium"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+                    <span>{t("tourGuideButton", "Guide / Tour")}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="h-4 w-[1px] bg-white/10 mx-1.5" />
+
+            <LanguageSelector />
+
+            {/* Single Prominent Primary CTA */}
             <a
               href="/claim"
-              className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 border border-amber-300 transition-all flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
+              className="ml-2 px-4 py-2 rounded-xl text-xs font-black text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 border border-amber-300/60 transition-all flex items-center gap-1.5 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Smartphone className="w-3.5 h-3.5 text-slate-950" />
               <span>{t("claimAyudaButton", "Claim Aid (₱5,000)")}</span>
             </a>
-            <a
-              href="/transparency"
-              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
-            >
-              <Landmark className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t("treasury", "Treasury")}</span>
-            </a>
-            <a
-              href="/admin/login"
-              className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
-            >
-              <Key className="w-3.5 h-3.5 text-sky-400" />
-              <span>{t("lguDrrmButton", "LGU DRRM")}</span>
-            </a>
-            <button
-              onClick={() => setShowVerifier(true)}
-              className="px-2.5 py-1.5 rounded-xl text-xs text-emerald-400 hover:bg-emerald-400/10 border border-emerald-400/30 transition-colors flex items-center gap-1.5 font-medium"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>{t("verifyVoucherButton", "Verify Voucher")}</span>
-            </button>
-            <button
-              onClick={() => setShowOnboarding(true)}
-              className="px-2.5 py-1.5 rounded-xl text-xs text-sky-300 hover:bg-sky-400/10 border border-sky-400/30 transition-colors flex items-center gap-1.5 font-medium"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t("tourGuideButton", "Guide / Tour")}</span>
-            </button>
-            <div className="h-4 w-[1px] bg-white/10 mx-1" />
-            <LanguageSelector />
           </div>
 
           {/* Mobile Navigation Buttons */}
           <div className="flex items-center gap-2 md:hidden">
             <a
               href="/claim"
-              className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-sm"
+              className="px-3 py-1.5 rounded-xl text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md"
             >
               {t("claimAyudaButton", "Claim Aid")}
             </a>
@@ -183,7 +226,7 @@ const Layout: React.FC<LayoutProps> = ({
           <div className="px-4 pb-4 pt-2 space-y-2 border-t border-white/[0.08] bg-slate-950/95">
             <a
               href="/claim"
-              className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 transition-colors"
+              className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-black text-slate-950 bg-amber-400 transition-colors"
             >
               <Smartphone className="w-4.5 h-4.5 text-slate-950" />
               {t("claimAyudaButton", "Claim Aid (₱5,000)")}
@@ -228,62 +271,145 @@ const Layout: React.FC<LayoutProps> = ({
         {children}
       </main>
 
-      {/* Footer */}
+      {/* Footer - Elevated 4-Column Design with Trust & Compliance Badges */}
       {showFooter && (
         <>
           <div className="footer-gradient-divider" />
-          <footer className="w-full bg-slate-950/90 backdrop-blur-xl">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-                {/* Brand */}
+          <footer className="w-full bg-slate-950/95 backdrop-blur-2xl border-t border-white/[0.06]">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                {/* Col 1: Brand & Mission */}
                 <div>
                   <div className="flex items-center gap-2.5 mb-3">
-                    <GhostFreeLogo size={28} variant="icon" />
-                    <span className="text-sm font-bold text-white">GhostFree</span>
+                    <GhostFreeLogo size={32} variant="icon" />
+                    <span className="text-base font-black text-white tracking-tight">GhostFree</span>
                   </div>
-                  <p className="text-[0.65rem] text-slate-500 leading-relaxed max-w-xs">
+                  <p className="text-xs text-slate-400 leading-relaxed max-w-xs mb-3">
                     {t("tagline", "Stop the ghosts. Protect the people.")}
+                  </p>
+                  <p className="text-[0.7rem] text-slate-500 leading-relaxed max-w-xs">
+                    Decentralized, privacy-first calamity cash aid on Midnight Network. Protecting typhoon victims and eliminating phantom claims via Zero-Knowledge Merkle nullifiers.
                   </p>
                 </div>
 
-                {/* Links */}
+                {/* Col 2: Solutions & Portals */}
                 <div>
-                  <h4 className="text-[0.65rem] font-bold text-white uppercase tracking-wider mb-3">{t("quickLinks", "Quick Links")}</h4>
-                  <div className="space-y-1.5">
-                    {[
-                      { label: t("tabCitizen", "Citizen Claim"), href: "/claim" },
-                      { label: t("tabAdmin", "LGU Admin"), href: "/admin/login" },
-                      { label: t("treasury", "Treasury"), href: "/transparency" },
-                    ].map((l) => (
-                      <a key={l.label} href={l.href} className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1">
-                        <ChevronRight className="w-3 h-3" />
-                        {l.label}
-                      </a>
-                    ))}
+                  <h4 className="text-[0.7rem] font-bold text-white uppercase tracking-wider mb-3">Portals & Tools</h4>
+                  <div className="space-y-2">
+                    <a href="/claim" className="text-xs text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                      <Smartphone className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{t("tabCitizen", "Citizen Claim (₱5,000)")}</span>
+                    </a>
+                    <a href="/transparency" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+                      <Landmark className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{t("treasury", "Public Treasury Explorer")}</span>
+                    </a>
+                    <a href="/admin/login" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+                      <Key className="w-3.5 h-3.5 text-sky-400" />
+                      <span>{t("tabAdmin", "LGU DRRM Command")}</span>
+                    </a>
+                    <button
+                      onClick={() => setShowVerifier(true)}
+                      className="text-xs text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5 text-left"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>{t("verifyVoucherButton", "Verify Relief Voucher")}</span>
+                    </button>
                   </div>
                 </div>
 
-                {/* Social */}
+                {/* Col 3: Statutory Governance & Compliance */}
                 <div>
-                  <h4 className="text-[0.65rem] font-bold text-white uppercase tracking-wider mb-3">Connect</h4>
-                  <div className="flex items-center gap-2">
-                    <a href="https://github.com/zneright/GhostFree" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                      <GithubIcon className="w-3.5 h-3.5" />
+                  <h4 className="text-[0.7rem] font-bold text-white uppercase tracking-wider mb-3">Compliance & Laws</h4>
+                  <div className="space-y-2 text-xs text-slate-400">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span>R.A. 10121 (DRRM Act)</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span>R.A. 10173 (Data Privacy Act)</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span>COA Calamity Fund Audit</span>
+                    </div>
+                    <button
+                      onClick={() => setShowOnboarding(true)}
+                      className="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1 pt-1"
+                    >
+                      <Sparkles className="w-3 h-3" />
+                      <span>Interactive System Tour</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Col 4: Network & Connect */}
+                <div>
+                  <h4 className="text-[0.7rem] font-bold text-white uppercase tracking-wider mb-3">Network & Links</h4>
+                  <div className="flex items-center gap-2 mb-4">
+                    <a
+                      href="https://x.com/AidGhostfree"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-colors"
+                      title="Follow GhostFree on X"
+                    >
+                      <TwitterIcon className="w-4 h-4" />
                     </a>
-                    <a href="https://x.com/AidGhostfree" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                      <TwitterIcon className="w-3.5 h-3.5" />
+                    <a
+                      href="https://github.com/zneright/GhostFree"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-colors"
+                      title="GhostFree GitHub"
+                    >
+                      <GithubIcon className="w-4 h-4" />
                     </a>
-                    <a href="https://ghost-free-eight.vercel.app/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                      <Globe className="w-3.5 h-3.5" />
+                    <a
+                      href="https://ghost-free-eight.vercel.app/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-colors"
+                      title="Live Web Portal"
+                    >
+                      <Globe className="w-4 h-4" />
                     </a>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-900/80 border border-white/10 text-[0.68rem] text-slate-400">
+                    <div className="flex items-center gap-1.5 font-semibold text-slate-300 mb-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>Midnight Preprod</span>
+                    </div>
+                    <span className="text-[0.62rem] text-slate-500 font-mono">Compact v0.2.0 Circuit</span>
                   </div>
                 </div>
               </div>
 
+              {/* Statutory Compliance Badges Strip */}
+              <div className="py-4 border-t border-b border-white/[0.06] mb-6 flex flex-wrap items-center justify-center sm:justify-between gap-3 text-[0.65rem] text-slate-400 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Republic Act 10121 NDRRMC Ready</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>NPC National Privacy Commission Aligned</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>COA Circular 2014-002 Real-Time Audit</span>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
+                  <span>Zero-Knowledge Proof Sovereign Privacy</span>
+                </span>
+              </div>
+
               {/* Bottom bar */}
-              <div className="pt-4 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-2 text-[0.6rem] text-slate-500">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[0.65rem] text-slate-500">
                 <span>© {new Date().getFullYear()} GhostFree — Stop the ghosts. Protect the people.</span>
-                <span>Built on Midnight Network · Zero-Knowledge Privacy</span>
+                <span>Built on Midnight Network · Compact Smart Contracts</span>
               </div>
             </div>
           </footer>

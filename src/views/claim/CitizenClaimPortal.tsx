@@ -498,56 +498,77 @@ export const CitizenClaimPortal: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* Evaluator Sandbox Button (Judges & Reviewers) */}
-                  <div className="p-3.5 rounded-xl bg-amber-500/10 border-2 border-amber-500/40">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                        <Sparkles className="w-4 h-4" />
-                        {currentLang === "en" ? "Evaluator & Reviewer 1-Click Sandbox Mode" : currentLang === "ceb" ? "Pagsulay alang sa mga Evaluator ug Hurado" : "Evaluator & Reviewer 1-Click Sandbox Mode"}
-                      </span>
-                      <span className="text-[0.65rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">
-                        NO EXTENSION
-                      </span>
+                  {/* Dual Connection Options (Lace & Sandbox) */}
+                  <div className="space-y-3">
+                    {/* Evaluator Sandbox Card (1-Click for reviewers) */}
+                    <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 transition-all hover:border-amber-400/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                          <Sparkles className="w-4 h-4 text-amber-400" />
+                          <span>{currentLang === "en" ? "Reviewer & Evaluator 1-Click Sandbox" : currentLang === "ceb" ? "Pagsulay alang sa mga Evaluator ug Hurado" : "Reviewer & Evaluator 1-Click Sandbox"}</span>
+                        </span>
+                        <span className="text-[0.62rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded-full">
+                          FAST TEST
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-300 mb-3 leading-relaxed">
+                        {currentLang === "en"
+                          ? "Test the complete ZK circuit immediately with a pre-funded test address (no browser extension required)."
+                          : currentLang === "ceb"
+                          ? "Sulayi dayon ang ZK circuit gamit ang pre-funded test address (walay extension nga gikinahanglan)."
+                          : "Subukan kaagad ang buong ZK circuit gamit ang pre-funded test address (walang browser extension na kailangan)."}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleConnectSandbox}
+                        disabled={connecting}
+                        className="btn-civic-gold w-full py-3 text-xs sm:text-sm font-black flex items-center justify-center gap-2 tap-scale"
+                        id="sandbox-wallet-btn"
+                      >
+                        <Sparkles className="w-4 h-4 text-slate-950" />
+                        <span>{currentLang === "en" ? "Launch Evaluator Sandbox (1-Click)" : currentLang === "ceb" ? "Ilunsad ang Evaluator Sandbox (1-Click)" : "I-launch ang Evaluator Sandbox (1-Click)"}</span>
+                      </button>
                     </div>
-                    <p className="text-xs text-slate-300 mb-3 leading-relaxed">
-                      {currentLang === "en"
-                        ? "Want to test the full ZK circuit immediately without installing a Lace browser extension?"
-                        : currentLang === "ceb"
-                        ? "Gusto ba nimo sulayan dayon ang tibuok ZK circuit nga walay gi-install nga extension?"
-                        : "Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?"}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={handleConnectSandbox}
-                      disabled={connecting}
-                      className="btn-civic-gold w-full py-3 text-sm flex items-center justify-center gap-2"
-                      id="sandbox-wallet-btn"
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      <span>{currentLang === "en" ? "Launch Evaluator Sandbox (1-Click)" : currentLang === "ceb" ? "Ilunsad ang Evaluator Sandbox (1-Click)" : "I-launch ang Evaluator Sandbox (1-Click)"}</span>
-                    </button>
-                  </div>
 
-                  {/* Primary Lace Option */}
-                  <button
-                    type="button"
-                    onClick={handleConnectWallet}
-                    disabled={connecting}
-                    className="w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 hover:bg-slate-850 text-white border border-white/20 transition-all flex items-center justify-center gap-2"
-                    id="connect-lace-btn"
-                  >
-                    {connecting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
-                        <span>{currentLang === "en" ? "Connecting to Lace Wallet..." : currentLang === "ceb" ? "Nagalakip sa Lace Wallet..." : "Kumokonekta sa Lace Wallet..."}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Wallet className="w-4 h-4 text-sky-400" />
-                        <span>{currentLang === "en" ? "Connect with Midnight Lace Wallet" : currentLang === "ceb" ? "Konektar gamit ang Midnight Lace Wallet" : "Konekta gamit ang Midnight Lace Wallet"}</span>
-                      </>
-                    )}
-                  </button>
+                    {/* Midnight Lace Wallet Card */}
+                    <div className="p-4 rounded-2xl bg-slate-900/80 border border-white/10 hover:border-white/20 transition-all">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                          <Wallet className="w-4 h-4 text-sky-400" />
+                          <span>Midnight Lace Wallet</span>
+                        </span>
+                        <span className="text-[0.62rem] bg-sky-500/10 text-sky-300 border border-sky-500/30 font-bold px-2 py-0.5 rounded-full">
+                          WEB3 EXTENSION
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-400 mb-3 leading-relaxed">
+                        {currentLang === "en"
+                          ? "Connect with your Midnight Lace browser wallet on Preprod Testnet."
+                          : currentLang === "ceb"
+                          ? "Konektar gamit ang imong Midnight Lace browser extension sa Preprod."
+                          : "Kumonekta gamit ang iyong Midnight Lace browser extension sa Preprod."}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleConnectWallet}
+                        disabled={connecting}
+                        className="w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold bg-white/[0.06] hover:bg-white/[0.1] text-white border border-white/15 transition-all flex items-center justify-center gap-2 tap-scale"
+                        id="connect-lace-btn"
+                      >
+                        {connecting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
+                            <span>{currentLang === "en" ? "Connecting to Lace Wallet..." : currentLang === "ceb" ? "Nagalakip sa Lace Wallet..." : "Kumokonekta sa Lace Wallet..."}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Wallet className="w-4 h-4 text-sky-400" />
+                            <span>{currentLang === "en" ? "Connect with Midnight Lace Wallet" : currentLang === "ceb" ? "Konektar gamit ang Midnight Lace Wallet" : "Konekta gamit ang Midnight Lace Wallet"}</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
 
                   {walletError && (
                     <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">

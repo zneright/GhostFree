@@ -96,6 +96,32 @@
     transform: translateY(-2px);
   }
 
+  /* ---- Glass Card Elevated ---- */
+  .glass-card-elevated {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(10, 22, 40, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card-interactive {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-card-interactive:hover {
+    border-color: rgba(245, 158, 11, 0.35);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(245, 158, 11, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08) 25%, rgba(255, 255, 255, 0.08) 75%, transparent);
+    margin: 3rem 0;
+  }
+
   /* ---- Buttons ---- */
   .btn-civic {
     display: inline-flex;
@@ -124,6 +150,54 @@
   }
   .btn-civic:hover::after {
     opacity: 1;
+  }
+
+  .btn-civic-gold {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: #020617;
+    font-weight: 800;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(253, 230, 138, 0.5);
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-civic-gold:hover {
+    background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
+    box-shadow: 0 6px 28px rgba(245, 158, 11, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    transform: translateY(-1px);
+  }
+  .btn-civic-gold:active {
+    transform: translateY(0);
+  }
+
+  .btn-civic-emerald {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(110, 231, 183, 0.3);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-civic-emerald:hover {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    box-shadow: 0 6px 24px rgba(5, 150, 105, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .tap-scale {
+    transition: transform 0.15s ease;
+  }
+  .tap-scale:active {
+    transform: scale(0.97);
   }
 
   .btn-primary {

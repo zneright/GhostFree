@@ -233,63 +233,72 @@ export const TreasuryExplorerPage: React.FC = () => {
         </div>
 
         {/* Real-time Treasury Telemetry HUD */}
+        {/* Real-time Treasury Telemetry HUD */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/60">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md hover:border-amber-400/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 {t("statAllocated") || "Total Allocated QRF"}
               </span>
-              <CircleDollarSign className="w-4 h-4 text-accent-gold" />
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <CircleDollarSign className="w-4 h-4 text-amber-400" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-white tracking-tight">
-              {metrics.totalAllocatedFund.toLocaleString()} tNIGHT
+            <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              {metrics.totalAllocatedFund.toLocaleString()} <span className="text-sm font-semibold text-amber-400">tNIGHT</span>
             </div>
-            <span className="text-[0.7rem] text-white/40 block mt-1">
+            <span className="text-[0.7rem] text-slate-400 block mt-1">
               {t("statAllocatedSub") || "Guaranteed by Municipal Ordinances"}
             </span>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/60">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md hover:border-emerald-400/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 {t("statDisbursed") || "Disbursed to Victims"}
               </span>
-              <Activity className="w-4 h-4 text-accent-success" />
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <Activity className="w-4 h-4 text-emerald-400" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-accent-success tracking-tight">
-              {metrics.totalDisbursedFund.toLocaleString()} tNIGHT
+            <div className="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight">
+              {metrics.totalDisbursedFund.toLocaleString()} <span className="text-sm font-semibold text-emerald-300">tNIGHT</span>
             </div>
-            <span className="text-[0.7rem] text-accent-success/80 block mt-1">
+            <span className="text-[0.7rem] text-emerald-400/80 block mt-1 font-medium">
               {metrics.totalVerifiedClaims} {t("statDisbursedSub") || "verified claims settled"}
             </span>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/60">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md hover:border-amber-400/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 {t("statRemaining") || "Remaining Escrow Reserve"}
               </span>
-              <Lock className="w-4 h-4 text-civic-sky" />
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                <Lock className="w-4 h-4 text-amber-400" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-civic-sky tracking-tight">
-              {metrics.remainingEscrowFund.toLocaleString()} tNIGHT
+            <div className="text-2xl sm:text-3xl font-black text-amber-300 tracking-tight">
+              {metrics.remainingEscrowFund.toLocaleString()} <span className="text-sm font-semibold text-amber-400">tNIGHT</span>
             </div>
-            <span className="text-[0.7rem] text-white/40 block mt-1">
+            <span className="text-[0.7rem] text-slate-400 block mt-1">
               {t("statRemainingSub") || "Held in Compact smart contract escrow"}
             </span>
           </div>
 
-          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/60">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">
+          <div className="glass-card p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md hover:border-emerald-400/30 transition-all">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
                 {t("statBlocked") || "Ghost Double-Claims Blocked"}
               </span>
-              <ShieldCheck className="w-4 h-4 text-accent-purple" />
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              </div>
             </div>
-            <div className="text-2xl font-black text-accent-purple tracking-tight">
-              {metrics.duplicateAttemptsBlocked} Attempted
+            <div className="text-2xl sm:text-3xl font-black text-emerald-400 tracking-tight">
+              {metrics.duplicateAttemptsBlocked} <span className="text-sm font-semibold text-slate-400">Attempted</span>
             </div>
-            <span className="text-[0.7rem] text-white/40 block mt-1">
+            <span className="text-[0.7rem] text-emerald-400/80 block mt-1 font-medium">
               {t("statBlockedSub") || "100% prevented by nullifier collisions"}
             </span>
           </div>

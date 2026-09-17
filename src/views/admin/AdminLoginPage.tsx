@@ -177,70 +177,41 @@ export const AdminLoginPage: React.FC = () => {
             </p>
           </div>
 
-          {/* 1-Click Evaluator Sandbox Access Button */}
-          <div className="mb-6 p-3.5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 backdrop-blur-md text-center">
-            <div className="flex items-center justify-center gap-1.5 mb-1.5 text-xs font-bold text-amber-400">
-              <Sparkles className="w-4 h-4" />
-              <span>Reviewer & Judge Quick Sign-In</span>
-            </div>
-            <p className="text-[0.7rem] text-slate-300 mb-2.5">
-              Grading this submission? Click below for 1-click official administrator access:
-            </p>
+          {/* Mode Switcher */}
+          <div className="flex items-center p-1 rounded-xl bg-slate-950/60 border border-white/10 mb-6">
             <button
               type="button"
-              onClick={handleEvaluatorLogin}
-              disabled={submitting}
-              className="btn-civic-gold w-full py-2.5 px-4 text-xs font-black transition-all flex items-center justify-center gap-2 tap-scale shadow-md"
+              onClick={() => {
+                setMode("login");
+                setLocalError(null);
+                clearAuthError();
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                mode === "login"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                  : "text-slate-400 hover:text-white"
+              }`}
             >
-              {submitting ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-3.5 h-3.5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
-                  Signing in...
-                </span>
-              ) : (
-                <>
-                  <ShieldCheck className="w-4 h-4 text-slate-950" />
-                  <span>Evaluator 1-Click Login (Chief MDRRMO)</span>
-                </>
-              )}
+              <LogIn className="w-3.5 h-3.5" />
+              Official Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("register");
+                setLocalError(null);
+                clearAuthError();
+              }}
+              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                mode === "register"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
+                  : "text-slate-400 hover:text-white"
+              }`}
+            >
+              <UserPlus className="w-3.5 h-3.5" />
+              Register LGU
             </button>
           </div>
-
-        {/* Mode Switcher */}
-        <div className="flex items-center p-1 rounded-xl bg-slate-950/60 border border-white/10 mb-6">
-          <button
-            type="button"
-            onClick={() => {
-              setMode("login");
-              setLocalError(null);
-              clearAuthError();
-            }}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-              mode === "login"
-                ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            <LogIn className="w-3.5 h-3.5" />
-            Official Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setMode("register");
-              setLocalError(null);
-              clearAuthError();
-            }}
-            className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
-              mode === "register"
-                ? "bg-blue-600 text-white shadow-md shadow-blue-600/30"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            <UserPlus className="w-3.5 h-3.5" />
-            Register LGU
-          </button>
-        </div>
 
         {/* Error Display */}
         {displayError && (
@@ -380,11 +351,43 @@ export const AdminLoginPage: React.FC = () => {
           </button>
         </form>
 
+        {/* 1-Click Evaluator Sandbox Access Panel for Hackathon Reviewers */}
+        <div className="mt-6 pt-5 border-t border-white/[0.08]">
+          <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-center">
+            <div className="flex items-center justify-center gap-1.5 mb-1 text-xs font-bold text-amber-400">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span>Reviewer & Judge Quick Sign-In</span>
+            </div>
+            <p className="text-[0.68rem] text-slate-300 mb-2.5 leading-relaxed">
+              Evaluating this project? Click below for 1-click official administrator credentials:
+            </p>
+            <button
+              type="button"
+              onClick={handleEvaluatorLogin}
+              disabled={submitting}
+              className="btn-civic-gold w-full py-2.5 px-4 text-xs font-black transition-all flex items-center justify-center gap-2 tap-scale shadow-md"
+              id="evaluator-quick-login-btn"
+            >
+              {submitting ? (
+                <span className="flex items-center gap-2">
+                  <div className="w-3.5 h-3.5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin" />
+                  Signing in...
+                </span>
+              ) : (
+                <>
+                  <ShieldCheck className="w-4 h-4 text-slate-950" />
+                  <span>Evaluator 1-Click Login (Chief MDRRMO)</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
         {/* Security Notice */}
-        <div className="mt-6 pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs text-slate-400">
+        <div className="mt-4 pt-3 flex items-center justify-between text-xs text-slate-400">
           <span className="flex items-center gap-1.5">
             <Shield className="w-3.5 h-3.5 text-emerald-400" />
-            Web2 Enterprise Fortress (Firebase)
+            Web2 Fortress (Firebase Auth)
           </span>
           <span className="text-[0.65rem] text-slate-500">R.A. 10173 Protected</span>
         </div>
