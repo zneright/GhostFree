@@ -21,6 +21,8 @@ import {
   Globe,
   Smartphone,
   Key,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { GithubIcon, TwitterIcon } from "./SocialIcons";
 import OnboardingModal from "./OnboardingModal";
@@ -29,6 +31,10 @@ import LanguageSelector from "./LanguageSelector";
 import ReceiptVerifierModal from "./ReceiptVerifierModal";
 import GhostFreeLogo from "./GhostFreeLogo";
 import { useTranslation } from "../services/i18n.service";
+import {
+  getAccessibilityPreferences,
+  setAccessibilityPreferences,
+} from "../services/feedback.service";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -79,6 +85,45 @@ const Layout: React.FC<LayoutProps> = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Synchronized Light/Dark Theme Engine
+  const [isLightMode, setIsLightMode] = useState<boolean>(() => {
+    return (
+      document.body.classList.contains("light-mode") ||
+      document.body.classList.contains("sunlight-mode") ||
+      document.body.classList.contains("high-contrast")
+    );
+  });
+
+  useEffect(() => {
+    const syncTheme = () => {
+      setIsLightMode(
+        document.body.classList.contains("light-mode") ||
+        document.body.classList.contains("sunlight-mode") ||
+        document.body.classList.contains("high-contrast")
+      );
+    };
+    window.addEventListener("ghostfree_theme_change", syncTheme);
+    return () => window.removeEventListener("ghostfree_theme_change", syncTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !isLightMode;
+    setIsLightMode(next);
+    if (next) {
+      document.body.classList.add("light-mode", "sunlight-mode", "high-contrast");
+    } else {
+      document.body.classList.remove("light-mode", "sunlight-mode", "high-contrast");
+    }
+    const current = getAccessibilityPreferences();
+    const updated = {
+      ...current,
+      sunlightMode: next,
+      highContrast: next,
+    };
+    setAccessibilityPreferences(updated);
+    window.dispatchEvent(new Event("ghostfree_theme_change"));
+  };
 
   return (
     <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white">
@@ -186,6 +231,22 @@ const Layout: React.FC<LayoutProps> = ({
 
             <div className="h-4 w-[1px] bg-white/10 mx-1.5" />
 
+            {/* Desktop Theme Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-2 rounded-xl text-slate-300 hover:text-amber-400 hover:bg-white/[0.06] transition-all flex items-center justify-center border border-transparent hover:border-white/10"
+              title={isLightMode ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              aria-label="Toggle Theme"
+              id="header-theme-toggle"
+            >
+              {isLightMode ? (
+                <Moon className="w-4 h-4 text-slate-700 hover:text-amber-600" />
+              ) : (
+                <Sun className="w-4 h-4 text-amber-400 hover:text-amber-300" />
+              )}
+            </button>
+
             <LanguageSelector />
 
             {/* Single Prominent Primary CTA */}
@@ -200,6 +261,15 @@ const Layout: React.FC<LayoutProps> = ({
 
           {/* Mobile Navigation Buttons */}
           <div className="flex items-center gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="p-1.5 rounded-xl bg-white/[0.06] border border-white/10 text-slate-300 hover:text-amber-400 transition-colors"
+              title={isLightMode ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              aria-label="Toggle Theme"
+            >
+              {isLightMode ? <Moon className="w-4 h-4 text-slate-700" /> : <Sun className="w-4 h-4 text-amber-400" />}
+            </button>
             <a
               href="/claim"
               className="px-3 py-1.5 rounded-xl text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md"
@@ -259,7 +329,23 @@ const Layout: React.FC<LayoutProps> = ({
               <Sparkles className="w-4 h-4" />
               {t("tourGuideButton", "Guide / Tour")}
             </button>
-            <div className="pt-2 px-1">
+
+            {/* Mobile Theme Toggle Row */}
+            <div className="flex items-center justify-between px-3.5 py-2 rounded-xl border border-white/10 bg-white/[0.04]">
+              <span className="text-xs text-slate-300 flex items-center gap-2 font-medium">
+                {isLightMode ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-amber-400" />}
+                <span>{isLightMode ? "Light Mode" : "Dark Mode"}</span>
+              </span>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                className="px-2.5 py-1 rounded-lg text-xs font-bold bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                {isLightMode ? "Switch to Dark" : "Switch to Light"}
+              </button>
+            </div>
+
+            <div className="pt-1 px-1">
               <LanguageSelector />
             </div>
           </div>

@@ -37,13 +37,15 @@ const AccessibilityToggle: React.FC = () => {
   const applyPreferences = useCallback((p: AccessibilityPreferences) => {
     const body = document.body;
     
-    // High contrast / Sunlight mode
+    // High contrast / Sunlight mode / Light mode
     if (p.highContrast || p.sunlightMode) {
       body.classList.add("high-contrast");
       body.classList.add("sunlight-mode");
+      body.classList.add("light-mode");
     } else {
       body.classList.remove("high-contrast");
       body.classList.remove("sunlight-mode");
+      body.classList.remove("light-mode");
     }
 
     // Text scaling
@@ -55,11 +57,17 @@ const AccessibilityToggle: React.FC = () => {
     }
   }, []);
 
-  // Load preferences on mount
+  // Load preferences on mount & sync on external theme changes
   useEffect(() => {
-    const saved = getAccessibilityPreferences();
-    setPrefs(saved);
-    applyPreferences(saved);
+    const sync = () => {
+      const saved = getAccessibilityPreferences();
+      setPrefs(saved);
+      applyPreferences(saved);
+    };
+    sync();
+
+    window.addEventListener("ghostfree_theme_change", sync);
+    return () => window.removeEventListener("ghostfree_theme_change", sync);
   }, [applyPreferences]);
 
   // Toggle sunlight outdoor high-contrast mode
@@ -72,6 +80,7 @@ const AccessibilityToggle: React.FC = () => {
     setPrefs(updated);
     setAccessibilityPreferences(updated);
     applyPreferences(updated);
+    window.dispatchEvent(new Event("ghostfree_theme_change"));
   }, [prefs, applyPreferences]);
 
   // Set font scaling

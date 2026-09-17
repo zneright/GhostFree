@@ -921,659 +921,725 @@
 }
 
 /* ============================================
-   ACCESSIBILITY & BULLETPROOF SUNLIGHT OUTDOOR MODE
-   Guarantees 100% readability under direct tropical sun at evacuation centers
-   Distinct Canvas (#F1F5F9), Cards (#FFFFFF), Insets (#F8FAFC), 2px crisp borders
+   ANTI GRAVITY & GHOSTFREE — MODERN LIGHT MODE & SUNLIGHT OUTDOOR ENGINE
+   Dribbble/Pinterest-inspired clean product aesthetic:
+   - Clean porcelain canvas (#F8FAFC)
+   - Pure white modular cards (#FFFFFF) with soft diffused shadows
+   - Refined 1px borders (#E2E8F0) with micro-lift on hover
+   - Deep slate typography (#0F172A / #1E293B / #64748B)
+   - High-contrast WCAG AAA accents (#B45309 amber, #047857 emerald, #0369A1 sky)
    ============================================ */
 
 body.high-contrast,
-body.sunlight-mode {
-  background-color: #F1F5F9 !important;
+body.sunlight-mode,
+body.light-mode {
+  background-color: #F8FAFC !important;
   color: #0F172A !important;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* 0. Hide All Glowing Orbs, Ambient Radar Sweeps & Blurs that distort outdoor sunlight */
+/* 0. Hide All Glowing Dark-Theme Orbs, Ambient Radar Sweeps & Distorting Blurs */
 body.high-contrast [class*="blur-3xl"],
 body.sunlight-mode [class*="blur-3xl"],
+body.light-mode [class*="blur-3xl"],
 body.high-contrast [class*="blur-2xl"],
 body.sunlight-mode [class*="blur-2xl"],
+body.light-mode [class*="blur-2xl"],
 body.high-contrast [class*="blur-xl"],
 body.sunlight-mode [class*="blur-xl"],
+body.light-mode [class*="blur-xl"],
 body.high-contrast .radar-ring,
-body.sunlight-mode .radar-ring {
+body.sunlight-mode .radar-ring,
+body.light-mode .radar-ring {
   display: none !important;
 }
 
 /* 1. Canvas Overrides */
 body.high-contrast .ambient-canvas,
 body.sunlight-mode .ambient-canvas,
+body.light-mode .ambient-canvas,
 body.high-contrast main,
-body.sunlight-mode main {
-  background-color: #F1F5F9 !important;
+body.sunlight-mode main,
+body.light-mode main {
+  background-color: #F8FAFC !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
 
-/* 2. Primary Cards, Elevated Containers & Section Blocks (Pure White with crisp 2px borders) */
+/* 2. Primary Modular Cards & Containers (Dribbble Soft Shadow & Clean Border) */
 body.high-contrast .glass-card,
 body.sunlight-mode .glass-card,
+body.light-mode .glass-card,
 body.high-contrast .glass-card-elevated,
 body.sunlight-mode .glass-card-elevated,
+body.light-mode .glass-card-elevated,
 body.high-contrast .glass-card-premium,
 body.sunlight-mode .glass-card-premium,
+body.light-mode .glass-card-premium,
 body.high-contrast [class*="bg-slate-900"],
 body.sunlight-mode [class*="bg-slate-900"],
-body.high-contrast [class*="bg-slate-800"],
-body.sunlight-mode [class*="bg-slate-800"],
-body.high-contrast [class*="bg-slate-700"],
-body.sunlight-mode [class*="bg-slate-700"],
+body.light-mode [class*="bg-slate-900"],
 body.high-contrast [class*="bg-blue-900"],
 body.sunlight-mode [class*="bg-blue-900"],
+body.light-mode [class*="bg-blue-900"],
 body.high-contrast [class*="bg-blue-950"],
 body.sunlight-mode [class*="bg-blue-950"],
+body.light-mode [class*="bg-blue-950"],
 body.high-contrast [class*="bg-indigo-900"],
 body.sunlight-mode [class*="bg-indigo-900"],
+body.light-mode [class*="bg-indigo-900"],
 body.high-contrast [class*="bg-gradient-to-br from-slate-9"],
 body.sunlight-mode [class*="bg-gradient-to-br from-slate-9"],
+body.light-mode [class*="bg-gradient-to-br from-slate-9"],
 body.high-contrast [class*="bg-gradient-to-r from-blue-9"],
-body.sunlight-mode [class*="bg-gradient-to-r from-blue-9"] {
+body.sunlight-mode [class*="bg-gradient-to-r from-blue-9"],
+body.light-mode [class*="bg-gradient-to-r from-blue-9"] {
   background-color: #FFFFFF !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 2px solid #CBD5E1 !important;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02) !important;
   color: #0F172A !important;
+}
+
+body.high-contrast [class*="bg-slate-800"],
+body.sunlight-mode [class*="bg-slate-800"],
+body.light-mode [class*="bg-slate-800"] {
+  background-color: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+body.high-contrast [class*="bg-slate-700"],
+body.sunlight-mode [class*="bg-slate-700"],
+body.light-mode [class*="bg-slate-700"] {
+  background-color: #E2E8F0 !important;
+}
+
+body.high-contrast .glass-card:hover,
+body.sunlight-mode .glass-card:hover,
+body.light-mode .glass-card:hover,
+body.high-contrast .glass-card-hover:hover,
+body.sunlight-mode .glass-card-hover:hover,
+body.light-mode .glass-card-hover:hover {
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04) !important;
+  transform: translateY(-2px);
 }
 
 /* 3. Secondary Surfaces & Inset Wells (#F8FAFC) */
 body.high-contrast [class*="bg-slate-950"],
 body.sunlight-mode [class*="bg-slate-950"],
+body.light-mode [class*="bg-slate-950"],
 body.high-contrast [class*="bg-black/"],
 body.sunlight-mode [class*="bg-black/"],
+body.light-mode [class*="bg-black/"],
 body.high-contrast [class*="bg-black"],
 body.sunlight-mode [class*="bg-black"],
+body.light-mode [class*="bg-black"],
 body.high-contrast [class*="bg-white/5"],
 body.sunlight-mode [class*="bg-white/5"],
+body.light-mode [class*="bg-white/5"],
 body.high-contrast [class*="bg-white/10"],
 body.sunlight-mode [class*="bg-white/10"],
+body.light-mode [class*="bg-white/10"],
 body.high-contrast [class*="bg-white/15"],
 body.sunlight-mode [class*="bg-white/15"],
+body.light-mode [class*="bg-white/15"],
 body.high-contrast [class*="bg-white/20"],
 body.sunlight-mode [class*="bg-white/20"],
+body.light-mode [class*="bg-white/20"],
 body.high-contrast .treasury-feed-item,
-body.sunlight-mode .treasury-feed-item {
+body.sunlight-mode .treasury-feed-item,
+body.light-mode .treasury-feed-item {
   background-color: #F8FAFC !important;
   background-image: none !important;
-  border: 1.5px solid #CBD5E1 !important;
+  border: 1px solid #E2E8F0 !important;
   color: #0F172A !important;
 }
 
-/* 4. Interactive Keypad Buttons (Pure White with high-contrast borders) */
+/* 4. Interactive Keypad Buttons */
 body.high-contrast .keypad-btn,
 body.sunlight-mode .keypad-btn,
+body.light-mode .keypad-btn,
 body.high-contrast button[type="button"].keypad-btn,
-body.sunlight-mode button[type="button"].keypad-btn {
+body.sunlight-mode button[type="button"].keypad-btn,
+body.light-mode button[type="button"].keypad-btn {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
-  border: 2px solid #64748B !important;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08) !important;
-  font-weight: 900 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+  font-weight: 800 !important;
 }
 body.high-contrast .keypad-btn:hover,
-body.sunlight-mode .keypad-btn:hover {
+body.sunlight-mode .keypad-btn:hover,
+body.light-mode .keypad-btn:hover {
   background-color: #F1F5F9 !important;
-  border-color: #0F172A !important;
+  border-color: #94A3B8 !important;
 }
 
-/* 5. Accessibility Drawer & Floating Toggle Button */
-body.high-contrast #accessibility-toggle .glass-card,
-body.sunlight-mode #accessibility-toggle .glass-card {
-  background-color: #FFFFFF !important;
+/* 5. Header & Navigation (Clean Glassmorphism on White) */
+body.high-contrast header,
+body.sunlight-mode header,
+body.light-mode header {
+  background-color: rgba(255, 255, 255, 0.94) !important;
   background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04) !important;
   color: #0F172A !important;
-  border: 2px solid #0F172A !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25) !important;
-}
-body.high-contrast #accessibility-toggle .glass-card *,
-body.sunlight-mode #accessibility-toggle .glass-card * {
-  color: #0F172A;
-}
-body.high-contrast #accessibility-toggle .glass-card h3,
-body.sunlight-mode #accessibility-toggle .glass-card h3 {
-  color: #92400E !important;
-}
-body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-400"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-400"],
-body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-300"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-300"],
-body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-200"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-200"] {
-  color: #475569 !important;
-}
-body.high-contrast #accessibility-toggle .glass-card button,
-body.sunlight-mode #accessibility-toggle .glass-card button {
-  background-color: #F8FAFC !important;
-  border: 1.5px solid #CBD5E1 !important;
-  color: #0F172A !important;
-}
-body.high-contrast #accessibility-toggle .glass-card button:hover,
-body.sunlight-mode #accessibility-toggle .glass-card button:hover {
-  background-color: #EFF6FF !important;
-  border-color: #3B82F6 !important;
-}
-body.high-contrast #accessibility-toggle-button,
-body.sunlight-mode #accessibility-toggle-button {
-  background-color: #D97706 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #78350F !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-}
-body.high-contrast #accessibility-toggle-button *,
-body.sunlight-mode #accessibility-toggle-button * {
-  color: #FFFFFF !important;
 }
 
-/* 6. High-Contrast Typography */
+body.high-contrast header .h-\[1px\],
+body.sunlight-mode header .h-\[1px\],
+body.light-mode header .h-\[1px\] {
+  display: none !important;
+}
+
+body.high-contrast header a:not([href="/claim"]),
+body.sunlight-mode header a:not([href="/claim"]),
+body.light-mode header a:not([href="/claim"]),
+body.high-contrast header span,
+body.sunlight-mode header span,
+body.light-mode header span,
+body.high-contrast header button,
+body.sunlight-mode header button,
+body.light-mode header button {
+  color: #1E293B !important;
+}
+
+body.high-contrast header a:not([href="/claim"]):hover,
+body.sunlight-mode header a:not([href="/claim"]):hover,
+body.light-mode header a:not([href="/claim"]):hover,
+body.high-contrast header button:hover,
+body.sunlight-mode header button:hover,
+body.light-mode header button:hover {
+  color: #0F172A !important;
+  background-color: #F1F5F9 !important;
+}
+
+body.high-contrast header [class*="bg-emerald-500/15"],
+body.sunlight-mode header [class*="bg-emerald-500/15"],
+body.light-mode header [class*="bg-emerald-500/15"] {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+  border-color: #A7F3D0 !important;
+}
+
+body.high-contrast header [class*="bg-slate-900"],
+body.sunlight-mode header [class*="bg-slate-900"],
+body.light-mode header [class*="bg-slate-900"] {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.high-contrast header [class*="bg-slate-900"] button,
+body.sunlight-mode header [class*="bg-slate-900"] button,
+body.light-mode header [class*="bg-slate-900"] button {
+  color: #1E293B !important;
+}
+
+body.high-contrast header [class*="bg-slate-900"] button:hover,
+body.sunlight-mode header [class*="bg-slate-900"] button:hover,
+body.light-mode header [class*="bg-slate-900"] button:hover {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+body.high-contrast header a[href="/claim"],
+body.sunlight-mode header a[href="/claim"],
+body.light-mode header a[href="/claim"] {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+  color: #020617 !important;
+  border: 1px solid #B45309 !important;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25) !important;
+}
+
+body.high-contrast header a[href="/claim"] *,
+body.sunlight-mode header a[href="/claim"] *,
+body.light-mode header a[href="/claim"] * {
+  color: #020617 !important;
+}
+
+/* 6. High-Contrast Typography & Hierarchy */
 body.high-contrast [class*="text-white"],
 body.sunlight-mode [class*="text-white"],
+body.light-mode [class*="text-white"] {
+  color: #0F172A !important;
+}
+
 body.high-contrast [class*="text-slate-1"],
 body.sunlight-mode [class*="text-slate-1"],
+body.light-mode [class*="text-slate-1"],
 body.high-contrast [class*="text-slate-2"],
 body.sunlight-mode [class*="text-slate-2"],
+body.light-mode [class*="text-slate-2"],
 body.high-contrast [class*="text-slate-3"],
-body.sunlight-mode [class*="text-slate-3"] {
-  color: #0F172A !important;
+body.sunlight-mode [class*="text-slate-3"],
+body.light-mode [class*="text-slate-3"] {
+  color: #1E293B !important;
 }
 
 body.high-contrast [class*="text-slate-4"],
 body.sunlight-mode [class*="text-slate-4"],
+body.light-mode [class*="text-slate-4"],
 body.high-contrast [class*="text-slate-5"],
-body.sunlight-mode [class*="text-slate-5"] {
-  color: #334155 !important;
+body.sunlight-mode [class*="text-slate-5"],
+body.light-mode [class*="text-slate-5"] {
+  color: #64748B !important;
 }
 
-/* Deepened accent colors for outdoor sunlight contrast (WCAG AAA) */
+body.high-contrast [class*="text-white/"],
+body.sunlight-mode [class*="text-white/"],
+body.light-mode [class*="text-white/"] {
+  color: #475569 !important;
+}
+
+/* Deepened accent colors for WCAG AAA compliance on light background */
 body.high-contrast [class*="text-amber-4"],
 body.sunlight-mode [class*="text-amber-4"],
+body.light-mode [class*="text-amber-4"],
+body.high-contrast [class*="text-amber-3"],
+body.sunlight-mode [class*="text-amber-3"],
+body.light-mode [class*="text-amber-3"],
 body.high-contrast [class*="text-yellow-4"],
-body.sunlight-mode [class*="text-yellow-4"] {
+body.sunlight-mode [class*="text-yellow-4"],
+body.light-mode [class*="text-yellow-4"] {
   color: #B45309 !important;
   font-weight: 700 !important;
 }
 
 body.high-contrast [class*="text-emerald-4"],
 body.sunlight-mode [class*="text-emerald-4"],
+body.light-mode [class*="text-emerald-4"],
+body.high-contrast [class*="text-emerald-3"],
+body.sunlight-mode [class*="text-emerald-3"],
+body.light-mode [class*="text-emerald-3"],
+body.high-contrast [class*="text-emerald-2"],
+body.sunlight-mode [class*="text-emerald-2"],
+body.light-mode [class*="text-emerald-2"],
+body.high-contrast [class*="text-emerald-1"],
+body.sunlight-mode [class*="text-emerald-1"],
+body.light-mode [class*="text-emerald-1"],
 body.high-contrast [class*="text-green-4"],
-body.sunlight-mode [class*="text-green-4"] {
+body.sunlight-mode [class*="text-green-4"],
+body.light-mode [class*="text-green-4"] {
   color: #047857 !important;
   font-weight: 700 !important;
 }
 
 body.high-contrast [class*="text-blue-4"],
 body.sunlight-mode [class*="text-blue-4"],
+body.light-mode [class*="text-blue-4"],
 body.high-contrast [class*="text-sky-4"],
-body.sunlight-mode [class*="text-sky-4"] {
-  color: #1D4ED8 !important;
+body.sunlight-mode [class*="text-sky-4"],
+body.light-mode [class*="text-sky-4"],
+body.high-contrast [class*="text-sky-3"],
+body.sunlight-mode [class*="text-sky-3"],
+body.light-mode [class*="text-sky-3"] {
+  color: #0369A1 !important;
   font-weight: 700 !important;
 }
 
 body.high-contrast [class*="text-red-4"],
-body.sunlight-mode [class*="text-red-4"] {
+body.sunlight-mode [class*="text-red-4"],
+body.light-mode [class*="text-red-4"],
+body.high-contrast [class*="text-red-3"],
+body.sunlight-mode [class*="text-red-3"],
+body.light-mode [class*="text-red-3"],
+body.high-contrast [class*="text-red-2"],
+body.sunlight-mode [class*="text-red-2"],
+body.light-mode [class*="text-red-2"],
+body.high-contrast [class*="text-red-1"],
+body.sunlight-mode [class*="text-red-1"],
+body.light-mode [class*="text-red-1"] {
   color: #B91C1C !important;
   font-weight: 700 !important;
 }
 
 /* 7. Relief Basket Cards in Landing Page */
 body.high-contrast [class*="border-amber-500/40"],
-body.sunlight-mode [class*="border-amber-500/40"] {
-  border-color: #D97706 !important;
-  background-color: #FFFBEB !important;
+body.sunlight-mode [class*="border-amber-500/40"],
+body.light-mode [class*="border-amber-500/40"] {
+  border-color: #FDE68A !important;
+  background-color: #FFFDF5 !important;
+  box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.08) !important;
 }
 body.high-contrast [class*="border-emerald-500/40"],
-body.sunlight-mode [class*="border-emerald-500/40"] {
-  border-color: #059669 !important;
-  background-color: #ECFDF5 !important;
+body.sunlight-mode [class*="border-emerald-500/40"],
+body.light-mode [class*="border-emerald-500/40"] {
+  border-color: #A7F3D0 !important;
+  background-color: #F7FDFB !important;
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.08) !important;
 }
 body.high-contrast [class*="border-sky-500/40"],
-body.sunlight-mode [class*="border-sky-500/40"] {
-  border-color: #0284C7 !important;
-  background-color: #F0F9FF !important;
+body.sunlight-mode [class*="border-sky-500/40"],
+body.light-mode [class*="border-sky-500/40"] {
+  border-color: #BAE6FD !important;
+  background-color: #F8FAFF !important;
+  box-shadow: 0 4px 20px -2px rgba(14, 165, 233, 0.08) !important;
 }
 body.high-contrast [class*="border-rose-500/40"],
-body.sunlight-mode [class*="border-rose-500/40"] {
-  border-color: #E11D48 !important;
-  background-color: #FFF1F2 !important;
+body.sunlight-mode [class*="border-rose-500/40"],
+body.light-mode [class*="border-rose-500/40"] {
+  border-color: #FECDD3 !important;
+  background-color: #FFF5F5 !important;
 }
 body.high-contrast [class*="border-indigo-500/40"],
-body.sunlight-mode [class*="border-indigo-500/40"] {
-  border-color: #4F46E5 !important;
-  background-color: #EEF2FF !important;
+body.sunlight-mode [class*="border-indigo-500/40"],
+body.light-mode [class*="border-indigo-500/40"] {
+  border-color: #C7D2FE !important;
+  background-color: #F8FAFF !important;
 }
 
 /* 8. Comparison Cards in Landing Page */
+body.high-contrast [class*="bg-red-500/[0.04]"],
+body.sunlight-mode [class*="bg-red-500/[0.04]"],
+body.light-mode [class*="bg-red-500/[0.04]"],
 body.high-contrast [class*="bg-red-950/"],
-body.sunlight-mode [class*="bg-red-950/"] {
+body.sunlight-mode [class*="bg-red-950/"],
+body.light-mode [class*="bg-red-950/"] {
   background-color: #FEF2F2 !important;
-  border-color: #DC2626 !important;
+  border-color: #FECDD3 !important;
 }
+body.high-contrast [class*="bg-emerald-500/[0.04]"],
+body.sunlight-mode [class*="bg-emerald-500/[0.04]"],
+body.light-mode [class*="bg-emerald-500/[0.04]"],
 body.high-contrast [class*="bg-emerald-950/"],
-body.sunlight-mode [class*="bg-emerald-950/"] {
+body.sunlight-mode [class*="bg-emerald-950/"],
+body.light-mode [class*="bg-emerald-950/"] {
   background-color: #ECFDF5 !important;
-  border-color: #059669 !important;
+  border-color: #A7F3D0 !important;
 }
 
-/* 9. Header & Footer in Sunlight Mode */
-body.high-contrast header,
-body.sunlight-mode header {
-  background-color: #FFFFFF !important;
-  background-image: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  border-bottom: 2px solid #CBD5E1 !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
-  color: #0F172A !important;
+/* 9. Step Stepper Numbers */
+body.high-contrast [class*="bg-slate-900"][class*="text-slate-500"],
+body.sunlight-mode [class*="bg-slate-900"][class*="text-slate-500"],
+body.light-mode [class*="bg-slate-900"][class*="text-slate-500"] {
+  background-color: #F1F5F9 !important;
+  color: #475569 !important;
+  border-color: #CBD5E1 !important;
 }
 
-body.high-contrast header .h-\[1px\],
-body.sunlight-mode header .h-\[1px\] {
-  display: none !important;
-}
-
-body.high-contrast header a,
-body.sunlight-mode header a,
-body.high-contrast header span,
-body.sunlight-mode header span {
-  color: #1E293B;
-}
-
-body.high-contrast header a:hover,
-body.sunlight-mode header a:hover {
-  color: #0F172A !important;
-}
-
-body.high-contrast header a[href="/claim"],
-body.sunlight-mode header a[href="/claim"] {
-  background-color: #F59E0B !important;
-  color: #0F172A !important;
-  border-color: #D97706 !important;
-}
-
-body.high-contrast header a[href="/claim"] *,
-body.sunlight-mode header a[href="/claim"] * {
-  color: #0F172A !important;
-}
-
+/* 10. Footer in Light Mode */
 body.high-contrast footer,
-body.sunlight-mode footer {
+body.sunlight-mode footer,
+body.light-mode footer {
   background-color: #FFFFFF !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border-top: 2px solid #CBD5E1 !important;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04) !important;
+  border-top: 1px solid #E2E8F0 !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.02) !important;
 }
 
 body.high-contrast .footer-gradient-divider,
-body.sunlight-mode .footer-gradient-divider {
+body.sunlight-mode .footer-gradient-divider,
+body.light-mode .footer-gradient-divider {
   display: none !important;
 }
 
 body.high-contrast footer p,
 body.sunlight-mode footer p,
+body.light-mode footer p,
 body.high-contrast footer span,
 body.sunlight-mode footer span,
+body.light-mode footer span,
 body.high-contrast footer a,
-body.sunlight-mode footer a {
+body.sunlight-mode footer a,
+body.light-mode footer a {
   color: #475569 !important;
 }
 
 body.high-contrast footer h4,
-body.sunlight-mode footer h4 {
+body.sunlight-mode footer h4,
+body.light-mode footer h4 {
   color: #0F172A !important;
   font-weight: 800 !important;
 }
 
-/* 10. Form Inputs & Selects */
+/* 11. Form Inputs, Textareas & Selects */
 body.high-contrast input,
 body.sunlight-mode input,
+body.light-mode input,
 body.high-contrast textarea,
 body.sunlight-mode textarea,
+body.light-mode textarea,
 body.high-contrast select,
-body.sunlight-mode select {
+body.sunlight-mode select,
+body.light-mode select,
+body.high-contrast .input-civic,
+body.sunlight-mode .input-civic,
+body.light-mode .input-civic {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
-  border: 2px solid #0F172A !important;
-  box-shadow: none !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+}
+
+body.high-contrast select option,
+body.sunlight-mode select option,
+body.light-mode select option {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+}
+
+body.high-contrast input:focus,
+body.sunlight-mode input:focus,
+body.light-mode input:focus,
+body.high-contrast textarea:focus,
+body.sunlight-mode textarea:focus,
+body.light-mode textarea:focus,
+body.high-contrast select:focus,
+body.sunlight-mode select:focus,
+body.light-mode select:focus,
+body.high-contrast .input-civic:focus,
+body.sunlight-mode .input-civic:focus,
+body.light-mode .input-civic:focus {
+  border-color: #D97706 !important;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15) !important;
+  outline: none !important;
 }
 
 body.high-contrast input::placeholder,
-body.sunlight-mode input::placeholder {
-  color: #64748B !important;
+body.sunlight-mode input::placeholder,
+body.light-mode input::placeholder,
+body.high-contrast textarea::placeholder,
+body.sunlight-mode textarea::placeholder,
+body.light-mode textarea::placeholder,
+body.high-contrast .input-civic::placeholder,
+body.sunlight-mode .input-civic::placeholder,
+body.light-mode .input-civic::placeholder {
+  color: #94A3B8 !important;
 }
 
-/* 11. Tables in Treasury & Admin */
+/* 12. Tables in Treasury & Admin */
 body.high-contrast table,
-body.sunlight-mode table {
+body.sunlight-mode table,
+body.light-mode table {
   background-color: #FFFFFF !important;
   border-collapse: separate !important;
 }
 body.high-contrast thead tr,
-body.sunlight-mode thead tr {
+body.sunlight-mode thead tr,
+body.light-mode thead tr {
   background-color: #F8FAFC !important;
-  border-bottom: 2px solid #CBD5E1 !important;
+  border-bottom: 1.5px solid #E2E8F0 !important;
 }
 body.high-contrast th,
-body.sunlight-mode th {
+body.sunlight-mode th,
+body.light-mode th {
   background-color: #F8FAFC !important;
   color: #0F172A !important;
-  border-bottom: 2px solid #CBD5E1 !important;
+  border-bottom: 1.5px solid #E2E8F0 !important;
 }
 body.high-contrast td,
-body.sunlight-mode td {
-  border-bottom: 1px solid #E2E8F0 !important;
+body.sunlight-mode td,
+body.light-mode td {
+  border-bottom: 1px solid #F1F5F9 !important;
   color: #0F172A !important;
 }
 body.high-contrast tbody tr:hover,
-body.sunlight-mode tbody tr:hover {
-  background-color: #F1F5F9 !important;
+body.sunlight-mode tbody tr:hover,
+body.light-mode tbody tr:hover {
+  background-color: #F8FAFC !important;
 }
 
-/* 12. High-Contrast Action Buttons */
+/* 13. Action Buttons */
 body.high-contrast .btn-civic-gold,
-body.sunlight-mode .btn-civic-gold {
-  background: #D97706 !important;
-  color: #FFFFFF !important;
-  border: 2px solid #92400E !important;
+body.sunlight-mode .btn-civic-gold,
+body.light-mode .btn-civic-gold {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+  color: #020617 !important;
+  border: 1px solid #B45309 !important;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25) !important;
   font-weight: 800 !important;
+}
+body.high-contrast .btn-civic-gold:hover,
+body.sunlight-mode .btn-civic-gold:hover,
+body.light-mode .btn-civic-gold:hover {
+  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%) !important;
+  box-shadow: 0 6px 20px rgba(217, 119, 6, 0.35) !important;
+}
+body.high-contrast .btn-civic-gold *,
+body.sunlight-mode .btn-civic-gold *,
+body.light-mode .btn-civic-gold * {
+  color: #020617 !important;
 }
 
 body.high-contrast .btn-civic-emerald,
-body.sunlight-mode .btn-civic-emerald {
-  background: #059669 !important;
+body.sunlight-mode .btn-civic-emerald,
+body.light-mode .btn-civic-emerald {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
   color: #FFFFFF !important;
-  border: 2px solid #065F46 !important;
+  border: 1px solid #065F46 !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25) !important;
   font-weight: 800 !important;
+}
+body.high-contrast .btn-civic-emerald *,
+body.sunlight-mode .btn-civic-emerald *,
+body.light-mode .btn-civic-emerald * {
+  color: #FFFFFF !important;
+}
+
+body.high-contrast .btn-civic-glow,
+body.sunlight-mode .btn-civic-glow,
+body.light-mode .btn-civic-glow {
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid #1E40AF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+  font-weight: 800 !important;
+}
+body.high-contrast .btn-civic-glow *,
+body.sunlight-mode .btn-civic-glow *,
+body.light-mode .btn-civic-glow * {
+  color: #FFFFFF !important;
 }
 
 body.high-contrast .btn-primary,
-body.sunlight-mode .btn-primary {
+body.sunlight-mode .btn-primary,
+body.light-mode .btn-primary {
   background: #1D4ED8 !important;
   color: #FFFFFF !important;
-  border: 2px solid #1E40AF !important;
+  border: 1px solid #1E40AF !important;
   font-weight: 800 !important;
 }
-
-body.high-contrast .btn-civic-gold *,
-body.sunlight-mode .btn-civic-gold *,
-body.high-contrast .btn-civic-emerald *,
-body.sunlight-mode .btn-civic-emerald *,
 body.high-contrast .btn-primary *,
 body.sunlight-mode .btn-primary *,
-body.high-contrast [class*="bg-red-600"] *,
-body.sunlight-mode [class*="bg-red-600"] *,
-body.high-contrast [class*="bg-blue-600"] *,
-body.sunlight-mode [class*="bg-blue-600"] *,
-body.high-contrast [class*="bg-emerald-600"] *,
-body.sunlight-mode [class*="bg-emerald-600"] * {
+body.light-mode .btn-primary * {
   color: #FFFFFF !important;
 }
 
 body.high-contrast .btn-secondary,
-body.sunlight-mode .btn-secondary {
-  background: #F8FAFC !important;
-  color: #0F172A !important;
-  border: 2px solid #0F172A !important;
-}
-
-body.high-contrast .mobile-bottom-bar,
-body.sunlight-mode .mobile-bottom-bar {
-  background: #FFFFFF !important;
-  border-top: 2px solid #0F172A !important;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1) !important;
-}
-
-body.high-contrast .fixed.inset-0,
-body.sunlight-mode .fixed.inset-0 {
-  background-color: rgba(15, 23, 42, 0.6) !important;
-}
-
-body.high-contrast .fixed.inset-0 > div,
-body.sunlight-mode .fixed.inset-0 > div {
+body.sunlight-mode .btn-secondary,
+body.light-mode .btn-secondary {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
-  border: 2px solid #0F172A !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
-
-body.high-contrast #accessibility-toggle .glass-card button:hover,
-body.sunlight-mode #accessibility-toggle .glass-card button:hover {
-  background-color: #F1F5F9 !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card button[class*="bg-sky-500"],
-body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-sky-500"] {
-  background-color: #0284C7 !important;
-  color: #FFFFFF !important;
-  border-color: #0284C7 !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card button[class*="bg-amber-500"],
-body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-amber-500"] {
-  background-color: #FEF3C7 !important;
-  border-color: #D97706 !important;
-  color: #92400E !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card [class*="border-white"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="border-white"] {
-  border-color: #E2E8F0 !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card [class*="bg-white/5"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="bg-white/5"] {
+body.high-contrast .btn-secondary:hover,
+body.sunlight-mode .btn-secondary:hover,
+body.light-mode .btn-secondary:hover {
   background-color: #F8FAFC !important;
-  border-color: #CBD5E1 !important;
+  border-color: #94A3B8 !important;
 }
 
-/* Accessibility Drawer Switch Track in Sunlight Mode */
-body.high-contrast #accessibility-toggle .glass-card [class*="w-11"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"] {
-  background-color: #E2E8F0 !important;
-  border-color: #CBD5E1 !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card button[class*="bg-amber-500"] [class*="w-11"],
-body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-amber-500"] [class*="w-11"],
-body.high-contrast #accessibility-toggle .glass-card [class*="w-11"][class*="bg-amber-500"],
-body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"][class*="bg-amber-500"] {
-  background-color: #D97706 !important;
-  border-color: #B45309 !important;
-}
-
-body.high-contrast #accessibility-toggle .glass-card [class*="w-11"] span,
-body.sunlight-mode #accessibility-toggle .glass-card [class*="w-11"] span {
-  background-color: #FFFFFF !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Prevent Font Scale mode from blowing up compact drawer buttons */
-body.large-text #accessibility-toggle button,
-body.xlarge-text #accessibility-toggle button {
-  min-height: auto !important;
-}
-
-/* Treasury Feed Items in Sunlight Mode */
-body.high-contrast .treasury-feed-item,
-body.sunlight-mode .treasury-feed-item {
-  background-color: #F8FAFC !important;
-  border-color: #CBD5E1 !important;
-}
-
-/* ---- 10. Gradient Cancellation: Strip dark background-image gradients in sunlight ---- */
-body.high-contrast [class*="bg-gradient-"][class*="from-slate-"],
-body.sunlight-mode [class*="bg-gradient-"][class*="from-slate-"],
-body.high-contrast [class*="bg-gradient-"][class*="via-slate-"],
-body.sunlight-mode [class*="bg-gradient-"][class*="via-slate-"],
-body.high-contrast [class*="bg-gradient-"][class*="from-blue-9"],
-body.sunlight-mode [class*="bg-gradient-"][class*="from-blue-9"],
-body.high-contrast [class*="bg-gradient-"][class*="from-red-9"],
-body.sunlight-mode [class*="bg-gradient-"][class*="from-red-9"],
-body.high-contrast [class*="bg-gradient-"][class*="from-emerald-9"],
-body.sunlight-mode [class*="bg-gradient-"][class*="from-emerald-9"],
-body.high-contrast [class*="bg-gradient-"][class*="via-amber-9"],
-body.sunlight-mode [class*="bg-gradient-"][class*="via-amber-9"],
-body.high-contrast [class*="bg-gradient-"][class*="to-blue-950"],
-body.sunlight-mode [class*="bg-gradient-"][class*="to-blue-950"] {
-  background-image: none !important;
-  background-color: #FFFFFF !important;
-}
-
-/* ---- 11. Translucent White Text: Override text-white/* opacity variants ---- */
-body.high-contrast [class*="text-white/"],
-body.sunlight-mode [class*="text-white/"] {
-  color: #334155 !important; /* slate-700 — readable on white daylight cards */
-}
-
-/* ---- 12. Light Pastel Text Deepening: Emerald, Red, Sky ranges ---- */
-body.high-contrast [class*="text-emerald-1"],
-body.sunlight-mode [class*="text-emerald-1"],
-body.high-contrast [class*="text-emerald-2"],
-body.sunlight-mode [class*="text-emerald-2"],
-body.high-contrast [class*="text-emerald-3"],
-body.sunlight-mode [class*="text-emerald-3"] {
-  color: #065F46 !important; /* emerald-800 — WCAG AAA on white */
-  font-weight: 700 !important;
-}
-
-body.high-contrast [class*="text-red-2"],
-body.sunlight-mode [class*="text-red-2"],
-body.high-contrast [class*="text-red-3"],
-body.sunlight-mode [class*="text-red-3"] {
-  color: #991B1B !important; /* red-800 — WCAG AAA on white */
-  font-weight: 700 !important;
-}
-
-body.high-contrast [class*="text-sky-3"],
-body.sunlight-mode [class*="text-sky-3"],
-body.high-contrast [class*="text-sky-4"],
-body.sunlight-mode [class*="text-sky-4"] {
-  color: #0369A1 !important; /* sky-700 — WCAG AAA on white */
-  font-weight: 700 !important;
-}
-
-/* ---- 13. Custom Accent Text Deepening for WCAG AAA ---- */
-body.high-contrast [class*="text-accent-success"],
-body.sunlight-mode [class*="text-accent-success"] {
-  color: #047857 !important; /* emerald-700 */
-}
-
-body.high-contrast [class*="text-accent-purple"],
-body.sunlight-mode [class*="text-accent-purple"] {
-  color: #6D28D9 !important; /* violet-700 */
-}
-
-body.high-contrast [class*="text-civic-trust"],
-body.sunlight-mode [class*="text-civic-trust"],
-body.high-contrast [class*="text-civic-sky"],
-body.sunlight-mode [class*="text-civic-sky"] {
-  color: #1D4ED8 !important; /* blue-700 */
-}
-
-body.high-contrast [class*="text-accent-gold"],
-body.sunlight-mode [class*="text-accent-gold"],
-body.high-contrast [class*="text-accent-warning"],
-body.sunlight-mode [class*="text-accent-warning"] {
-  color: #B45309 !important; /* amber-700 */
-}
-
-body.high-contrast [class*="text-accent-danger"],
-body.sunlight-mode [class*="text-accent-danger"] {
-  color: #B91C1C !important; /* red-700 */
-}
-
-/* ---- 14. Placeholder Text in Sunlight Mode ---- */
-body.high-contrast [class*="placeholder-white"]::placeholder,
-body.sunlight-mode [class*="placeholder-white"]::placeholder,
-body.high-contrast [class*="placeholder-slate-"]::placeholder,
-body.sunlight-mode [class*="placeholder-slate-"]::placeholder {
-  color: #64748B !important; /* slate-500 */
-}
-
-/* ---- 15. Scrollbar Daylight Override ---- */
-body.high-contrast ::-webkit-scrollbar-track,
-body.sunlight-mode ::-webkit-scrollbar-track {
-  background: #F1F5F9 !important;
-}
-body.high-contrast ::-webkit-scrollbar-thumb,
-body.sunlight-mode ::-webkit-scrollbar-thumb {
-  background: #CBD5E1 !important;
-}
-body.high-contrast ::-webkit-scrollbar-thumb:hover,
-body.sunlight-mode ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8 !important;
-}
-
-/* ---- 15.1 Calamity Alert Bar Protection in Sunlight Mode ---- */
+/* 14. Calamity Alert Bar */
 body.high-contrast .calamity-alert-bar,
-body.sunlight-mode .calamity-alert-bar {
-  background-image: linear-gradient(to right, #DC2626, #D97706, #DC2626) !important;
-  background-color: #DC2626 !important;
-  color: #FFFFFF !important;
-  border-bottom: 2px solid #991B1B !important;
+body.sunlight-mode .calamity-alert-bar,
+body.light-mode .calamity-alert-bar {
+  background-image: none !important;
+  background-color: #FEF2F2 !important;
+  border-bottom: 1px solid #FECDD3 !important;
+  color: #991B1B !important;
 }
 body.high-contrast .calamity-alert-bar *,
-body.sunlight-mode .calamity-alert-bar * {
-  color: #FFFFFF !important;
+body.sunlight-mode .calamity-alert-bar *,
+body.light-mode .calamity-alert-bar * {
+  color: #991B1B !important;
 }
-body.high-contrast .calamity-alert-bar strong,
-body.sunlight-mode .calamity-alert-bar strong {
-  color: #FEF08A !important;
-}
-body.high-contrast .calamity-alert-bar [class*="bg-white"],
-body.sunlight-mode .calamity-alert-bar [class*="bg-white"] {
-  background-color: #FFFFFF !important;
+body.high-contrast .calamity-alert-bar [class*="bg-red-500/15"],
+body.sunlight-mode .calamity-alert-bar [class*="bg-red-500/15"],
+body.light-mode .calamity-alert-bar [class*="bg-red-500/15"] {
+  background-color: #FEE2E2 !important;
   color: #B91C1C !important;
-}
-body.high-contrast .calamity-alert-bar [class*="bg-white"] *,
-body.sunlight-mode .calamity-alert-bar [class*="bg-white"] * {
-  color: #B91C1C !important;
+  border-color: #FCA5A5 !important;
 }
 
-/* ---- 15.2 Gradient Text & Transparent Text Fix in Sunlight Mode ---- */
+/* 15. Headline Highlights & Text Gradients */
 body.high-contrast [class*="bg-clip-text"],
 body.sunlight-mode [class*="bg-clip-text"],
+body.light-mode [class*="bg-clip-text"],
 body.high-contrast [class*="text-transparent"],
-body.sunlight-mode [class*="text-transparent"] {
+body.sunlight-mode [class*="text-transparent"],
+body.light-mode [class*="text-transparent"] {
   -webkit-text-fill-color: #0F172A !important;
   color: #0F172A !important;
   background-image: none !important;
 }
 
+body.high-contrast [class*="from-amber-300"],
+body.sunlight-mode [class*="from-amber-300"],
+body.light-mode [class*="from-amber-300"],
+body.high-contrast [class*="to-amber-500"],
+body.sunlight-mode [class*="to-amber-500"],
+body.light-mode [class*="to-amber-500"],
 body.high-contrast .headline-highlight,
-body.sunlight-mode .headline-highlight {
+body.sunlight-mode .headline-highlight,
+body.light-mode .headline-highlight {
   -webkit-text-fill-color: #B45309 !important;
   color: #B45309 !important;
 }
 
-/* ---- 15.3 Ambient Glow Orbs & Background Blobs Cancellation ---- */
-body.high-contrast [class*="blur-3xl"][class*="pointer-events-none"],
-body.sunlight-mode [class*="blur-3xl"][class*="pointer-events-none"],
-body.high-contrast [class*="blur-2xl"][class*="pointer-events-none"],
-body.sunlight-mode [class*="blur-2xl"][class*="pointer-events-none"],
-body.high-contrast [class*="blur-md"][class*="pointer-events-none"],
-body.sunlight-mode [class*="blur-md"][class*="pointer-events-none"] {
-  display: none !important;
+/* 15.1 Accessibility Drawer & Floating Toggle Button */
+body.high-contrast #accessibility-toggle .glass-card,
+body.sunlight-mode #accessibility-toggle .glass-card,
+body.light-mode #accessibility-toggle .glass-card {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
+}
+body.high-contrast #accessibility-toggle .glass-card *,
+body.sunlight-mode #accessibility-toggle .glass-card *,
+body.light-mode #accessibility-toggle .glass-card * {
+  color: #0F172A;
+}
+body.high-contrast #accessibility-toggle .glass-card h3,
+body.sunlight-mode #accessibility-toggle .glass-card h3,
+body.light-mode #accessibility-toggle .glass-card h3 {
+  color: #92400E !important;
+}
+body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-400"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-400"],
+body.light-mode #accessibility-toggle .glass-card [class*="text-slate-400"],
+body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-300"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-300"],
+body.light-mode #accessibility-toggle .glass-card [class*="text-slate-300"] {
+  color: #475569 !important;
+}
+body.high-contrast #accessibility-toggle .glass-card button,
+body.sunlight-mode #accessibility-toggle .glass-card button,
+body.light-mode #accessibility-toggle .glass-card button {
+  background-color: #F8FAFC !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #0F172A !important;
+}
+body.high-contrast #accessibility-toggle .glass-card button:hover,
+body.sunlight-mode #accessibility-toggle .glass-card button:hover,
+body.light-mode #accessibility-toggle .glass-card button:hover {
+  background-color: #EFF6FF !important;
+  border-color: #3B82F6 !important;
+}
+body.high-contrast #accessibility-toggle-button,
+body.sunlight-mode #accessibility-toggle-button,
+body.light-mode #accessibility-toggle-button {
+  background-color: #D97706 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #78350F !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+body.high-contrast #accessibility-toggle-button *,
+body.sunlight-mode #accessibility-toggle-button *,
+body.light-mode #accessibility-toggle-button * {
+  color: #FFFFFF !important;
 }
 
-/* ---- 15.4 Logo Glow & Filter Reset in Sunlight Mode ---- */
+/* 15.2 Logo Glow & Filter Reset */
 body.high-contrast .logo-glow,
 body.sunlight-mode .logo-glow,
+body.light-mode .logo-glow,
 body.high-contrast img[alt="GhostFree Logo"],
-body.sunlight-mode img[alt="GhostFree Logo"] {
+body.sunlight-mode img[alt="GhostFree Logo"],
+body.light-mode img[alt="GhostFree Logo"] {
   filter: none !important;
   box-shadow: none !important;
 }
