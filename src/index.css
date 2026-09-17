@@ -974,15 +974,102 @@ body.sunlight-mode [class*="text-red-4"] {
   font-weight: 700 !important;
 }
 
-/* 5. Headers & Footers */
+/* 5. Headers & Footers in Sunlight Mode */
 body.high-contrast header,
-body.sunlight-mode header,
+body.sunlight-mode header {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: 2px solid #CBD5E1 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  color: #0F172A !important;
+}
+
+body.high-contrast header .h-\[1px\],
+body.sunlight-mode header .h-\[1px\] {
+  display: none !important;
+}
+
+body.high-contrast header a,
+body.sunlight-mode header a,
+body.high-contrast header span,
+body.sunlight-mode header span {
+  color: #1E293B;
+}
+
+body.high-contrast header a:hover,
+body.sunlight-mode header a:hover {
+  color: #0F172A !important;
+}
+
+/* Nav links inside header */
+body.high-contrast header nav a,
+body.sunlight-mode header nav a,
+body.high-contrast header .hidden.md\:flex > a,
+body.sunlight-mode header .hidden.md\:flex > a,
+body.high-contrast header .hidden.md\:flex > button,
+body.sunlight-mode header .hidden.md\:flex > button {
+  background-color: #F8FAFC !important;
+  color: #1E293B !important;
+  border-color: #CBD5E1 !important;
+}
+
+body.high-contrast header a[href="/claim"],
+body.sunlight-mode header a[href="/claim"] {
+  background-color: #F59E0B !important;
+  color: #0F172A !important;
+  border-color: #D97706 !important;
+}
+
+body.high-contrast header a[href="/claim"] *,
+body.sunlight-mode header a[href="/claim"] * {
+  color: #0F172A !important;
+}
+
+/* Footer in Sunlight Mode */
 body.high-contrast footer,
 body.sunlight-mode footer {
   background-color: #FFFFFF !important;
-  border-color: #CBD5E1 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-top: 2px solid #CBD5E1 !important;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04) !important;
 }
+
+body.high-contrast .footer-gradient-divider,
+body.sunlight-mode .footer-gradient-divider {
+  display: none !important;
+}
+
+body.high-contrast footer p,
+body.sunlight-mode footer p,
+body.high-contrast footer span,
+body.sunlight-mode footer span,
+body.high-contrast footer a,
+body.sunlight-mode footer a {
+  color: #475569 !important;
+}
+
+body.high-contrast footer h4,
+body.sunlight-mode footer h4 {
+  color: #0F172A !important;
+  font-weight: 800 !important;
+}
+
+body.high-contrast footer a:hover,
+body.sunlight-mode footer a:hover {
+  color: #0F172A !important;
+}
+
+body.high-contrast footer [class*="bg-white\/"],
+body.sunlight-mode footer [class*="bg-white\/"] {
+  background-color: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+  color: #334155 !important;
+}
+
 
 /* 6. Form Inputs & Selects */
 body.high-contrast input,
@@ -1153,6 +1240,74 @@ body.sunlight-mode #accessibility-toggle-button {
   background-color: #FFFFFF !important;
   color: #D97706 !important;
   border: 2px solid #D97706 !important;
+}
+
+/* Accessibility Drawer in Sunlight Mode */
+body.high-contrast #accessibility-toggle .glass-card,
+body.sunlight-mode #accessibility-toggle .glass-card {
+  background-color: #FFFFFF !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: #0F172A !important;
+  border: 2px solid #0F172A !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card *,
+body.sunlight-mode #accessibility-toggle .glass-card * {
+  color: #0F172A;
+}
+
+body.high-contrast #accessibility-toggle .glass-card h3,
+body.sunlight-mode #accessibility-toggle .glass-card h3 {
+  color: #92400E !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-400"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-400"],
+body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-300"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-300"],
+body.high-contrast #accessibility-toggle .glass-card [class*="text-slate-200"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="text-slate-200"] {
+  color: #475569 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card button,
+body.sunlight-mode #accessibility-toggle .glass-card button {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+  border: 1px solid #CBD5E1 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card button:hover,
+body.sunlight-mode #accessibility-toggle .glass-card button:hover {
+  background-color: #F1F5F9 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card button[class*="bg-sky-500"],
+body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-sky-500"] {
+  background-color: #0284C7 !important;
+  color: #FFFFFF !important;
+  border-color: #0284C7 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card button[class*="bg-amber-500"],
+body.sunlight-mode #accessibility-toggle .glass-card button[class*="bg-amber-500"] {
+  background-color: #FEF3C7 !important;
+  border-color: #D97706 !important;
+  color: #92400E !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card [class*="border-white"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="border-white"] {
+  border-color: #E2E8F0 !important;
+}
+
+body.high-contrast #accessibility-toggle .glass-card [class*="bg-white/5"],
+body.sunlight-mode #accessibility-toggle .glass-card [class*="bg-white/5"] {
+  background-color: #F8FAFC !important;
+  border-color: #CBD5E1 !important;
 }
 
 /* ---- 10. Gradient Cancellation: Strip dark background-image gradients in sunlight ---- */
