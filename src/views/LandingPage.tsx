@@ -33,16 +33,18 @@ import {
   Clock,
   Sparkles,
   ExternalLink,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 import Layout from "../components/Layout";
 import OnboardingModal from "../components/OnboardingModal";
 import ReceiptVerifierModal from "../components/ReceiptVerifierModal";
 import GhostFreeLogo from "../components/GhostFreeLogo";
 import {
-  getStoredLanguage,
-  subscribeLanguageChange,
+  useTranslation,
   type SupportedLanguage,
 } from "../services/i18n.service";
+import { useVoiceAssistant } from "../services/voice.service";
 
 // ---- Animated Counter Hook ----
 function useCountUp(target: number, duration = 1800, trigger = false) {
@@ -72,7 +74,8 @@ function useCountUp(target: number, duration = 1800, trigger = false) {
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [lang, setLang] = useState<SupportedLanguage>(getStoredLanguage());
+  const { t, lang } = useTranslation();
+  const { isSpeaking, currentContext, speak, stop } = useVoiceAssistant();
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showVerifier, setShowVerifier] = useState(false);
@@ -91,10 +94,6 @@ export const LandingPage: React.FC = () => {
     amount: number;
     tranche: string;
   } | null>(null);
-
-  useEffect(() => {
-    return subscribeLanguageChange((newLang) => setLang(newLang));
-  }, []);
 
   // Intersection Observer for animated counter
   useEffect(() => {
@@ -143,53 +142,53 @@ export const LandingPage: React.FC = () => {
   };
 
   // ₱5,000 Calamity Relief Basket Breakdown
-  const reliefBasketItems = [
+  const reliefBasketItems = useMemo(() => [
     {
       id: "rice",
-      name: "25kg NFA Well-Milled Rice",
-      tagalog: "Bigas para sa 3 linggo",
+      name: t("basketRiceName", "25kg NFA Well-Milled Rice"),
+      tagalog: t("basketRiceTag", "Bigas para sa 3 linggo"),
       amount: 1250,
       icon: <Wheat className="w-5 h-5 text-amber-400" />,
-      desc: "Sapat na pangunahing pagkain para sa isang pamilyang may 5 miyembro sa buong emergency period.",
+      desc: t("basketRiceDesc", "Sapat na pangunahing pagkain para sa isang pamilyang may 5 miyembro sa buong emergency period."),
       color: "border-amber-500/40 bg-amber-500/10",
     },
     {
       id: "foodpack",
-      name: "DSWD Family Food Packs",
-      tagalog: "Canned Goods, Noodles, Kape",
+      name: t("basketFoodName", "DSWD Family Food Packs"),
+      tagalog: t("basketFoodTag", "Canned Goods, Noodles, Kape"),
       amount: 1500,
       icon: <UtensilsCrossed className="w-5 h-5 text-emerald-400" />,
-      desc: "12 latang sardinas at corned beef, 10 packs instant noodles, cereal drink, at kape para sa almusal at hapunan.",
+      desc: t("basketFoodDesc", "12 latang sardinas at corned beef, 10 packs instant noodles, cereal drink, at kape para sa almusal at hapunan."),
       color: "border-emerald-500/40 bg-emerald-500/10",
     },
     {
       id: "water",
-      name: "Clean Water & Hygiene Kit",
-      tagalog: "Malinis na Tubig & Sanitation",
+      name: t("basketWaterName", "Clean Water & Hygiene Kit"),
+      tagalog: t("basketWaterTag", "Malinis na Tubig & Sanitation"),
       amount: 1000,
       icon: <Droplets className="w-5 h-5 text-sky-400" />,
-      desc: "2x 5-gallon purified drinking water containers, sabon, shampoo, toothpaste, sanitary napkins, at bleach.",
+      desc: t("basketWaterDesc", "2x 5-gallon purified drinking water containers, sabon, shampoo, toothpaste, sanitary napkins, at bleach."),
       color: "border-sky-500/40 bg-sky-500/10",
     },
     {
       id: "medicine",
-      name: "Emergency First Aid & Medicine",
-      tagalog: "Paracetamol, Gamot, Antiseptic",
+      name: t("basketMedName", "Emergency First Aid & Medicine"),
+      tagalog: t("basketMedTag", "Paracetamol, Gamot, Antiseptic"),
       amount: 750,
       icon: <HeartPulse className="w-5 h-5 text-rose-400" />,
-      desc: "Paracetamol para sa lagnat, oral rehydration salts para sa dehydration, band-aids, betadine, at alcohol.",
+      desc: t("basketMedDesc", "Paracetamol para sa lagnat, oral rehydration salts para sa dehydration, band-aids, betadine, at alcohol."),
       color: "border-rose-500/40 bg-rose-500/10",
     },
     {
       id: "shelter",
-      name: "Emergency Shelter Repair Kit",
-      tagalog: "Traapal, Lubid, Pako",
+      name: t("basketShelterName", "Emergency Shelter Repair Kit"),
+      tagalog: t("basketShelterTag", "Trapal, Lubid, Pako"),
       amount: 500,
       icon: <Hammer className="w-5 h-5 text-indigo-400" />,
-      desc: "Mabigat na trapal (tarpaulin), nylon rope, at pako upang pansamantalang protektahan ang nawasak na bubong.",
+      desc: t("basketShelterDesc", "Mabigat na trapal (tarpaulin), nylon rope, at pako upang pansamantalang protektahan ang nawasak na bubong."),
       color: "border-indigo-500/40 bg-indigo-500/10",
     },
-  ];
+  ], [lang]);
 
   // Regional Evacuation Center Directory
   const evacuationCenters = [
@@ -200,7 +199,7 @@ export const LandingPage: React.FC = () => {
       capacity: 450,
       disbursed: 423,
       contractId: "02005a76e93a86c0b938f97b",
-      status: "Actively Disbursing",
+      status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
     {
@@ -210,7 +209,7 @@ export const LandingPage: React.FC = () => {
       capacity: 280,
       disbursed: 247,
       contractId: "02008f12cc3e819b02a77b10",
-      status: "Actively Disbursing",
+      status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
     {
@@ -220,7 +219,7 @@ export const LandingPage: React.FC = () => {
       capacity: 190,
       disbursed: 190,
       contractId: "0200b39f71ac2e690f9119aa",
-      status: "100% Fully Disbursed",
+      status: t("evacFullyDisbursed", "100% Fully Disbursed"),
       statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
     },
     {
@@ -230,13 +229,45 @@ export const LandingPage: React.FC = () => {
       capacity: 310,
       disbursed: 282,
       contractId: "02009d43ab881c300f88bb2c",
-      status: "Actively Disbursing",
+      status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
   ];
 
   // Dynamic 4-Step Explanations
   const steps = useMemo(() => {
+    if (lang === "ceb") {
+      return [
+        {
+          id: 1,
+          title: "1. Isulod ang ID ug PIN",
+          tag: "Tinago sa Selpon",
+          desc: "I-type ang imong PhilSys ID number ug ang 4-digit secret PIN gikan sa evacuation voucher. Magpabilin kini sa imong telepono.",
+          staysPrivate: "Dili mogawas sa imong telepono ang imong ID o PIN.",
+        },
+        {
+          id: 2,
+          title: "2. Pribadong ZK Proof",
+          tag: "100% Matematika",
+          desc: "Naghimo ang imong telepono og zero-knowledge proof aron pamatud-an nga kwalipikado ka nga dili ipadayag ang imong ngalan.",
+          staysPrivate: "Walay makakita sa imong tinuod nga pagkatawo.",
+        },
+        {
+          id: 3,
+          title: "3. Anti-Ghost Check",
+          tag: "Walay Doble nga Claim",
+          desc: "Gipaneguro sa smart contract sa Midnight Network nga wala pa magamit ang imong talagsaong nullifier lock code.",
+          staysPrivate: "Gibabagan ang ghost claimants nga walay data leakage.",
+        },
+        {
+          id: 4,
+          title: "4. Dawata ang ₱5,000",
+          tag: "Diha-diha nga Payout",
+          desc: "Direktang mabalhin ang pundo sa imong pitaka uban ang opisyal nga digital relief voucher alang sa evacuation checkpoint.",
+          staysPrivate: "Walay kaltas. Sagubangon sa kagamhanan ang tanang gas fees.",
+        },
+      ];
+    }
     if (lang === "fil") {
       return [
         {
@@ -305,58 +336,58 @@ export const LandingPage: React.FC = () => {
   const comparisons = useMemo(() => {
     return [
       {
-        feature: "Bilis ng Pagkuha ng Ayuda",
-        oldWay: "Oras ng pagpila sa init ng araw o ulan sa evacuation center",
-        ghostFree: "30 segundo sa iyong telepono na may agarang pondo",
+        feature: t("compareFeature1", "Bilis ng Pagkuha ng Ayuda"),
+        oldWay: t("compareOld1", "Oras ng pagpila sa init ng araw o ulan sa evacuation center"),
+        ghostFree: t("compareNew1", "30 segundo sa iyong telepono na may agarang pondo"),
       },
       {
-        feature: "Proteksyon sa Pagkakakilanlan",
-        oldWay: "Nakasulat ang buong pangalan at National ID sa bukas na papel",
-        ghostFree: "100% pribado gamit ang Zero-Knowledge cryptography",
+        feature: t("compareFeature2", "Proteksyon sa Pagkakakilanlan"),
+        oldWay: t("compareOld2", "Nakasulat ang buong pangalan at National ID sa bukas na papel"),
+        ghostFree: t("compareNew2", "100% pribado gamit ang Zero-Knowledge cryptography"),
       },
       {
-        feature: "Pandaraya at Ghost Beneficiaries",
-        oldWay: "Mga tiwaling middleman at pekeng pangalan na nagnanakaw ng pondo",
-        ghostFree: "Imposible. Awtomatikong hinaharang ng anti-ghost nullifier",
+        feature: t("compareFeature3", "Pandaraya at Ghost Beneficiaries"),
+        oldWay: t("compareOld3", "Mga tiwaling middleman at pekeng pangalan na nagnanakaw ng pondo"),
+        ghostFree: t("compareNew3", "Imposible. Awtomatikong hinaharang ng anti-ghost nullifier"),
       },
       {
-        feature: "Pampublikong Audit (COA Compliance)",
-        oldWay: "Mga resibong papel at spreadsheet na buwan bago ma-audit",
-        ghostFree: "Real-time COA dashboard na sumusubaybay sa bawat piso",
+        feature: t("compareFeature4", "Pampublikong Audit (COA Compliance)"),
+        oldWay: t("compareOld4", "Mga resibong papel at spreadsheet na buwan bago ma-audit"),
+        ghostFree: t("compareNew4", "Real-time COA dashboard na sumusubaybay sa bawat piso"),
       },
       {
-        feature: "Gastos ng Biktima ng Kalamidad",
-        oldWay: "Nagbabayad ng pamasahe, photocopy, at transaction charges",
-        ghostFree: "₱0 gastos. Sagot ng DRRM ang lahat ng gas execution fees",
+        feature: t("compareFeature5", "Gastos ng Biktima ng Kalamidad"),
+        oldWay: t("compareOld5", "Nagbabayad ng pamasahe, photocopy, at transaction charges"),
+        ghostFree: t("compareNew5", "₱0 gastos. Sagot ng DRRM ang lahat ng gas execution fees"),
       },
     ];
-  }, []);
+  }, [lang]);
 
   // Civilian FAQs
   const faqs = useMemo(() => {
     return [
       {
-        q: "Kailangan ko ba ng cryptocurrency o kaalaman sa blockchain para makakuha ng ayuda?",
-        a: "Hindi! Ginawa ang GhostFree para sa ordinaryong mamamayan. Ilagay lamang ang iyong PhilSys ID at 4-digit PIN mula sa evacuation center slip, at matatanggap mo na ang iyong pondo nang walang bayad.",
+        q: t("faqQ1", "Kailangan ko ba ng cryptocurrency o kaalaman sa blockchain para makakuha ng ayuda?"),
+        a: t("faqA1", "Hindi! Ginawa ang GhostFree para sa ordinaryong mamamayan. Ilagay lamang ang iyong PhilSys ID at 4-digit PIN mula sa evacuation center slip, at matatanggap mo na ang iyong pondo nang walang bayad."),
       },
       {
-        q: "Paano nasisiguro ng GhostFree na walang makakakita sa aking National ID?",
-        a: "Gumagamit ang GhostFree ng Zero-Knowledge cryptography sa Midnight Network. Ang iyong telepono mismo ang nagpapatunay na ikaw ay nasa listahan nang hindi ipinapadala ang iyong ID o pangalan sa internet.",
+        q: t("faqQ2", "Paano nasisiguro ng GhostFree na walang makakakita sa aking National ID?"),
+        a: t("faqA2", "Gumagamit ang GhostFree ng Zero-Knowledge cryptography sa Midnight Network. Ang iyong telepono mismo ang nagpapatunay na ikaw ay nasa listahan nang hindi ipinapadala ang iyong ID o pangalan sa internet."),
       },
       {
-        q: "Paano kung mahina ang signal o walang internet sa evacuation center?",
-        a: "May Disaster Resilience Mode ang GhostFree na nagse-save ng draft state sa iyong telepono at awtomatikong nagpapadala kapag nagkaroon muli ng koneksyon. Mayroon ding printable voucher para sa physical checkpoint gates.",
+        q: t("faqQ3", "Paano kung mahina ang signal o walang internet sa evacuation center?"),
+        a: t("faqA3", "May Disaster Resilience Mode ang GhostFree na nagse-save ng draft state sa iyong telepono at awtomatikong nagpapadala kapag nagkaroon muli ng koneksyon. Mayroon ding printable voucher para sa physical checkpoint gates."),
       },
       {
-        q: "Ano ang ginagawa ng anti-ghost nullifier?",
-        a: "Bawat pamilya ay may natatanging cryptographic code na tinatawag na 'nullifier'. Kapag nakuha mo na ang iyong ayuda, minamarkahan ito sa blockchain. Hindi maaaring kunin muli ng sinuman ang iyong ayuda.",
+        q: t("faqQ4", "Ano ang ginagawa ng anti-ghost nullifier?"),
+        a: t("faqA4", "Bawat pamilya ay may natatanging cryptographic code na tinatawag na 'nullifier'. Kapag nakuha mo na ang iyong ayuda, minamarkahan ito sa blockchain. Hindi maaaring kunin muli ng sinuman ang iyong ayuda."),
       },
       {
-        q: "Maaari ba itong gamitin ng mga lolo, lola, o may kapansanan (PWD)?",
-        a: "Oo! Mayroong built-in na Voice Assistant na nagbabasa ng panuto sa Tagalog, 3-level Text Scaling (hanggang 150%), at Sunlight Outdoor Mode para sa maliwanag na sikat ng araw.",
+        q: t("faqQ5", "Maaari ba itong gamitin ng mga lolo, lola, o may kapansanan (PWD)?"),
+        a: t("faqA5", "Oo! Mayroong built-in na Voice Assistant na nagbabasa ng panuto sa Tagalog, 3-level Text Scaling (hanggang 150%), at Sunlight Outdoor Mode para sa maliwanag na sikat ng araw."),
       },
     ];
-  }, []);
+  }, [lang]);
 
   return (
     <Layout>
@@ -375,7 +406,7 @@ export const LandingPage: React.FC = () => {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border-2 border-amber-500/40 shadow-lg mb-6 animate-floatSlow">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-300">
-              🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya
+              {t("heroBadge", "🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya")}
             </span>
           </div>
 
@@ -386,17 +417,16 @@ export const LandingPage: React.FC = () => {
 
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto mb-4">
-            Ligtas na Ayuda.{" "}
+            {t("heroHeadline1", "Ligtas na Ayuda.")}{" "}
             <span className="headline-highlight bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 bg-clip-text text-transparent">
-              Walang Ghost Beneficiaries.
+              {t("heroHeadlineHighlight", "Walang Ghost Beneficiaries.")}
             </span>{" "}
-            Walang Pahirap.
+            {t("heroHeadline2", "Walang Pahirap.")}
           </h1>
 
           {/* Reassuring Civic Subtitle */}
           <p className="text-sm sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Privacy-first emergency cash aid distribution sa <strong>Midnight Network</strong>.
-            Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.
+            {t("heroSubtitleText", "Privacy-first emergency cash aid distribution sa Midnight Network. Direktang tulong sa nasalanta nang hindi inilalantad ang personal na National ID o nakakaltasan ng bayad.")}
           </p>
 
           {/* Action Buttons */}
@@ -407,7 +437,7 @@ export const LandingPage: React.FC = () => {
               id="hero-claim-ayuda-btn"
             >
               <Smartphone className="w-5 h-5 text-slate-950" />
-              <span>Kumuha ng Ayuda (Claim ₱5,000)</span>
+              <span>{t("heroClaimBtn", "Kumuha ng Ayuda (Claim ₱5,000)")}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -417,7 +447,7 @@ export const LandingPage: React.FC = () => {
               id="hero-treasury-btn"
             >
               <Landmark className="w-5 h-5" />
-              <span>Public Treasury (COA Explorer)</span>
+              <span>{t("heroTreasuryBtn", "Public Treasury (COA Explorer)")}</span>
             </button>
 
             <button
@@ -426,17 +456,45 @@ export const LandingPage: React.FC = () => {
               id="hero-verify-voucher-btn"
             >
               <ShieldCheck className="w-4 h-4 text-sky-400" />
-              <span>I-verify ang Relief Voucher</span>
+              <span>{t("heroVerifyBtn", "I-verify ang Relief Voucher")}</span>
+            </button>
+
+            {/* Voice Guide Audio Trigger */}
+            <button
+              onClick={() => {
+                if (isSpeaking && currentContext === "landingHero") {
+                  stop();
+                } else {
+                  speak("landingHero");
+                }
+              }}
+              className={`w-full sm:w-auto px-5 py-4 rounded-xl text-xs sm:text-sm font-bold border transition-all flex items-center justify-center gap-2 ${
+                isSpeaking && currentContext === "landingHero"
+                  ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
+                  : "bg-white/5 hover:bg-white/10 text-amber-300 border-amber-400/30"
+              }`}
+              id="hero-voice-guide-btn"
+            >
+              {isSpeaking && currentContext === "landingHero" ? (
+                <VolumeX className="w-4 h-4" />
+              ) : (
+                <Volume2 className="w-4 h-4" />
+              )}
+              <span>
+                {isSpeaking && currentContext === "landingHero"
+                  ? (lang === "en" ? "Stop Voice" : lang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
+                  : (lang === "en" ? "Listen to Guide (Voice)" : lang === "ceb" ? "Paminawa ang Giya (Voice)" : "Pakinggan ang Gabay (Boses)")}
+              </span>
             </button>
           </div>
 
           {/* Key Assurance Highlights */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 max-w-3xl mx-auto text-left">
             {[
-              { icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />, label: "100% Lihim ang ID", desc: "Zero-Knowledge" },
-              { icon: <Coins className="w-4 h-4 text-amber-400" />, label: "Libre ang Gas Fees", desc: "0 tDUST gastusin" },
-              { icon: <Lock className="w-4 h-4 text-sky-400" />, label: "Bawal ang Doble", desc: "Anti-Ghost Nullifier" },
-              { icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />, label: "COA Compliant", desc: "R.A. 10121 DRRM" },
+              { icon: <ShieldCheck className="w-4 h-4 text-emerald-400" />, label: t("assuranceId", "100% Lihim ang ID"), desc: t("assuranceIdSub", "Zero-Knowledge") },
+              { icon: <Coins className="w-4 h-4 text-amber-400" />, label: t("assuranceGas", "Libre ang Gas Fees"), desc: t("assuranceGasSub", "0 tDUST gastusin") },
+              { icon: <Lock className="w-4 h-4 text-sky-400" />, label: t("assuranceGhost", "Bawal ang Doble"), desc: t("assuranceGhostSub", "Anti-Ghost Nullifier") },
+              { icon: <CheckCircle2 className="w-4 h-4 text-emerald-400" />, label: t("assuranceCoa", "COA Compliant"), desc: t("assuranceCoaSub", "R.A. 10121 DRRM") },
             ].map((b, i) => (
               <div key={i} className="p-3 rounded-xl bg-slate-900/80 border border-white/10 shadow-sm">
                 <div className="flex items-center gap-2 mb-0.5">
@@ -455,14 +513,42 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-8">
             <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
-              Paano Makatutulong ang Ayuda
+              {t("basketTag", "Paano Makatutulong ang Ayuda")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Saan Napupunta ang ₱5,000 Emergency Calamity Cash Aid?
+              {t("basketTitle", "Saan Napupunta ang ₱5,000 Emergency Calamity Cash Aid?")}
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
-              Binuo ayon sa pamantayan ng DSWD Disaster Response Management Bureau (DRMB) upang matustusan ang pangangailangan ng isang pamilya sa unang 21 araw ng kalamidad.
+              {t("basketSubtitle", "Binuo ayon sa pamantayan ng DSWD Disaster Response Management Bureau (DRMB) upang matustusan ang pangangailangan ng isang pamilya sa unang 21 araw ng kalamidad.")}
             </p>
+            <div className="mt-3 flex justify-center">
+              <button
+                onClick={() => {
+                  if (isSpeaking && currentContext === "reliefBasket") {
+                    stop();
+                  } else {
+                    speak("reliefBasket");
+                  }
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-bold border transition-all inline-flex items-center gap-2 ${
+                  isSpeaking && currentContext === "reliefBasket"
+                    ? "bg-emerald-500 text-slate-950 border-emerald-400 animate-pulse font-extrabold"
+                    : "bg-white/5 hover:bg-white/10 text-amber-300 border-amber-400/30"
+                }`}
+                id="basket-voice-guide-btn"
+              >
+                {isSpeaking && currentContext === "reliefBasket" ? (
+                  <VolumeX className="w-3.5 h-3.5" />
+                ) : (
+                  <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+                )}
+                <span>
+                  {isSpeaking && currentContext === "reliefBasket"
+                    ? (lang === "en" ? "Stop Audio Breakdown" : lang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
+                    : (lang === "en" ? "Listen to Relief Breakdown (Voice)" : lang === "ceb" ? "Paminawa ang Breakdown (Voice)" : "Pakinggan ang Breakdown ng Ayuda (Boses)")}
+                </span>
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-3.5 mb-6">
@@ -501,9 +587,9 @@ export const LandingPage: React.FC = () => {
                 <Coins className="w-6 h-6" />
               </span>
               <div>
-                <span className="text-xs text-slate-400 block">Kabuuang Emergency Relief Package</span>
+                <span className="text-xs text-slate-400 block">{t("basketTotalLabel", "Kabuuang Emergency Relief Package")}</span>
                 <span className="text-lg sm:text-xl font-black text-white">
-                  ₱5,000.00 Ayuda Assistance bawat Kwalipikadong Pamilya
+                  {t("basketTotalPerFamily", "₱5,000.00 Ayuda Assistance bawat Kwalipikadong Pamilya")}
                 </span>
               </div>
             </div>
@@ -511,7 +597,7 @@ export const LandingPage: React.FC = () => {
               onClick={() => navigate("/claim")}
               className="btn-civic-gold px-6 py-2.5 text-xs sm:text-sm font-black whitespace-nowrap shadow-md"
             >
-              Simulan ang Claim (₱5,000)
+              {t("basketClaimBtn", "Simulan ang Claim (₱5,000)")}
             </button>
           </div>
         </section>
@@ -522,13 +608,13 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-8">
             <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
-              Aktibong Operasyon ng NDRRMO
+              {t("evacTag", "Aktibong Operasyon ng NDRRMO")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Mga Akreditadong Evacuation Center sa Northern Luzon
+              {t("evacTitle", "Mga Akreditadong Evacuation Center sa Northern Luzon")}
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-2">
-              Real-time on-chain telemetry ng mga evacuation sites na may aktibong GhostFree smart contract disbursement.
+              {t("evacSubtitle", "Real-time on-chain telemetry ng mga evacuation sites na may aktibong GhostFree smart contract disbursement.")}
             </p>
           </div>
 
@@ -568,7 +654,7 @@ export const LandingPage: React.FC = () => {
                   <div className="my-3">
                     <div className="flex items-center justify-between text-xs mb-1">
                       <span className="text-slate-300 font-semibold">
-                        Pondo Naipamahagi: {ec.disbursed} / {ec.capacity} pamilya
+                        {t("evacDisbursedLabel", "Pondo Naipamahagi:")} {ec.disbursed} / {ec.capacity} {t("evacFamiliesLabel", "pamilya")}
                       </span>
                       <span className="font-bold text-amber-400">{percent}%</span>
                     </div>
@@ -584,7 +670,7 @@ export const LandingPage: React.FC = () => {
                     <span className="font-mono">Contract: {ec.contractId.slice(0, 16)}...</span>
                     <span className="text-emerald-400 font-semibold flex items-center gap-1">
                       <ShieldCheck className="w-3 h-3" />
-                      0 Ghost Claims
+                      {t("evacZeroGhost", "0 Ghost Claims")}
                     </span>
                   </div>
                 </div>
@@ -601,11 +687,11 @@ export const LandingPage: React.FC = () => {
             <div className="flex items-center gap-2 mb-2">
               <Search className="w-5 h-5 text-amber-400" />
               <h2 className="text-lg sm:text-xl font-black text-white">
-                30-Segundong Pagsusuri ng Kwalipikasyon (Quick Eligibility Lookup)
+                {t("checkerTitle", "30-Segundong Pagsusuri ng Kwalipikasyon (Quick Eligibility Lookup)")}
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">
-              Tingnan kung ang iyong barangay o bayan ay may aktibong emergency relief declaration bago mag-claim:
+              {t("checkerSubtitle", "Tingnan kung ang iyong barangay o bayan ay may aktibong emergency relief declaration bago mag-claim:")}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2.5 mb-3">
@@ -613,7 +699,7 @@ export const LandingPage: React.FC = () => {
                 type="text"
                 value={barangayInput}
                 onChange={(e) => setBarangayInput(e.target.value)}
-                placeholder="I-type ang iyong Barangay o Bayan (e.g. Brgy. San Roque, Gonzaga)"
+                placeholder={t("checkerPlaceholder", "I-type ang iyong Barangay o Bayan (e.g. Brgy. San Roque, Gonzaga)")}
                 className="input-civic flex-1 text-sm bg-black/40 border-2 border-white/20 focus:border-amber-400 text-white"
                 onKeyDown={(e) => e.key === "Enter" && handleCheckEligibility()}
               />
@@ -622,13 +708,13 @@ export const LandingPage: React.FC = () => {
                 onClick={() => handleCheckEligibility()}
                 className="btn-civic-gold px-6 py-3 text-sm font-black whitespace-nowrap shadow-md"
               >
-                Suriin ang Lugar
+                {t("checkerButton", "Suriin ang Lugar")}
               </button>
             </div>
 
             {/* Quick pre-fill buttons */}
             <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-400 mb-4">
-              <span>Mga halimbawa:</span>
+              <span>{t("checkerExamples", "Mga halimbawa:")}</span>
               {[
                 "Brgy. San Roque, Gonzaga, Cagayan",
                 "Brgy. Poblacion, Tuguegarao",
@@ -656,13 +742,13 @@ export const LandingPage: React.FC = () => {
                     <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0 mt-0.5" />
                     <div>
                       <h4 className="text-sm font-black text-emerald-300">
-                        KWALIPIKADO ANG IYONG LUGAR!
+                        {t("checkerEligibleTitle", "KWALIPIKADO ANG IYONG LUGAR!")}
                       </h4>
                       <p className="text-xs text-white mt-0.5">
                         {eligibilityResult.location}
                       </p>
                       <p className="text-[0.72rem] text-slate-300 mt-1">
-                        May aktibong <strong>₱{eligibilityResult.amount.toLocaleString()}.00</strong> ayuda bawat pamilya sa ilalim ng {eligibilityResult.tranche}.
+                        {t("checkerEligibleSub", "May aktibong emergency ayuda bawat pamilya sa ilalim ng deklaradong QRF.")}
                       </p>
                     </div>
                   </div>
@@ -671,7 +757,7 @@ export const LandingPage: React.FC = () => {
                     onClick={() => navigate("/claim")}
                     className="btn-civic-emerald px-5 py-2.5 text-xs sm:text-sm font-bold shrink-0 flex items-center justify-center gap-1.5 shadow-md"
                   >
-                    <span>I-claim ang Ayuda Ngayon</span>
+                    <span>{t("checkerClaimNow", "I-claim ang Ayuda Ngayon")}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -688,19 +774,19 @@ export const LandingPage: React.FC = () => {
             {[
               {
                 num: `₱${fundsCounter.toLocaleString()}`,
-                label: "Naipamahaging Ayuda",
+                label: t("statDisbursed", "Naipamahaging Ayuda"),
                 sub: "Nailipat nang buo",
                 color: "text-amber-400",
               },
               {
                 num: beneficiariesCounter,
-                label: "Nasalantang Pamilya",
+                label: t("statFamiliesHelped", "Nasalantang Pamilya"),
                 sub: "Beripikadong tumanggap",
                 color: "text-emerald-400",
               },
               {
                 num: fraudCounter,
-                label: "Dobleng Claim Naharang",
+                label: t("statGhostBlocked", "Dobleng Claim Naharang"),
                 sub: "Anti-Ghost Nullifier",
                 color: "text-sky-400",
               },
@@ -728,10 +814,10 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-10 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-8">
             <span className="text-xs font-black text-amber-400 uppercase tracking-wider block mb-1">
-              Paano Gumagana
+              {t("howItWorks", "Paano Gumagana")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Apat na Hakbang Patungo sa Iyong Ayuda
+              {t("stepsTitle", "Apat na Hakbang Patungo sa Iyong Ayuda")}
             </h2>
           </div>
 
@@ -768,10 +854,10 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-8 max-w-5xl mx-auto relative z-10">
           <div className="text-center mb-6">
             <span className="text-xs font-black text-emerald-400 uppercase tracking-wider block mb-1">
-              Bakit GhostFree
+              {t("comparisonTag", "Bakit GhostFree")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Tradisyunal na Sistema vs. GhostFree
+              {t("comparisonTitle", "Tradisyunal na Sistema vs. GhostFree")}
             </h2>
           </div>
 
@@ -782,7 +868,7 @@ export const LandingPage: React.FC = () => {
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-red-500/30">
                   <XCircle className="w-5 h-5 text-red-400" />
                   <h3 className="text-sm sm:text-base font-black text-red-300">
-                    ❌ Tradisyunal na Ayuda Distribution
+                    {t("compareOldWayHeader", "❌ Tradisyunal na Ayuda Distribution")}
                   </h3>
                 </div>
                 <ul className="space-y-3 text-xs text-slate-300">
@@ -803,7 +889,7 @@ export const LandingPage: React.FC = () => {
                 <div className="flex items-center gap-2 mb-3 pb-2 border-b border-emerald-500/30">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400" />
                   <h3 className="text-sm sm:text-base font-black text-emerald-300">
-                    ✅ GhostFree sa Midnight Network
+                    {t("compareGhostFreeHeader", "✅ GhostFree sa Midnight Network")}
                   </h3>
                 </div>
                 <ul className="space-y-3 text-xs text-slate-300">
@@ -828,10 +914,10 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-10 max-w-4xl mx-auto relative z-10">
           <div className="text-center mb-6">
             <span className="text-xs font-black text-sky-400 uppercase tracking-wider block mb-1">
-              Mga Karaniwang Tanong
+              {t("faqSectionTag", "Mga Karaniwang Tanong")}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Sagot para sa mga Mamamayan
+              {t("faqSectionTitle", "Sagot para sa mga Mamamayan")}
             </h2>
           </div>
 
@@ -869,16 +955,16 @@ export const LandingPage: React.FC = () => {
         <section className="px-4 sm:px-6 py-12 max-w-3xl mx-auto text-center relative z-10">
           <div className="p-8 rounded-3xl bg-gradient-to-r from-amber-500/20 via-slate-900 to-emerald-500/20 border-2 border-amber-500/40 shadow-2xl">
             <h3 className="text-2xl font-black text-white mb-2">
-              Kailangan mo ba ng Ayuda sa Kalamidad?
+              {t("ctaTitle", "Kailangan mo ba ng Ayuda sa Kalamidad?")}
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto mb-6">
-              Simulan ang pag-claim ngayon. Ligtas ang iyong pagkakakilanlan, walang bayad sa gas, at garantisadong makakarating sa iyo.
+              {t("ctaSubtitle", "Simulan ang pag-claim ngayon. Ligtas ang iyong pagkakakilanlan, walang bayad sa gas, at garantisadong makakarating sa iyo.")}
             </p>
             <button
               onClick={() => navigate("/claim")}
               className="btn-civic-gold px-8 py-3.5 text-base font-black shadow-xl"
             >
-              Simulan ang Pag-claim (₱5,000)
+              {t("ctaClaimBtn", "Simulan ang Pag-claim (₱5,000)")}
             </button>
           </div>
         </section>

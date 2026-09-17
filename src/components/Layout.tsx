@@ -27,6 +27,7 @@ import FeedbackWidget from "./FeedbackWidget";
 import LanguageSelector from "./LanguageSelector";
 import ReceiptVerifierModal from "./ReceiptVerifierModal";
 import GhostFreeLogo from "./GhostFreeLogo";
+import { useTranslation } from "../services/i18n.service";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -49,6 +50,7 @@ const Layout: React.FC<LayoutProps> = ({
   showFooter = true,
   className = "",
 }) => {
+  const { t } = useTranslation();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showVerifier, setShowVerifier] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -70,11 +72,11 @@ const Layout: React.FC<LayoutProps> = ({
         <div className="flex items-center gap-2 max-w-7xl mx-auto w-full">
           <span className="flex items-center gap-1 bg-white text-red-700 font-extrabold px-1.5 py-0.5 rounded text-[0.6rem] uppercase tracking-wider shrink-0 shadow-xs">
             <span className="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping inline-block mr-0.5" />
-            CALAMITY ADVISORY
+            {t("advisoryBadge", "CALAMITY ADVISORY")}
           </span>
           <div className="overflow-hidden whitespace-nowrap w-full">
             <span className="inline-block animate-marquee sm:animate-none">
-              🚨 <strong>TYPHOON RELIEF ACTIVE:</strong> Region II & IV-A evacuation centers eligible for <strong>₱5,000 emergency cash assistance</strong>. Zero gas fees sponsored by DRRM.
+              {t("advisoryMarquee", "🚨 TYPHOON RELIEF ACTIVE: Region II & IV-A evacuation centers eligible for ₱5,000 emergency cash assistance. Zero gas fees sponsored by DRRM.")}
             </span>
           </div>
         </div>
@@ -107,7 +109,7 @@ const Layout: React.FC<LayoutProps> = ({
                 </span>
               </div>
               <span className="text-[0.65rem] font-medium text-slate-400 tracking-wide hidden sm:block">
-                Ligtas na Ayuda. Walang Ghost Beneficiaries.
+                {t("headerTagline", "Safe Disaster Aid. Zero Ghost Beneficiaries.")}
               </span>
             </div>
           </a>
@@ -119,35 +121,35 @@ const Layout: React.FC<LayoutProps> = ({
               className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 border border-amber-300 transition-all flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
             >
               <Smartphone className="w-3.5 h-3.5 text-slate-950" />
-              <span>Claim Ayuda (₱5,000)</span>
+              <span>{t("claimAyudaButton", "Claim Aid (₱5,000)")}</span>
             </a>
             <a
               href="/transparency"
               className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
             >
               <Landmark className="w-3.5 h-3.5 text-amber-400" />
-              <span>Treasury</span>
+              <span>{t("treasury", "Treasury")}</span>
             </a>
             <a
               href="/admin/login"
               className="px-2.5 py-1.5 rounded-xl text-xs text-slate-200 hover:text-white hover:bg-white/5 border border-white/10 transition-colors flex items-center gap-1.5 font-medium"
             >
               <Key className="w-3.5 h-3.5 text-sky-400" />
-              <span>LGU DRRM</span>
+              <span>{t("lguDrrmButton", "LGU DRRM")}</span>
             </a>
             <button
               onClick={() => setShowVerifier(true)}
               className="px-2.5 py-1.5 rounded-xl text-xs text-emerald-400 hover:bg-emerald-400/10 border border-emerald-400/30 transition-colors flex items-center gap-1.5 font-medium"
             >
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Verify Voucher</span>
+              <span>{t("verifyVoucherButton", "Verify Voucher")}</span>
             </button>
             <button
               onClick={() => setShowOnboarding(true)}
               className="px-2.5 py-1.5 rounded-xl text-xs text-sky-300 hover:bg-sky-400/10 border border-sky-400/30 transition-colors flex items-center gap-1.5 font-medium"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Gabay / Tour</span>
+              <span>{t("tourGuideButton", "Guide / Tour")}</span>
             </button>
             <div className="h-4 w-[1px] bg-white/10 mx-1" />
             <LanguageSelector />
@@ -159,7 +161,7 @@ const Layout: React.FC<LayoutProps> = ({
               href="/claim"
               className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-sm"
             >
-              Claim ₱5k
+              {t("claimAyudaButton", "Claim Aid")}
             </a>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -184,35 +186,35 @@ const Layout: React.FC<LayoutProps> = ({
               className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 transition-colors"
             >
               <Smartphone className="w-4.5 h-4.5 text-slate-950" />
-              Citizen Claim Portal (Kumuha ng Ayuda)
+              {t("claimAyudaButton", "Claim Aid (₱5,000)")}
             </a>
             <a
               href="/transparency"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
             >
               <Landmark className="w-4 h-4 text-amber-400" />
-              Public Calamity Treasury (COA Explorer)
+              {t("publicTreasury", "Public Treasury")}
             </a>
             <a
               href="/admin/login"
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
             >
               <Key className="w-4 h-4 text-sky-400" />
-              LGU Disaster Command Center (Admin)
+              {t("lguDrrmButton", "LGU DRRM Command Center")}
             </a>
             <button
               onClick={() => { setShowVerifier(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-emerald-400 hover:bg-emerald-400/10 transition-colors w-full text-left border border-emerald-500/20"
             >
               <ShieldCheck className="w-4 h-4" />
-              Verify Relief Voucher (Para sa Tanod/Marshal)
+              {t("verifyVoucherButton", "Verify Voucher")}
             </button>
             <button
               onClick={() => { setShowOnboarding(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-sky-300 hover:bg-sky-400/10 transition-colors w-full text-left border border-sky-500/20"
             >
               <Sparkles className="w-4 h-4" />
-              Gabay sa Paggamit (Civic-Tech Tour)
+              {t("tourGuideButton", "Guide / Tour")}
             </button>
             <div className="pt-2 px-1">
               <LanguageSelector />
@@ -240,18 +242,18 @@ const Layout: React.FC<LayoutProps> = ({
                     <span className="text-sm font-bold text-white">GhostFree</span>
                   </div>
                   <p className="text-[0.65rem] text-slate-500 leading-relaxed max-w-xs">
-                    Stop the ghosts. Protect the people. Privacy-first calamity aid on the Midnight Network.
+                    {t("tagline", "Stop the ghosts. Protect the people.")}
                   </p>
                 </div>
 
                 {/* Links */}
                 <div>
-                  <h4 className="text-[0.65rem] font-bold text-white uppercase tracking-wider mb-3">Quick Links</h4>
+                  <h4 className="text-[0.65rem] font-bold text-white uppercase tracking-wider mb-3">{t("quickLinks", "Quick Links")}</h4>
                   <div className="space-y-1.5">
                     {[
-                      { label: "Citizen Claim", href: "/claim" },
-                      { label: "LGU Admin", href: "/admin/login" },
-                      { label: "Treasury", href: "/transparency" },
+                      { label: t("tabCitizen", "Citizen Claim"), href: "/claim" },
+                      { label: t("tabAdmin", "LGU Admin"), href: "/admin/login" },
+                      { label: t("treasury", "Treasury"), href: "/transparency" },
                     ].map((l) => (
                       <a key={l.label} href={l.href} className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1">
                         <ChevronRight className="w-3 h-3" />

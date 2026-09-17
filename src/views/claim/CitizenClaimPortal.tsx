@@ -18,10 +18,10 @@ import DisasterConnectivityBanner from "../../components/DisasterConnectivityBan
 import GhostFreeLogo from "../../components/GhostFreeLogo";
 import Layout from "../../components/Layout";
 import {
-  getStoredLanguage,
-  subscribeLanguageChange,
+  useTranslation,
   type SupportedLanguage,
 } from "../../services/i18n.service";
+import { useVoiceAssistant } from "../../services/voice.service";
 import {
   Shield,
   Wallet,
@@ -205,7 +205,7 @@ export const CitizenClaimPortal: React.FC = () => {
   const [csatComment, setCsatComment] = useState("");
 
   // Speech Voice Assistant
-  const [isSpeaking, setIsSpeaking] = useState(false);
+  const { isSpeaking, speak, stop } = useVoiceAssistant();
 
   // Accordion toggle on mobile
   const [showDetailsMobile, setShowDetailsMobile] = useState(false);
@@ -214,60 +214,26 @@ export const CitizenClaimPortal: React.FC = () => {
   const idValid = nationalId.trim().length >= 8;
   const pinValid = secretPin.trim().length >= 4;
 
-  // Language subscription
-  const [currentLang, setCurrentLang] = useState<SupportedLanguage>(getStoredLanguage());
-  useEffect(() => {
-    return subscribeLanguageChange((newLang) => setCurrentLang(newLang));
-  }, []);
+  // Translation hook
+  const { t, lang: currentLang } = useTranslation();
 
-  // Voice guide trigger for current step
+  // Voice guide trigger for current step (supports EN, FIL, CEB)
   const handleVoiceGuide = () => {
-    if (!("speechSynthesis" in window)) {
-      alert("Voice guide is not supported in this browser.");
-      return;
-    }
-
     if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
+      stop();
       return;
     }
 
-    let message = "";
     if (step === "connect") {
-      message =
-        "Hakbang isa: Ikonekta ang inyong wallet o gamitin ang Evaluator Sandbox para masimulan ang pag-claim ng limang libong pisong ayuda. Libre po ito at walang bayad.";
+      speak("claimStep1");
     } else if (step === "credentials") {
-      message =
-        "Hakbang dalawa: Ipasok ang inyong PhilSys National ID at ang apat na digit na PIN mula sa inyong relief voucher gamit ang keypad. Hindi po ito makikita ng gobyerno o ninuman.";
+      speak("claimStep2");
     } else if (step === "proving") {
-      message =
-        "Hakbang tatlo: Kasalukuyang sinusuri ng inyong telepono ang inyong eligibility nang palihim gamit ang zero knowledge proof.";
+      speak("claimStep3");
     } else {
-      message =
-        "Binabati po kayo! Matagumpay na naipadala ang inyong limang libong pisong emergency ayuda. Maaari na ninyong i-download ang inyong opisyal na relief voucher.";
+      speak("claimStep4");
     }
-
-    const utterance = new SpeechSynthesisUtterance(message);
-    utterance.rate = 0.95;
-    const voices = window.speechSynthesis.getVoices();
-    const tlVoice = voices.find((v) => v.lang.startsWith("fil") || v.lang.startsWith("tl"));
-    if (tlVoice) utterance.voice = tlVoice;
-
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
   };
-
-  useEffect(() => {
-    return () => {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-    };
-  }, []);
 
   // Auto-fill verified test resident
   const handleAutoFillDemoBeneficiary = () => {
@@ -382,12 +348,12 @@ export const CitizenClaimPortal: React.FC = () => {
     setCsatSubmitted(true);
   };
 
-  // Steps definition
+  // Steps definition (fully localized)
   const steps = [
-    { key: "connect", number: 1, label: "Simulan (Start)" },
-    { key: "credentials", number: 2, label: "Pagkakakilanlan (ID)" },
-    { key: "proving", number: 3, label: "Ligtas na ZK (Proof)" },
-    { key: "result", number: 4, label: "Ayuda (Payout)" },
+    { key: "connect", number: 1, label: t("stepConnect") },
+    { key: "credentials", number: 2, label: t("stepVerify") },
+    { key: "proving", number: 3, label: t("stepProve") },
+    { key: "result", number: 4, label: t("stepResult") },
   ];
   const currentStepIndex = steps.findIndex((s) => s.key === step);
 
@@ -420,10 +386,16 @@ export const CitizenClaimPortal: React.FC = () => {
                 <span className="text-xs text-amber-400 font-bold">Typhoon Marce Calamity Assistance</span>
               </div>
               <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">/ pamilyang ayuda</span>
+                ₱5,000.00 <span className="text-sm sm:text-base font-normal text-slate-300">
+                  {currentLang === "en" ? "/ family emergency relief" : currentLang === "ceb" ? "/ pamilya nga hinabang" : "/ pamilyang ayuda"}
+                </span>
               </h1>
               <p className="text-xs text-slate-300 mt-0.5">
-                100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID
+                {currentLang === "en"
+                  ? "100% Free · Zero Gas Fees · National ID Stays Private"
+                  : currentLang === "ceb"
+                  ? "100% Libre · Walay Gas Fees · Dili mabutyag ang imong personal nga ID"
+                  : "100% Libre · Zero Gas Fees · Hindi nakikita ng iba ang iyong personal na ID"}
               </p>
             </div>
 
@@ -438,7 +410,11 @@ export const CitizenClaimPortal: React.FC = () => {
                 id="claim-voice-guide-btn"
               >
                 {isSpeaking ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                <span>{isSpeaking ? "Ihinto Boses" : "Pakinggan Gabay (Voice)"}</span>
+                <span>
+                  {isSpeaking
+                    ? (currentLang === "en" ? "Stop Voice" : currentLang === "ceb" ? "Hunonga Tingog" : "Ihinto Boses")
+                    : (currentLang === "en" ? "Listen Guide (Voice)" : currentLang === "ceb" ? "Paminawa Giya (Voice)" : "Pakinggan Gabay (Voice)")}
+                </span>
               </button>
               <div className="hidden sm:block">
                 <LanguageSelector />
@@ -511,10 +487,14 @@ export const CitizenClaimPortal: React.FC = () => {
                       <Wallet className="w-8 h-8 text-amber-400 animate-pulse" />
                     </div>
                     <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                      Simulan ang Pag-claim ng Ayuda
+                      {currentLang === "en" ? "Start Emergency Aid Claim" : currentLang === "ceb" ? "Sugdi ang Pag-claim og Hinabang" : "Simulan ang Pag-claim ng Ayuda"}
                     </h2>
                     <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                      Piliin kung nais mong kumonekta gamit ang <strong>Midnight Lace Wallet</strong> o subukan gamit ang <strong>1-Click Evaluator Sandbox</strong>.
+                      {currentLang === "en"
+                        ? <>Choose between connecting with <strong>Midnight Lace Wallet</strong> or testing directly in <strong>1-Click Evaluator Sandbox</strong>.</>
+                        : currentLang === "ceb"
+                        ? <>Pilia kon gusto nimo mokonektar gamit ang <strong>Midnight Lace Wallet</strong> o sulayan sa <strong>1-Click Evaluator Sandbox</strong>.</>
+                        : <>Piliin kung nais mong kumonekta gamit ang <strong>Midnight Lace Wallet</strong> o subukan gamit ang <strong>1-Click Evaluator Sandbox</strong>.</>}
                     </p>
                   </div>
 
@@ -523,14 +503,18 @@ export const CitizenClaimPortal: React.FC = () => {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
                         <Sparkles className="w-4 h-4" />
-                        Evaluator & Reviewer 1-Click Sandbox Mode
+                        {currentLang === "en" ? "Evaluator & Reviewer 1-Click Sandbox Mode" : currentLang === "ceb" ? "Pagsulay alang sa mga Evaluator ug Hurado" : "Evaluator & Reviewer 1-Click Sandbox Mode"}
                       </span>
                       <span className="text-[0.65rem] bg-amber-400 text-slate-950 font-black px-2 py-0.5 rounded">
                         NO EXTENSION
                       </span>
                     </div>
                     <p className="text-xs text-slate-300 mb-3 leading-relaxed">
-                      Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?
+                      {currentLang === "en"
+                        ? "Want to test the full ZK circuit immediately without installing a Lace browser extension?"
+                        : currentLang === "ceb"
+                        ? "Gusto ba nimo sulayan dayon ang tibuok ZK circuit nga walay gi-install nga extension?"
+                        : "Nais mo bang subukan kaagad ang buong ZK circuit nang hindi nag-i-install ng Lace browser extension?"}
                     </p>
                     <button
                       type="button"
@@ -540,7 +524,7 @@ export const CitizenClaimPortal: React.FC = () => {
                       id="sandbox-wallet-btn"
                     >
                       <Sparkles className="w-4 h-4" />
-                      <span>I-launch ang Evaluator Sandbox (1-Click)</span>
+                      <span>{currentLang === "en" ? "Launch Evaluator Sandbox (1-Click)" : currentLang === "ceb" ? "Ilunsad ang Evaluator Sandbox (1-Click)" : "I-launch ang Evaluator Sandbox (1-Click)"}</span>
                     </button>
                   </div>
 
@@ -555,12 +539,12 @@ export const CitizenClaimPortal: React.FC = () => {
                     {connecting ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin text-sky-400" />
-                        <span>Kumokonekta sa Lace Wallet...</span>
+                        <span>{currentLang === "en" ? "Connecting to Lace Wallet..." : currentLang === "ceb" ? "Nagalakip sa Lace Wallet..." : "Kumokonekta sa Lace Wallet..."}</span>
                       </>
                     ) : (
                       <>
                         <Wallet className="w-4 h-4 text-sky-400" />
-                        <span>Konekta gamit ang Midnight Lace Wallet</span>
+                        <span>{currentLang === "en" ? "Connect with Midnight Lace Wallet" : currentLang === "ceb" ? "Konektar gamit ang Midnight Lace Wallet" : "Konekta gamit ang Midnight Lace Wallet"}</span>
                       </>
                     )}
                   </button>
@@ -569,14 +553,14 @@ export const CitizenClaimPortal: React.FC = () => {
                     <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
                       <p className="font-bold text-red-300">{walletError}</p>
                       <p className="mt-1 text-slate-300">
-                        I-click ang <strong>"I-launch ang Evaluator Sandbox"</strong> sa itaas para magpatuloy kaagad!
+                        {currentLang === "en" ? 'Click "Launch Evaluator Sandbox" above to proceed immediately!' : currentLang === "ceb" ? 'Pindota ang "Ilunsad ang Evaluator Sandbox" sa ibabaw aron makapadayon dayon!' : 'I-click ang "I-launch ang Evaluator Sandbox" sa itaas para magpatuloy kaagad!'}
                       </p>
                     </div>
                   )}
 
                   <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2 text-xs text-slate-300">
                     <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>Sagot ng LGU Disaster Escrow ang lahat ng gas fees (₱0 / 0 tDUST gastusin).</span>
+                    <span>{currentLang === "en" ? "LGU Disaster Escrow sponsors all execution gas fees (₱0 / 0 tDUST cost)." : currentLang === "ceb" ? "Abagahon sa LGU Disaster Escrow ang tanang gas fees (₱0 / 0 tDUST bayad)." : "Sagot ng LGU Disaster Escrow ang lahat ng gas fees (₱0 / 0 tDUST gastusin)."}</span>
                   </div>
                 </div>
               )}
@@ -586,16 +570,16 @@ export const CitizenClaimPortal: React.FC = () => {
                 <div className="space-y-4">
                   <div className="text-center py-1">
                     <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                      Ipasok ang Iyong Impormasyon
+                      {currentLang === "en" ? "Enter Your Credentials Privately" : currentLang === "ceb" ? "Isulod ang Imong Impormasyon" : "Ipasok ang Iyong Impormasyon"}
                     </h2>
                     <p className="text-xs text-slate-300 max-w-md mx-auto">
-                      Mananatiling lihim sa loob ng iyong telepono ang mga numerong ito.
+                      {currentLang === "en" ? "These numbers remain strictly confidential inside your smartphone." : currentLang === "ceb" ? "Kining mga numeroha magpabilin nga tinago sa sulod sa imong selpon." : "Mananatiling lihim sa loob ng iyong telepono ang mga numerong ito."}
                     </p>
                   </div>
 
                   {/* Connected Wallet Pill */}
                   <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs">
-                    <span className="text-slate-400">Konektadong Wallet:</span>
+                    <span className="text-slate-400">{currentLang === "en" ? "Connected Wallet:" : currentLang === "ceb" ? "Konektadong Pitaka:" : "Konektadong Wallet:"}</span>
                     <span className="font-mono text-emerald-300 font-bold flex items-center gap-1">
                       <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                       {address?.slice(0, 10)}...{address?.slice(-6)}
@@ -612,14 +596,14 @@ export const CitizenClaimPortal: React.FC = () => {
                   {/* Input 1: PhilSys ID */}
                   <div>
                     <label htmlFor="national-id" className="text-xs font-bold text-slate-200 block mb-1">
-                      1. PhilSys National ID Number
+                      {currentLang === "en" ? "1. PhilSys National ID Number" : currentLang === "ceb" ? "1. PhilSys National ID Numero" : "1. PhilSys National ID Number"}
                     </label>
                     <div className="relative">
                       <input
                         id="national-id"
                         type="text"
                         className="input-civic pr-10 font-mono text-sm tracking-wide bg-slate-950/80 border-2 border-white/20 focus:border-amber-400"
-                        placeholder="Halimbawa: PSN-2024-8849-1102"
+                        placeholder={currentLang === "en" ? "Example: PSN-2024-8849-1102" : currentLang === "ceb" ? "Pananglitan: PSN-2024-8849-1102" : "Halimbawa: PSN-2024-8849-1102"}
                         value={nationalId}
                         onChange={(e) => setNationalId(e.target.value)}
                         autoComplete="off"
@@ -636,7 +620,7 @@ export const CitizenClaimPortal: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="text-xs font-bold text-slate-200">
-                        2. 4-Digit Secret PIN (mula sa Barangay Relief Slip)
+                        {currentLang === "en" ? "2. 4-Digit Secret PIN (from Barangay Relief Slip)" : currentLang === "ceb" ? "2. 4-Digit Lihim nga PIN (gikan sa Barangay Relief Slip)" : "2. 4-Digit Secret PIN (mula sa Barangay Relief Slip)"}
                       </label>
                       <button
                         type="button"
@@ -644,7 +628,7 @@ export const CitizenClaimPortal: React.FC = () => {
                         className="text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1"
                       >
                         {showPin ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                        <span>{showPin ? "Itago" : "Ipakita"}</span>
+                        <span>{showPin ? (currentLang === "en" ? "Hide" : "Itago") : (currentLang === "en" ? "Show" : "Ipakita")}</span>
                       </button>
                     </div>
 
@@ -675,7 +659,7 @@ export const CitizenClaimPortal: React.FC = () => {
                           key={num}
                           type="button"
                           onClick={() => handleKeypadPress(num)}
-                          className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                          className="keypad-btn py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
                         >
                           {num}
                         </button>
@@ -683,21 +667,21 @@ export const CitizenClaimPortal: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("clear")}
-                        className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
+                        className="keypad-btn py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
                       >
                         Clear
                       </button>
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("0")}
-                        className="py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                        className="keypad-btn py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
                       >
                         0
                       </button>
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("backspace")}
-                        className="py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
+                        className="keypad-btn py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
                         title="Backspace"
                       >
                         <Delete className="w-5 h-5" />
@@ -720,12 +704,17 @@ export const CitizenClaimPortal: React.FC = () => {
                     id="generate-zk-proof-btn"
                   >
                     <ShieldCheck className="w-5 h-5" />
-                    <span>Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000</span>
+                    <span>{currentLang === "en" ? "Compute Private Proof & Claim ₱5,000" : currentLang === "ceb" ? "Kalkulaha ang Pribadong Patunay & Dawata ang ₱5,000" : "Kalkulahin ang Ligtas na Patunay & Kumuha ng ₱5,000"}</span>
                     <ArrowRight className="w-5 h-5" />
                   </button>
 
                   <p className="text-[0.68rem] text-slate-400 text-center leading-relaxed">
-                    🛡️ <strong>Pribadong Garantiya:</strong> Ang iyong ID at PIN ay hindi aalis sa teleponong ito. Ang smart contract ay tumatanggap lamang ng zero-knowledge nullifier proof.
+                    🛡️ <strong>{currentLang === "en" ? "Privacy Guarantee:" : currentLang === "ceb" ? "Garantiya sa Pribasiya:" : "Pribadong Garantiya:"}</strong>{" "}
+                    {currentLang === "en"
+                      ? "Your ID and PIN never leave this phone. The smart contract only receives a zero-knowledge nullifier proof."
+                      : currentLang === "ceb"
+                      ? "Ang imong ID ug PIN dili gayod mogawas sa selpon. Ang smart contract modawat lamang og zero-knowledge nullifier proof."
+                      : "Ang iyong ID at PIN ay hindi aalis sa teleponong ito. Ang smart contract ay tumatanggap lamang ng zero-knowledge nullifier proof."}
                   </p>
                 </div>
               )}
@@ -736,19 +725,51 @@ export const CitizenClaimPortal: React.FC = () => {
                   <RadarProvingScanner progress={provingProgress} />
 
                   <h2 className="text-xl sm:text-2xl font-black text-white mb-1">
-                    Sinisuri ang Pagiging Kwalipikado
+                    {currentLang === "en" ? "Verifying Calamity Eligibility" : currentLang === "ceb" ? "Ginasusi ang Pagka-kwalipikado" : "Sinisuri ang Pagiging Kwalipikado"}
                   </h2>
                   <p className="text-xs text-slate-300 max-w-sm mx-auto mb-4">
-                    Bumubuo ng pribadong cryptographic proof sa loob ng iyong telepono...
+                    {currentLang === "en" ? "Generating private cryptographic proof inside your phone..." : currentLang === "ceb" ? "Naghimo og pribadong cryptographic proof sa imong selpon..." : "Bumubuo ng pribadong cryptographic proof sa loob ng iyong telepono..."}
                   </p>
 
                   {/* Human-Centered Plain-Language Milestones */}
                   <div className="space-y-2 max-w-md mx-auto text-left mb-4">
                     {[
-                      { threshold: 25, label: "1. Tinitingnan ang listahan ng nasalanta (Roster Lookup)" },
-                      { threshold: 55, label: "2. Inililihim ang iyong pagkakakilanlan sa ZK (Identity Shield)" },
-                      { threshold: 80, label: "3. Sinusuri kung may duplicate o ghost claim (Anti-Ghost Nullifier)" },
-                      { threshold: 100, label: "4. Inihahanda ang ₱5,000 pondo sa Midnight Network" },
+                      {
+                        threshold: 25,
+                        label:
+                          currentLang === "en"
+                            ? "1. Verifying calamity roster inclusion (Roster Lookup)"
+                            : currentLang === "ceb"
+                            ? "1. Ginasusi ang listahan sa mga biktima (Roster Lookup)"
+                            : "1. Tinitingnan ang listahan ng nasalanta (Roster Lookup)",
+                      },
+                      {
+                        threshold: 55,
+                        label:
+                          currentLang === "en"
+                            ? "2. Blinding your personal identity with ZK (Identity Shield)"
+                            : currentLang === "ceb"
+                            ? "2. Gitago ang imong pagkatawo gamit ang ZK (Identity Shield)"
+                            : "2. Inililihim ang iyong pagkakakilanlan sa ZK (Identity Shield)",
+                      },
+                      {
+                        threshold: 80,
+                        label:
+                          currentLang === "en"
+                            ? "3. Checking for ghost or duplicate claims (Anti-Ghost Nullifier)"
+                            : currentLang === "ceb"
+                            ? "3. Ginasusi kung adunay doble o ghost claims (Anti-Ghost Nullifier)"
+                            : "3. Sinusuri kung may duplicate o ghost claim (Anti-Ghost Nullifier)",
+                      },
+                      {
+                        threshold: 100,
+                        label:
+                          currentLang === "en"
+                            ? "4. Preparing ₱5,000 relief settlement on Midnight Network"
+                            : currentLang === "ceb"
+                            ? "4. Giandam ang ₱5,000 pundo sa Midnight Network"
+                            : "4. Inihahanda ang ₱5,000 pondo sa Midnight Network",
+                      },
                     ].map((s, idx) => {
                       const isDone = provingProgress >= s.threshold;
                       const isCurrent = provingProgress < s.threshold && (idx === 0 || provingProgress >= [25, 55, 80][idx - 1]);
@@ -781,7 +802,7 @@ export const CitizenClaimPortal: React.FC = () => {
 
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs text-emerald-300 bg-emerald-950/40 border border-emerald-500/30">
                     <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Zero Network Leakage · Protektado ang Mamamayan</span>
+                    <span>{currentLang === "en" ? "Zero Network Leakage · Citizen Privacy Protected" : currentLang === "ceb" ? "Zero Network Leakage · Protektado ang Katawhan" : "Zero Network Leakage · Protektado ang Mamamayan"}</span>
                   </div>
                 </div>
               )}
@@ -799,10 +820,10 @@ export const CitizenClaimPortal: React.FC = () => {
                           <CheckCircle2 className="w-8 h-8" />
                         </div>
                         <h2 className="text-2xl sm:text-3xl font-black text-emerald-400 mb-0.5">
-                          ₱5,000.00 Ayuda Natanggap!
+                          {currentLang === "en" ? "₱5,000.00 Calamity Aid Received!" : currentLang === "ceb" ? "₱5,000.00 Hinabang Nadawat!" : "₱5,000.00 Ayuda Natanggap!"}
                         </h2>
                         <p className="text-xs text-slate-200">
-                          Nailipat na sa iyong pribadong Midnight wallet ang pondo. Walang kaltas.
+                          {currentLang === "en" ? "Disaster relief funds transferred directly to your private Midnight wallet. Zero deductions." : currentLang === "ceb" ? "Nabalhin na sa imong pribadong Midnight wallet ang pundo. Walay kaltas." : "Nailipat na sa iyong pribadong Midnight wallet ang pondo. Walang kaltas."}
                         </p>
 
                         {/* Transaction Hash */}
@@ -828,9 +849,11 @@ export const CitizenClaimPortal: React.FC = () => {
                             <GhostFreeLogo size={24} variant="icon" />
                             <div>
                               <span className="text-[0.65rem] font-black uppercase tracking-wider text-slate-500 block">
-                                Republika ng Pilipinas · Calamity Relief
+                                {currentLang === "en" ? "Republic of the Philippines · Calamity Relief" : currentLang === "ceb" ? "Republika sa Pilipinas · Hinabang sa Katalagman" : "Republika ng Pilipinas · Calamity Relief"}
                               </span>
-                              <span className="text-sm font-black text-slate-950">Official Relief Voucher</span>
+                              <span className="text-sm font-black text-slate-950">
+                                {currentLang === "en" ? "Official Relief Voucher" : currentLang === "ceb" ? "Opisyal nga Voucher sa Hinabang" : "Official Relief Voucher"}
+                              </span>
                             </div>
                           </div>
                           <span className="px-2 py-0.5 rounded text-[0.65rem] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
@@ -844,15 +867,15 @@ export const CitizenClaimPortal: React.FC = () => {
                             <span className="font-mono font-black text-slate-900 text-sm">GF-MARCE-2026-77B1</span>
                           </div>
                           <div>
-                            <span className="text-[0.65rem] text-slate-500 block font-semibold">HALAGA / AMOUNT:</span>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">{currentLang === "en" ? "AMOUNT:" : currentLang === "ceb" ? "HALAGA / AMOUNT:" : "HALAGA / AMOUNT:"}</span>
                             <span className="font-black text-emerald-700 text-sm">₱5,000.00 / 5k tNIGHT</span>
                           </div>
                           <div>
-                            <span className="text-[0.65rem] text-slate-500 block font-semibold">OPERASYON:</span>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">{currentLang === "en" ? "OPERATION:" : currentLang === "ceb" ? "OPERASYON:" : "OPERASYON:"}</span>
                             <span className="font-semibold text-slate-800">Typhoon Marce QRF</span>
                           </div>
                           <div>
-                            <span className="text-[0.65rem] text-slate-500 block font-semibold">STATUS SA CHECKPOINT:</span>
+                            <span className="text-[0.65rem] text-slate-500 block font-semibold">{currentLang === "en" ? "CHECKPOINT STATUS:" : currentLang === "ceb" ? "STATUS SA CHECKPOINT:" : "STATUS SA CHECKPOINT:"}</span>
                             <span className="font-bold text-emerald-700">1 Ration Entitled</span>
                           </div>
                         </div>
@@ -874,14 +897,14 @@ export const CitizenClaimPortal: React.FC = () => {
                             id="view-full-receipt-btn"
                           >
                             <Download className="w-3.5 h-3.5" />
-                            <span>I-download ang Resibo</span>
+                            <span>{currentLang === "en" ? "Download Receipt" : "I-download ang Resibo"}</span>
                           </button>
                           <button
                             onClick={() => window.print()}
                             className="px-3 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 flex items-center justify-center gap-1"
                           >
                             <Printer className="w-3.5 h-3.5" />
-                            <span>I-print</span>
+                            <span>{currentLang === "en" ? "Print" : "I-print"}</span>
                           </button>
                         </div>
                       </div>
@@ -890,7 +913,7 @@ export const CitizenClaimPortal: React.FC = () => {
                       {!csatSubmitted ? (
                         <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-center">
                           <span className="text-xs font-bold text-white block mb-2">
-                            Kumusta ang iyong karanasan sa pag-claim?
+                            {currentLang === "en" ? "How was your aid claiming experience?" : currentLang === "ceb" ? "Kumusta ang imong kasinatian sa pag-claim?" : "Kumusta ang iyong karanasan sa pag-claim?"}
                           </span>
                           <div className="flex items-center justify-center gap-2 mb-2">
                             {[1, 2, 3, 4, 5].map((s) => (
@@ -908,7 +931,12 @@ export const CitizenClaimPortal: React.FC = () => {
                             ))}
                           </div>
                           <div className="flex items-center justify-center gap-2 mb-3">
-                            {["Mabilis", "Madaling Gamitin", "Ligtas", "Malinaw"].map((chip) => (
+                            {(currentLang === "en"
+                              ? ["Fast", "Easy to Use", "Safe", "Clear"]
+                              : currentLang === "ceb"
+                              ? ["Paspas", "Sayon Gamiton", "Luwas", "Klaro"]
+                              : ["Mabilis", "Madaling Gamitin", "Ligtas", "Malinaw"]
+                            ).map((chip) => (
                               <button
                                 key={chip}
                                 onClick={() => setCsatComment(chip)}
@@ -926,12 +954,12 @@ export const CitizenClaimPortal: React.FC = () => {
                             onClick={handleCsatSubmit}
                             className="px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-colors"
                           >
-                            Ipadala ang Puna
+                            {currentLang === "en" ? "Submit Feedback" : "Ipadala ang Puna"}
                           </button>
                         </div>
                       ) : (
                         <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-xs text-emerald-300 text-center">
-                          Salamat sa iyong puna! Tumutulong ito sa pagpapabuti ng ayuda distribution.
+                          {currentLang === "en" ? "Thank you for your feedback! This helps improve disaster relief delivery." : currentLang === "ceb" ? "Salamat sa imong puna! Nakatabang kini sa pagpalambo sa pag-apod-apod sa hinabang." : "Salamat sa iyong puna! Tumutulong ito sa pagpapabuti ng ayuda distribution."}
                         </div>
                       )}
 
@@ -945,7 +973,7 @@ export const CitizenClaimPortal: React.FC = () => {
                         }}
                         className="w-full py-2.5 rounded-xl text-xs text-slate-400 hover:text-white border border-white/10 transition-colors"
                       >
-                        Bumalik sa Umpisa (Start New Claim)
+                        {currentLang === "en" ? "Start New Claim" : currentLang === "ceb" ? "Sugdi ang Bag-ong Pag-claim" : "Bumalik sa Umpisa (Start New Claim)"}
                       </button>
                     </div>
                   ) : (
@@ -955,18 +983,18 @@ export const CitizenClaimPortal: React.FC = () => {
                         <XCircle className="w-6 h-6" />
                       </div>
                       <h3 className="text-xl font-bold text-red-300">
-                        Hindi Matagumpay ang Pag-claim
+                        {currentLang === "en" ? "Claim Not Successful" : currentLang === "ceb" ? "Wala Molampos ang Pag-claim" : "Hindi Matagumpay ang Pag-claim"}
                       </h3>
                       <p className="text-xs text-slate-300 max-w-sm mx-auto leading-relaxed">
                         {result.errorCode === "ALREADY_CLAIMED"
-                          ? "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief tranche na ito. Pinipigilan ng anti-ghost circuit ang dobleng claim."
-                          : result.error || "Hindi tumugma ang proof. Pakitingnan ang inyong PhilSys ID o PIN."}
+                          ? (currentLang === "en" ? "This identity has already received aid for this relief tranche. Anti-ghost circuits prevent duplicate claims." : currentLang === "ceb" ? "Kining maong pagkatawo nakadawat na og hinabang. Gibabagan sa anti-ghost circuit ang doble nga claim." : "Ang pagkakakilanlang ito ay nakatanggap na ng ayuda para sa relief tranche na ito. Pinipigilan ng anti-ghost circuit ang dobleng claim.")
+                          : result.error || (currentLang === "en" ? "Proof verification failed. Please check your PhilSys ID and PIN." : currentLang === "ceb" ? "Wala motugma ang proof. Palihug susiha ang imong PhilSys ID ug PIN." : "Hindi tumugma ang proof. Pakitingnan ang inyong PhilSys ID o PIN.")}
                       </p>
                       <button
                         onClick={() => setStep("credentials")}
                         className="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-colors"
                       >
-                        Subukan Muli
+                        {currentLang === "en" ? "Try Again" : currentLang === "ceb" ? "Sulayi Pag-usab" : "Subukan Muli"}
                       </button>
                     </div>
                   )}
@@ -986,7 +1014,7 @@ export const CitizenClaimPortal: React.FC = () => {
               >
                 <span className="flex items-center gap-2">
                   <Landmark className="w-4 h-4 text-amber-400" />
-                  <span>Tingnan ang Detalye ng Operasyon & Gabay</span>
+                  <span>{currentLang === "en" ? "View Operation Details & Guide" : currentLang === "ceb" ? "Tan-awa ang Detalye sa Operasyon & Giya" : "Tingnan ang Detalye ng Operasyon & Gabay"}</span>
                 </span>
                 {showDetailsMobile ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
@@ -998,7 +1026,7 @@ export const CitizenClaimPortal: React.FC = () => {
                 <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/10">
                   <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                     <Landmark className="w-4 h-4 text-amber-400" />
-                    Operasyon ng MDRRMO
+                    {currentLang === "en" ? "MDRRMO Relief Operation" : currentLang === "ceb" ? "Operasyon sa MDRRMO" : "Operasyon ng MDRRMO"}
                   </span>
                   <span className="text-[0.65rem] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                     R.A. 10121 DRRM
@@ -1006,16 +1034,16 @@ export const CitizenClaimPortal: React.FC = () => {
                 </div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Pangalan:</span>
+                    <span className="text-slate-400">{currentLang === "en" ? "Name:" : currentLang === "ceb" ? "Ngalan:" : "Pangalan:"}</span>
                     <span className="font-bold text-white">Typhoon Marce QRF</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Kabuuang Pondo:</span>
+                    <span className="text-slate-400">{currentLang === "en" ? "Total Escrow Fund:" : currentLang === "ceb" ? "Kinatibuk-ang Pundo:" : "Kabuuang Pondo:"}</span>
                     <span className="font-bold text-amber-300">1,000,000 tNIGHT</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Kasalukuyang Naimbak:</span>
-                    <span className="font-bold text-emerald-400">200 Pamilya Naayudahan</span>
+                    <span className="text-slate-400">{currentLang === "en" ? "Disbursed So Far:" : currentLang === "ceb" ? "Naimbak sa Karon:" : "Kasalukuyang Naimbak:"}</span>
+                    <span className="font-bold text-emerald-400">{currentLang === "en" ? "200 Families Aided" : currentLang === "ceb" ? "200 Pamilya Natabangan" : "200 Pamilya Naayudahan"}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Smart Contract:</span>
@@ -1033,7 +1061,11 @@ export const CitizenClaimPortal: React.FC = () => {
                   Anti-Ghost Nullifier Guarantee
                 </h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  Bawat pamilya ay may natatanging cryptographic nullifier. Hindi posibleng makakuha nang dalawang beses o makasingit ang mga "ghost beneficiaries".
+                  {currentLang === "en"
+                    ? "Each citizen produces a unique cryptographic nullifier. It is mathematically impossible to double claim or insert ghost beneficiaries."
+                    : currentLang === "ceb"
+                    ? "Matag pamilya adunay talagsaong cryptographic nullifier. Dili gayod posible ang doble nga pag-claim o pagsulod sa mga ghost beneficiaries."
+                    : "Bawat pamilya ay may natatanging cryptographic nullifier. Hindi posibleng makakuha nang dalawang beses o makasingit ang mga ghost beneficiaries."}
                 </p>
               </div>
 
@@ -1043,7 +1075,11 @@ export const CitizenClaimPortal: React.FC = () => {
                   🧪 Evaluator Quick Data
                 </span>
                 <p className="text-xs text-slate-300 mb-2">
-                  Gamitin ang datos na ito para subukan ang end-to-end ZK proof:
+                  {currentLang === "en"
+                    ? "Use this test data to test end-to-end zero-knowledge proving:"
+                    : currentLang === "ceb"
+                    ? "Gamita kining datos aron sulayan ang zero-knowledge proof:"
+                    : "Gamitin ang datos na ito para subukan ang end-to-end ZK proof:"}
                 </p>
                 <div className="bg-black/50 p-2.5 rounded-lg font-mono text-xs text-slate-200 space-y-1 mb-2">
                   <div>ID: <span className="text-amber-300">PSN-2024-8849-1102</span></div>
@@ -1054,7 +1090,7 @@ export const CitizenClaimPortal: React.FC = () => {
                   onClick={handleAutoFillDemoBeneficiary}
                   className="w-full py-2 rounded-lg text-xs font-bold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-colors"
                 >
-                  Auto-Fill Demo Credentials
+                  {currentLang === "en" ? "Auto-Fill Demo Credentials" : currentLang === "ceb" ? "Awtomatikong Isulod ang Demo Data" : "Auto-Fill Demo Credentials"}
                 </button>
               </div>
             </div>
