@@ -1285,6 +1285,41 @@ body.sunlight-mode .calamity-alert-bar [class*="bg-white"] * {
   color: #B91C1C !important;
 }
 
+/* ---- 15.2 Gradient Text & Transparent Text Fix in Sunlight Mode ---- */
+body.high-contrast [class*="bg-clip-text"],
+body.sunlight-mode [class*="bg-clip-text"],
+body.high-contrast [class*="text-transparent"],
+body.sunlight-mode [class*="text-transparent"] {
+  -webkit-text-fill-color: #0F172A !important;
+  color: #0F172A !important;
+  background-image: none !important;
+}
+
+body.high-contrast .headline-highlight,
+body.sunlight-mode .headline-highlight {
+  -webkit-text-fill-color: #B45309 !important;
+  color: #B45309 !important;
+}
+
+/* ---- 15.3 Ambient Glow Orbs & Background Blobs Cancellation ---- */
+body.high-contrast [class*="blur-3xl"][class*="pointer-events-none"],
+body.sunlight-mode [class*="blur-3xl"][class*="pointer-events-none"],
+body.high-contrast [class*="blur-2xl"][class*="pointer-events-none"],
+body.sunlight-mode [class*="blur-2xl"][class*="pointer-events-none"],
+body.high-contrast [class*="blur-md"][class*="pointer-events-none"],
+body.sunlight-mode [class*="blur-md"][class*="pointer-events-none"] {
+  display: none !important;
+}
+
+/* ---- 15.4 Logo Glow & Filter Reset in Sunlight Mode ---- */
+body.high-contrast .logo-glow,
+body.sunlight-mode .logo-glow,
+body.high-contrast img[alt="GhostFree Logo"],
+body.sunlight-mode img[alt="GhostFree Logo"] {
+  filter: none !important;
+  box-shadow: none !important;
+}
+
 /* 16. Font Scale Modes */
 body.large-text {
   font-size: 112.5% !important;

@@ -387,7 +387,7 @@ export const LandingPage: React.FC = () => {
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight max-w-4xl mx-auto mb-4">
             Ligtas na Ayuda.{" "}
-            <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 bg-clip-text text-transparent">
+            <span className="headline-highlight bg-gradient-to-r from-amber-400 via-amber-300 to-emerald-400 bg-clip-text text-transparent">
               Walang Ghost Beneficiaries.
             </span>{" "}
             Walang Pahirap.
