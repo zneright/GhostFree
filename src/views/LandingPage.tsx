@@ -572,7 +572,7 @@ export const LandingPage: React.FC = () => {
                       </span>
                       <span className="font-bold text-amber-400">{percent}%</span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                    <div className="progress-track w-full h-2 rounded-full bg-slate-800 overflow-hidden">
                       <div
                         className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-700"
                         style={{ width: `${percent}%` }}
@@ -855,7 +855,7 @@ export const LandingPage: React.FC = () => {
                     />
                   </button>
                   {isOpen && (
-                    <div className="px-4 pb-4 pt-1 text-xs text-slate-300 border-t border-white/5 leading-relaxed bg-black/20">
+                    <div className="faq-answer px-4 pb-4 pt-1 text-xs text-slate-300 border-t border-white/5 leading-relaxed bg-black/20">
                       {f.a}
                     </div>
                   )}

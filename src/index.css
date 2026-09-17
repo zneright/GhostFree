@@ -632,6 +632,9 @@
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(30, 64, 175, 0.25) 0%, transparent 60%),
       radial-gradient(ellipse 60% 40% at 90% 10%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
       radial-gradient(ellipse 60% 40% at 10% 90%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
   }
 
   .glass-card-elevated {
@@ -877,14 +880,20 @@ body.high-contrast [class*="bg-shield-"],
 body.sunlight-mode [class*="bg-shield-"],
 body.high-contrast .ambient-canvas,
 body.sunlight-mode .ambient-canvas,
+body.high-contrast main,
+body.sunlight-mode main {
+  background-color: #F8FAFC !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 body.high-contrast .glass-card,
 body.sunlight-mode .glass-card,
 body.high-contrast .glass-card-elevated,
 body.sunlight-mode .glass-card-elevated,
 body.high-contrast .glass-card-premium,
-body.sunlight-mode .glass-card-premium,
-body.high-contrast main,
-body.sunlight-mode main {
+body.sunlight-mode .glass-card-premium {
   background-color: #FFFFFF !important;
   background-image: none !important;
   backdrop-filter: none !important;
@@ -1152,10 +1161,30 @@ body.sunlight-mode [class*="bg-blue-9"] {
 body.high-contrast [class*="bg-red-500/"],
 body.sunlight-mode [class*="bg-red-500/"],
 body.high-contrast [class*="bg-rose-500/"],
-body.sunlight-mode [class*="bg-rose-500/"] {
+body.sunlight-mode [class*="bg-rose-500/"],
+body.high-contrast [class*="bg-red-9"],
+body.sunlight-mode [class*="bg-red-9"] {
   background-color: #FEF2F2 !important;
   border-color: #DC2626 !important;
   color: #B91C1C !important;
+}
+
+body.high-contrast [class*="bg-indigo-500/"],
+body.sunlight-mode [class*="bg-indigo-500/"] {
+  background-color: #EEF2FF !important;
+  border-color: #6366F1 !important;
+  color: #4338CA !important;
+}
+
+body.high-contrast .progress-track,
+body.sunlight-mode .progress-track {
+  background-color: #E2E8F0 !important;
+}
+
+body.high-contrast .faq-answer,
+body.sunlight-mode .faq-answer {
+  background-color: #F8FAFC !important;
+  border-top-color: #E2E8F0 !important;
 }
 
 /* 9. High-Contrast Action Buttons & Solid Button Text Protection */
