@@ -396,10 +396,10 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/30 shadow-xl mb-6 sm:mb-8 backdrop-blur-md"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-400/30 shadow-md dark:shadow-xl mb-6 sm:mb-8 backdrop-blur-md"
           >
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-            <span className="text-xs sm:text-sm font-bold text-amber-300">
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
+            <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
               {t("heroBadge", "🚨 Quick Response Fund: ₱5,000 Payout Bawat Pamilya")}
             </span>
           </motion.div>
@@ -409,10 +409,10 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.06] tracking-tight max-w-5xl mx-auto mb-6"
+            className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.06] tracking-tight max-w-5xl mx-auto mb-6"
           >
             {t("heroHeadline1", "Safe Calamity Aid.")}{" "}
-            <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 bg-clip-text text-transparent">
               {t("heroHeadlineHighlight", "Zero Ghost Beneficiaries.")}
             </span>{" "}
             {t("heroHeadline2", "Zero Hassle.")}
@@ -423,7 +423,7 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-normal"
+            className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-normal"
           >
             {t(
               "heroSubtitleText",
@@ -455,7 +455,7 @@ export const LandingPage: React.FC = () => {
               className="btn-secondary w-full sm:w-auto px-7 py-4 text-base font-bold flex items-center justify-center gap-2.5 shadow-lg tap-scale"
               id="hero-treasury-btn"
             >
-              <Landmark className="w-5 h-5 text-amber-400" />
+              <Landmark className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               <span>{t("treasuryExplorerButton", "Public Treasury (COA Explorer)")}</span>
             </button>
           </motion.div>
@@ -465,23 +465,23 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex items-center justify-center gap-6 text-xs text-slate-400 font-medium"
+            className="flex items-center justify-center gap-6 text-xs text-slate-500 dark:text-slate-400 font-medium"
           >
             <button
               type="button"
               onClick={() => setShowVerifier(true)}
-              className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
+              className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors flex items-center gap-1.5"
             >
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               <span>{t("verifyVoucherButton", "Verify Relief Voucher")}</span>
             </button>
             <span>•</span>
             <button
               type="button"
               onClick={() => (isSpeaking ? stop() : speak("landingHero"))}
-              className="hover:text-amber-400 transition-colors flex items-center gap-1.5"
+              className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors flex items-center gap-1.5"
             >
-              {isSpeaking ? <VolumeX className="w-4 h-4 text-amber-400" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+              {isSpeaking ? <VolumeX className="w-4 h-4 text-amber-600 dark:text-amber-400" /> : <Volume2 className="w-4 h-4 text-amber-600 dark:text-amber-400" />}
               <span>{isSpeaking ? t("stopVoice", "Stop Voice") : t("listenGuide", "Listen to Audio Guide")}</span>
             </button>
           </motion.div>
@@ -491,9 +491,9 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="mt-8 max-w-xl mx-auto"
+            className="mt-8 mb-10 sm:mb-12 max-w-xl mx-auto"
           >
-            <div className="p-2 rounded-2xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex items-center gap-2">
+            <div className="p-2 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-xl backdrop-blur-xl flex items-center gap-2">
               <div className="relative flex-1">
                 <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
@@ -502,7 +502,7 @@ export const LandingPage: React.FC = () => {
                   value={barangayInput}
                   onChange={(e) => setBarangayInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleCheckEligibility()}
-                  className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm bg-transparent border-0 text-white placeholder:text-slate-400 focus:outline-none"
+                  className="w-full pl-10 pr-3 py-2.5 text-xs sm:text-sm bg-transparent border-0 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none"
                 />
               </div>
               <button
@@ -518,14 +518,14 @@ export const LandingPage: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mt-3 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-left flex items-start justify-between gap-3 text-xs"
+                className="mt-3 p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-left flex items-start justify-between gap-3 text-xs"
               >
                 <div>
-                  <span className="text-emerald-400 font-bold block flex items-center gap-1.5">
+                  <span className="text-emerald-700 dark:text-emerald-400 font-bold block flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" /> Kwalipikado sa Ayuda: ₱{eligibilityResult.amount.toLocaleString()}
                   </span>
-                  <span className="text-slate-300 block mt-0.5">{eligibilityResult.location}</span>
-                  <span className="text-[0.68rem] text-slate-400 font-mono mt-0.5 block">{eligibilityResult.tranche}</span>
+                  <span className="text-slate-700 dark:text-slate-300 block mt-0.5">{eligibilityResult.location}</span>
+                  <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 font-mono mt-0.5 block">{eligibilityResult.tranche}</span>
                 </div>
                 <button
                   type="button"
@@ -538,7 +538,7 @@ export const LandingPage: React.FC = () => {
             )}
           </motion.div>
 
-          {/* ABSTRACT PRODUCT MOCKUP: Floating 3D Midnight ZK Terminal */}
+          {/* ABSTRACT PRODUCT MOCKUP: Self-contained dual-theme Calamity Aid Terminal */}
           <HeroProductMockup />
 
           {/* Trust Metric Strip (4 Proof Tiles) */}
