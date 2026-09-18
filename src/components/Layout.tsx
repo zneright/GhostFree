@@ -29,6 +29,7 @@ import OnboardingModal from "./OnboardingModal";
 import LanguageSelector from "./LanguageSelector";
 import ReceiptVerifierModal from "./ReceiptVerifierModal";
 import GhostFreeLogo from "./GhostFreeLogo";
+import AntiGravityCanvas from "./3d/AntiGravityCanvas";
 import { useTranslation } from "../services/i18n.service";
 import {
   getAccessibilityPreferences,
@@ -133,7 +134,10 @@ const Layout: React.FC<LayoutProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white">
+    <div className="min-h-screen flex flex-col ambient-canvas text-white selection:bg-amber-500/30 selection:text-white relative">
+      {/* Full-Screen Ambient 3D Backdrop (Fixed, non-blocking behind all UI) */}
+      <AntiGravityCanvas />
+
       {/* Top Disaster Emergency Broadcast Bar - Refined Modern Civic Aesthetic */}
       <div className="calamity-alert-bar w-full bg-gradient-to-r from-red-950/80 via-slate-900/90 to-red-950/80 text-slate-200 text-[0.7rem] sm:text-xs font-medium py-1 px-4 shadow-sm flex items-center justify-between overflow-hidden relative border-b border-red-500/20 backdrop-blur-md">
         <div className="flex items-center gap-2.5 max-w-7xl mx-auto w-full">

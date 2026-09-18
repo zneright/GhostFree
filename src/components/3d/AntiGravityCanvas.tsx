@@ -1,6 +1,6 @@
 // ==============================================================================
-// GhostFree — AntiGravityCanvas Component
-// High-performance Three.js / React Three Fiber Canvas with Dual-Theme Sync
+// GhostFree — AntiGravityCanvas (Full-Screen Ambient 3D Backdrop)
+// Fixed viewport, non-blocking pointer events, dual-theme sync
 // ==============================================================================
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -25,7 +25,7 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
     );
   });
 
-  // Check WebGL support
+  // Check WebGL availability
   const [hasWebGL, setHasWebGL] = useState<boolean>(true);
 
   useEffect(() => {
@@ -58,12 +58,13 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
 
   return (
     <div
-      className={`absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden ${className}`}
+      className={`fixed inset-0 w-screen h-screen pointer-events-none -z-10 overflow-hidden ${className}`}
       aria-hidden="true"
+      style={{ pointerEvents: "none" }}
     >
       <Canvas
-        camera={{ position: [0, 0, 7.5], fov: 42 }}
-        dpr={[1, 2]}
+        camera={{ position: [0, 0, 7.5], fov: 45 }}
+        dpr={[1, 1.5]}
         gl={{
           antialias: true,
           alpha: true,
