@@ -33,19 +33,22 @@ const AccessibilityToggle: React.FC = () => {
   const { isSpeaking, speak, stop } = useVoiceAssistant();
   const { lang, t } = useTranslation();
 
-  // Apply visual preferences to document body
+  // Apply visual preferences to documentElement and body
   const applyPreferences = useCallback((p: AccessibilityPreferences) => {
+    const root = document.documentElement;
     const body = document.body;
     
     // High contrast / Sunlight mode / Light mode
-    if (p.highContrast || p.sunlightMode) {
-      body.classList.add("high-contrast");
-      body.classList.add("sunlight-mode");
-      body.classList.add("light-mode");
+    if (p.sunlightMode || p.highContrast) {
+      root.classList.add("light-mode", "sunlight-mode");
+      root.classList.remove("dark", "high-contrast");
+      body.classList.add("light-mode", "sunlight-mode");
+      body.classList.remove("dark", "high-contrast");
     } else {
-      body.classList.remove("high-contrast");
-      body.classList.remove("sunlight-mode");
-      body.classList.remove("light-mode");
+      root.classList.add("dark");
+      root.classList.remove("light-mode", "sunlight-mode", "high-contrast");
+      body.classList.add("dark");
+      body.classList.remove("light-mode", "sunlight-mode", "high-contrast");
     }
 
     // Text scaling
@@ -70,12 +73,13 @@ const AccessibilityToggle: React.FC = () => {
     return () => window.removeEventListener("ghostfree_theme_change", sync);
   }, [applyPreferences]);
 
-  // Toggle sunlight outdoor high-contrast mode
+  // Toggle sunlight outdoor mode
   const toggleHighContrast = useCallback(() => {
+    const next = !prefs.sunlightMode;
     const updated: AccessibilityPreferences = {
       ...prefs,
-      highContrast: !prefs.highContrast,
-      sunlightMode: !prefs.highContrast,
+      sunlightMode: next,
+      highContrast: false,
     };
     setPrefs(updated);
     setAccessibilityPreferences(updated);

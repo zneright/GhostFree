@@ -88,18 +88,20 @@ const Layout: React.FC<LayoutProps> = ({
   // Synchronized Light/Dark Theme Engine
   const [isLightMode, setIsLightMode] = useState<boolean>(() => {
     return (
+      document.documentElement.classList.contains("light-mode") ||
+      document.documentElement.classList.contains("sunlight-mode") ||
       document.body.classList.contains("light-mode") ||
-      document.body.classList.contains("sunlight-mode") ||
-      document.body.classList.contains("high-contrast")
+      document.body.classList.contains("sunlight-mode")
     );
   });
 
   useEffect(() => {
     const syncTheme = () => {
       setIsLightMode(
+        document.documentElement.classList.contains("light-mode") ||
+        document.documentElement.classList.contains("sunlight-mode") ||
         document.body.classList.contains("light-mode") ||
-        document.body.classList.contains("sunlight-mode") ||
-        document.body.classList.contains("high-contrast")
+        document.body.classList.contains("sunlight-mode")
       );
     };
     window.addEventListener("ghostfree_theme_change", syncTheme);
@@ -110,15 +112,21 @@ const Layout: React.FC<LayoutProps> = ({
     const next = !isLightMode;
     setIsLightMode(next);
     if (next) {
-      document.body.classList.add("light-mode", "sunlight-mode", "high-contrast");
+      document.documentElement.classList.add("light-mode", "sunlight-mode");
+      document.documentElement.classList.remove("dark", "high-contrast");
+      document.body.classList.add("light-mode", "sunlight-mode");
+      document.body.classList.remove("dark", "high-contrast");
     } else {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light-mode", "sunlight-mode", "high-contrast");
+      document.body.classList.add("dark");
       document.body.classList.remove("light-mode", "sunlight-mode", "high-contrast");
     }
     const current = getAccessibilityPreferences();
     const updated = {
       ...current,
       sunlightMode: next,
-      highContrast: next,
+      highContrast: false,
     };
     setAccessibilityPreferences(updated);
     window.dispatchEvent(new Event("ghostfree_theme_change"));

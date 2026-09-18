@@ -330,14 +330,14 @@ export const TreasuryExplorerPage: React.FC = () => {
         </div>
 
         {/* Calamity Operations & Dual-Key Quorum Table */}
-        <div className="glass-card p-6 rounded-2xl border border-white/10">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
+        <div className="bg-white dark:bg-slate-900/80 p-6 rounded-2xl border border-slate-200 dark:border-white/10 shadow-xl glass-card">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-slate-200 dark:border-white/10 pb-4">
             <div>
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Landmark className="w-5 h-5 text-civic-sky" />
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Landmark className="w-5 h-5 text-sky-600 dark:text-civic-sky" />
                 <span>{t("quorumTitle") || "Active Calamity Operations & Municipal Quorum Status"}</span>
               </h3>
-              <p className="text-xs text-white/50 mt-0.5">
+              <p className="text-xs text-slate-600 dark:text-white/50 mt-0.5">
                 {t("quorumSubtitle") || "Each operation must be sealed by both the DRRM Officer and Municipal Treasurer before funds are released."}
               </p>
             </div>
@@ -345,19 +345,19 @@ export const TreasuryExplorerPage: React.FC = () => {
             {/* Filter and Search */}
             <div className="flex items-center gap-2">
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-white/40 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-slate-400 dark:text-white/40 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder={lang === "en" ? "Search operation..." : lang === "ceb" ? "Pangitaa ang operasyon..." : "Maghanap ng operasyon..."}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 pr-3 py-1.5 rounded-xl text-xs bg-black/40 border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:border-civic-sky"
+                  className="pl-8 pr-3 py-1.5 rounded-xl text-xs bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-white/30 focus:outline-none focus:border-sky-500"
                 />
               </div>
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-2.5 py-1.5 rounded-xl text-xs bg-black/40 border border-white/10 text-white focus:outline-none focus:border-civic-sky"
+                className="px-2.5 py-1.5 rounded-xl text-xs bg-slate-50 dark:bg-black/40 border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white focus:outline-none focus:border-sky-500"
               >
                 <option value="all">{lang === "en" ? "All Quorum" : lang === "ceb" ? "Tanan nga Quorum" : "Lahat ng Quorum"}</option>
                 <option value="authorized">{lang === "en" ? "Fully Authorized" : lang === "ceb" ? "Hingpit nga Awtorisado" : "Ganap na Awtorisado"}</option>

@@ -18,10 +18,19 @@
       (function() {
         try {
           var prefs = JSON.parse(localStorage.getItem('ghostfree_accessibility_prefs') || '{}');
-          if (prefs.highContrast || prefs.sunlightMode) {
-            document.documentElement.classList.add('light-mode', 'sunlight-mode', 'high-contrast');
+          if (prefs.sunlightMode || prefs.highContrast) {
+            document.documentElement.classList.add('light-mode', 'sunlight-mode');
+            document.documentElement.classList.remove('dark', 'high-contrast');
             document.addEventListener('DOMContentLoaded', function() {
-              document.body.classList.add('light-mode', 'sunlight-mode', 'high-contrast');
+              document.body.classList.add('light-mode', 'sunlight-mode');
+              document.body.classList.remove('dark', 'high-contrast');
+            });
+          } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light-mode', 'sunlight-mode', 'high-contrast');
+            document.addEventListener('DOMContentLoaded', function() {
+              document.body.classList.add('dark');
+              document.body.classList.remove('light-mode', 'sunlight-mode', 'high-contrast');
             });
           }
         } catch (e) {}
