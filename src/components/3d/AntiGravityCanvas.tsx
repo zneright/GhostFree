@@ -1,9 +1,9 @@
 // ==============================================================================
 // GhostFree — AntiGravityCanvas (Full-Screen Ambient 3D Backdrop)
-// Fixed viewport, non-blocking pointer events, dual-theme sync
+// Fixed viewport, non-blocking pointer events, dual-theme sync, scroll tracking
 // ==============================================================================
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import FloatingGeometryScene from "./FloatingGeometryScene";
 
@@ -27,6 +27,9 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
 
   // Check WebGL availability
   const [hasWebGL, setHasWebGL] = useState<boolean>(true);
+
+  // Smooth scroll progress ref (0 to 1) for 60fps useFrame camera interpolation
+  const scrollProgressRef = useRef<number>(0);
 
   useEffect(() => {
     try {
@@ -52,6 +55,22 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
     return () => window.removeEventListener("ghostfree_theme_change", handleThemeChange);
   }, []);
 
+  // Track window scroll progress without triggering React re-renders
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const maxScroll = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        1
+      );
+      scrollProgressRef.current = Math.min(Math.max(scrollY / maxScroll, 0), 1);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (!hasWebGL) {
     return null;
   }
@@ -73,7 +92,10 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
         style={{ pointerEvents: "none", width: "100%", height: "100%" }}
       >
         <Suspense fallback={null}>
-          <FloatingGeometryScene isLightMode={isLightMode} />
+          <FloatingGeometryScene
+            isLightMode={isLightMode}
+            scrollProgressRef={scrollProgressRef}
+          />
         </Suspense>
       </Canvas>
     </div>
