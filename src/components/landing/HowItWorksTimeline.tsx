@@ -12,6 +12,7 @@ import {
   CircleDollarSign,
   Sparkles,
 } from "lucide-react";
+import WorkflowScene from "../3d/WorkflowScene";
 
 interface StepItem {
   id: number;
@@ -33,7 +34,9 @@ export const HowItWorksTimeline: React.FC<{
   ];
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+    <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto overflow-hidden">
+      {/* Dedicated Section 3D Scene: 4-Stage Progressive Pipeline */}
+      <WorkflowScene className="opacity-70 dark:opacity-85" />
       <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
         <motion.div
           initial={{ opacity: 0, y: 15 }}

@@ -39,6 +39,7 @@ import { HowItWorksTimeline } from "../components/landing/HowItWorksTimeline";
 import { ComparisonMatrix } from "../components/landing/ComparisonMatrix";
 import { CivilianFaqAccordion } from "../components/landing/CivilianFaqAccordion";
 import { BottomCtaBanner } from "../components/landing/BottomCtaBanner";
+import HeroScene from "../components/3d/HeroScene";
 import { useTranslation } from "../services/i18n.service";
 import { useVoiceAssistant } from "../services/voice.service";
 
@@ -390,7 +391,9 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 1: HERO SECTION WITH DISPLAY TYPOGRAPHY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center">
+        <section className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center overflow-hidden">
+          {/* Section 01 Dedicated 3D Environment: Sovereign Witness Core & Gyro Ring */}
+          <HeroScene className="opacity-75 dark:opacity-90" />
 
           {/* Radiant Announcement Chip */}
           <motion.div
@@ -623,7 +626,12 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            SECTION 2: MODULAR BENTO-BOX FEATURE GRID
+            SECTION 2: OLD WAY VS GHOSTFREE (PROBLEM CONTEXT — 2D BREATHING ROOM)
+           ======================================================== */}
+        <ComparisonMatrix comparisons={comparisons} t={t} />
+
+        {/* ========================================================
+            SECTION 3: MODULAR BENTO-BOX FEATURE GRID (3D ARCHITECTURE)
            ======================================================== */}
         <BentoFeatureGrid t={t} />
 
@@ -772,12 +780,7 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            SECTION 6: OLD WAY VS GHOSTFREE COMPARISON MATRIX
-           ======================================================== */}
-        <ComparisonMatrix comparisons={comparisons} t={t} />
-
-        {/* ========================================================
-            SECTION 7: CIVILIAN FAQ ACCORDION
+            SECTION 7: CIVILIAN FAQ ACCORDION (2D KNOWLEDGE BASE)
            ======================================================== */}
         <CivilianFaqAccordion faqs={faqs} t={t} />
 
