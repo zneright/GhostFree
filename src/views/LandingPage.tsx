@@ -397,7 +397,8 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-400/30 shadow-md dark:shadow-xl mb-6 sm:mb-8 backdrop-blur-md"
+            whileHover={{ scale: 1.03 }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-400/30 shadow-md dark:shadow-xl mb-6 sm:mb-8 backdrop-blur-md cursor-default"
           >
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
@@ -439,7 +440,9 @@ export const LandingPage: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8"
           >
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               type="button"
               onClick={() => navigate("/claim")}
               className="btn-civic-gold w-full sm:w-auto px-8 py-4 text-base font-black flex items-center justify-center gap-2.5 shadow-2xl tap-scale"
@@ -448,9 +451,11 @@ export const LandingPage: React.FC = () => {
               <ShieldCheck className="w-5 h-5" />
               <span>{t("claimAidButton", "Claim Aid (₱5,000)")}</span>
               <ArrowRight className="w-5 h-5" />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               type="button"
               onClick={() => navigate("/transparency")}
               className="btn-secondary w-full sm:w-auto px-7 py-4 text-base font-bold flex items-center justify-center gap-2.5 shadow-lg tap-scale"
@@ -458,7 +463,7 @@ export const LandingPage: React.FC = () => {
             >
               <Landmark className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               <span>{t("treasuryExplorerButton", "Public Treasury (COA Explorer)")}</span>
-            </button>
+            </motion.button>
           </motion.div>
 
           {/* Micro Action Links */}
@@ -545,8 +550,11 @@ export const LandingPage: React.FC = () => {
           {/* Trust Metric Strip (4 Proof Tiles) */}
           <div ref={counterRef} className="mt-14 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto">
             <motion.div
-              whileHover={{ y: -3 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
             >
               <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
                 <Coins className="w-4 h-4" />
@@ -559,8 +567,12 @@ export const LandingPage: React.FC = () => {
             </motion.div>
 
             <motion.div
-              whileHover={{ y: -3 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.08 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-sky-400/40 transition-colors"
             >
               <div className="flex items-center justify-center gap-1.5 text-sky-400 mb-1">
                 <Users className="w-4 h-4" />
@@ -573,8 +585,12 @@ export const LandingPage: React.FC = () => {
             </motion.div>
 
             <motion.div
-              whileHover={{ y: -3 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.16 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-amber-400/40 transition-colors"
             >
               <div className="flex items-center justify-center gap-1.5 text-amber-400 mb-1">
                 <ShieldCheck className="w-4 h-4" />
@@ -587,8 +603,12 @@ export const LandingPage: React.FC = () => {
             </motion.div>
 
             <motion.div
-              whileHover={{ y: -3 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.24 }}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
             >
               <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
                 <Clock className="w-4 h-4" />
@@ -625,11 +645,15 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-5 mb-8">
-            {reliefBasketItems.map((item) => (
+            {reliefBasketItems.map((item, idx) => (
               <motion.div
                 key={item.id}
-                whileHover={{ y: -4 }}
-                className="p-5 rounded-3xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex flex-col justify-between glass-card"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: idx * 0.08 }}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="p-5 rounded-3xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex flex-col justify-between glass-card hover:border-amber-400/40 transition-colors"
               >
                 <div>
                   <div className="w-10 h-10 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mb-3">
@@ -728,9 +752,12 @@ export const LandingPage: React.FC = () => {
                     <span className="text-white font-bold">{ec.disbursed} / {ec.capacity}</span>
                   </div>
                   <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
-                    <div
+                    <motion.div
                       className="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full"
-                      style={{ width: `${(ec.disbursed / ec.capacity) * 100}%` }}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${(ec.disbursed / ec.capacity) * 100}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     />
                   </div>
                 </div>

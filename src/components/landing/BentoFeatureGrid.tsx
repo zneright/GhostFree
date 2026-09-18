@@ -1,6 +1,7 @@
 // ==============================================================================
 // GhostFree — BentoFeatureGrid Component
 // Asymmetric 5-tile Bento Box with full dynamic Sunlight & Dark Mode support
+// Rich Framer Motion spring physics, hover elevation, and interactive fraud simulation
 // ==============================================================================
 
 import React, { useState } from "react";
@@ -32,7 +33,8 @@ export const BentoFeatureGrid: React.FC<{
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-400/30 text-sky-700 dark:text-sky-400 text-xs font-bold uppercase tracking-wider mb-3"
+          whileHover={{ scale: 1.05 }}
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-400/30 text-sky-700 dark:text-sky-400 text-xs font-bold uppercase tracking-wider mb-3 cursor-default"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>{t("bentoTag", "Soberanya sa Pribasiya at Seguridad")}</span>
@@ -66,16 +68,16 @@ export const BentoFeatureGrid: React.FC<{
             TILE 1: CLIENT-SIDE WASM PROVING ENGINE (Wide 7 cols)
            ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          whileHover={{ y: -4 }}
-          className="md:col-span-7 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          className="md:col-span-7 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
         >
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400">
+              <div className="w-11 h-11 rounded-2xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400 shadow-sm">
                 <Cpu className="w-6 h-6" />
               </div>
               <span className="px-3 py-1 rounded-full text-[0.65rem] font-bold bg-sky-50 dark:bg-sky-500/15 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-500/30 uppercase tracking-wider">
@@ -120,25 +122,27 @@ export const BentoFeatureGrid: React.FC<{
             TILE 2: ANTI-GHOST NULLIFIER SHIELD (Narrow 5 cols)
            ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          whileHover={{ y: -4 }}
-          className="md:col-span-5 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.01 }}
+          className="md:col-span-5 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
         >
           <div>
             <div className="flex items-center justify-between mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/30 flex items-center justify-center text-amber-600 dark:text-amber-400">
+              <div className="w-11 h-11 rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/30 flex items-center justify-center text-amber-600 dark:text-amber-400 shadow-sm">
                 <Lock className="w-6 h-6" />
               </div>
-              <button
+              <motion.button
+                whileHover={{ scale: 1.06 }}
+                whileTap={{ scale: 0.94 }}
                 type="button"
                 onClick={() => setDuplicateSimulated(!duplicateSimulated)}
-                className="px-2.5 py-1 rounded-full text-[0.65rem] font-bold bg-amber-50 dark:bg-amber-400/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-400/30 border border-amber-200 dark:border-amber-400/40 transition-all flex items-center gap-1"
+                className="px-3 py-1 rounded-full text-[0.68rem] font-bold bg-amber-50 dark:bg-amber-400/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-400/30 border border-amber-200 dark:border-amber-400/40 transition-all flex items-center gap-1 shadow-sm"
               >
-                <span>{duplicateSimulated ? "Test Reset" : "Simulate Fraud"}</span>
-              </button>
+                <span>{duplicateSimulated ? "Reset Test" : "Simulate Double Claim"}</span>
+              </motion.button>
             </div>
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-2">
               {t("bentoTile2Title", "Anti-Ghost Nullifier Shield")}
@@ -152,7 +156,8 @@ export const BentoFeatureGrid: React.FC<{
           </div>
 
           {/* Interactive Simulation Status Box */}
-          <div
+          <motion.div
+            layout
             className={`p-3.5 rounded-2xl border transition-all ${
               duplicateSimulated
                 ? "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/40"
@@ -172,22 +177,22 @@ export const BentoFeatureGrid: React.FC<{
                 </>
               )}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* ============================================================
             TILE 3: DUAL-KEY MUNICIPAL QUORUM (4 cols)
            ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.15 }}
-          whileHover={{ y: -4 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+          transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.015 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-emerald-400/40 transition-colors"
         >
           <div>
-            <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-400/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-400/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 shadow-sm">
               <Landmark className="w-5 h-5" />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">
@@ -221,15 +226,15 @@ export const BentoFeatureGrid: React.FC<{
             TILE 4: OFFLINE EVACUATION RESILIENCE (4 cols)
            ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          whileHover={{ y: -4 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.015 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
         >
           <div>
-            <div className="w-10 h-10 rounded-2xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400 mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400 mb-4 shadow-sm">
               <WifiOff className="w-5 h-5" />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">
@@ -260,15 +265,15 @@ export const BentoFeatureGrid: React.FC<{
             TILE 5: REAL-TIME PUBLIC COA TELEMETRY (4 cols)
            ============================================================ */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          whileHover={{ y: -4 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+          transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ y: -6, scale: 1.015 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
         >
           <div>
-            <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4 shadow-sm">
               <FileSpreadsheet className="w-5 h-5" />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">

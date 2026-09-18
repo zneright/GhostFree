@@ -71,18 +71,21 @@ export const HowItWorksTimeline: React.FC<{
         {steps.map((s, idx) => (
           <motion.div
             key={s.id}
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.45, delay: idx * 0.1 }}
-            whileHover={{ y: -6, scale: 1.01 }}
-            className="rounded-3xl p-6 bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between"
+            transition={{ duration: 0.5, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            whileHover={{ y: -8, scale: 1.02 }}
+            className="rounded-3xl p-6 bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <div className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 font-black text-base flex items-center justify-center shadow-md shadow-amber-500/30">
+                <motion.div
+                  whileHover={{ rotate: 10, scale: 1.1 }}
+                  className="w-10 h-10 rounded-2xl bg-amber-500 text-slate-950 font-black text-base flex items-center justify-center shadow-md shadow-amber-500/30 cursor-default"
+                >
                   {s.id}
-                </div>
+                </motion.div>
                 <span className="text-[0.65rem] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                   {s.tag}
                 </span>

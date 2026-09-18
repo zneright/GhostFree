@@ -363,8 +363,8 @@ const Layout: React.FC<LayoutProps> = ({
         </div>
       </header>
 
-      {/* Main Content with Safe Mobile Spacing */}
-      <main className={`flex-1 pb-16 sm:pb-8 ${className}`}>
+      {/* Main Content Area */}
+      <main className={`flex-1 pb-16 sm:pb-8 relative z-10 ${className}`}>
         {children}
       </main>
 

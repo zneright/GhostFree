@@ -58,7 +58,7 @@ export const AntiGravityCanvas: React.FC<AntiGravityCanvasProps> = ({
 
   return (
     <div
-      className={`fixed inset-0 w-screen h-screen pointer-events-none -z-10 overflow-hidden ${className}`}
+      className={`fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden ${className}`}
       aria-hidden="true"
       style={{ pointerEvents: "none" }}
     >
