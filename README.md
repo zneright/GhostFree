@@ -153,6 +153,18 @@ Fully public, trustless governance portal providing real-time oversight into rel
 
 ---
 
+### 7. 2D Bento Cryptographic Architecture & Anti-Ghost Matrix
+The landing page incorporates a structured 2D civic-tech feature matrix mapping how citizen privacy witnesses flow into local zero-knowledge proofs, nullifier registers, and immediate treasury release without disclosing personal identity records.
+
+![GhostFree 2D Bento Cryptographic Architecture](docs/screenshots/07-bento-cryptographic-matrix.png)
+
+- 🔒 **Linear ZK Proving Flow:** Step-by-step cryptographic pipeline from private witness inputs to local prover synthesis and on-chain verification.
+- 🛡️ **Anti-Ghost Nullifier Rejection:** Mathematical visualization of how spent nullifier collision detection prevents fraudulent double-claiming.
+- 🏛️ **Dual-Key Quorum Verification:** Cryptographic threshold checks between Local DRRM and Municipal Treasury officers.
+- 📊 **COA-Compliant Treasury Transparency:** Immutable ledger balance telemetry accessible to public auditors and citizens.
+
+---
+
 ## System Architecture
 
 ```mermaid

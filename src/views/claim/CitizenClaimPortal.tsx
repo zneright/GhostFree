@@ -178,7 +178,7 @@ const IllustratedIdCard: React.FC<{
 // ---- Main Component ----
 export const CitizenClaimPortal: React.FC = () => {
   const navigate = useNavigate();
-  const { connected, address, connect, isSandbox } = useMidnightWallet();
+  const { connected, address, connect, connectSandbox, isSandbox } = useMidnightWallet();
   const { executeClaimAidCircuit, state: contractState } = useMidnightContract();
 
   // Navigation & Flow State
@@ -261,11 +261,11 @@ export const CitizenClaimPortal: React.FC = () => {
   };
 
   // Connect Evaluator Sandbox (1-Click)
-  const handleConnectSandbox = async () => {
+  const handleConnectSandbox = () => {
     setConnecting(true);
     setWalletError(null);
     try {
-      await connect("sandbox");
+      connectSandbox();
       setStep("credentials");
     } catch (err) {
       setWalletError(err instanceof Error ? err.message : "Failed to enter sandbox mode.");
