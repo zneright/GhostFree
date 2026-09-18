@@ -19,13 +19,13 @@ export const CivilianFaqAccordion: React.FC<{
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-4xl mx-auto">
+    <section className="section-env-faq px-4 sm:px-6 py-16 sm:py-24 max-w-4xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
       <div className="text-center mb-10 sm:mb-14">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-bold uppercase tracking-wider mb-3"
+          className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-400/30 text-sky-700 dark:text-sky-400 text-xs font-bold uppercase tracking-wider mb-3 cursor-default"
         >
           <HelpCircle className="w-3.5 h-3.5" />
           <span>{t("faqSectionTag", "Mga Karaniwang Tanong")}</span>
@@ -35,7 +35,7 @@ export const CivilianFaqAccordion: React.FC<{
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-5xl font-black text-white tracking-tight"
+          className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight"
         >
           {t("faqSectionTitle", "Sagot para sa mga Mamamayan")}
         </motion.h2>
@@ -51,18 +51,18 @@ export const CivilianFaqAccordion: React.FC<{
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.05 }}
-              className="rounded-2xl bg-slate-900/80 border border-white/10 overflow-hidden glass-card transition-all"
+              className="rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 overflow-hidden glass-card transition-all"
             >
               <button
                 type="button"
                 onClick={() => setOpenIndex(isOpen ? null : idx)}
-                className="w-full p-4.5 sm:p-5 text-left flex items-center justify-between gap-4 text-sm sm:text-base font-bold text-white hover:text-amber-300 transition-colors"
+                className="w-full p-4.5 sm:p-5 text-left flex items-center justify-between gap-4 text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-300 transition-colors"
                 aria-expanded={isOpen}
               >
                 <span>{f.q}</span>
                 <ChevronDown
-                  className={`w-4 h-4 text-amber-400 shrink-0 transition-transform duration-200 ${
-                    isOpen ? "rotate-180" : ""
+                  className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-300 ${
+                    isOpen ? "rotate-180 text-amber-500" : ""
                   }`}
                 />
               </button>
@@ -70,13 +70,12 @@ export const CivilianFaqAccordion: React.FC<{
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    className="overflow-hidden border-t border-white/10"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div className="p-4.5 sm:p-5 pt-3 text-xs sm:text-sm text-slate-300 leading-relaxed bg-slate-950/40">
+                    <div className="px-4.5 sm:px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-white/5">
                       {f.a}
                     </div>
                   </motion.div>

@@ -18,46 +18,34 @@ import {
 export const HeroProductMockup: React.FC = () => {
   return (
     <div className="relative w-full max-w-5xl mx-auto px-2 sm:px-4">
-      {/* Ambient background glow with soft animated breathing */}
+      {/* Main Terminal Shell with crisp civic-tech frame */}
       <motion.div
-        animate={{
-          scale: [1, 1.05, 1],
-          opacity: [0.45, 0.65, 0.45],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className="absolute -inset-4 sm:-inset-6 bg-gradient-to-tr from-amber-500/20 via-sky-500/15 to-emerald-500/20 rounded-[2.5rem] blur-3xl opacity-50 dark:opacity-75 pointer-events-none"
-      />
-
-      {/* Main Terminal Shell with subtle organic floating physics */}
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.97 }}
+        initial={{ opacity: 0, y: 25, scale: 0.98 }}
         animate={{
           opacity: 1,
           scale: 1,
-          y: [0, -6, 0],
+          y: 0,
         }}
         transition={{
-          opacity: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-          scale: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-          y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+          duration: 0.6,
+          ease: [0.16, 1, 0.3, 1],
         }}
-        className="relative rounded-3xl sm:rounded-[2.25rem] bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/15 p-5 sm:p-7 shadow-2xl backdrop-blur-2xl overflow-hidden glass-card"
+        className="relative rounded-3xl sm:rounded-[2rem] bg-white dark:bg-slate-900/95 border-2 border-slate-200 dark:border-white/15 p-5 sm:p-7 shadow-2xl backdrop-blur-2xl overflow-hidden glass-card text-left"
       >
         {/* Terminal Header Bar */}
         <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/10 pb-3 sm:pb-4 mb-5 sm:mb-6">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block hover:scale-125 transition-transform cursor-pointer" />
-            <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block hover:scale-125 transition-transform cursor-pointer" />
-            <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block hover:scale-125 transition-transform cursor-pointer" />
+            <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
+            <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+            <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
             <span className="ml-2 font-mono text-[0.68rem] sm:text-xs text-slate-500 dark:text-slate-400 font-medium hidden sm:inline-block">
               ghostfree.midnight.network/v2/disaster-qrf
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded text-[0.62rem] font-bold font-mono uppercase bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
+              Simulation Demo
+            </span>
             <motion.span
               whileHover={{ scale: 1.05 }}
               className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[0.65rem] font-bold bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/30 shadow-sm"

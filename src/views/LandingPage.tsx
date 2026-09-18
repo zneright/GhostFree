@@ -390,7 +390,7 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 1: HERO SECTION WITH DISPLAY TYPOGRAPHY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center overflow-hidden">
+        <section className="section-env-hero px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center rounded-3xl sm:rounded-[2.5rem] mb-8">
           {/* Radiant Announcement Chip */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
@@ -545,24 +545,45 @@ export const LandingPage: React.FC = () => {
 
           {/* ABSTRACT PRODUCT MOCKUP: Self-contained dual-theme Calamity Aid Terminal */}
           <HeroProductMockup />
+        </section>
+
+        {/* ========================================================
+            SECTION 2: TRUST & EMERGENCY OPERATIONS TELEMETRY DASHBOARD
+           ======================================================== */}
+        <section className="section-env-trust py-14 sm:py-20 px-4 sm:px-6 my-8 rounded-3xl sm:rounded-[2.5rem] max-w-6xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider mb-3">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>NDRRMC Calamity Fund Telemetry • R.A. 10121 Compliance</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+              Transparent Disaster Aid Distribution
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2">
+              Real-time public ledger telemetry verifying cash disbursements across active evacuation zones.
+            </p>
+            <span className="inline-block mt-2 px-2.5 py-0.5 rounded font-mono text-[0.65rem] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              Simulated Relief Operation Tranche #1 (Typhoon Marce Response) • Midnight Testnet
+            </span>
+          </div>
 
           {/* Trust Metric Strip (4 Proof Tiles) */}
-          <div ref={counterRef} className="mt-14 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto">
+          <div ref={counterRef} className="grid grid-cols-2 md:grid-cols-4 gap-3.5 sm:gap-4 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
+              whileHover={{ y: -4 }}
+              className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
             >
-              <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
+              <div className="flex items-center justify-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-1">
                 <Coins className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Disbursed</span>
               </div>
-              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tabular-nums">
                 ₱{(fundsCounter / 1000000).toFixed(0)}M+
               </span>
-              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">100% Settled</span>
+              <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 block mt-0.5 font-medium">100% Settled on-chain</span>
             </motion.div>
 
             <motion.div
@@ -570,17 +591,17 @@ export const LandingPage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.08 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-sky-400/40 transition-colors"
+              whileHover={{ y: -4 }}
+              className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center glass-card hover:border-sky-400/40 transition-colors"
             >
-              <div className="flex items-center justify-center gap-1.5 text-sky-400 mb-1">
+              <div className="flex items-center justify-center gap-1.5 text-sky-600 dark:text-sky-400 mb-1">
                 <Users className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Families Aided</span>
               </div>
-              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tabular-nums">
                 {beneficiariesCounter.toLocaleString()}+
               </span>
-              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">Direct to Victims</span>
+              <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 block mt-0.5 font-medium">Direct to Victims</span>
             </motion.div>
 
             <motion.div
@@ -588,17 +609,17 @@ export const LandingPage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.16 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-amber-400/40 transition-colors"
+              whileHover={{ y: -4 }}
+              className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center glass-card hover:border-amber-400/40 transition-colors"
             >
-              <div className="flex items-center justify-center gap-1.5 text-amber-400 mb-1">
+              <div className="flex items-center justify-center gap-1.5 text-amber-600 dark:text-amber-400 mb-1">
                 <ShieldCheck className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">Ghost Claims</span>
               </div>
-              <span className="text-xl sm:text-2xl font-black text-amber-300 tabular-nums">
+              <span className="text-xl sm:text-2xl font-black text-amber-700 dark:text-amber-300 tabular-nums">
                 0 Duplicates
               </span>
-              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">18 Fraud Blocked</span>
+              <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 block mt-0.5 font-medium">18 Fraud Blocked</span>
             </motion.div>
 
             <motion.div
@@ -606,17 +627,17 @@ export const LandingPage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.24 }}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="p-4 rounded-2xl bg-slate-900/70 border border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
+              whileHover={{ y: -4 }}
+              className="p-4 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 text-center glass-card hover:border-emerald-400/40 transition-colors"
             >
-              <div className="flex items-center justify-center gap-1.5 text-emerald-400 mb-1">
+              <div className="flex items-center justify-center gap-1.5 text-emerald-600 dark:text-emerald-400 mb-1">
                 <Clock className="w-4 h-4" />
                 <span className="text-xs font-bold uppercase tracking-wider">WASM Prover</span>
               </div>
-              <span className="text-xl sm:text-2xl font-black text-white tabular-nums">
+              <span className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tabular-nums">
                 {(provingTimeCounter / 10).toFixed(1)}s
               </span>
-              <span className="text-[0.68rem] text-slate-400 block mt-0.5 font-medium">Local Browser Speed</span>
+              <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 block mt-0.5 font-medium">Local Browser Speed</span>
             </motion.div>
           </div>
         </section>
@@ -632,18 +653,18 @@ export const LandingPage: React.FC = () => {
         <BentoFeatureGrid t={t} />
 
         {/* ========================================================
-            SECTION 3: ₱5,000 CALAMITY RELIEF BASKET BREAKDOWN
+            SECTION 5: ₱5,000 CALAMITY RELIEF BASKET BREAKDOWN
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+        <section className="section-env-basket px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-400/30 text-amber-800 dark:text-amber-400 text-xs font-bold uppercase tracking-wider mb-3 cursor-default">
               <Coins className="w-3.5 h-3.5" />
-              <span>{t("basketBadge", "Piso-sa-Piso Transparensya")}</span>
+              <span>{t("basketBadge", "Piso-sa-Piso Transparensya • R.A. 10121")}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
               {t("basketTitle", "Saan Napupunta ang ₱5,000 Ayuda?")}
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
               {t("basketSubtitle", "Bawat sentimo ay nakalaan para sa totoong pangangailangan ng bawat pamilya sa panahon ng sakuna.")}
             </p>
           </div>
@@ -656,35 +677,35 @@ export const LandingPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: idx * 0.08 }}
-                whileHover={{ y: -6, scale: 1.02 }}
-                className="p-5 rounded-3xl bg-slate-900/80 border border-white/10 shadow-xl backdrop-blur-xl flex flex-col justify-between glass-card hover:border-amber-400/40 transition-colors"
+                whileHover={{ y: -4 }}
+                className="p-5 rounded-3xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl flex flex-col justify-between glass-card hover:border-amber-400/40 transition-colors"
               >
                 <div>
-                  <div className="w-10 h-10 rounded-2xl bg-white/[0.06] border border-white/10 flex items-center justify-center mb-3">
+                  <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-white/[0.06] border border-slate-200 dark:border-white/10 flex items-center justify-center mb-3">
                     {item.icon}
                   </div>
-                  <span className="text-xs font-black text-white block mb-1">{item.name}</span>
-                  <span className="text-[0.68rem] text-amber-400 font-bold block mb-2">{item.tagalog}</span>
-                  <p className="text-[0.72rem] text-slate-300 leading-relaxed">{item.desc}</p>
+                  <span className="text-xs font-black text-slate-900 dark:text-white block mb-1">{item.name}</span>
+                  <span className="text-[0.68rem] text-amber-600 dark:text-amber-400 font-bold block mb-2">{item.tagalog}</span>
+                  <p className="text-[0.72rem] text-slate-600 dark:text-slate-300 leading-relaxed">{item.desc}</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-[0.65rem] text-slate-400 uppercase font-medium">Badyet</span>
-                  <span className="text-sm font-black text-white">₱{item.amount.toLocaleString()}</span>
+                <div className="mt-4 pt-3 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+                  <span className="text-[0.65rem] text-slate-500 dark:text-slate-400 uppercase font-medium">Badyet</span>
+                  <span className="text-sm font-black text-slate-900 dark:text-white">₱{item.amount.toLocaleString()}</span>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="p-6 rounded-3xl bg-slate-900/90 border border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl glass-card">
+          <div className="p-6 rounded-3xl bg-white dark:bg-slate-900/90 border-2 border-amber-300 dark:border-amber-400/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl glass-card">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400">
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-500/20 border border-amber-300 dark:border-amber-400/40 flex items-center justify-center text-amber-600 dark:text-amber-400">
                 <ShieldCheck className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-xs text-amber-400 font-bold block uppercase tracking-wider">
+                <span className="text-xs text-amber-700 dark:text-amber-400 font-bold block uppercase tracking-wider">
                   Kabuuan: ₱5,000.00 Ayuda Bawat Pamilya
                 </span>
-                <span className="text-xs text-slate-300">
+                <span className="text-xs text-slate-600 dark:text-slate-300">
                   Direktang napupunta sa biktima nang walang bawas o kaltas ng middleman.
                 </span>
               </div>
@@ -700,25 +721,28 @@ export const LandingPage: React.FC = () => {
         </section>
 
         {/* ========================================================
-            SECTION 4: 4-STEP HOW IT WORKS TIMELINE
+            SECTION 6: 4-STEP HOW IT WORKS TIMELINE
            ======================================================== */}
         <HowItWorksTimeline steps={steps} t={t} />
 
         {/* ========================================================
-            SECTION 5: REGIONAL EVACUATION CENTER DIRECTORY
+            SECTION 7: REGIONAL EVACUATION CENTER DIRECTORY
            ======================================================== */}
-        <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto">
+        <section className="section-env-evac px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-500/10 border border-sky-400/30 text-sky-400 text-xs font-bold uppercase tracking-wider mb-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-sky-50 dark:bg-sky-500/10 border border-sky-200 dark:border-sky-400/30 text-sky-700 dark:text-sky-400 text-xs font-bold uppercase tracking-wider mb-3 cursor-default">
               <Building2 className="w-3.5 h-3.5" />
               <span>{t("evacDirectoryTag", "Opisyal na Sentro ng Evacuation")}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+            <h2 className="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
               {t("evacDirectoryTitle", "Mga Aktibong Evacuation Center")}
             </h2>
-            <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
+            <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 mt-3 leading-relaxed">
               {t("evacDirectorySubtitle", "Real-time monitoring ng pondo at bilang ng natulungang pamilya sa bawat sentro.")}
             </p>
+            <span className="inline-block mt-2 px-2.5 py-0.5 rounded font-mono text-[0.65rem] text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700">
+              Simulated Registry • NDRRMC Cagayan Valley Sector A
+            </span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
@@ -729,15 +753,15 @@ export const LandingPage: React.FC = () => {
                 onClick={() => setSelectedCenter(i)}
                 className={`p-6 rounded-3xl border transition-all cursor-pointer glass-card ${
                   selectedCenter === i
-                    ? "bg-slate-900/95 border-amber-400/50 shadow-2xl ring-1 ring-amber-400/40"
-                    : "bg-slate-900/70 border-white/10 hover:border-white/20"
+                    ? "bg-white dark:bg-slate-900/95 border-amber-400/60 shadow-2xl ring-2 ring-amber-400/30"
+                    : "bg-white dark:bg-slate-900/80 border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
-                    <h3 className="text-base sm:text-lg font-black text-white">{ec.name}</h3>
-                    <span className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                      <MapPin className="w-3.5 h-3.5 text-amber-400" />
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">{ec.name}</h3>
+                    <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3.5 h-3.5 text-amber-500" />
                       {ec.municipality}
                     </span>
                   </div>
@@ -746,18 +770,18 @@ export const LandingPage: React.FC = () => {
                   </span>
                 </div>
 
-                <span className="text-xs font-semibold text-amber-400/90 block mb-4">
+                <span className="text-xs font-semibold text-amber-600 dark:text-amber-400/90 block mb-4">
                   {ec.activeDisasters}
                 </span>
 
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-xs">
-                    <span className="text-slate-400">Pamilyang Nabigyan ng Ayuda</span>
-                    <span className="text-white font-bold">{ec.disbursed} / {ec.capacity}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Pamilyang Nabigyan ng Ayuda</span>
+                    <span className="text-slate-900 dark:text-white font-bold">{ec.disbursed} / {ec.capacity}</span>
                   </div>
-                  <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-200 dark:border-transparent">
                     <motion.div
-                      className="bg-gradient-to-r from-sky-400 to-emerald-400 h-full rounded-full"
+                      className="bg-gradient-to-r from-sky-500 to-emerald-500 h-full rounded-full"
                       initial={{ width: 0 }}
                       whileInView={{ width: `${(ec.disbursed / ec.capacity) * 100}%` }}
                       viewport={{ once: true }}
@@ -766,9 +790,9 @@ export const LandingPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[0.68rem] text-slate-400 font-mono">
+                <div className="pt-3 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-[0.68rem] text-slate-500 dark:text-slate-400 font-mono">
                   <span>Contract: {ec.contractId.slice(0, 14)}...</span>
-                  <span className="text-emerald-400 font-bold">100% ZK Private</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% ZK Private</span>
                 </div>
               </motion.div>
             ))}

@@ -26,7 +26,7 @@ export const BentoFeatureGrid: React.FC<{
   const [duplicateSimulated, setDuplicateSimulated] = useState(false);
 
   return (
-    <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto overflow-hidden">
+    <section className="section-env-bento px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
         <motion.div
@@ -57,12 +57,12 @@ export const BentoFeatureGrid: React.FC<{
         >
           {t(
             "bentoSubtitle",
-            "Combining Zero-Knowledge cryptography on Midnight Network with institutional accountability for local governments."
+            "Pinagsasama ang Zero-Knowledge cryptography sa Midnight Network at institutional accountability para sa mga pamahalaang lokal."
           )}
         </motion.p>
       </div>
 
-      {/* 5-Tile Asymmetric Bento Grid */}
+      {/* 5-Tile Asymmetric Bento Grid with Structured 2D Diagrams */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 sm:gap-6">
         {/* ============================================================
             TILE 1: CLIENT-SIDE WASM PROVING ENGINE (Wide 7 cols)
@@ -72,8 +72,8 @@ export const BentoFeatureGrid: React.FC<{
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -6, scale: 1.01 }}
-          className="md:col-span-7 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
+          whileHover={{ y: -4 }}
+          className="md:col-span-7 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
         >
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4">
@@ -90,30 +90,40 @@ export const BentoFeatureGrid: React.FC<{
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
               {t(
                 "bentoTile1Desc",
-                "Your PhilSys National ID and 4-digit PIN are private mathematical witnesses. Proof synthesis occurs entirely in local phone memory (WASM). Zero personal data touches the internet."
+                "Ang PhilSys National ID at 4-digit PIN ay private mathematical witnesses. Ang proof synthesis ay 100% nagaganap sa lokal na memorya ng telepono (WASM). Walang sensitibong datos na lumalabas sa internet."
               )}
             </p>
           </div>
 
-          {/* Interactive Micro Pipeline Visualization */}
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-white/10 space-y-3 relative z-10">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-500 dark:text-slate-400 font-mono">Input: PhilSys ID + PIN</span>
-              <span className="text-amber-600 dark:text-amber-400 font-mono font-bold">Local WASM Circuit</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">Ledger Nullifier</span>
+          {/* Structured 2D Linear Proof Flow Diagram */}
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-white/10 space-y-3 relative z-10">
+            <div className="flex items-center justify-between text-[0.68rem] text-slate-500 dark:text-slate-400 font-mono font-semibold">
+              <span>1. Private Witness</span>
+              <span>2. Local Circuit</span>
+              <span>3. ZK-Proof (π)</span>
+              <span>4. Ledger State</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex-1 p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-sky-200 dark:border-sky-500/30 text-center font-mono text-[0.7rem] text-sky-700 dark:text-sky-300 font-bold truncate">
-                PSN-2024-••••-••••
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 items-center">
+              <div className="p-2 rounded-xl bg-white dark:bg-slate-900 border border-sky-200 dark:border-sky-500/30 text-center">
+                <span className="text-[0.62rem] text-slate-400 block">PhilSys ID</span>
+                <span className="font-mono text-[0.68rem] font-bold text-sky-700 dark:text-sky-300 truncate block">PSN-••••</span>
               </div>
-              <ArrowRight className="w-4 h-4 text-slate-400 shrink-0" />
-              <div className="flex-1 p-2.5 rounded-xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/40 text-center font-mono text-[0.7rem] text-amber-700 dark:text-amber-300 font-bold">
-                Poseidon Hash
+              <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/40 text-center">
+                <span className="text-[0.62rem] text-amber-600 dark:text-amber-400 block">WASM Prover</span>
+                <span className="font-mono text-[0.68rem] font-bold text-amber-700 dark:text-amber-300 block">1.18s</span>
               </div>
-              <ArrowRight className="w-4 h-4 text-slate-400 shrink-0" />
-              <div className="flex-1 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-400/40 text-center font-mono text-[0.7rem] text-emerald-700 dark:text-emerald-300 font-bold truncate">
-                0x7b2a...9c1d
+              <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/15 border border-indigo-200 dark:border-indigo-400/40 text-center">
+                <span className="text-[0.62rem] text-indigo-600 dark:text-indigo-400 block">SNARK Proof</span>
+                <span className="font-mono text-[0.68rem] font-bold text-indigo-700 dark:text-indigo-300 truncate block">π-valid</span>
               </div>
+              <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-400/40 text-center">
+                <span className="text-[0.62rem] text-emerald-600 dark:text-emerald-400 block">Midnight</span>
+                <span className="font-mono text-[0.68rem] font-bold text-emerald-700 dark:text-emerald-300 block">₱5,000</span>
+              </div>
+            </div>
+            <div className="pt-2 border-t border-slate-200 dark:border-white/10 flex items-center justify-between text-[0.65rem] text-slate-500 dark:text-slate-400">
+              <span>Poseidon Merkle Root Check: <strong className="text-emerald-600 dark:text-emerald-400">VERIFIED</strong></span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">0 Data Transmitted</span>
             </div>
           </div>
         </motion.div>
@@ -126,8 +136,8 @@ export const BentoFeatureGrid: React.FC<{
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -6, scale: 1.01 }}
-          className="md:col-span-5 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
+          whileHover={{ y: -4 }}
+          className="md:col-span-5 rounded-3xl p-6 sm:p-8 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
         >
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -141,43 +151,52 @@ export const BentoFeatureGrid: React.FC<{
                 onClick={() => setDuplicateSimulated(!duplicateSimulated)}
                 className="px-3 py-1 rounded-full text-[0.68rem] font-bold bg-amber-50 dark:bg-amber-400/20 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-400/30 border border-amber-200 dark:border-amber-400/40 transition-all flex items-center gap-1 shadow-sm"
               >
-                <span>{duplicateSimulated ? "Reset Test" : "Simulate Double Claim"}</span>
+                <span>{duplicateSimulated ? "Reset Test" : "Subukan ang Double Claim"}</span>
               </motion.button>
             </div>
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-2">
               {t("bentoTile2Title", "Anti-Ghost Nullifier Shield")}
             </h3>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               {t(
                 "bentoTile2Desc",
-                "Deterministic nullifiers prevent double-claiming mathematically. Even if a corrupt official re-enters your identity, the smart contract immediately rejects it."
+                "Pinipigilan ang dobleng pag-claim sa pamamagitan ng deterministic nullifiers: nullifier = Hash(leaf + contract). Kahit ipasok muli ng tiwaling opisyal, awtomatikong binabasura ng smart contract."
               )}
             </p>
           </div>
 
-          {/* Interactive Simulation Status Box */}
-          <motion.div
-            layout
-            className={`p-3.5 rounded-2xl border transition-all ${
-              duplicateSimulated
-                ? "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/40"
-                : "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/40"
-            }`}
-          >
-            <div className="flex items-center gap-2.5 text-xs font-bold">
-              {duplicateSimulated ? (
-                <>
-                  <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
-                  <span className="text-red-700 dark:text-red-300">COLLISION BLOCKED: Nullifier already spent!</span>
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span className="text-emerald-700 dark:text-emerald-300">UNIQUE NULLIFIER: 1st claim approved (₱5,000)</span>
-                </>
-              )}
+          {/* Structured 2D Dual-Attempt Status Comparison */}
+          <div className="space-y-2 relative z-10">
+            {/* Attempt 1 */}
+            <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 flex items-center justify-between text-xs">
+              <span className="font-semibold text-emerald-800 dark:text-emerald-300">Unang Pag-Claim (Claim A)</span>
+              <span className="font-mono text-[0.65rem] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-500/20 px-2 py-0.5 rounded">
+                ₱5,000 RELEASED
+              </span>
             </div>
-          </motion.div>
+
+            {/* Attempt 2 (Interactive) */}
+            <div className={`p-2.5 rounded-xl border transition-all text-xs ${
+              duplicateSimulated
+                ? "bg-red-50 dark:bg-red-500/15 border-red-200 dark:border-red-500/40"
+                : "bg-slate-50 dark:bg-slate-950/60 border-slate-200 dark:border-white/10"
+            }`}>
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-slate-700 dark:text-slate-300">
+                  {duplicateSimulated ? "Pangalawang Pag-Claim (Duplicate)" : "Subukang Mag-Claim Muli"}
+                </span>
+                {duplicateSimulated ? (
+                  <span className="font-mono text-[0.65rem] font-bold text-red-700 dark:text-red-400 bg-red-100 dark:bg-red-500/20 px-2 py-0.5 rounded flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" /> BLOCKED (SPENT)
+                  </span>
+                ) : (
+                  <span className="font-mono text-[0.65rem] text-slate-400">
+                    Pindutin ang button sa itaas
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* ============================================================
@@ -188,8 +207,8 @@ export const BentoFeatureGrid: React.FC<{
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -6, scale: 1.015 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-emerald-400/40 transition-colors"
+          whileHover={{ y: -4 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-emerald-400/40 transition-colors"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/15 border border-emerald-200 dark:border-emerald-400/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 shadow-sm">
@@ -201,22 +220,22 @@ export const BentoFeatureGrid: React.FC<{
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               {t(
                 "bentoTile3Desc",
-                "Requires multi-signature authorization from both the DRRM Officer and Municipal Treasurer before funds can be released."
+                "Kinakailangan ang multi-signature authorization mula sa DRRM Officer at Municipal Treasurer bago maipamahagi ang pondo alinsunod sa R.A. 10121."
               )}
             </p>
           </div>
 
           <div className="space-y-2 text-xs">
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 flex items-center justify-between">
               <span className="text-slate-700 dark:text-slate-300 font-medium">1. MDRRM Officer</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                <Check className="w-3.5 h-3.5" /> SEALED
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 font-mono text-[0.68rem]">
+                <Check className="w-3.5 h-3.5" /> AUTHORIZED
               </span>
             </div>
-            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 flex items-center justify-between">
               <span className="text-slate-700 dark:text-slate-300 font-medium">2. Municipal Treasurer</span>
-              <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                <Check className="w-3.5 h-3.5" /> SEALED
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 font-mono text-[0.68rem]">
+                <Check className="w-3.5 h-3.5" /> ESCROW RELEASED
               </span>
             </div>
           </div>
@@ -230,20 +249,20 @@ export const BentoFeatureGrid: React.FC<{
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -6, scale: 1.015 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
+          whileHover={{ y: -4 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-sky-400/40 transition-colors"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-sky-50 dark:bg-sky-500/15 border border-sky-200 dark:border-sky-400/30 flex items-center justify-center text-sky-600 dark:text-sky-400 mb-4 shadow-sm">
               <WifiOff className="w-5 h-5" />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">
-              {t("bentoTile4Title", "Disaster Resilience")}
+              {t("bentoTile4Title", "Offline Disaster Resilience")}
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               {t(
                 "bentoTile4Desc",
-                "Engineered for catastrophe zones with zero cellular signal. Draft proofs cache locally in IndexedDB and sync automatically when restored."
+                "Dinisenyo para sa evacuation centers na walang signal. Ang proof ay pansamantalang naka-cache sa IndexedDB at awtomatikong nagsi-sync kapag may koneksyon na."
               )}
             </p>
           </div>
@@ -252,45 +271,45 @@ export const BentoFeatureGrid: React.FC<{
             <QrCode className="w-8 h-8 text-sky-600 dark:text-sky-400 shrink-0" />
             <div>
               <span className="text-[0.65rem] font-bold text-sky-700 dark:text-sky-300 block uppercase">
-                Physical Slip Voucher
+                Offline QR Voucher Support
               </span>
               <span className="text-xs text-slate-600 dark:text-slate-300">
-                Printable QR fallback for checkpoint gates
+                Lokal na snapshot para sa checkpoint validation
               </span>
             </div>
           </div>
         </motion.div>
 
         {/* ============================================================
-            TILE 5: REAL-TIME PUBLIC COA TELEMETRY (4 cols)
+            TILE 5: REAL-TIME PUBLIC COA TELEMETRY & GAS DELEGATION (4 cols)
            ============================================================ */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          whileHover={{ y: -6, scale: 1.015 }}
-          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
+          whileHover={{ y: -4 }}
+          className="md:col-span-4 rounded-3xl p-6 sm:p-7 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-white/10 shadow-xl backdrop-blur-xl relative overflow-hidden glass-card flex flex-col justify-between hover:border-amber-400/40 transition-colors"
         >
           <div>
             <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-500/15 border border-amber-200 dark:border-amber-400/30 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4 shadow-sm">
               <FileSpreadsheet className="w-5 h-5" />
             </div>
             <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white mb-2">
-              {t("bentoTile5Title", "COA Audit Compliance")}
+              {t("bentoTile5Title", "COA Audit & Gas Delegation")}
             </h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
               {t(
                 "bentoTile5Desc",
-                "Complies with Philippine Republic Act 10121 and COA accounting circulars with 1-click verifiable CSV reports."
+                "Libre ang transaction fee (tDUST sponsored) para sa biktima. Bawat tranche ay may exportable CSV audit trail para sa COA Circular No. 2014-002."
               )}
             </p>
           </div>
 
-          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+          <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-white/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
-              <span className="text-xs font-bold text-slate-900 dark:text-white">Preprod Ledger</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-white">Citizen Gas = ₱0.00</span>
             </div>
             <span className="text-[0.65rem] font-mono text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-500/30">
               AUDIT CERTIFIED
