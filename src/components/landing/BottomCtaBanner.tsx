@@ -7,7 +7,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, ShieldCheck, Landmark, Sparkles } from "lucide-react";
-import CtaScene from "../3d/CtaScene";
 
 export const BottomCtaBanner: React.FC<{
   t: (key: string, fallback?: string) => string;
@@ -23,9 +22,6 @@ export const BottomCtaBanner: React.FC<{
         transition={{ duration: 0.6 }}
         className="relative rounded-3xl sm:rounded-[2.5rem] p-8 sm:p-14 bg-gradient-to-r from-amber-500/20 via-slate-900 to-sky-500/20 border-2 border-amber-400/40 shadow-2xl backdrop-blur-2xl overflow-hidden text-center glass-card"
       >
-        {/* Dedicated Section 3D Scene: Solidified Anti-Ghost Seal of Finality */}
-        <CtaScene className="opacity-75 dark:opacity-90" />
-
         {/* Background glow orb */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
 

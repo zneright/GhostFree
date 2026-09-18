@@ -39,7 +39,6 @@ import { HowItWorksTimeline } from "../components/landing/HowItWorksTimeline";
 import { ComparisonMatrix } from "../components/landing/ComparisonMatrix";
 import { CivilianFaqAccordion } from "../components/landing/CivilianFaqAccordion";
 import { BottomCtaBanner } from "../components/landing/BottomCtaBanner";
-import HeroScene from "../components/3d/HeroScene";
 import { useTranslation } from "../services/i18n.service";
 import { useVoiceAssistant } from "../services/voice.service";
 
@@ -392,9 +391,6 @@ export const LandingPage: React.FC = () => {
             SECTION 1: HERO SECTION WITH DISPLAY TYPOGRAPHY
            ======================================================== */}
         <section className="relative z-10 px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center overflow-hidden">
-          {/* Section 01 Dedicated 3D Environment: Sovereign Witness Core & Gyro Ring */}
-          <HeroScene className="opacity-75 dark:opacity-90" />
-
           {/* Radiant Announcement Chip */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}

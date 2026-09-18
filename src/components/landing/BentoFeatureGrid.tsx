@@ -19,7 +19,6 @@ import {
   AlertTriangle,
   Cpu,
 } from "lucide-react";
-import BentoScene from "../3d/BentoScene";
 
 export const BentoFeatureGrid: React.FC<{
   t: (key: string, fallback?: string) => string;
@@ -28,9 +27,6 @@ export const BentoFeatureGrid: React.FC<{
 
   return (
     <section className="relative z-10 px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto overflow-hidden">
-      {/* Dedicated Section 3D Scene: Merkle Tree & Cryptographic Lattice */}
-      <BentoScene className="opacity-70 dark:opacity-85" />
-
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
         <motion.div
