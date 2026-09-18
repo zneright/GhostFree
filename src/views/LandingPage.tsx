@@ -390,14 +390,14 @@ export const LandingPage: React.FC = () => {
         {/* ========================================================
             SECTION 1: HERO SECTION WITH DISPLAY TYPOGRAPHY
            ======================================================== */}
-        <section className="section-env-hero px-4 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 max-w-6xl mx-auto text-center rounded-3xl sm:rounded-[2.5rem] mb-8">
+        <section className="section-env-hero px-4 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-14 max-w-6xl mx-auto text-center rounded-3xl sm:rounded-[2.5rem] mb-8">
           {/* Radiant Announcement Chip */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             whileHover={{ scale: 1.03 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-400/30 shadow-md dark:shadow-xl mb-6 sm:mb-8 backdrop-blur-md cursor-default"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-50 dark:bg-slate-900/90 border border-amber-200 dark:border-amber-400/30 shadow-md dark:shadow-xl mb-4 sm:mb-6 backdrop-blur-md cursor-default"
           >
             <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
             <span className="text-xs sm:text-sm font-bold text-amber-800 dark:text-amber-300">
@@ -410,7 +410,7 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 dark:text-white leading-[1.06] tracking-tight max-w-5xl mx-auto mb-6"
+            className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white leading-[1.08] tracking-tight max-w-5xl mx-auto mb-4 sm:mb-5"
           >
             {t("heroHeadline1", "Safe Calamity Aid.")}{" "}
             <span className="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 dark:from-amber-400 dark:via-amber-300 dark:to-amber-200 bg-clip-text text-transparent">
@@ -424,7 +424,7 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed font-normal"
+            className="text-sm sm:text-base text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-6 sm:mb-7 leading-relaxed font-normal"
           >
             {t(
               "heroSubtitleText",
@@ -437,7 +437,7 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-8"
+            className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-5"
           >
             <motion.button
               whileHover={{ scale: 1.03, y: -2 }}
@@ -496,7 +496,7 @@ export const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="mt-8 mb-10 sm:mb-12 max-w-xl mx-auto"
+            className="mt-5 mb-7 sm:mb-8 max-w-xl mx-auto"
           >
             <div className="p-2 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-white/10 shadow-lg dark:shadow-xl backdrop-blur-xl flex items-center gap-2">
               <div className="relative flex-1">

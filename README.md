@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="public/x-banner.jpg" alt="GhostFree — Stop the Ghosts. Protect the People." width="100%" />
-</p>
-
 # GhostFree — Decentralized Privacy-First Calamity Aid & Counter Contract
 
 [![CI](https://github.com/zneright/GhostFree/actions/workflows/ci.yml/badge.svg)](https://github.com/zneright/GhostFree/actions/workflows/ci.yml)
