@@ -4,7 +4,7 @@
 [![Network](https://img.shields.io/badge/Network-Midnight_Preprod-3A0CA3?style=flat-square&logo=polkadot&logoColor=white)](https://midnight.network)
 [![Smart Contract](https://img.shields.io/badge/Contract-Compact_ZK-10B981?style=flat-square&logo=webassembly&logoColor=white)](https://docs.midnight.network)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-44%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
+[![Tests](https://img.shields.io/badge/Tests-49%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
 [![UI Release](https://img.shields.io/badge/UI-v2.0_Enterprise_Civic--Tech-0EA5E9?style=flat-square)](docs/FEEDBACK.md)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
@@ -23,12 +23,14 @@
 - **X (Twitter):** [@GhostFreepwhq](https://x.com/GhostFreepwhq)
 - **Preprod Pilot Users:** [USERS.md](USERS.md) (75 unique Midnight Preprod wallet addresses)
 - **Feedback & Traceability:** [docs/FEEDBACK.md](docs/FEEDBACK.md) (Level 5 User Validation Report)
+- **Feedback Dataset (CSV/Sheets):** [GhostFree_User_Feedback.csv](GhostFree_User_Feedback.csv)
 
 | Interface / Asset | URL | Description |
 |---|---|---|
 | 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
 | 👥 **Preprod User Registry** | [USERS.md](USERS.md) | 75 verified Midnight Preprod wallet addresses across 3 user pilot cohorts |
 | 📋 **Feedback Report** | [docs/FEEDBACK.md](docs/FEEDBACK.md) | Level 5 user validation report, CSAT analytics, and feedback-driven changelog |
+| 📊 **Feedback Dataset (CSV)** | [GhostFree_User_Feedback.csv](GhostFree_User_Feedback.csv) | User feedback sheet (Name, Email, Wallet address, TX Hash, Feedback) |
 | 📸 **Visual Showcase** | [docs/screenshots/](docs/screenshots/) | High-resolution UI walkthrough of the v2.0 civic-tech interface |
 
 ---
