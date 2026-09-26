@@ -28,7 +28,7 @@ import {
 
 export const AdminLoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { signIn, signUp, user, profile, loading, authError, clearAuthError } = useAuth();
+  const { signIn, signUp, resetPassword, user, profile, loading, authError, clearAuthError } = useAuth();
 
   const [mode, setMode] = useState<"login" | "register">("login");
 
@@ -42,6 +42,12 @@ export const AdminLoginPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+
+  // Forgot password state
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetSending, setResetSending] = useState(false);
+  const [resetMessage, setResetMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -136,6 +142,28 @@ export const AdminLoginPage: React.FC = () => {
       }
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handlePasswordReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetEmail.trim()) {
+      setResetMessage({ type: "error", text: "Please enter your official email address." });
+      return;
+    }
+    setResetSending(true);
+    setResetMessage(null);
+    try {
+      await resetPassword(resetEmail.trim());
+      setResetMessage({
+        type: "success",
+        text: `Password reset email dispatched to ${resetEmail.trim()}. Please check your inbox.`,
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to send reset link.";
+      setResetMessage({ type: "error", text: msg });
+    } finally {
+      setResetSending(false);
     }
   };
 
@@ -326,6 +354,23 @@ export const AdminLoginPage: React.FC = () => {
             />
           </div>
 
+          {mode === "login" && (
+            <div className="flex justify-end -mt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForgotPassword(true);
+                  setResetEmail(email);
+                  setResetMessage(null);
+                }}
+                className="text-xs text-sky-400 hover:text-sky-300 font-medium transition-colors"
+                id="forgot-password-trigger"
+              >
+                Forgot your password?
+              </button>
+            </div>
+          )}
+
           <button
             type="submit"
             disabled={submitting}
@@ -391,6 +436,88 @@ export const AdminLoginPage: React.FC = () => {
           </span>
           <span className="text-[0.65rem] text-slate-500">R.A. 10173 Protected</span>
         </div>
+
+        {/* Forgot Password Modal */}
+        {showForgotPassword && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <div className="relative w-full max-w-md p-6 sm:p-7 rounded-3xl bg-slate-900 border border-white/20 shadow-2xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+                    <Mail className="w-4 h-4 text-sky-400" />
+                  </div>
+                  <h3 className="text-base font-bold text-white">Reset Official Password</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowForgotPassword(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Enter your registered government email address. We will send you an authorized link to securely reset your credentials.
+              </p>
+
+              {resetMessage && (
+                <div
+                  className={`p-3 rounded-xl text-xs flex items-start gap-2 ${
+                    resetMessage.type === "success"
+                      ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-200"
+                      : "bg-rose-500/15 border border-rose-500/30 text-rose-200"
+                  }`}
+                >
+                  {resetMessage.type === "success" ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                  )}
+                  <span>{resetMessage.text}</span>
+                </div>
+              )}
+
+              <form onSubmit={handlePasswordReset} className="space-y-3.5">
+                <div>
+                  <label htmlFor="reset-email-input" className="text-xs font-semibold text-slate-300 block mb-1">
+                    Official Email Address
+                  </label>
+                  <input
+                    id="reset-email-input"
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    placeholder="official@lgu.gov.ph"
+                    required
+                    className="input-civic"
+                  />
+                </div>
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotPassword(false)}
+                    className="flex-1 py-2.5 px-4 rounded-xl border border-white/10 text-xs font-semibold text-slate-300 hover:bg-white/5 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={resetSending}
+                    className="flex-1 btn-civic-glow py-2.5 px-4 rounded-xl text-xs font-bold text-white flex items-center justify-center gap-1.5 shadow-lg"
+                  >
+                    {resetSending ? (
+                      <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      "Send Reset Link"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   </Layout>

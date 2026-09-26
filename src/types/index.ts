@@ -180,3 +180,30 @@ export interface ClaimStatusEvent {
   operationName: string;
   amount?: number;
 }
+
+/** Live transaction status for the tx feed */
+export type TxStatus = 'pending' | 'proving' | 'submitting' | 'confirmed' | 'failed' | 'retrying';
+
+/** A single transaction record tracked client-side */
+export interface TransactionRecord {
+  id: string;
+  txHash?: string;
+  circuitName: string;
+  status: TxStatus;
+  nullifierSnippet?: string;
+  amount?: number;
+  errorMessage?: string;
+  retryCount: number;
+  startedAt: string;
+  confirmedAt?: string;
+  blockHeight?: number;
+}
+
+/** Toast notification payload for the TxToastManager */
+export interface TxToastNotification {
+  id: string;
+  status: TxStatus;
+  message: string;
+  txHash?: string;
+  autoDismissMs?: number;
+}

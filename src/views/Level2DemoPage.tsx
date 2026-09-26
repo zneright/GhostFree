@@ -91,15 +91,20 @@ export const Level2DemoPage: React.FC = () => {
                 <ExternalLink className="w-3 h-3" />
               </a>
             </div>
-            <div className="break-all">
-              <span className="text-slate-500">Contract Address: </span>
-              <span className="text-white select-all">
-                {MIDNIGHT_CONFIG.contractAddress || "02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43"}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 break-all">
+              <div>
+                <span className="text-slate-500">Contract Address: </span>
+                <span className="text-white font-mono text-xs select-all">
+                  {MIDNIGHT_CONFIG.contractAddress}
+                </span>
+              </div>
+              <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/30 w-fit">
+                Preprod Sandbox Mode
               </span>
             </div>
             <div>
               <span className="text-slate-500">Network: </span>
-              <span className="text-civic-sky uppercase">Midnight Preprod</span>
+              <span className="text-civic-sky uppercase font-medium">Midnight Preprod Testnet</span>
             </div>
           </div>
         </main>

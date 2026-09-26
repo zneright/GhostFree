@@ -1788,6 +1788,40 @@ body.xlarge-text input {
   min-height: 56px !important;
 }
 
+/* ============================================
+   17. Transaction Toast Animations
+   ============================================ */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes confettiBurst {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  80%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translate(var(--tx, 40px), var(--ty, -60px)) scale(0.3); }
+}
+
+/* Scrollbar-hide utility for TX feed */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
 
 
 

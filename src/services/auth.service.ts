@@ -8,6 +8,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
@@ -137,6 +138,24 @@ export const authService = {
       email: userCredential.user.email || email,
       lastLoginAt: new Date().toISOString(),
     };
+  },
+
+  /**
+   * Send a password reset email for an LGU admin account.
+   */
+  async resetPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+    } catch (firebaseErr: unknown) {
+      const err = firebaseErr as { code?: string; message?: string };
+      if (err.code === "auth/user-not-found") {
+        throw new Error("No account found with this email address.");
+      }
+      if (err.code === "auth/invalid-email") {
+        throw new Error("Please enter a valid email address.");
+      }
+      throw new Error(err.message || "Failed to send password reset email. Please try again.");
+    }
   },
 
   /**

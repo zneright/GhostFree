@@ -3,7 +3,7 @@
 // CSV Upload + Merkle Root + Deploy Relief Fund
 // ============================================
 
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useMidnightWallet } from "../../contexts/MidnightWalletContext";
@@ -22,8 +22,12 @@ import {
 import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } from "../../types";
 import TransparencyCard from "../../components/TransparencyCard";
 import TrancheQuorumModal from "../../components/TrancheQuorumModal";
+import OperationsHistoryTable from "../../components/admin/OperationsHistoryTable";
+import MidnightDeploymentGuide from "../../components/admin/MidnightDeploymentGuide";
+import LiveTransactionFeed from "../../components/admin/LiveTransactionFeed";
 import GhostFreeLogo from "../../components/GhostFreeLogo";
 import Layout from "../../components/Layout";
+import { useTransactionFeed } from "../../contexts/TransactionContext";
 import {
   Upload,
   FileSpreadsheet,
@@ -54,6 +58,7 @@ import {
   ExternalLink,
   Lock,
   Sparkles,
+  Activity,
 } from "lucide-react";
 
 const AdminDashboard: React.FC = () => {
@@ -82,6 +87,13 @@ const AdminDashboard: React.FC = () => {
   const [deployResult, setDeployResult] = useState<string | null>(null);
   const [deployError, setDeployError] = useState<string | null>(null);
 
+  // Active Tab View
+  type DashboardTab = "roster" | "history" | "quorum" | "feedback" | "deployment" | "transactions";
+  const [activeTab, setActiveTab] = useState<DashboardTab>("roster");
+
+  // Live TX feed counts
+  const { pendingCount: txPendingCount } = useTransactionFeed();
+
   // History State
   const [operations, setOperations] = useState<ReliefOperation[]>([]);
   const [loadingOps, setLoadingOps] = useState(false);
@@ -106,6 +118,10 @@ const AdminDashboard: React.FC = () => {
   const pendingQuorumCount = govOperations.filter(
     (op) => op.quorumStatus !== "fully_authorized"
   ).length;
+
+  useEffect(() => {
+    loadHistory();
+  }, [profile]);
 
   const handleSignOperation = (e: React.FormEvent) => {
     e.preventDefault();
@@ -330,133 +346,215 @@ const AdminDashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Title */}
-        <div className="mb-8 flex items-center justify-between">
+        {/* Executive Header & Quick Actions */}
+        <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
               <Landmark className="w-6 h-6 text-civic-sky" />
-              Relief Fund Operations
+              LGU Calamity Operations Hub
             </h2>
             <p className="text-shield-muted text-sm mt-1">
-              Upload eligibility lists, compute Merkle roots, and deploy funds on Midnight
+              Beneficiary verification, Merkle root generation, and zero-knowledge fund dispersal on Midnight.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button
-              onClick={() => setShowQuorum(!showQuorum)}
-              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
-                showQuorum ? "btn-civic-emerald" : "btn-secondary"
-              }`}
-            >
-              <Key className="w-4 h-4 text-accent-success" />
-              <span>Dual-Key Quorum</span>
-              {pendingQuorumCount > 0 && (
-                <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-accent-warning text-black font-bold">
-                  {pendingQuorumCount}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setShowFeedback(!showFeedback)}
-              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
-                showFeedback ? "btn-civic-gold" : "btn-secondary"
-              }`}
-            >
-              <MessageSquarePlus className="w-4 h-4 text-accent-gold" />
-              <span>Feedback & Insights</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[0.65rem] bg-accent-gold/20 text-accent-gold font-bold">
-                {feedbackList.length}
-              </span>
-            </button>
-            <button
               onClick={() => setShowTrancheSimulator(true)}
-              className="btn-civic btn-civic-gold text-xs sm:text-sm flex items-center gap-1.5 shadow-md"
+              className="btn-civic btn-civic-gold text-xs font-bold flex items-center gap-1.5 shadow-md"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Tranche Quorum</span>
+              <span>Simulate Emergency Tranche</span>
             </button>
             <button
               onClick={() => navigate("/transparency")}
-              className="btn-civic btn-secondary text-xs sm:text-sm flex items-center gap-1.5"
+              className="btn-civic btn-secondary text-xs font-bold flex items-center gap-1.5"
             >
               <Landmark className="w-4 h-4 text-civic-sky" />
-              <span>Public Treasury</span>
+              <span>Public Treasury Explorer</span>
               <ExternalLink className="w-3 h-3 text-white/40" />
-            </button>
-            <button
-              onClick={() => {
-                setShowHistory(!showHistory);
-                if (!showHistory) loadHistory();
-              }}
-              className={`btn-civic text-xs sm:text-sm flex items-center gap-1.5 ${
-                showHistory ? "btn-primary" : "btn-secondary"
-              }`}
-            >
-              <History className="w-4 h-4" />
-              {showHistory ? "Hide History" : "View History"}
             </button>
           </div>
         </div>
+
+        {/* Executive KPI Cards */}
+        {(() => {
+          const allOps = operations.length > 0 ? operations : govOperations;
+          const totalBeneficiaries = allOps.reduce((sum, op) => sum + (op.leafCount || 0), 0);
+          const totalDisbursed = allOps.reduce(
+            (sum, op) => sum + (op.claimedCount || 0) * (op.perClaimAmount || 0),
+            0
+          );
+          const totalAllocated = allOps.reduce((sum, op) => sum + (op.totalFund || 0), 0);
+          const quorumSealedCount = allOps.filter((op) => op.quorumStatus === "fully_authorized").length;
+
+          return (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[0.68rem] font-bold text-slate-400 uppercase tracking-wider">
+                    Beneficiaries Enrolled
+                  </span>
+                  <div className="w-7 h-7 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+                    <Users className="w-3.5 h-3.5 text-sky-400" />
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-white tracking-tight">
+                  {totalBeneficiaries.toLocaleString()}
+                </div>
+                <span className="text-[0.65rem] text-slate-400 block mt-1">
+                  In verified eligibility rosters
+                </span>
+              </div>
+
+              <div className="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[0.68rem] font-bold text-slate-400 uppercase tracking-wider">
+                    Disbursed to Victims
+                  </span>
+                  <div className="w-7 h-7 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <CircleDollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-emerald-400 tracking-tight">
+                  {totalDisbursed.toLocaleString()} <span className="text-xs text-emerald-300">tNIGHT</span>
+                </div>
+                <span className="text-[0.65rem] text-emerald-400/80 block mt-1">
+                  Settled with ZK privacy
+                </span>
+              </div>
+
+              <div className="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[0.68rem] font-bold text-slate-400 uppercase tracking-wider">
+                    Escrow Reserve Fund
+                  </span>
+                  <div className="w-7 h-7 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Lock className="w-3.5 h-3.5 text-amber-400" />
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-amber-300 tracking-tight">
+                  {totalAllocated.toLocaleString()} <span className="text-xs text-amber-400">tNIGHT</span>
+                </div>
+                <span className="text-[0.65rem] text-slate-400 block mt-1">
+                  Guaranteed in escrow
+                </span>
+              </div>
+
+              <div className="glass-card p-4 sm:p-5 rounded-2xl border border-white/10 bg-slate-900/70 backdrop-blur-md">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[0.68rem] font-bold text-slate-400 uppercase tracking-wider">
+                    Statutory Quorum
+                  </span>
+                  <div className="w-7 h-7 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                    <Key className="w-3.5 h-3.5 text-purple-400" />
+                  </div>
+                </div>
+                <div className="text-2xl font-black text-white tracking-tight">
+                  {quorumSealedCount} <span className="text-xs font-normal text-slate-400">/ {allOps.length} Sealed</span>
+                </div>
+                <span className="text-[0.65rem] text-slate-400 block mt-1">
+                  DRRM & Municipal Treasurer
+                </span>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Network Transparency Card */}
         <div className="mb-6">
           <TransparencyCard />
         </div>
 
-        {/* Operation History Panel */}
-        {showHistory && (
-          <div className="glass-card p-6 mb-8 animate-fade-in-down">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-semibold flex items-center gap-2">
-                <History className="w-4 h-4 text-civic-sky" />
-                Past Operations
-              </h3>
-              <button onClick={loadHistory} disabled={loadingOps} className="btn-civic btn-ghost text-xs">
-                <RefreshCw className={`w-3.5 h-3.5 ${loadingOps ? "animate-spin" : ""}`} />
-              </button>
-            </div>
-            {loadingOps ? (
-              <div className="flex items-center gap-2 text-shield-muted text-sm py-4">
-                <Loader2 className="w-4 h-4 animate-spin" /> Loading...
-              </div>
-            ) : operations.length === 0 ? (
-              <p className="text-shield-muted text-sm py-4">No operations found.</p>
-            ) : (
-              <div className="space-y-2 max-h-64 overflow-y-auto hide-scrollbar">
-                {operations.map((op) => (
-                  <div
-                    key={op.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-shield-dark/60 border border-shield-glass/20"
-                  >
-                    <div>
-                      <p className="text-white text-sm font-medium">{op.name}</p>
-                      <p className="text-shield-muted text-xs">
-                        {op.leafCount} beneficiaries · {op.claimedCount} claimed ·{" "}
-                        {new Date(op.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <span
-                      className={`badge ${
-                        op.status === "active"
-                          ? "badge-success"
-                          : op.status === "completed"
-                          ? "badge-info"
-                          : op.status === "failed"
-                          ? "badge-danger"
-                          : "badge-warning"
-                      }`}
-                    >
-                      {op.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
+        {/* Navigation Tabs Bar */}
+        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-950/80 border border-white/10 overflow-x-auto hide-scrollbar mb-6">
+          <button
+            onClick={() => setActiveTab("roster")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "roster"
+                ? "bg-sky-500 text-slate-950 shadow-md shadow-sky-500/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Upload className="w-3.5 h-3.5" />
+            <span>Create Operation & Roster</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("history")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "history"
+                ? "bg-sky-500 text-slate-950 shadow-md shadow-sky-500/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <History className="w-3.5 h-3.5" />
+            <span>Operations History ({(operations.length > 0 ? operations : govOperations).length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("quorum")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "quorum"
+                ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Key className="w-3.5 h-3.5" />
+            <span>Dual-Key Quorum</span>
+            {pendingQuorumCount > 0 && (
+              <span className="px-1.5 py-0.2 rounded-full text-[0.62rem] bg-amber-400 text-slate-950 font-black">
+                {pendingQuorumCount}
+              </span>
             )}
-          </div>
-        )}
+          </button>
+
+          <button
+            onClick={() => setActiveTab("feedback")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "feedback"
+                ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-500/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <MessageSquarePlus className="w-3.5 h-3.5" />
+            <span>Citizen Feedback ({feedbackList.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("deployment")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "deployment"
+                ? "bg-purple-500 text-white shadow-md shadow-purple-500/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Rocket className="w-3.5 h-3.5" />
+            <span>Midnight Deployment Guide</span>
+            <span className="text-[0.6rem] px-2 py-0.5 rounded-full bg-white/20 text-white font-semibold">
+              Preprod
+            </span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab("transactions")}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+              activeTab === "transactions"
+                ? "bg-sky-600 text-white shadow-md shadow-sky-600/30"
+                : "text-slate-400 hover:text-white"
+            }`}
+          >
+            <Activity className="w-3.5 h-3.5" />
+            <span>Live TX Feed</span>
+            {txPendingCount > 0 && (
+              <span className="px-1.5 rounded-full text-[0.62rem] bg-amber-400 text-slate-950 font-black animate-pulse">
+                {txPendingCount}
+              </span>
+            )}
+          </button>
+        </div>
 
         {/* Citizen Feedback & Insights Hub */}
-        {showFeedback && (
+        {activeTab === "feedback" && (
           <div className="glass-card-premium p-6 mb-8 animate-fade-in-down border border-civic-trust/30">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
               <div>
@@ -617,7 +715,7 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {/* Dual-Key Municipal Quorum Panel */}
-        {showQuorum && (
+        {activeTab === "quorum" && (
           <div className="glass-card-premium p-6 mb-8 animate-fade-in-down border border-accent-success/30">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
               <div>
@@ -825,10 +923,11 @@ const AdminDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Three Panel Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Panel 1: CSV Upload */}
-          <div className="glass-card p-6">
+        {/* Three Panel Layout (Create Operation & Roster) */}
+        {activeTab === "roster" && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Panel 1: CSV Upload */}
+            <div className="glass-card p-6">
             <h3 className="text-white font-semibold text-lg mb-1 flex items-center gap-2">
               <Upload className="w-5 h-5 text-civic-sky" />
               Upload Eligibility
@@ -1110,7 +1209,33 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
+      )}
+
+      {/* Operations History & Audit Tab */}
+      {activeTab === "history" && (
+        <div className="animate-fade-in-down">
+          <OperationsHistoryTable
+            operations={operations.length > 0 ? operations : govOperations}
+            loading={loadingOps}
+            onRefresh={loadHistory}
+          />
+        </div>
+      )}
+
+      {/* Midnight Deployment Guide & Assistant Tab */}
+      {activeTab === "deployment" && (
+        <div className="animate-fade-in-down">
+          <MidnightDeploymentGuide />
+        </div>
+      )}
+
+      {/* Live Transaction Feed Tab */}
+      {activeTab === "transactions" && (
+        <div className="animate-fade-in-down">
+          <LiveTransactionFeed />
+        </div>
+      )}
+    </main>
 
       {/* Emergency Tranche Quorum Simulator Modal */}
       <TrancheQuorumModal

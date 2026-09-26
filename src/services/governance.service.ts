@@ -4,6 +4,7 @@
 // Complies with Philippine R.A. 10121 & COA Circulars
 // ============================================
 
+import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
 import type {
   ReliefOperation,
   DualKeyApproval,
@@ -30,7 +31,7 @@ export const SEED_OPERATIONS: ReliefOperation[] = [
     treeDepth: 6,
     totalFund: 250000,
     perClaimAmount: 5000,
-    contractAddress: "02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43",
+    contractAddress: MIDNIGHT_CONFIG.contractAddress,
     status: "active",
     claimedCount: 23,
     createdAt: "2026-09-08T08:00:00Z",

@@ -25,6 +25,7 @@ interface AuthContextType {
     province?: string;
   }) => Promise<AdminProfile>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   clearAuthError: () => void;
 }
 
@@ -120,6 +121,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const resetPassword = async (email: string) => {
+    setAuthError(null);
+    try {
+      await authService.resetPassword(email);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to send reset email.";
+      setAuthError(msg);
+      throw err;
+    }
+  };
+
   const clearAuthError = () => setAuthError(null);
 
   const isLGUAdmin = !!(
@@ -139,6 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signIn,
         signUp,
         signOut,
+        resetPassword,
         clearAuthError,
       }}
     >

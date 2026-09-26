@@ -14,11 +14,12 @@ import {
   Lock,
   Landmark,
 } from "lucide-react";
-import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
+import { MIDNIGHT_CONFIG, getContractDeploymentStatus } from "../configuration/midnight.config";
 
 export const TransparencyCard: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const contractAddress = MIDNIGHT_CONFIG.contractAddress;
+  const status = getContractDeploymentStatus(contractAddress);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(contractAddress);
@@ -38,15 +39,25 @@ export const TransparencyCard: React.FC = () => {
               Preprod Settlement & Protocol Transparency
             </h4>
             <p className="text-[0.7rem] text-white/50">
-              Verifiable on Midnight Network Testnet
+              Midnight Network Testnet (Preprod)
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-bold bg-accent-success/15 text-accent-success border border-accent-success/30">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent-success animate-pulse" />
-            PREPROD LIVE
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.65rem] font-bold ${
+              status.isDeployed
+                ? "bg-accent-success/15 text-accent-success border border-accent-success/30"
+                : "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+            }`}
+          >
+            <span
+              className={`w-1.5 h-1.5 rounded-full ${
+                status.isDeployed ? "bg-accent-success animate-pulse" : "bg-amber-400"
+              }`}
+            />
+            {status.isDeployed ? "PREPROD ON-CHAIN" : "PREPROD SANDBOX"}
           </span>
           <span className="text-[0.65rem] text-white/40 font-mono">
             Chain ID: 4123
