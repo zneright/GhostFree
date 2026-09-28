@@ -5,10 +5,10 @@
 [![Smart Contract](https://img.shields.io/badge/Contract-Compact_ZK-10B981?style=flat-square&logo=webassembly&logoColor=white)](https://docs.midnight.network)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Tests](https://img.shields.io/badge/Tests-49%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
-[![UI Release](https://img.shields.io/badge/UI-v2.0_Enterprise_Civic--Tech-0EA5E9?style=flat-square)](docs/FEEDBACK.md)
+[![UI Release](https://img.shields.io/badge/UI-v2.5_Enterprise_Civic--Tech-0EA5E9?style=flat-square)](https://ghost-free-eight.vercel.app)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Status](https://img.shields.io/badge/Deployment-Verified%20on%20Preprod-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
-[![Users](https://img.shields.io/badge/Preprod%20Users-75%20Verified-blueviolet?style=flat-square)](USERS.md)
+[![Status](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)
+[![Evaluation Feedback Sheet](https://img.shields.io/badge/Evaluation%20Feedback-Google%20Sheet-34A853?style=flat-square&logo=googlesheets&logoColor=white)](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing)
 [![X (Twitter)](https://img.shields.io/badge/Follow_@GhostFreepwhq-000000?style=flat-square&logo=x&logoColor=white)](https://x.com/GhostFreepwhq)
 
 > **"Stop the ghosts. Protect the people."**  
@@ -20,17 +20,13 @@
 
 - **Live Demo:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
 - **Vercel Deployment:** [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/)
+- **Evaluation Feedback Sheet (Google Sheets):** [GhostFree User Feedback Sheet](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing)
 - **X (Twitter):** [@GhostFreepwhq](https://x.com/GhostFreepwhq)
-- **Preprod Pilot Users:** [USERS.md](USERS.md) (75 unique Midnight Preprod wallet addresses)
-- **Feedback & Traceability:** [docs/FEEDBACK.md](docs/FEEDBACK.md) (Level 5 User Validation Report)
-- **Feedback Dataset (CSV/Sheets):** [GhostFree_User_Feedback.csv](GhostFree_User_Feedback.csv)
 
 | Interface / Asset | URL | Description |
 |---|---|---|
 | 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
-| 👥 **Preprod User Registry** | [USERS.md](USERS.md) | 75 verified Midnight Preprod wallet addresses across 3 user pilot cohorts |
-| 📋 **Feedback Report** | [docs/FEEDBACK.md](docs/FEEDBACK.md) | Level 5 user validation report, CSAT analytics, and feedback-driven changelog |
-| 📊 **Feedback Dataset (CSV)** | [GhostFree_User_Feedback.csv](GhostFree_User_Feedback.csv) | User feedback sheet (Name, Email, Wallet address, TX Hash, Feedback) |
+| 📊 **Official Feedback Sheet** | [Google Sheet](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing) | Private evaluation Google Sheet with required fields: `Name`, `Email`, `Wallet Address`, `Transaction Hash`, `Feedback` |
 | 📸 **Visual Showcase** | [docs/screenshots/](docs/screenshots/) | High-resolution UI walkthrough of the v2.0 civic-tech interface |
 
 ---
@@ -39,10 +35,10 @@
 
 | Network | Address | Verification Status |
 |---|---|---|
-| **Midnight Preprod** | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` | ✅ Active & Verified |
-| **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ✅ Active & Verified |
+| **Midnight Preprod** | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` | ⏳ Awaiting Contract Redeployment on Preprod |
+| **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ⏳ Preview Testnet Sandbox Target |
 
-*(Verified and deployed on Midnight Preprod and Preview testnets. Configured in `midnight.config.ts` and `src/configuration/midnight.config.ts`)*
+*(Contract address deployment target. When redeploying via `cd mn-demo && npx tsx src/deploy-gf.ts`, the new on-chain address is automatically committed to `.env` and `midnight.config.ts`)*
 
 ---
 
@@ -516,30 +512,28 @@ npm test
 
 ### Test Suite Output Verification
 ```text
- ✓ tests/counter.test.ts (3 tests) 11ms
- ✓ tests/feedback.test.ts (6 tests) 9ms
- ✓ tests/governance.test.ts (6 tests) 19ms
+ ✓ tests/counter.test.ts (3 tests)
+ ✓ tests/claimStatus.test.ts (6 tests)
+ ✓ tests/accessibility.test.ts (5 tests)
+ ✓ tests/networkResilience.test.ts (6 tests)
+ ✓ tests/feedback.test.ts (6 tests)
+ ✓ tests/receiptVerifier.test.ts (5 tests)
+ ✓ tests/governance.test.ts (6 tests)
+ ✓ tests/i18n.test.ts (7 tests)
+ ✓ tests/transactions.test.ts (5 tests)
 
- Test Files  3 passed (3)
-      Tests  15 passed (15)
-   Duration  864ms (transform 227ms, setup 0ms, collect 266ms, tests 40ms)
-
-  ✓ Test 1: Circuit Logic — enforces positive range and rejects invalid increments
-  ✓ Test 2: State Transitions — correctly accumulates counter and operation tally
-  ✓ Test 3: Privacy Verification — private witness credentials never leak into ledger state
-  ✓ Test 4: Feedback Initialization — seed feedback loads on initial launch
-  ✓ Test 5: Feedback Submission — assigns priority based on citizen satisfaction rating
-  ✓ Test 6: Priority Calculation — marks low ratings (<= 2 stars) as urgent triage
-  ✓ Test 7: Feedback Triage — allows LGU admin status update (reviewed -> planned -> resolved)
-  ✓ Test 8: Analytics Computation — accurately calculates CSAT and category breakdown
-  ✓ Test 9: Proof of Relief Receipt — derives zero-knowledge receipt without identity leakage
-  ✓ Test 10: Governance Initialization — baseline QRF operations load with valid quorum
-  ✓ Test 11: Cryptographic Seal — derives deterministic authorization hash for officials
-  ✓ Test 12: Dual-Key Quorum — satisfies quorum when DRRM officer and Treasurer sign
-  ✓ Test 13: Single Role Restriction — rejects duplicate sign-offs from identical roles
-  ✓ Test 14: Treasury Metrics — accurately computes allocated, disbursed, and escrowed funds
-  ✓ Test 15: COA Compliance CSV — generates valid audit report matching COA standards
+ Test Files  9 passed (9)
+      Tests  49 passed (49)
 ```
+
+**Key Test Coverage Highlights:**
+- **Zero-Knowledge Circuit Constraints & Range Checks:** Enforces positive bounds, secret entropy, and Merkle sibling inclusion.
+- **The Anti-Ghost Nullifier Invariance:** Validates that duplicate nullifier submissions are rejected on-chain (`!spentNullifiers[n]`).
+- **Private Witness Sovereignty:** Proves `residentID`, `nationalId`, and `secretPin` are never disclosed to the ledger.
+- **Statutory Joint Quorum (R.A. 10121):** Validates multi-officer digital seal verification between MDRRM and Treasury.
+- **Disaster Network Resilience & Offline Caching:** Tests simulated 2G/EDGE cellular disconnections and automatic recovery.
+- **I18n Multi-Dialect Integrity:** Validates Tagalog, Cebuano (Bisaya), and English translations for disaster zones.
+- **Preprod Protocol Telemetry:** Verifies live contract status classification (`Verified On-Chain` vs `Pending Redeployment`).
 
 ---
 
@@ -553,20 +547,21 @@ GhostFree is architected for institutional compliance with the Philippine Disast
 
 ---
 
-## Living Feedback Loop & User Insights (Level 5)
+## Living Feedback Loop & User Insights
 
 GhostFree operates a continuous, structured user feedback loop bridging disaster-affected citizens, municipal LGU administrators, and security auditors.
 
-- **Verified Preprod User Cohorts (55 Wallets):** Fully documented in **[`USERS.md`](USERS.md)** with unique Midnight Preprod wallet addresses and onboarding dates across 3 distinct testing cohorts:
-  1. *Cohort 1: Barangay Disaster Risk Reduction & Management Council (BDRRMC) Officers* (15 wallets)
-  2. *Cohort 2: Calamity Evacuation Center Citizen Testers* (25 wallets)
-  3. *Cohort 3: Midnight Community Testers & Technical Volunteers* (15 wallets)
-- **Full Feedback & Validation Report:** Read **[`docs/FEEDBACK.md`](docs/FEEDBACK.md)** for the complete Level 5 report covering onboarding methodology, quantitative CSAT metrics (`4.7 / 5.0`), MoSCoW prioritization, and the detailed "What We Heard" vs. "What We Changed" code traceability matrix.
-- **In-App Feedback Widget:** Global feedback modal accessible from any page (`src/components/FeedbackWidget.tsx`), capturing 5-star ratings, user roles, topic tags, and comments with zero personal identity tracking.
-- **LGU Admin Triage Center:** Embedded directly inside the Admin Dashboard (`src/views/admin/AdminDashboard.tsx`), enabling municipal officials to monitor real-time CSAT metrics and triage issues (`New` → `Under Review` → `Planned` → `Resolved`).
-- **Disaster Zone Usability & Accessibility Modes (`fb-user-006`):** Floating bottom-left accessibility switcher (`src/components/AccessibilityToggle.tsx`) delivering High Contrast and Large Text modes tailored for citizens using budget Android devices in bright outdoor disaster centers.
-- **Claim Status Lifecycle Tracking Service (`fb-user-007`):** Anonymized claim lifecycle audit service (`src/services/claimStatus.service.ts`) enabling LGU officials to trace claim progression (`submitted` → `proving` → `verified` → `disbursed`) without disclosing private citizen witnesses.
-- **Post-Claim Micro-Survey & Confidential Receipts (`fb-seed-002`):** 1-click star rating on Step 4 of the claim portal and downloadable cryptographic vouchers (`src/components/ReliefReceiptModal.tsx`) built directly from field claimant requests.
+- **Official Evaluator Feedback Sheet (Google Sheets):** The official evaluation feedback is tracked directly in a private Google Sheet: **[GhostFree User Feedback Sheet](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing)** with the 5 required evaluation columns:
+  1. **Name**
+  2. **Email**
+  3. **Wallet Address**
+  4. **Transaction Hash** (if available)
+  5. **Feedback**
+- **In-App Feedback Widget:** Global feedback modal accessible from any page (`src/components/FeedbackWidget.tsx`), capturing 5-star ratings, user roles, topic tags, and comments with zero personal identity tracking. Includes direct evaluation Google Sheet integration.
+- **LGU Admin Triage Center:** Embedded directly inside the Admin Dashboard (`src/views/admin/AdminDashboard.tsx`), enabling municipal officials to launch the evaluation Google Sheet, monitor real-time CSAT metrics, and triage issues (`New` → `Under Review` → `Planned` → `Resolved`).
+- **Disaster Zone Usability & Accessibility Modes:** Floating bottom-left accessibility switcher (`src/components/AccessibilityToggle.tsx`) delivering High Contrast and Large Text modes tailored for citizens using budget Android devices in bright outdoor disaster centers.
+- **Claim Status Lifecycle Tracking Service:** Anonymized claim lifecycle audit service (`src/services/claimStatus.service.ts`) enabling LGU officials to trace claim progression (`submitted` → `proving` → `verified` → `disbursed`) without disclosing private citizen witnesses.
+- **Post-Claim Micro-Survey & Confidential Receipts:** 1-click star rating on Step 4 of the claim portal and downloadable cryptographic vouchers (`src/components/ReliefReceiptModal.tsx`) built directly from field claimant requests.
 
 ---
 

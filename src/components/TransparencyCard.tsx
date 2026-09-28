@@ -108,13 +108,18 @@ export const TransparencyCard: React.FC = () => {
 
       {/* Contract Address Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs">
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-2 min-w-0 flex-wrap">
           <span className="text-white/40 text-[0.7rem] shrink-0">
-            Active Contract:
+            {status.isDeployed ? "Active Contract:" : "Contract Deployment Target:"}
           </span>
           <span className="text-civic-sky font-mono text-[0.7rem] truncate">
             {contractAddress}
           </span>
+          {!status.isDeployed && (
+            <span className="shrink-0 px-2 py-0.5 rounded text-[0.6rem] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">
+              Awaiting On-Chain Redeploy
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2 shrink-0">

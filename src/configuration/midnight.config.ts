@@ -13,6 +13,9 @@ export const MIDNIGHT_CONFIG = {
   indexerUrl: import.meta.env.VITE_MIDNIGHT_INDEXER_URL || "https://indexer.preprod.midnight.network/api/v4/graphql",
   nodeUrl: import.meta.env.VITE_MIDNIGHT_NODE_URL || "https://rpc.preprod.midnight.network",
   provingServerUrl: import.meta.env.VITE_MIDNIGHT_PROVING_SERVER_URL || "http://localhost:6300",
+  feedbackSheetUrl:
+    import.meta.env.VITE_FEEDBACK_SHEET_URL ||
+    "https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing",
 } as const;
 
 export const NETWORK_LABELS: Record<string, string> = {

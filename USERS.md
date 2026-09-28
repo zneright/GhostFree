@@ -1,7 +1,7 @@
 # GhostFree — Verified Preprod Testnet User Wallet Addresses (Level 5)
 
-> **50+ unique Midnight Preprod wallet addresses** from the GhostFree testnet pilot.  
-> All addresses interacted with the deployed GhostFree smart contract on **Midnight Preprod** (`02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43`).
+> **Testnet Wallet Address Registry**  
+> For official evaluation user feedback, see the [GhostFree User Feedback Google Sheet](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing). This document contains synthetic wallet fixtures from automated test runs.
 
 ---
 
@@ -109,7 +109,7 @@ Wallet addresses were collected from three onboarding cohorts described in [`doc
 - **Cohort C (Security Auditors):** 20 addresses
 - **Date Range:** 2026-09-01 to 2026-09-15
 - **Network:** Midnight Preprod Testnet
-- **Contract:** `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43`
+- **Contract:** `⏳ Awaiting Contract Redeployment on Midnight Preprod` (see official deployment record)
 
 ---
 

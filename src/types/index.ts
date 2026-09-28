@@ -100,6 +100,10 @@ export interface ContractState {
 /** User feedback record for continuous feedback loop */
 export interface UserFeedback {
   id: string;
+  name?: string;
+  email?: string;
+  walletAddress?: string;
+  txHash?: string;
   rating: number; // 1 to 5
   category: 'usability' | 'wallet' | 'speed' | 'privacy' | 'feature_request' | 'accessibility' | 'general';
   role: 'citizen' | 'lgu_officer' | 'volunteer' | 'security_researcher' | 'other';

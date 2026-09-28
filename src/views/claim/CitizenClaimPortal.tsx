@@ -9,6 +9,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMidnightWallet } from "../../contexts/MidnightWalletContext";
 import { useMidnightContract } from "../../hooks/useMidnightContract";
+import { MIDNIGHT_CONFIG } from "../../configuration/midnight.config";
 import { validateClaimInputs } from "../../services/proof.service";
 import { generateReliefReceipt, submitFeedback } from "../../services/feedback.service";
 import type { ClaimStep, ClaimResult, ReliefReceipt } from "../../types";
@@ -905,7 +906,9 @@ export const CitizenClaimPortal: React.FC = () => {
                         <div className="py-2 px-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2 text-slate-700">
                             <QrCode className="w-5 h-5 text-slate-900" />
-                            <span className="font-mono text-[0.7rem] font-bold">VERIFY: 02005a76e93a86c0</span>
+                            <span className="font-mono text-[0.7rem] font-bold">
+                              VERIFY: {result?.transactionHash ? `${result.transactionHash.slice(0, 14)}...` : (receipt?.receiptId ?? "PENDING ON-CHAIN")}
+                            </span>
                           </div>
                           <span className="text-[0.65rem] text-slate-500 font-semibold">DSWD DRRM Valid</span>
                         </div>
@@ -1068,8 +1071,8 @@ export const CitizenClaimPortal: React.FC = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Smart Contract:</span>
-                    <span className="font-mono text-[0.65rem] text-sky-300 truncate max-w-[140px]">
-                      02005a76e93a...
+                    <span className="font-mono text-[0.65rem] text-sky-300 truncate max-w-[140px]" title={MIDNIGHT_CONFIG.contractAddress}>
+                      {MIDNIGHT_CONFIG.contractAddress ? `${MIDNIGHT_CONFIG.contractAddress.slice(0, 10)}...${MIDNIGHT_CONFIG.contractAddress.slice(-4)}` : "Deploying..."}
                     </span>
                   </div>
                 </div>

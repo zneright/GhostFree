@@ -69,7 +69,7 @@ function generateSeedTransactions(): TransactionRecord[] {
     },
     {
       id: "tx_seed_04",
-      txHash: "02005a76e93a86c0b938f97b102948c901923fa8102938c9201948ba81203bba",
+      txHash: "0200881f9a2e6b01cf8812fa9102938ba102948c901923fa8102938c9201948b",
       circuitName: "claimAid",
       status: "confirmed",
       nullifierSnippet: "0x5a76e93a...3bba",
@@ -174,7 +174,7 @@ function generateSeedTransactions(): TransactionRecord[] {
     },
     {
       id: "tx_seed_13",
-      txHash: "02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43",
+      txHash: "02007f31aa9e8d120a61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43",
       circuitName: "deployReliefFund",
       status: "confirmed",
       amount: 2500000,

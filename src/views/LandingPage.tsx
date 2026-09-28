@@ -22,6 +22,7 @@ import {
   HeartPulse,
   Hammer,
   AlertTriangle,
+  AlertCircle,
   Clock,
   Sparkles,
   ExternalLink,
@@ -113,9 +114,18 @@ export const LandingPage: React.FC = () => {
   const fraudCounter = useCountUp(18, 1600, countersVisible);
   const provingTimeCounter = useCountUp(12, 1200, countersVisible);
 
+  // Declared typhoon calamity zones in Northern Luzon (Demonstration Directory)
+  const DECLARED_CALAMITY_ZONES = useMemo(() => [
+    { name: "San Roque", municipality: "Gonzaga, Cagayan", tranche: "Typhoon Marce QRF Tranche #1", amount: 5000 },
+    { name: "Centro 01", municipality: "Tuguegarao City, Cagayan", tranche: "Typhoon Marce QRF Tranche #1", amount: 5000 },
+    { name: "Casambalangan", municipality: "Santa Ana, Cagayan", tranche: "Typhoon Marce QRF Tranche #1", amount: 5000 },
+    { name: "Punta", municipality: "Aparri, Cagayan", tranche: "Cagayan River Basin Overflow QRF", amount: 5000 },
+  ], []);
+
   // Handle Quick Eligibility Check
   const handleCheckEligibility = (locationName?: string) => {
-    const query = (locationName || barangayInput).trim();
+    const raw = locationName || barangayInput;
+    const query = raw.trim().toLowerCase();
     if (!query) {
       setEligibilityResult({
         checked: true,
@@ -127,13 +137,27 @@ export const LandingPage: React.FC = () => {
       return;
     }
 
-    setEligibilityResult({
-      checked: true,
-      eligible: true,
-      location: query.includes("Brgy") || query.includes("Barangay") ? query : `Barangay ${query}, Calamity Zone`,
-      amount: 5000,
-      tranche: "Typhoon Marce Quick Response Fund (Declared)",
-    });
+    const matched = DECLARED_CALAMITY_ZONES.find(
+      (z) => query.includes(z.name.toLowerCase()) || z.municipality.toLowerCase().includes(query)
+    );
+
+    if (matched) {
+      setEligibilityResult({
+        checked: true,
+        eligible: true,
+        location: `Barangay ${matched.name}, ${matched.municipality}`,
+        amount: matched.amount,
+        tranche: matched.tranche,
+      });
+    } else {
+      setEligibilityResult({
+        checked: true,
+        eligible: false,
+        location: raw.includes("Brgy") || raw.includes("Barangay") ? raw : `Barangay ${raw}`,
+        amount: 0,
+        tranche: "Outside Declared Signal No. 3 Zone (Use Evaluator Sandbox for testing)",
+      });
+    }
   };
 
   // ₱5,000 Calamity Relief Basket Breakdown
@@ -193,7 +217,7 @@ export const LandingPage: React.FC = () => {
       activeDisasters: "Tropical Cyclone Marce — Signal No. 3",
       capacity: 450,
       disbursed: 423,
-      contractId: "02005a76e93a86c0b938f97b",
+      sectorId: "DSWD-R02-TUG-01",
       status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
@@ -203,7 +227,7 @@ export const LandingPage: React.FC = () => {
       activeDisasters: "Coastal Storm Surge Evacuation",
       capacity: 280,
       disbursed: 247,
-      contractId: "02008f12cc3e819b02a77b10",
+      sectorId: "DSWD-R02-GON-02",
       status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
@@ -213,7 +237,7 @@ export const LandingPage: React.FC = () => {
       activeDisasters: "Flash Flood Quick Response",
       capacity: 190,
       disbursed: 190,
-      contractId: "0200b39f71ac2e690f9119aa",
+      sectorId: "DSWD-R02-STA-03",
       status: t("evacFullyDisbursed", "100% Fully Disbursed"),
       statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/30",
     },
@@ -223,7 +247,7 @@ export const LandingPage: React.FC = () => {
       activeDisasters: "Cagayan River Basin Overflow Alert",
       capacity: 310,
       disbursed: 282,
-      contractId: "02009d43ab881c300f88bb2c",
+      sectorId: "DSWD-R02-APA-04",
       status: t("evacActivelyDisbursing", "Actively Disbursing"),
       statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     },
@@ -519,25 +543,62 @@ export const LandingPage: React.FC = () => {
               </button>
             </div>
 
+            {/* Quick pilot zone suggestion chips */}
+            <div className="flex items-center gap-1.5 mt-2 px-1 overflow-x-auto text-[0.65rem] text-slate-500 dark:text-slate-400">
+              <span className="shrink-0 font-medium">Subukan:</span>
+              {[
+                { label: "San Roque (Gonzaga)", query: "San Roque" },
+                { label: "Centro 01 (Tuguegarao)", query: "Centro 01" },
+                { label: "Casambalangan (Santa Ana)", query: "Casambalangan" },
+              ].map((chip) => (
+                <button
+                  key={chip.query}
+                  type="button"
+                  onClick={() => {
+                    setBarangayInput(chip.query);
+                    handleCheckEligibility(chip.query);
+                  }}
+                  className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-white/5 transition-colors shrink-0"
+                >
+                  {chip.label}
+                </button>
+              ))}
+            </div>
+
             {eligibilityResult && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mt-3 p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-left flex items-start justify-between gap-3 text-xs"
+                className={`mt-3 p-3.5 rounded-2xl border text-left flex items-start justify-between gap-3 text-xs ${
+                  eligibilityResult.eligible
+                    ? "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30"
+                    : "bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/30"
+                }`}
               >
                 <div>
-                  <span className="text-emerald-700 dark:text-emerald-400 font-bold block flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> Kwalipikado sa Ayuda: ₱{eligibilityResult.amount.toLocaleString()}
+                  <span className={`font-bold block flex items-center gap-1.5 ${
+                    eligibilityResult.eligible ? "text-emerald-700 dark:text-emerald-400" : "text-amber-700 dark:text-amber-400"
+                  }`}>
+                    {eligibilityResult.eligible ? (
+                      <CheckCircle2 className="w-4 h-4" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4" />
+                    )}
+                    {eligibilityResult.eligible
+                      ? `Kwalipikado sa Ayuda: ₱${eligibilityResult.amount.toLocaleString()}`
+                      : "Outside Declared Signal No. 3 Roster"}
                   </span>
-                  <span className="text-slate-700 dark:text-slate-300 block mt-0.5">{eligibilityResult.location}</span>
+                  <span className="text-slate-700 dark:text-slate-300 block mt-0.5 font-medium">{eligibilityResult.location}</span>
                   <span className="text-[0.68rem] text-slate-500 dark:text-slate-400 font-mono mt-0.5 block">{eligibilityResult.tranche}</span>
                 </div>
                 <button
                   type="button"
                   onClick={() => navigate("/claim")}
-                  className="btn-civic-gold text-[0.7rem] px-3 py-1.5 shrink-0 font-bold"
+                  className={`text-[0.7rem] px-3.5 py-1.5 shrink-0 font-bold rounded-xl transition-all ${
+                    eligibilityResult.eligible ? "btn-civic-gold" : "btn-secondary"
+                  }`}
                 >
-                  I-claim Na
+                  {eligibilityResult.eligible ? "I-claim Na" : "Subukan sa Sandbox"}
                 </button>
               </motion.div>
             )}
@@ -791,7 +852,7 @@ export const LandingPage: React.FC = () => {
                 </div>
 
                 <div className="pt-3 border-t border-slate-100 dark:border-white/10 flex items-center justify-between text-[0.68rem] text-slate-500 dark:text-slate-400 font-mono">
-                  <span>Contract: {ec.contractId.slice(0, 14)}...</span>
+                  <span>Sector Registry: {ec.sectorId}</span>
                   <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% ZK Private</span>
                 </div>
               </motion.div>

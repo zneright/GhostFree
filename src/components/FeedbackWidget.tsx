@@ -14,8 +14,10 @@ import {
   ShieldCheck,
   Smile,
   HeartHandshake,
+  ExternalLink,
 } from "lucide-react";
 import { submitFeedback } from "../services/feedback.service";
+import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
 import type { UserFeedback } from "../types";
 
 interface FeedbackWidgetProps {
@@ -33,6 +35,10 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
   initialOpen = false,
 }) => {
   const [isOpen, setIsOpen] = useState(initialOpen);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [txHash, setTxHash] = useState("");
   const [rating, setRating] = useState<number>(5);
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const [role, setRole] = useState<UserFeedback["role"]>(defaultRole);
@@ -70,6 +76,10 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
 
     try {
       submitFeedback({
+        name: name.trim() || undefined,
+        email: email.trim() || undefined,
+        walletAddress: walletAddress.trim() || undefined,
+        txHash: txHash.trim() || undefined,
         rating,
         category,
         role,
@@ -79,6 +89,10 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
       setSubmitted(true);
       setTimeout(() => {
         // Reset form after short delay
+        setName("");
+        setEmail("");
+        setWalletAddress("");
+        setTxHash("");
         setComment("");
         setSubmitting(false);
       }, 500);
@@ -233,10 +247,70 @@ export const FeedbackWidget: React.FC<FeedbackWidgetProps> = ({
                     </div>
                   </div>
 
+                  {/* Optional Evaluator / Contact Details */}
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[0.68rem] font-bold text-slate-300 block uppercase tracking-wider">
+                        Evaluator & Submission Details <span className="text-white/40 font-normal lowercase">(optional)</span>
+                      </span>
+                      <a
+                        href={MIDNIGHT_CONFIG.feedbackSheetUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[0.65rem] text-amber-300 hover:text-amber-200 underline flex items-center gap-1 font-mono"
+                      >
+                        <span>Google Sheet</span>
+                        <ExternalLink className="w-2.5 h-2.5" />
+                      </a>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[0.68rem] text-white/70 mb-1">Name</label>
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Your name or handle"
+                          className="w-full px-2.5 py-1.5 rounded-lg text-xs bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-civic-sky focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[0.68rem] text-white/70 mb-1">Email</label>
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="evaluator@email.com"
+                          className="w-full px-2.5 py-1.5 rounded-lg text-xs bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-civic-sky focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[0.68rem] text-white/70 mb-1">Wallet Address</label>
+                        <input
+                          type="text"
+                          value={walletAddress}
+                          onChange={(e) => setWalletAddress(e.target.value)}
+                          placeholder="Midnight / Lace address"
+                          className="w-full px-2.5 py-1.5 rounded-lg text-xs bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-civic-sky focus:outline-none font-mono text-[0.68rem]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[0.68rem] text-white/70 mb-1">Transaction Hash</label>
+                        <input
+                          type="text"
+                          value={txHash}
+                          onChange={(e) => setTxHash(e.target.value)}
+                          placeholder="tx hash if available"
+                          className="w-full px-2.5 py-1.5 rounded-lg text-xs bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:border-civic-sky focus:outline-none font-mono text-[0.68rem]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
                   {/* Comments Box */}
                   <div>
                     <label className="block text-xs font-semibold text-white/80 mb-1.5">
-                      Comments & Suggestions:
+                      Feedback & Suggestions: <span className="text-amber-400">*</span>
                     </label>
                     <textarea
                       value={comment}

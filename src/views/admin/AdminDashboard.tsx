@@ -20,6 +20,7 @@ import {
   signOperationQuorum,
 } from "../../services/governance.service";
 import type { EligibilityEntry, ReliefOperation, UserFeedback, OfficerRole } from "../../types";
+import { MIDNIGHT_CONFIG } from "../../configuration/midnight.config";
 import TransparencyCard from "../../components/TransparencyCard";
 import TrancheQuorumModal from "../../components/TrancheQuorumModal";
 import OperationsHistoryTable from "../../components/admin/OperationsHistoryTable";
@@ -556,6 +557,43 @@ const AdminDashboard: React.FC = () => {
         {/* Citizen Feedback & Insights Hub */}
         {activeTab === "feedback" && (
           <div className="glass-card-premium p-6 mb-8 animate-fade-in-down border border-civic-trust/30">
+            {/* Official Review Feedback Google Sheet Integration */}
+            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0">
+                  <FileSpreadsheet className="w-5 h-5 text-amber-400" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                    Official Reviewer Feedback Archive (Google Sheet)
+                    <span className="text-[0.62rem] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black">
+                      EVALUATION SPEC
+                    </span>
+                  </h4>
+                  <p className="text-xs text-slate-300 mt-1">
+                    Required Fields: <code className="text-amber-300 font-mono text-[0.7rem]">Name | Email | Wallet Address | Transaction Hash | Feedback</code>
+                  </p>
+                  <span className="text-[0.68rem] text-slate-400 block mt-0.5">
+                    Evaluators and admins maintain feedback records directly in the private evaluation Google Sheet.
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={MIDNIGHT_CONFIG.feedbackSheetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-civic-gold px-4 py-2 text-xs font-bold flex items-center gap-2 shadow-lg tap-scale"
+                  id="admin-open-feedback-sheet-btn"
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-slate-950" />
+                  <span>Open Evaluation Google Sheet</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-950" />
+                </a>
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 border-b border-white/10 pb-4">
               <div>
                 <h3 className="text-white font-bold text-lg flex items-center gap-2">
