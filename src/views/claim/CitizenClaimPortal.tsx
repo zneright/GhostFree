@@ -145,10 +145,11 @@ const IllustratedIdCard: React.FC<{
         </div>
         <button
           type="button"
+          id="autofill-demo-btn"
           onClick={onUseDemo}
-          className="px-2.5 py-1 rounded-lg text-[0.7rem] font-bold bg-amber-400/20 text-amber-300 hover:bg-amber-400/30 border border-amber-400/40 transition-colors flex items-center gap-1"
+          className="px-3 py-1.5 rounded-xl text-[0.72rem] font-bold bg-amber-400/20 text-amber-300 hover:bg-amber-400/30 border border-amber-400/40 transition-colors flex items-center gap-1.5 shadow-sm active:scale-95"
         >
-          <Sparkles className="w-3 h-3" />
+          <Sparkles className="w-3.5 h-3.5" />
           Auto-Fill Demo
         </button>
       </div>
@@ -675,13 +676,13 @@ export const CitizenClaimPortal: React.FC = () => {
                     </div>
 
                     {/* GCash / Maya-style 3x4 Touch Keypad */}
-                    <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto mt-3 mb-2">
+                    <div className="grid grid-cols-3 gap-2.5 max-w-xs mx-auto mt-3 mb-2">
                       {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((num) => (
                         <button
                           key={num}
                           type="button"
                           onClick={() => handleKeypadPress(num)}
-                          className="keypad-btn py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                          className="keypad-btn min-h-[50px] py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-md active:bg-amber-400/20 active:border-amber-400/50"
                         >
                           {num}
                         </button>
@@ -689,21 +690,21 @@ export const CitizenClaimPortal: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("clear")}
-                        className="keypad-btn py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
+                        className="keypad-btn min-h-[50px] py-3 rounded-2xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-slate-400 border border-white/10 active:scale-95 transition-all"
                       >
                         Clear
                       </button>
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("0")}
-                        className="keypad-btn py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-sm"
+                        className="keypad-btn min-h-[50px] py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-lg font-black text-white border border-white/10 active:scale-95 transition-all shadow-md active:bg-amber-400/20 active:border-amber-400/50"
                       >
                         0
                       </button>
                       <button
                         type="button"
                         onClick={() => handleKeypadPress("backspace")}
-                        className="keypad-btn py-3 rounded-xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
+                        className="keypad-btn min-h-[50px] py-3 rounded-2xl bg-slate-900/60 hover:bg-slate-800 text-xs font-bold text-amber-400 border border-white/10 active:scale-95 transition-all flex items-center justify-center"
                         title="Backspace"
                       >
                         <Delete className="w-5 h-5" />

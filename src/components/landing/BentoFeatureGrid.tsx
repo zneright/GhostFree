@@ -26,7 +26,7 @@ export const BentoFeatureGrid: React.FC<{
   const [duplicateSimulated, setDuplicateSimulated] = useState(false);
 
   return (
-    <section className="section-env-bento px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
+    <section id="bento-architecture-matrix" className="section-env-bento px-4 sm:px-6 py-16 sm:py-24 max-w-6xl mx-auto rounded-3xl sm:rounded-[2.5rem] my-8 text-left">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
         <motion.div

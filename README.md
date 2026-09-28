@@ -159,6 +159,31 @@ The landing page incorporates a structured 2D civic-tech feature matrix mapping 
 
 ---
 
+### 8. Integrated Calamity Relief Operations Hub
+Consolidates resident eligibility checks, itemized relief basket breakdown, and live evacuation sector telemetry into a sleek, 3-tab modern civic-tech explorer—reducing landing page cognitive load and scrolling footprint by over 50%.
+
+![Calamity Relief Operations Hub](docs/screenshots/12-calamity-relief-hub.png)
+
+- 🔍 **Instant Municipal Eligibility Verification:** Citizens check their barangay or evacuation sector eligibility in under 30 seconds.
+- 📦 **₱5,000 Relief Basket Breakdown:** Transparent itemization (25kg NFA rice, canned goods, potable water, medical kits, and shelter tarp) ensuring complete donor and taxpayer accountability.
+- 🏫 **Evacuation Center Real-Time Directory:** Tracks capacity, active storm signals, sector IDs, and disbursed relief portions across designated evacuation camps.
+
+---
+
+### 9. 📱 Mobile-First Disaster Smartphone Showcase
+Disaster victims access aid in chaotic evacuation environments using low-cost smartphones with intermittent connectivity. GhostFree enforces a **single-card mobile layout** with thumb-friendly $\ge 48\text{px}$ touch targets, an authentic 3x4 tactile keypad, and an offline-verifiable digital relief voucher.
+
+| 1. Mobile Terminal (Step 1) | 2. PhilSys ID & MPIN (Step 2) | 3. Confirmed Voucher (Step 4) | 4. Mobile Relief Hub |
+| :---: | :---: | :---: | :---: |
+| <img src="docs/screenshots/08-mobile-claim-hero.png" width="220" alt="Mobile Step 1" /> | <img src="docs/screenshots/09-mobile-claim-keypad.png" width="220" alt="Mobile Step 2" /> | <img src="docs/screenshots/10-mobile-relief-voucher.png" width="220" alt="Mobile Step 4" /> | <img src="docs/screenshots/11-mobile-calamity-hub.png" width="220" alt="Mobile Hub" /> |
+| **1-Click Sandbox & Lace** | **PhilSys Helper & 50px Keypad** | **Official Relief Voucher** | **Tabbed Evacuation Explorer** |
+
+- ⚡ **Single-Card Progressive Wizard:** Zero extraneous navigation bars or nested modals during emergency claims.
+- 🖐️ **Wet-Finger Thumb Ergonomics:** Tactile 50px keypad buttons with visual dot feedback designed for one-handed operation in rainy evacuation camps.
+- 📱 **Offline-Ready Digital Voucher:** Produces an instant cryptographic voucher with QR hash and DSWD clearance badge for physical checkpoint verification.
+
+---
+
 ## System Architecture
 
 ```mermaid
