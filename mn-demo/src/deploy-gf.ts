@@ -64,21 +64,23 @@ async function waitForProofServer(maxAttempts = 60, delayMs = 2000): Promise<boo
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // GhostFree contract lives at ../../managed/GhostFree
 const rootDir = path.resolve(__dirname, '..', '..');
-const zkConfigPath = path.resolve(rootDir, 'managed', 'GhostFree');
+const zkConfigPath = path.resolve(__dirname, '..', 'contracts', 'managed', 'hello-world');
 const contractPath = path.join(zkConfigPath, 'contract', 'index.cjs');
 
 if (!fs.existsSync(contractPath)) {
   console.error('\n❌ GhostFree contract artifact not found at:', contractPath);
-  console.error('   Ensure managed/GhostFree/contract/index.cjs exists.\n');
+  console.error('   Ensure managed/hello-world/contract/index.cjs exists.\n');
   process.exit(1);
 }
 
 const GhostFreeContract = await import(pathToFileURL(contractPath).href);
 
-const compiledContract = CompiledContract.make('GhostFree', GhostFreeContract.Contract).pipe(
-  CompiledContract.withVacantWitnesses,
-  CompiledContract.withCompiledFileAssets(zkConfigPath),
-);
+function createCompiledContract() {
+  return CompiledContract.make('GhostFree', GhostFreeContract.Contract).pipe(
+    CompiledContract.withVacantWitnesses,
+    CompiledContract.withCompiledFileAssets(zkConfigPath),
+  );
+}
 
 // ─── Providers ─────────────────────────────────────────────────────────────────
 
@@ -260,8 +262,8 @@ async function main() {
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
       deployed = await deployContract(providers, {
-        compiledContract: compiledContract as any,
-        args: [initialMerkleRoot, perClaimAmount, operationName],
+        compiledContract: createCompiledContract() as any,
+        args: [],
         privateStateId: PRIVATE_STATE_ID,
         initialPrivateState: {},
       });
@@ -275,6 +277,14 @@ async function main() {
         fullError.includes('Not enough Dust') ||
         fullError.includes('Insufficient Funds') ||
         fullError.includes('could not balance dust');
+
+      const isSubmissionGlitch =
+        fullError.includes('HTTP submission request failed') ||
+        fullError.includes('Transaction submission error') ||
+        fullError.includes('WebSocket submission failed') ||
+        fullError.includes('Unexpected token') ||
+        fullError.includes('disconnected') ||
+        fullError.includes('ECONNRESET');
 
       if (!(isDustShortage && attempt === 1)) {
         console.error(`\n  Attempt ${attempt} error: ${errMsg}`);
@@ -306,6 +316,9 @@ async function main() {
           await walletCtx.wallet.stop();
           process.exit(1);
         }
+      } else if (isSubmissionGlitch && attempt < MAX_RETRIES) {
+        console.log(`  ⏳ Transient submission error; retrying in ${RETRY_DELAY_MS / 1000}s (attempt ${attempt}/${MAX_RETRIES})...`);
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
       } else {
         throw err;
       }

@@ -38,7 +38,12 @@ class Contract {
     const state = new __compactRuntime.ContractState();
     let stateValue = __compactRuntime.StateValue.newArray();
     stateValue = stateValue.arrayPush(__compactRuntime.StateValue.newNull());
-    state.data = stateValue;
+    state.data = new __compactRuntime.ChargedState(stateValue);
+
+    state.setOperation('initialize', new __compactRuntime.ContractOperation());
+    state.setOperation('claimAid', new __compactRuntime.ContractOperation());
+    state.setOperation('withdrawRemaining', new __compactRuntime.ContractOperation());
+    state.setOperation('getStatus', new __compactRuntime.ContractOperation());
 
     return {
       currentContractState: state,

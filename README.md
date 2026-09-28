@@ -35,7 +35,7 @@
 
 | Network | Address | Verification Status |
 |---|---|---|
-| **Midnight Preprod** | `02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43` | ⏳ Awaiting Contract Redeployment on Preprod |
+| **Midnight Preprod** | [`6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e`](https://preprod.midnightexplorer.com/contract/6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e) | ✅ Deployed & Verified on Preprod |
 | **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ⏳ Preview Testnet Sandbox Target |
 
 *(Contract address deployment target. When redeploying via `cd mn-demo && npx tsx src/deploy-gf.ts`, the new on-chain address is automatically committed to `.env` and `midnight.config.ts`)*
