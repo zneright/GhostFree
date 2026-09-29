@@ -26,6 +26,7 @@
 | Interface / Asset | URL | Description |
 |---|---|---|
 | 🌐 **Production Web App** | [https://ghost-free-eight.vercel.app/](https://ghost-free-eight.vercel.app/) | Public civic portal, citizen aid claims, and LGU relief dashboard |
+| 🔍 **Live Preprod Explorer** | [View Verified On-Chain Extrinsic](https://preprod.midnightexplorer.com/transactions/0x61a04171f893e2c1e4e3e0f0fd18e6d4a97ee1fb93eb66ed5bd7976a066cf1d3) | Verified block #2,705,160 settlement on Midnight Preprod |
 | 📊 **Official Feedback Sheet** | [Google Sheet](https://docs.google.com/spreadsheets/d/1f3ArU5YQKx-qmFu61LeYPOpxOIx4BzbMycbtixVzOOE/edit?usp=sharing) | Private evaluation Google Sheet with required fields: `Name`, `Email`, `Wallet Address`, `Transaction Hash`, `Feedback` |
 | 📸 **Visual Showcase** | [docs/screenshots/](docs/screenshots/) | High-resolution UI walkthrough of the v2.0 civic-tech interface |
 
@@ -33,12 +34,19 @@
 
 ## Contract Addresses & On-Chain Audit
 
-| Network | Contract Address | Status | Block Explorer | Public Audit Ledger |
+| Network | Contract Address | Verified On-Chain Extrinsic | Status | Public Audit Ledger |
 |---|---|---|---|---|
-| **Midnight Preprod** | `6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e` | ✅ Deployed & Verified | [Preprod Explorer](https://preprod.midnightexplorer.com/address/6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e) | [🏛️ Public Calamity Treasury](https://ghost-free-eight.vercel.app/transparency) |
-| **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | ✅ Deployed & Verified | [Preview Explorer](https://preview.midnightexplorer.com/address/02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf) | [🏛️ Public Calamity Treasury](https://ghost-free-eight.vercel.app/transparency) |
+| **Midnight Preprod** | `6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e` | [🔍 View Preprod Tx (0x61a041...)](https://preprod.midnightexplorer.com/transactions/0x61a04171f893e2c1e4e3e0f0fd18e6d4a97ee1fb93eb66ed5bd7976a066cf1d3) | ✅ Deployed & Verified | [🏛️ Public Calamity Treasury](https://ghost-free-eight.vercel.app/transparency) |
+| **Midnight Preview** | `02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf` | [🔍 View Preview Tx (0xc76425...)](https://preview.midnightexplorer.com/transactions/0xc76425d68a9984149fb63087d9bfcd4eab31a4914b2591035cdea1bf5efaf254) | ✅ Deployed & Verified | [🏛️ Public Calamity Treasury](https://ghost-free-eight.vercel.app/transparency) |
 
 *(Contract address deployment target. When redeploying via `cd mn-demo && npx tsx src/deploy-gf.ts`, the new on-chain address is automatically committed to `.env` and `midnight.config.ts`)*
+
+<div align="center">
+  <a href="https://preprod.midnightexplorer.com/transactions/0x61a04171f893e2c1e4e3e0f0fd18e6d4a97ee1fb93eb66ed5bd7976a066cf1d3">
+    <img src="docs/screenshots/midnight_explorer_transaction_verified.png" alt="Midnight Explorer On-Chain Transaction Verification" width="850" />
+  </a>
+  <p><em>Official Midnight Explorer settlement record (<a href="https://preprod.midnightexplorer.com/transactions/0x61a04171f893e2c1e4e3e0f0fd18e6d4a97ee1fb93eb66ed5bd7976a066cf1d3">0x61a04171...6cf1d3</a>): Status <code>SUCCESS</code>, Block <code>#2,705,160</code>, Fee <code>1 SPECK</code>, Protocol Version <code>1000300</code>, and zero-gas citizen sponsorship.</em></p>
+</div>
 
 > [!NOTE]
 > ### 💡 Notice for Evaluators & Reviewers: Why is the Explorer Address Page Blank?
