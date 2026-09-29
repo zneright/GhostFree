@@ -31,7 +31,7 @@ export interface NetworkHealthReport {
 }
 
 /** Check connectivity and TLS handshake to an HTTP/HTTPS endpoint */
-async function pingEndpoint(url: string, timeoutMs = 4000): Promise<{ reachable: boolean; tlsVerified: boolean; latencyMs: number; error?: string }> {
+async function pingEndpoint(url: string, timeoutMs = 2500): Promise<{ reachable: boolean; tlsVerified: boolean; latencyMs: number; error?: string }> {
   const start = Date.now();
   try {
     const controller = new AbortController();

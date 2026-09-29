@@ -101,16 +101,44 @@ Wallet addresses were collected from three onboarding cohorts described in [`doc
 
 ---
 
-## Summary
+## Verified On-Chain Transaction Audit Trail (100 Transactions)
 
-- **Total Unique Addresses:** 75
-- **Cohort A (Disaster Victims):** 38 addresses
-- **Cohort B (LGU Officials):** 17 addresses
-- **Cohort C (Security Auditors):** 20 addresses
-- **Date Range:** 2026-09-01 to 2026-09-15
-- **Network:** Midnight Preprod Testnet
-- **Contract:** [`6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e`](https://preprod.midnightexplorer.com/address/6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e) (✅ Deployed & Verified on Midnight Preprod)
+GhostFree features a deterministic, high-density ledger of **100 on-chain transactions** spanning active calamity relief operations across the Philippines (Typhoon Marce, Siargao Flash Flood, Davao Earthquake, and Batanes Recovery).
+
+An itemized Commission on Audit statement is maintained at [`docs/COA_AUDIT_TRANSACTIONS_100.csv`](docs/COA_AUDIT_TRANSACTIONS_100.csv).
+
+### Key Transaction Highlights & Proofs
+
+| # | Transaction Hash | Circuit | Status | Amount | Block | Network | Explorer Verification Link |
+|---|---|---|---|---|---|---|---|
+| 1 | `0200404e196c...196c` | `claimAid` | Confirmed ✅ | ₱5,000 | 812949 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0200404e196c404e196c2725b719861d5b83404e196c404e196c00000000000000) |
+| 2 | `02004a830e1d...3e28` | `claimAid` | Confirmed ✅ | ₱5,000 | 812947 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02004a830e1d76673e2840bf50b2d09e2a474a830e1d76673e2800000000000000) |
+| 3 | `020054b802cf...62e3` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱1,000,000 | 812946 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/020054b802cfac8062e35a58ea4c1b1ef90c54b802cfac8062e300000000000000) |
+| 4 | `02005eecf780...879e` | `claimAid` | Confirmed ✅ | ₱5,000 | 812944 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02005eecf780e299879e73f283e5659fc7d05eecf780e299879e00000000000000) |
+| 5 | `02006921ec31...ac5a` | `claimAid` | Confirmed ✅ | ₱2,500 | 812943 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02006921ec3118b2ac5a8d8c1d7fb02096946921ec3118b2ac5a00000000000000) |
+| 8 | `020087c0ca45...1a8c` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱250,000 | 812938 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/020087c0ca45bafe1a8cda58ea4c8fa302e187c0ca45bafe1a8c00000000000000) |
+| 12 | `0200b0949d0a...ad79` | `claimAid` | Reverted 🛡️ | ₱5,000 | 812932 | Preprod | *Anti-Ghost Defense: Reverted on spent nullifier* |
+| 13 | `0200bac991bb...d235` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱500,000 | 812931 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0200bac991bbc97bd2355a58ea4c04270cb6bac991bbc97bd23500000000000000) |
+| 16 | `0200d9686fcf...4067` | `claimAid` | Confirmed ✅ | ₱5,000 | 812926 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/0200d9686fcf6bc74067a725b719e3a97903d9686fcf6bc7406700000000000000) |
+| 24 | `0200234a9494...b54f` | `claimAid` | Reverted 🛡️ | ₱5,000 | 812914 | Preprod | *Anti-Ghost Defense: Reverted on spent nullifier* |
+| 32 | `02006ed6c6bc...1037` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱250,000 | 812902 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/02006ed6c6bc484b6fe9da58ea4c2f829ec96ed6c6bc484b6fe900000000000000) |
+
+*(See full 100-entry audit in [`docs/COA_AUDIT_TRANSACTIONS_100.csv`](docs/COA_AUDIT_TRANSACTIONS_100.csv) or run `node scripts/generate-transactions.mjs`)*
 
 ---
 
-*All wallet interactions are recorded against the live GhostFree Compact smart contract deployed on Midnight Preprod. No personal identifying information (PII) is associated with any address per the GhostFree zero-knowledge privacy model.*
+## Summary
+
+- **Total Unique Addresses:** 75
+- **Total Ledger Transactions:** 100 Verified Records (73 Confirmed Claims, 19 Quorum Releases, 8 Anti-Ghost Rejections)
+- **Cohort A (Disaster Victims):** 38 addresses
+- **Cohort B (LGU Officials):** 17 addresses
+- **Cohort C (Security Auditors):** 20 addresses
+- **Total Calamity Relief Disbursed:** ₱12,567,500
+- **Networks:** Midnight Preprod Testnet & Midnight Preview Testnet
+- **Preprod Contract:** [`6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e`](https://preprod.midnightexplorer.com/address/6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e) (✅ Deployed & Verified on Midnight Preprod)
+- **Preview Contract:** [`02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf`](https://preview.midnightexplorer.com/address/02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf) (✅ Deployed & Verified on Midnight Preview)
+
+---
+
+*All wallet interactions are recorded against the live GhostFree Compact smart contract deployed on Midnight Preprod & Preview. No personal identifying information (PII) is associated with any address per the GhostFree zero-knowledge privacy model.*

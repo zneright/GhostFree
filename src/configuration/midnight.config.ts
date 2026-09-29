@@ -62,7 +62,7 @@ export function getExplorerTxUrl(txHash?: string, networkId?: string): string {
     currentNetwork === "preview"
       ? MIDNIGHT_CONFIG.previewExplorerUrl
       : MIDNIGHT_CONFIG.explorerUrl;
-  return `${baseUrl}/tx/${txHash || ""}`;
+  return `${baseUrl}/transactions/${txHash || ""}`;
 }
 
 export const KNOWN_PLACEHOLDER_ADDRESSES = new Set([

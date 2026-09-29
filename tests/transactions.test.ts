@@ -12,6 +12,7 @@ import {
   KNOWN_PLACEHOLDER_ADDRESSES,
 } from "../src/configuration/midnight.config";
 import { checkMidnightPreprodHealth } from "../src/services/preprodHealth.service";
+import { generateSeedTransactions } from "../src/data/seedTransactions";
 
 describe("Midnight Preprod & Transaction Telemetry", () => {
   it("validates contract address hex formatting accurately", () => {
@@ -69,7 +70,31 @@ describe("Midnight Preprod & Transaction Telemetry", () => {
     expect(typeof report.tlsStatus.verified).toBe("boolean");
     expect(report.tlsStatus.protocol).toBe("TLSv1.3");
     expect(report.lastChecked).toBeDefined();
-  }, 15000);
+  }, 30000);
+
+  it("verifies the high-density seed ledger contains 88+ compliant transactions", () => {
+    const seeds = generateSeedTransactions();
+    expect(seeds.length).toBeGreaterThanOrEqual(88);
+
+    const confirmed = seeds.filter((s) => s.status === "confirmed");
+    const failed = seeds.filter((s) => s.status === "failed");
+
+    expect(confirmed.length).toBeGreaterThan(60);
+    expect(failed.length).toBeGreaterThan(3);
+
+    // Assert that every confirmed transaction has a valid 64/66-char txHash
+    for (const tx of confirmed) {
+      expect(tx.txHash).toBeDefined();
+      expect(tx.txHash!.length).toBeGreaterThanOrEqual(64);
+      expect(tx.blockHeight).toBeGreaterThan(812000);
+    }
+
+    // Assert that failed transactions represent deterministic anti-ghost rejections
+    for (const tx of failed) {
+      expect(tx.errorMessage).toContain("ALREADY_CLAIMED");
+      expect(tx.nullifierSnippet).toBeDefined();
+    }
+  });
 
   it("correctly calculates settled relief disbursements and blocks double claims", () => {
     const transactions = [

@@ -301,10 +301,10 @@ const LiveTransactionFeed: React.FC = () => {
   }, [txFeed, filter, searchTerm]);
 
   // Handle batch simulation click
-  const handleBatchClick = async () => {
+  const handleBatchClick = async (count: number = 10) => {
     setIsSimulatingBatch(true);
-    await simulateBatchClaims(5);
-    setTimeout(() => setIsSimulatingBatch(false), 2000);
+    await simulateBatchClaims(count, true);
+    setTimeout(() => setIsSimulatingBatch(false), 1200);
   };
 
   // Export CSV for COA audit compliance
@@ -470,17 +470,17 @@ const LiveTransactionFeed: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
           <button
             onClick={() => simulateClaimTransaction(5000)}
             className="p-3 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-300 font-bold text-xs transition-all flex items-center justify-center gap-2 tap-scale"
           >
             <Sparkles className="w-4 h-4 text-sky-400" />
-            <span>⚡ Simulate Rapid Claim</span>
+            <span>⚡ Claim (+1)</span>
           </button>
 
           <button
-            onClick={handleBatchClick}
+            onClick={() => handleBatchClick(10)}
             disabled={isSimulatingBatch}
             className="p-3 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold text-xs transition-all flex items-center justify-center gap-2 tap-scale"
           >
@@ -489,7 +489,16 @@ const LiveTransactionFeed: React.FC = () => {
             ) : (
               <Layers className="w-4 h-4 text-emerald-400" />
             )}
-            <span>🚀 Batch Inflow (+5 TXs)</span>
+            <span>🚀 Batch (+10)</span>
+          </button>
+
+          <button
+            onClick={() => handleBatchClick(25)}
+            disabled={isSimulatingBatch}
+            className="p-3 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 font-bold text-xs transition-all flex items-center justify-center gap-2 tap-scale"
+          >
+            <Layers className="w-4 h-4 text-purple-400" />
+            <span>🔥 Turbo (+25)</span>
           </button>
 
           <button
@@ -497,7 +506,7 @@ const LiveTransactionFeed: React.FC = () => {
             className="p-3 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 font-bold text-xs transition-all flex items-center justify-center gap-2 tap-scale"
           >
             <ShieldAlert className="w-4 h-4 text-red-400" />
-            <span>🛡️ Test Double-Claim Defense</span>
+            <span>🛡️ Double-Claim Defense</span>
           </button>
 
           <button
@@ -505,7 +514,7 @@ const LiveTransactionFeed: React.FC = () => {
             className="p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 font-bold text-xs transition-all flex items-center justify-center gap-2 tap-scale"
           >
             <RefreshCw className="w-4 h-4 text-slate-400" />
-            <span>Reset Demo Data</span>
+            <span>Reset 88+ Seeds</span>
           </button>
         </div>
       </div>
