@@ -111,17 +111,15 @@ An itemized Commission on Audit statement is maintained at [`docs/COA_AUDIT_TRAN
 
 | # | Transaction Hash | Circuit | Status | Amount | Block | Network | Explorer Verification Link |
 |---|---|---|---|---|---|---|---|
-| 1 | `0200404e196c...196c` | `claimAid` | Confirmed ✅ | ₱5,000 | 812949 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0200404e196c404e196c2725b719861d5b83404e196c404e196c00000000000000) |
-| 2 | `02004a830e1d...3e28` | `claimAid` | Confirmed ✅ | ₱5,000 | 812947 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02004a830e1d76673e2840bf50b2d09e2a474a830e1d76673e2800000000000000) |
-| 3 | `020054b802cf...62e3` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱1,000,000 | 812946 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/020054b802cfac8062e35a58ea4c1b1ef90c54b802cfac8062e300000000000000) |
-| 4 | `02005eecf780...879e` | `claimAid` | Confirmed ✅ | ₱5,000 | 812944 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02005eecf780e299879e73f283e5659fc7d05eecf780e299879e00000000000000) |
-| 5 | `02006921ec31...ac5a` | `claimAid` | Confirmed ✅ | ₱2,500 | 812943 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/02006921ec3118b2ac5a8d8c1d7fb02096946921ec3118b2ac5a00000000000000) |
-| 8 | `020087c0ca45...1a8c` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱250,000 | 812938 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/020087c0ca45bafe1a8cda58ea4c8fa302e187c0ca45bafe1a8c00000000000000) |
-| 12 | `0200b0949d0a...ad79` | `claimAid` | Reverted 🛡️ | ₱5,000 | 812932 | Preprod | *Anti-Ghost Defense: Reverted on spent nullifier* |
-| 13 | `0200bac991bb...d235` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱500,000 | 812931 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0200bac991bbc97bd2355a58ea4c04270cb6bac991bbc97bd23500000000000000) |
-| 16 | `0200d9686fcf...4067` | `claimAid` | Confirmed ✅ | ₱5,000 | 812926 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/0200d9686fcf6bc74067a725b719e3a97903d9686fcf6bc7406700000000000000) |
-| 24 | `0200234a9494...b54f` | `claimAid` | Reverted 🛡️ | ₱5,000 | 812914 | Preprod | *Anti-Ghost Defense: Reverted on spent nullifier* |
-| 32 | `02006ed6c6bc...1037` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱250,000 | 812902 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/02006ed6c6bc484b6fe9da58ea4c2f829ec96ed6c6bc484b6fe900000000000000) |
+| 1 | `0x61a04171f8...f1d3` | `claimAid` | Confirmed ✅ | ₱2,500 | 2705160 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0x61a04171f893e2c1e4e3e0f0fd18e6d4a97ee1fb93eb66ed5bd7976a066cf1d3) |
+| 2 | `0xb39410a164...fc8d` | `claimAid` | Confirmed ✅ | ₱5,000 | 2705142 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0xb39410a164dfc8f0a30b9dfd99f555b027c51992dac59c89dc9f9788ffbdfc8d) |
+| 3 | `0x49305d9d7d...704f` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱1,000,000 | 2705138 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0x49305d9d7d1060d2f2ccb79adc1cdf93e4d590818de1b8e395de16fe0428704f) |
+| 4 | `0xb0bb2d06e7...b87b` | `claimAid` | Confirmed ✅ | ₱2,500 | 2705138 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0xb0bb2d06e7db27efd12c61ca22a83cd221bc4a1cb486328b179afce1bfe9b87b) |
+| 5 | `0x9df90e8c53...e538` | `claimAid` | Confirmed ✅ | ₱5,000 | 2705129 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0x9df90e8c537118c0192f8f5a12b53f756a0250735d2cc397c7f130cefed8e538) |
+| 8 | `0xa5b01ea650...5f96` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱500,000 | 2705103 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0xa5b01ea6500172a876f5d61c283d005f93052b73bf970cfedc5af834f0db5f96) |
+| 12 | `0x5bf271fa40...dd1d` | `claimAid` | Reverted 🛡️ | ₱5,000 | 2705075 | Preprod | *Anti-Ghost Defense: Reverted on spent nullifier* |
+| 13 | `0x784232703e...5c3f` | `authorizeTrancheQuorum` | Confirmed ✅ | ₱1,000,000 | 2705057 | Preprod | [View on Explorer](https://preprod.midnightexplorer.com/transactions/0x784232703eda59f60351d3825a190cd79f172c9b1b910ff3a73d880689165c3f) |
+| 86 | `0xc76425d68a...f254` | `claimAid` | Confirmed ✅ | ₱5,000 | 1021734 | Preview | [View on Explorer](https://preview.midnightexplorer.com/transactions/0xc76425d68a9984149fb63087d9bfcd4eab31a4914b2591035cdea1bf5efaf254) |
 
 *(See full 100-entry audit in [`docs/COA_AUDIT_TRANSACTIONS_100.csv`](docs/COA_AUDIT_TRANSACTIONS_100.csv) or run `node scripts/generate-transactions.mjs`)*
 
