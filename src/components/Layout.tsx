@@ -8,6 +8,7 @@
 // quick onboarding tour access, and feedback actions.
 
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   Sparkles,
   MessageSquarePlus,
@@ -164,7 +165,7 @@ const Layout: React.FC<LayoutProps> = ({
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-400/25 to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2.5 sm:gap-3 group">
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
             <GhostFreeLogo size={34} variant="icon" animated showGlow />
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
@@ -180,25 +181,25 @@ const Layout: React.FC<LayoutProps> = ({
                 {t("headerTagline", "Safe Disaster Aid. Zero Ghost Beneficiaries.")}
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Nav: Streamlined to 2 text links + Tools dropdown + 1 Primary CTA */}
           <div className="hidden md:flex items-center gap-1.5">
-            <a
-              href="/transparency"
+            <Link
+              to="/transparency"
               className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5"
             >
               <Landmark className="w-3.5 h-3.5 text-amber-400/90" />
               <span>{t("treasury", "Treasury")}</span>
-            </a>
+            </Link>
 
-            <a
-              href="/admin/login"
+            <Link
+              to="/admin/login"
               className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5"
             >
               <Key className="w-3.5 h-3.5 text-sky-400/90" />
               <span>{t("lguDrrmButton", "LGU DRRM")}</span>
-            </a>
+            </Link>
 
             {/* Tools Dropdown (Verify Voucher + Tour) */}
             <div className="relative" ref={dropdownRef}>
@@ -258,13 +259,13 @@ const Layout: React.FC<LayoutProps> = ({
             <LanguageSelector />
 
             {/* Single Prominent Primary CTA */}
-            <a
-              href="/claim"
+            <Link
+              to="/claim"
               className="ml-2 px-4 py-2 rounded-xl text-xs font-black text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 border border-amber-300/60 transition-all flex items-center gap-1.5 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Smartphone className="w-3.5 h-3.5 text-slate-950" />
               <span>{t("claimAyudaButton", "Claim Aid (₱5,000)")}</span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Navigation Buttons */}
@@ -278,12 +279,12 @@ const Layout: React.FC<LayoutProps> = ({
             >
               {isLightMode ? <Moon className="w-4 h-4 text-slate-700" /> : <Sun className="w-4 h-4 text-amber-400" />}
             </button>
-            <a
-              href="/claim"
+            <Link
+              to="/claim"
               className="px-3 py-1.5 rounded-xl text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-md"
             >
               {t("claimAyudaButton", "Claim Aid")}
-            </a>
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl bg-white/[0.06] border border-white/10 hover:bg-white/10 text-white transition-colors"
@@ -302,27 +303,30 @@ const Layout: React.FC<LayoutProps> = ({
           `}
         >
           <div className="px-4 pb-4 pt-2 space-y-2 border-t border-white/[0.08] bg-slate-950/95">
-            <a
-              href="/claim"
+            <Link
+              to="/claim"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-black text-slate-950 bg-amber-400 transition-colors"
             >
               <Smartphone className="w-4.5 h-4.5 text-slate-950" />
               {t("claimAyudaButton", "Claim Aid (₱5,000)")}
-            </a>
-            <a
-              href="/transparency"
+            </Link>
+            <Link
+              to="/transparency"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
             >
               <Landmark className="w-4 h-4 text-amber-400" />
               {t("publicTreasury", "Public Treasury")}
-            </a>
-            <a
-              href="/admin/login"
+            </Link>
+            <Link
+              to="/admin/login"
+              onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-white hover:bg-white/5 transition-colors border border-white/5"
             >
               <Key className="w-4 h-4 text-sky-400" />
               {t("lguDrrmButton", "LGU DRRM Command Center")}
-            </a>
+            </Link>
             <button
               onClick={() => { setShowVerifier(true); setMobileMenuOpen(false); }}
               className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm text-emerald-400 hover:bg-emerald-400/10 transition-colors w-full text-left border border-emerald-500/20"
@@ -390,18 +394,18 @@ const Layout: React.FC<LayoutProps> = ({
                 <div>
                   <h4 className="text-[0.7rem] font-bold text-white uppercase tracking-wider mb-3">Portals & Tools</h4>
                   <div className="space-y-2">
-                    <a href="/claim" className="text-xs text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                    <Link to="/claim" className="text-xs text-slate-400 hover:text-amber-300 transition-colors flex items-center gap-1.5">
                       <Smartphone className="w-3.5 h-3.5 text-amber-400" />
                       <span>{t("tabCitizen", "Citizen Claim (₱5,000)")}</span>
-                    </a>
-                    <a href="/transparency" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+                    </Link>
+                    <Link to="/transparency" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
                       <Landmark className="w-3.5 h-3.5 text-slate-400" />
                       <span>{t("treasury", "Public Treasury Explorer")}</span>
-                    </a>
-                    <a href="/admin/login" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
+                    </Link>
+                    <Link to="/admin/login" className="text-xs text-slate-400 hover:text-white transition-colors flex items-center gap-1.5">
                       <Key className="w-3.5 h-3.5 text-sky-400" />
                       <span>{t("tabAdmin", "LGU DRRM Command")}</span>
-                    </a>
+                    </Link>
                     <button
                       onClick={() => setShowVerifier(true)}
                       className="text-xs text-slate-400 hover:text-emerald-300 transition-colors flex items-center gap-1.5 text-left"

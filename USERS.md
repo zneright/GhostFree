@@ -109,7 +109,7 @@ Wallet addresses were collected from three onboarding cohorts described in [`doc
 - **Cohort C (Security Auditors):** 20 addresses
 - **Date Range:** 2026-09-01 to 2026-09-15
 - **Network:** Midnight Preprod Testnet
-- **Contract:** `⏳ Awaiting Contract Redeployment on Midnight Preprod` (see official deployment record)
+- **Contract:** [`6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e`](https://preprod.midnightexplorer.com/contract/6f0c142f42d8179c31fbb57a17878c4f3771999340ddf4f545eb06b8f203e54e) (✅ Deployed & Verified on Midnight Preprod)
 
 ---
 

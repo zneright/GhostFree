@@ -9,15 +9,15 @@ import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Loaded securely from environment variables with fallback
 export const firebaseConfig = {
-  apiKey: "AIzaSyAL_0xP974v8MSV0sQbpVV82dlbwMTyB50",
-  authDomain: "kapitbahay-33c2b.firebaseapp.com",
-  projectId: "kapitbahay-33c2b",
-  storageBucket: "kapitbahay-33c2b.firebasestorage.app",
-  messagingSenderId: "439494188848",
-  appId: "1:439494188848:web:2a20f7a05b6f58b0e5f2f5",
-  measurementId: "G-TLDT6JPYBD",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyAL_0xP974v8MSV0sQbpVV82dlbwMTyB50",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "kapitbahay-33c2b.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "kapitbahay-33c2b",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "kapitbahay-33c2b.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "439494188848",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:439494188848:web:2a20f7a05b6f58b0e5f2f5",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-TLDT6JPYBD",
 };
 
 // Initialize Firebase

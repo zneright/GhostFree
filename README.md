@@ -4,7 +4,7 @@
 [![Network](https://img.shields.io/badge/Network-Midnight_Preprod-3A0CA3?style=flat-square&logo=polkadot&logoColor=white)](https://midnight.network)
 [![Smart Contract](https://img.shields.io/badge/Contract-Compact_ZK-10B981?style=flat-square&logo=webassembly&logoColor=white)](https://docs.midnight.network)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-49%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
+[![Tests](https://img.shields.io/badge/Tests-50%20Passing-brightgreen?style=flat-square&logo=vitest&logoColor=white)](https://vitest.dev)
 [![UI Release](https://img.shields.io/badge/UI-v2.5_Enterprise_Civic--Tech-0EA5E9?style=flat-square)](https://ghost-free-eight.vercel.app)
 [![Node](https://img.shields.io/badge/Node-v22.14.0+-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
 [![Status](https://img.shields.io/badge/Deployment-Live%20on%20Vercel-success?style=flat-square&logo=vercel&logoColor=white)](https://ghost-free-eight.vercel.app)

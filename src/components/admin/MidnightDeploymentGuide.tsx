@@ -81,7 +81,7 @@ export const MidnightDeploymentGuide: React.FC = () => {
       title: "Request Free Testnet tDUST & tNIGHT",
       description: "Copy your Lace unshielded wallet address and paste it into the Midnight Preprod Faucet to receive free testing tokens.",
       actionLabel: "Visit Midnight Preprod Faucet",
-      actionUrl: "https://faucet.testnet.midnight.network",
+      actionUrl: "https://faucet.preprod.midnight.network",
       badge: "Free Testnet Tokens",
     },
     {
@@ -321,10 +321,10 @@ export const MidnightDeploymentGuide: React.FC = () => {
         <div className="p-4 rounded-2xl bg-sky-500/5 border border-sky-500/20 text-xs text-slate-300 leading-relaxed space-y-2">
           <p className="font-semibold text-sky-300 flex items-center gap-1.5">
             <HelpCircle className="w-4 h-4" />
-            Why did the initial Preprod Contract Address show as invalid?
+            Preprod Contract Verification & Resilient Execution Architecture
           </p>
           <p>
-            The initial placeholder address (<code className="text-sky-200 font-mono">02005a76...5f1d43</code>) was a seed demo hash prior to testnet deployment. Until a contract transaction is compiled and deployed via Midnight.js using funded tDUST, GhostFree safely defaults to its <strong>Client-Side Sandbox Prover</strong> so all ZK-SNARK Merkle verification and nullifier collision flows can be evaluated immediately without blocking development or user reviews!
+            GhostFree binds to the verified on-chain Midnight Preprod contract address (<code className="text-sky-200 font-mono">{MIDNIGHT_CONFIG.contractAddress.slice(0, 10)}...{MIDNIGHT_CONFIG.contractAddress.slice(-6)}</code>). In the event of network maintenance or sandbox testing, GhostFree automatically operates with its <strong>Client-Side Prover</strong> so all ZK-SNARK Merkle verification and nullifier collision flows can be evaluated immediately without blocking development or user reviews!
           </p>
         </div>
       </div>

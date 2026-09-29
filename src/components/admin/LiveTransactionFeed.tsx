@@ -5,6 +5,8 @@
 // ============================================
 
 import React, { useState, useMemo } from "react";
+import { MIDNIGHT_CONFIG, getContractDeploymentStatus } from "../../configuration/midnight.config";
+import { formatContractAddress } from "../../utils/contract";
 import { useTransactionFeed } from "../../contexts/TransactionContext";
 import type { TransactionRecord, TxStatus } from "../../types";
 import {
@@ -257,6 +259,11 @@ const LiveTransactionFeed: React.FC = () => {
     resetToDefaults,
   } = useTransactionFeed();
 
+  const contractStatus = useMemo(
+    () => getContractDeploymentStatus(MIDNIGHT_CONFIG.contractAddress),
+    []
+  );
+
   const [filter, setFilter] = useState<"all" | "confirmed" | "active" | "failed">("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [isSimulatingBatch, setIsSimulatingBatch] = useState(false);
@@ -345,12 +352,26 @@ const LiveTransactionFeed: React.FC = () => {
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-black text-white">Midnight Preprod Environment</h3>
-              <span className="px-2 py-0.5 rounded-full text-[0.62rem] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                SANDBOX / LOCAL PROVER MODE
+              <span
+                className={`px-2 py-0.5 rounded-full text-[0.62rem] font-bold ${
+                  contractStatus.isDeployed
+                    ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                    : "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                }`}
+              >
+                {contractStatus.isDeployed ? "VERIFIED ON-CHAIN" : "SANDBOX / LOCAL PROVER MODE"}
               </span>
             </div>
             <p className="text-xs text-slate-400">
-              Contract Address: <code className="text-amber-300 font-mono">02005a76...5f1d43</code> (Unverified Seed CA) · Simulated Preprod Ledger
+              Contract Address:{" "}
+              <code
+                className={`font-mono ${
+                  contractStatus.isDeployed ? "text-emerald-300" : "text-amber-300"
+                }`}
+              >
+                {formatContractAddress(MIDNIGHT_CONFIG.contractAddress, 8)}
+              </code>{" "}
+              · {contractStatus.isDeployed ? "Live Midnight Preprod Ledger" : "Simulated Preprod Ledger"}
             </p>
           </div>
         </div>

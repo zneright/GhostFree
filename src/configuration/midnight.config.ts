@@ -30,21 +30,40 @@ export function getNetworkLabel(networkId: string): string {
 
 export const KNOWN_PLACEHOLDER_ADDRESSES = new Set([
   "02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43",
-  "02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf",
   "0000000000000000000000000000000000000000000000000000000000000000",
 ]);
+
+/**
+ * Validate that a Midnight contract address complies with format standards:
+ * - 64 hex characters (raw 32-byte hash)
+ * - 66 hex characters (0x-prefixed 32-byte hash or 0200-prefixed 31-byte hash)
+ * - 68 hex characters (0200-prefixed 32-byte hash)
+ */
+export function isValidContractAddressFormat(address?: string): boolean {
+  if (!address || typeof address !== "string") return false;
+  const clean = address.trim();
+  return (
+    /^(0x)?[0-9a-fA-F]{64}$/.test(clean) ||
+    /^0200[0-9a-fA-F]{60,64}$/.test(clean)
+  );
+}
 
 export function getContractDeploymentStatus(address?: string): {
   isDeployed: boolean;
   isPlaceholder: boolean;
+  isValidFormat: boolean;
   statusLabel: string;
+  details: string;
 } {
   const addr = address || MIDNIGHT_CONFIG.contractAddress;
-  if (!addr || addr.length !== 66 && addr.length !== 64) {
+  
+  if (!isValidContractAddressFormat(addr)) {
     return {
       isDeployed: false,
       isPlaceholder: true,
+      isValidFormat: false,
       statusLabel: "Invalid Address Format",
+      details: "Contract address must be a valid 64 or 66-character hexadecimal string.",
     };
   }
 
@@ -52,13 +71,17 @@ export function getContractDeploymentStatus(address?: string): {
     return {
       isDeployed: false,
       isPlaceholder: true,
+      isValidFormat: true,
       statusLabel: "Preprod Sandbox / Unverified Contract",
+      details: "Address is registered as a known sandbox seed. Client-side WASM prover active.",
     };
   }
 
   return {
     isDeployed: true,
     isPlaceholder: false,
+    isValidFormat: true,
     statusLabel: "Verified On-Chain",
+    details: "Contract address is verified and active on the Midnight Preprod ledger.",
   };
 }

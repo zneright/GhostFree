@@ -116,8 +116,14 @@ export const TransparencyCard: React.FC = () => {
             {contractAddress}
           </span>
           {!status.isDeployed && (
-            <span className="shrink-0 px-2 py-0.5 rounded text-[0.6rem] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">
-              Awaiting On-Chain Redeploy
+            <span
+              className={`shrink-0 px-2 py-0.5 rounded text-[0.6rem] border font-medium ${
+                !status.isValidFormat
+                  ? "bg-red-500/20 text-red-300 border-red-500/30"
+                  : "bg-amber-500/20 text-amber-300 border-amber-500/30"
+              }`}
+            >
+              {!status.isValidFormat ? "Invalid CA Format" : "Preprod Sandbox Mode"}
             </span>
           )}
         </div>
