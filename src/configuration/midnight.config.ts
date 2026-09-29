@@ -12,6 +12,7 @@ export const MIDNIGHT_CONFIG = {
     "02008f58b73a97194f4c8032b4b455776d542da6ff71cf963a763884df12a7bf",
   indexerUrl: import.meta.env.VITE_MIDNIGHT_INDEXER_URL || "https://indexer.preprod.midnight.network/api/v4/graphql",
   nodeUrl: import.meta.env.VITE_MIDNIGHT_NODE_URL || "https://rpc.preprod.midnight.network",
+  explorerUrl: import.meta.env.VITE_MIDNIGHT_EXPLORER_URL || "https://preprod.midnightexplorer.com",
   provingServerUrl: import.meta.env.VITE_MIDNIGHT_PROVING_SERVER_URL || "http://localhost:6300",
   feedbackSheetUrl:
     import.meta.env.VITE_FEEDBACK_SHEET_URL ||

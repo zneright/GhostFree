@@ -187,7 +187,7 @@ function TxRow({ record }: { record: TransactionRecord }) {
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
                 <a
-                  href={`https://indexer.testnet.midnight.network/tx/${record.txHash}`}
+                  href={`${MIDNIGHT_CONFIG.explorerUrl}/tx/${record.txHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 hover:text-sky-400 transition-colors shrink-0"

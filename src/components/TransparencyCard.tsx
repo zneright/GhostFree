@@ -141,6 +141,17 @@ export const TransparencyCard: React.FC = () => {
             )}
             <span className="hidden sm:inline">{copied ? "Copied" : "Copy"}</span>
           </button>
+
+          <a
+            href={`${MIDNIGHT_CONFIG.explorerUrl}/contract/${contractAddress}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1.5 rounded-lg bg-civic-sky/10 hover:bg-civic-sky/20 border border-civic-sky/20 text-civic-sky hover:text-white transition-colors flex items-center gap-1 text-[0.7rem]"
+            title="Verify Contract on Midnight Preprod Explorer"
+          >
+            <ExternalLink className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Verify on Explorer</span>
+          </a>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@
 import React from "react";
 import { useTransactionFeed } from "../contexts/TransactionContext";
 import type { TxStatus } from "../types";
+import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
 import {
   CheckCircle2,
   XCircle,
@@ -66,7 +67,7 @@ const STATUS_CONFIG: Record<
   },
 };
 
-const MIDNIGHT_EXPLORER_BASE = "https://midnight.network/explorer/tx/";
+const MIDNIGHT_EXPLORER_BASE = `${MIDNIGHT_CONFIG.explorerUrl}/tx/`;
 
 const TxToastManager: React.FC = () => {
   const { toasts, dismissToast } = useTransactionFeed();
