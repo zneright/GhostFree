@@ -13,6 +13,9 @@ export const MIDNIGHT_CONFIG = {
   indexerUrl: import.meta.env.VITE_MIDNIGHT_INDEXER_URL || "https://indexer.preprod.midnight.network/api/v4/graphql",
   nodeUrl: import.meta.env.VITE_MIDNIGHT_NODE_URL || "https://rpc.preprod.midnight.network",
   explorerUrl: import.meta.env.VITE_MIDNIGHT_EXPLORER_URL || "https://preprod.midnightexplorer.com",
+  previewExplorerUrl:
+    import.meta.env.VITE_MIDNIGHT_PREVIEW_EXPLORER_URL ||
+    "https://preview.midnightexplorer.com",
   provingServerUrl: import.meta.env.VITE_MIDNIGHT_PROVING_SERVER_URL || "http://localhost:6300",
   feedbackSheetUrl:
     import.meta.env.VITE_FEEDBACK_SHEET_URL ||
@@ -31,18 +34,35 @@ export function getNetworkLabel(networkId: string): string {
 
 /**
  * Returns the canonical Midnight Explorer URL for an address/contract.
+ * Automatically resolves to preview.midnightexplorer.com or preprod.midnightexplorer.com.
  * Midnight Explorer routes all contract & wallet lookups through /address/[address].
  */
-export function getExplorerAddressUrl(address?: string): string {
-  const addr = address || MIDNIGHT_CONFIG.contractAddress;
-  return `${MIDNIGHT_CONFIG.explorerUrl}/address/${addr}`;
+export function getExplorerAddressUrl(address?: string, networkId?: string): string {
+  const currentNetwork = networkId || MIDNIGHT_CONFIG.networkId;
+  const isPreview =
+    currentNetwork === "preview" ||
+    address === MIDNIGHT_CONFIG.previewContractAddress;
+  const baseUrl = isPreview
+    ? MIDNIGHT_CONFIG.previewExplorerUrl
+    : MIDNIGHT_CONFIG.explorerUrl;
+  const addr =
+    address ||
+    (isPreview
+      ? MIDNIGHT_CONFIG.previewContractAddress
+      : MIDNIGHT_CONFIG.contractAddress);
+  return `${baseUrl}/address/${addr}`;
 }
 
 /**
  * Returns the canonical Midnight Explorer URL for a transaction.
  */
-export function getExplorerTxUrl(txHash?: string): string {
-  return `${MIDNIGHT_CONFIG.explorerUrl}/tx/${txHash || ""}`;
+export function getExplorerTxUrl(txHash?: string, networkId?: string): string {
+  const currentNetwork = networkId || MIDNIGHT_CONFIG.networkId;
+  const baseUrl =
+    currentNetwork === "preview"
+      ? MIDNIGHT_CONFIG.previewExplorerUrl
+      : MIDNIGHT_CONFIG.explorerUrl;
+  return `${baseUrl}/tx/${txHash || ""}`;
 }
 
 export const KNOWN_PLACEHOLDER_ADDRESSES = new Set([
