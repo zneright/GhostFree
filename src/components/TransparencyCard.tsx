@@ -14,7 +14,11 @@ import {
   Lock,
   Landmark,
 } from "lucide-react";
-import { MIDNIGHT_CONFIG, getContractDeploymentStatus } from "../configuration/midnight.config";
+import {
+  MIDNIGHT_CONFIG,
+  getContractDeploymentStatus,
+  getExplorerAddressUrl,
+} from "../configuration/midnight.config";
 
 export const TransparencyCard: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -143,7 +147,7 @@ export const TransparencyCard: React.FC = () => {
           </button>
 
           <a
-            href={`${MIDNIGHT_CONFIG.explorerUrl}/contract/${contractAddress}`}
+            href={getExplorerAddressUrl(contractAddress)}
             target="_blank"
             rel="noopener noreferrer"
             className="p-1.5 rounded-lg bg-civic-sky/10 hover:bg-civic-sky/20 border border-civic-sky/20 text-civic-sky hover:text-white transition-colors flex items-center gap-1 text-[0.7rem]"

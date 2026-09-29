@@ -5,7 +5,11 @@
 // ============================================
 
 import React, { useState, useMemo } from "react";
-import { MIDNIGHT_CONFIG, getContractDeploymentStatus } from "../../configuration/midnight.config";
+import {
+  MIDNIGHT_CONFIG,
+  getContractDeploymentStatus,
+  getExplorerTxUrl,
+} from "../../configuration/midnight.config";
 import { formatContractAddress } from "../../utils/contract";
 import { useTransactionFeed } from "../../contexts/TransactionContext";
 import type { TransactionRecord, TxStatus } from "../../types";
@@ -187,7 +191,7 @@ function TxRow({ record }: { record: TransactionRecord }) {
                   {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
                 <a
-                  href={`${MIDNIGHT_CONFIG.explorerUrl}/tx/${record.txHash}`}
+                  href={getExplorerTxUrl(record.txHash)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 hover:text-sky-400 transition-colors shrink-0"

@@ -7,7 +7,7 @@
 import React from "react";
 import { useTransactionFeed } from "../contexts/TransactionContext";
 import type { TxStatus } from "../types";
-import { MIDNIGHT_CONFIG } from "../configuration/midnight.config";
+import { getExplorerTxUrl } from "../configuration/midnight.config";
 import {
   CheckCircle2,
   XCircle,
@@ -66,8 +66,6 @@ const STATUS_CONFIG: Record<
     label: "Retrying",
   },
 };
-
-const MIDNIGHT_EXPLORER_BASE = `${MIDNIGHT_CONFIG.explorerUrl}/tx/`;
 
 const TxToastManager: React.FC = () => {
   const { toasts, dismissToast } = useTransactionFeed();
@@ -130,7 +128,7 @@ const TxToastManager: React.FC = () => {
                     <Copy className="w-3 h-3" />
                   </button>
                   <a
-                    href={`${MIDNIGHT_EXPLORER_BASE}${toast.txHash}`}
+                    href={getExplorerTxUrl(toast.txHash)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-slate-500 hover:text-sky-400 transition-colors"

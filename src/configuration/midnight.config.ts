@@ -29,6 +29,22 @@ export function getNetworkLabel(networkId: string): string {
   return NETWORK_LABELS[networkId] || `Midnight (${networkId})`;
 }
 
+/**
+ * Returns the canonical Midnight Explorer URL for an address/contract.
+ * Midnight Explorer routes all contract & wallet lookups through /address/[address].
+ */
+export function getExplorerAddressUrl(address?: string): string {
+  const addr = address || MIDNIGHT_CONFIG.contractAddress;
+  return `${MIDNIGHT_CONFIG.explorerUrl}/address/${addr}`;
+}
+
+/**
+ * Returns the canonical Midnight Explorer URL for a transaction.
+ */
+export function getExplorerTxUrl(txHash?: string): string {
+  return `${MIDNIGHT_CONFIG.explorerUrl}/tx/${txHash || ""}`;
+}
+
 export const KNOWN_PLACEHOLDER_ADDRESSES = new Set([
   "02005a76e93a8d052b61405e32404e5781a7b45cb0fa30d7bbce07ffdf5f1d43",
   "0000000000000000000000000000000000000000000000000000000000000000",
