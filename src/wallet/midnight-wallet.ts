@@ -1,6 +1,7 @@
 // ============================================
 // GhostFree — Midnight Wallet Module
-// Lace Wallet integration via window.midnight.mnLace
+// Lace Wallet integration via window.midnight.mnLace,
+// with fallback to any DApp Connector v4 wallet in window.midnight
 // ============================================
 
 import type { InitialAPI, ConnectedAPI } from "@midnight-ntwrk/dapp-connector-api";
@@ -13,8 +14,13 @@ const DETECTION_INTERVAL_MS = 100;
 const DETECTION_TIMEOUT_MS = 5000;
 
 function getLaceInjected(): InitialAPI | undefined {
-  if (typeof window === "undefined") return undefined;
-  return window.midnight?.mnLace as InitialAPI | undefined;
+  if (typeof window === "undefined" || !window.midnight) return undefined;
+  const lace = window.midnight.mnLace as InitialAPI | undefined;
+  if (lace) return lace;
+  // Fall back to any other DApp Connector v4 wallet (e.g. 1AM)
+  return Object.values(window.midnight).find(
+    (w) => !!w && typeof w.connect === "function" && typeof w.apiVersion === "string" && w.apiVersion.startsWith("4")
+  );
 }
 
 /**
@@ -50,7 +56,7 @@ export async function connectLaceWallet(
 
   if (!detected || !lace) {
     throw new Error(
-      "Lace wallet not detected. Please install the Lace browser extension and refresh the page."
+      "Midnight wallet not detected. Please install the Lace browser extension (or another Midnight wallet) and refresh the page."
     );
   }
 
@@ -60,9 +66,9 @@ export async function connectLaceWallet(
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     if (msg.includes("rejected") || msg.includes("denied") || msg.includes("cancelled")) {
-      throw new Error("Wallet connection was declined. Please approve the connection in Lace to continue.");
+      throw new Error("Wallet connection was declined. Please approve the connection in your wallet to continue.");
     }
-    throw new Error(`Failed to connect to Lace wallet: ${msg}`);
+    throw new Error(`Failed to connect to ${lace.name || "Lace"} wallet: ${msg}`);
   }
 }
 
